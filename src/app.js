@@ -2,8 +2,23 @@ import React from 'react'
 import CodeMirror from 'react-codemirror'
 import jsx from 'jsx-transpiler'
 import Com from 'reactpen/component.js'
+import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
+import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 
 // import 'codemirror/lib/codemirror.css!'
+
+// oldVal is a hack until we have Either data type support
+function jsxToJs(jsxCode, oldVal = '') {
+    try {
+        const compiledJsx = Babel.transform(jsxCode, {
+            presets: ['react']
+        }).code
+        return compiledJsx
+    } catch (e) {
+        console.log('error compiling jsx', e.toString())
+        return oldVal
+    }
+}
 
 export class App extends React.Component {
     handleClick = () => {
@@ -15,19 +30,25 @@ export class App extends React.Component {
         })
     }
 
+    run = () => {
+        const { jsxCode, cssCode } = this.state
+        this.setState(
+            { jsxToInsert: jsxToJs(jsxCode, this.state.jsxToInsert) },
+            () => {
+                let styleEl = document.getElementById('global_styles')
+                styleEl.innerHTML = cssCode
+            }
+        )
+    }
+
     updateJsxCode = newCode => {
         this.setState({ jsxCode: newCode })
-
-        try {
-            const compiledJsx = Babel.transform(newCode, {
-                presets: ['es2015', 'react']
-            }).code
-            console.log('compiledJsx', compiledJsx)
-            this.setState({ jsxToInsert: compiledJsx })
-        } catch (e) {
-            console.log('error compiling jsx', e.toString())
-        }
     }
+
+    updateCssCode = newCode => {
+        this.setState({ cssCode: newCode })
+    }
+
     constructor(props) {
         super(props)
 
@@ -35,9 +56,7 @@ export class App extends React.Component {
         this.state = {
             com: null,
             jsxCode: startingJsx,
-            jsxToInsert: Babel.transform(startingJsx, {
-                presets: ['react', 'es2015']
-            }).code,
+            jsxToInsert: jsxToJs(startingJsx),
             cssCode: '* {box-sizing: border-box}'
         }
     }
@@ -62,11 +81,20 @@ export class App extends React.Component {
         const cssContainerStyle = { flex: 1 }
 
         const htmlCodeMirrorOptions = {
-            lineNumbers: true
+            lineNumbers: true,
+            mode: 'jsx'
+        }
+
+        const cssCodeMirrorOptions = {
+            lineNumbers: true,
+            mode: 'css'
         }
 
         return (
             <div style={containerStyle}>
+                <header style={{ gridColumn: '1 / -1' }}>
+                    <button onClick={this.run}>Run</button>
+                </header>
                 <div style={leftPaneStyle}>
                     <div style={htmlContainerStyle}>
                         <CodeMirror
@@ -78,8 +106,8 @@ export class App extends React.Component {
                     <div style={cssContainerStyle}>
                         <CodeMirror
                             value={this.state.cssCode}
-                            onChange={this.cssCode}
-                            options={htmlCodeMirrorOptions}
+                            onChange={this.updateCssCode}
+                            options={cssCodeMirrorOptions}
                         />
                     </div>
                 </div>
