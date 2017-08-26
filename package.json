@@ -3,10 +3,15 @@
     "name": "reactpen",
     "main": "reactpen.js",
     "dependencies": {
-      "react-dom": "npm:react-dom@^15.6.1"
+      "acorn-jsx": "npm:acorn-jsx@^4.0.1",
+      "babel-core": "npm:babel-core@^6.26.0",
+      "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.24.1",
+      "css": "github:systemjs/plugin-css@^0.1.35",
+      "jsx-transpiler": "npm:jsx-transpiler@^0.1.4",
+      "react-codemirror": "npm:react-codemirror@^1.0.0",
+      "react-jsx": "npm:react-jsx@^1.0.0"
     },
     "devDependencies": {
-      "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.24.1",
       "core-js": "npm:core-js@^2.5.0",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.25"
     },
@@ -17,14 +22,18 @@
       "constants": "npm:jspm-nodelibs-constants@^0.2.0",
       "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
       "domain": "npm:jspm-nodelibs-domain@^0.2.0",
+      "estraverse": "npm:estraverse",
       "events": "npm:jspm-nodelibs-events@^0.2.0",
       "fs": "npm:jspm-nodelibs-fs@^0.2.0",
       "http": "npm:jspm-nodelibs-http@^0.2.0",
       "https": "npm:jspm-nodelibs-https@^0.2.0",
+      "module": "npm:jspm-nodelibs-module@^0.2.0",
       "os": "npm:jspm-nodelibs-os@^0.2.0",
       "path": "npm:jspm-nodelibs-path@^0.2.0",
       "process": "npm:jspm-nodelibs-process@^0.2.0",
       "react": "npm:react@^15.6.1",
+      "react-dom": "npm:react-dom@^15.6.1",
+      "source-map": "npm:source-map@0.2",
       "stream": "npm:jspm-nodelibs-stream@^0.2.0",
       "string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
       "url": "npm:jspm-nodelibs-url@^0.2.0",
@@ -42,6 +51,29 @@
           "_stream_transform": "readable-stream/transform"
         }
       },
+      "npm:debug@2.6.8": {
+        "main": "src/browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./src/browser.js": {
+            "node": "./src/node.js"
+          },
+          "./node.js": {
+            "browser": "./src/browser.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
+      "npm:esprima@2.7.3": {
+        "jspmNodeConversion": false
+      },
+      "npm:fbjs@0.6.1": {
+        "dependencies": {}
+      },
       "npm:inherits@2.0.3": {
         "ignore": [
           "test.js"
@@ -55,6 +87,30 @@
       },
       "npm:pbkdf2@3.0.13": {
         "main": "browser.js"
+      },
+      "npm:react@0.14.9": {
+        "dependencies": {
+          "fbjs": "^0.6.1"
+        },
+        "format": "cjs",
+        "meta": {
+          "*": {
+            "globals": {
+              "process": "process"
+            }
+          }
+        },
+        "map": {
+          "fbjs/lib/ExecutionEnvironment.js": {
+            "production": "@empty"
+          },
+          "./lib/ReactDefaultPerf.js": {
+            "production": "@empty"
+          },
+          "./lib/ReactTestUtils.js": {
+            "production": "@empty"
+          }
+        }
       },
       "npm:safe-buffer@5.1.1": {
         "browser": "index.js"

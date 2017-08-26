@@ -1,4 +1,9 @@
 import React from 'react'
+import CodeMirror from 'react-codemirror'
+import jsx from 'jsx-transpiler'
+import Com from 'reactpen/component.js'
+
+// import 'codemirror/lib/codemirror.css!'
 
 export class App extends React.Component {
     handleClick = () => {
@@ -10,16 +15,35 @@ export class App extends React.Component {
         })
     }
 
+    updateJsxCode = newCode => {
+        this.setState({ jsxCode: newCode })
+
+        try {
+            const compiledJsx = Babel.transform(newCode, {
+                presets: ['es2015', 'react']
+            }).code
+            console.log('compiledJsx', compiledJsx)
+            this.setState({ jsxToInsert: compiledJsx })
+        } catch (e) {
+            console.log('error compiling jsx', e.toString())
+        }
+    }
     constructor(props) {
         super(props)
 
+        const startingJsx = '<div>abc</div>'
         this.state = {
-            com: null
+            com: null,
+            jsxCode: startingJsx,
+            jsxToInsert: Babel.transform(startingJsx, {
+                presets: ['react', 'es2015']
+            }).code,
+            cssCode: '* {box-sizing: border-box}'
         }
     }
 
     render() {
-        const { com } = this.state
+        const { com, jsxToInsert } = this.state
 
         const containerStyle = {
             display: 'grid',
@@ -34,19 +58,35 @@ export class App extends React.Component {
         }
 
         const rightPaneStyle = { background: 'gray' }
-        const htmlContainerStyle = { flex: 1, background: 'hotpink' }
-        const cssContainerStyle = { flex: 1, background: 'aqua' }
+        const htmlContainerStyle = { flex: 1 }
+        const cssContainerStyle = { flex: 1 }
+
+        const htmlCodeMirrorOptions = {
+            lineNumbers: true
+        }
 
         return (
             <div style={containerStyle}>
                 <div style={leftPaneStyle}>
-                    Left pane
-                    <div style={htmlContainerStyle}>Html container</div>
-                    <div style={cssContainerStyle}>Css container</div>
+                    <div style={htmlContainerStyle}>
+                        <CodeMirror
+                            value={this.state.jsxCode}
+                            onChange={this.updateJsxCode}
+                            options={htmlCodeMirrorOptions}
+                        />
+                    </div>
+                    <div style={cssContainerStyle}>
+                        <CodeMirror
+                            value={this.state.cssCode}
+                            onChange={this.cssCode}
+                            options={htmlCodeMirrorOptions}
+                        />
+                    </div>
                 </div>
                 <div style={rightPaneStyle}>
-                    Right pane
+                    Right pane 3
                     {com ? React.createElement(com.default) : null}
+                    {eval(jsxToInsert)}
                 </div>
             </div>
         )
