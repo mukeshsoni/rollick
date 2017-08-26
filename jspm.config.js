@@ -7,8 +7,8 @@ SystemJS.config({
         'baseURL': '/',
         'bundles': {
             'build.js': [
-                'test.js',
-                'reactpen/component.js',
+                'main.js',
+                'reactpen/app.js',
                 'npm:react@15.6.1/react.js',
                 'npm:react@15.6.1.json',
                 'npm:jspm-nodelibs-process@0.2.1/process.js',
