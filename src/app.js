@@ -4,7 +4,6 @@ import jsx from 'jsx-transpiler'
 import Com from 'reactpen/component.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
-// import less from 'less'
 import sass from 'sass.js'
 // import 'codemirror/lib/codemirror.css!'
 
@@ -61,13 +60,6 @@ export class App extends React.Component {
                 console.log('error converting sass to css', result.message)
             }
         })
-        // less
-        //     .render(wrapCss(newCode))
-        //     .then(css => {
-        //         console.log('less converted to css', css.css)
-        //         this.setState({ cssCode: newCode, cssToInsert: css.css })
-        //     })
-        //     .catch(e => console.log('error converting less to css', e))
     }
 
     constructor(props) {
@@ -91,6 +83,7 @@ export class App extends React.Component {
         const containerStyle = {
             display: 'grid',
             gridTemplateColumns: '4fr 7fr',
+            gridTemplateRows: '40px auto',
             width: '100vw',
             height: '100vh'
         }
