@@ -30,7 +30,15 @@ function wrapCss(css) {
 const componentMap = {
     avatar: {
         name: 'Avatar',
-        path: 'reactpen/avatar'
+        path: 'reactpen/avatar',
+        props: {
+            src: {
+                defaultValue: "'https://unsplash.it/50/50'"
+            },
+            width: {
+                defaultValue: 100
+            }
+        }
     }
 }
 
@@ -46,7 +54,21 @@ export class App extends React.Component {
 
     addAvatar = () => {
         function addComponent(jsx, codeMirror, componentDetails) {
-            let codeToInsert = `<${componentDetails.name} src='https://unsplash.it/40/40'></${componentDetails.name}>`
+            let codeToInsert = `<${componentDetails.name} `
+            let propValuePairs = Object.keys(
+                componentDetails.props
+            ).reduce((acc, propName) => {
+                if (componentDetails.props[propName].defaultValue) {
+                    return `${acc} ${propName}={${componentDetails.props[
+                        propName
+                    ].defaultValue}}`
+                } else {
+                    return acc
+                }
+            }, '')
+
+            codeToInsert = `${codeToInsert} ${propValuePairs}></${componentDetails.name}>`
+
             codeMirror.replaceSelection(codeToInsert)
             return codeMirror.getValue()
         }
