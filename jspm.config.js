@@ -257,6 +257,7 @@ SystemJS.config({
         'domain': 'npm:jspm-nodelibs-domain@0.2.1',
         'ecc-jsbn': 'npm:ecc-jsbn@0.1.1',
         'errno': 'npm:errno@0.1.4',
+        'esformatter-jsx': 'npm:esformatter-jsx@8.0.1',
         'estraverse': 'npm:estraverse@4.2.0',
         'events': 'npm:jspm-nodelibs-events@0.2.2',
         'fs': 'npm:jspm-nodelibs-fs@0.2.1',
@@ -274,6 +275,7 @@ SystemJS.config({
         'node-sass': 'npm:node-sass@4.5.3',
         'os': 'npm:jspm-nodelibs-os@0.2.2',
         'path': 'npm:jspm-nodelibs-path@0.2.3',
+        'prettier': 'npm:prettier@1.5.3',
         'process': 'npm:jspm-nodelibs-process@0.2.1',
         'promise': 'npm:promise@7.3.1',
         'querystring': 'npm:jspm-nodelibs-querystring@0.2.2',
@@ -965,7 +967,7 @@ SystemJS.config({
                 'caseless': 'npm:caseless@0.12.0',
                 'forever-agent': 'npm:forever-agent@0.6.1',
                 'har-validator': 'npm:har-validator@4.2.1',
-                'extend': 'npm:extend@3.0.1',
+                'extend': 'npm:extend@3.0.0',
                 'qs': 'npm:qs@6.4.0',
                 'safe-buffer': 'npm:safe-buffer@5.1.1',
                 'aws4': 'npm:aws4@1.6.0',
@@ -1477,6 +1479,51 @@ SystemJS.config({
         'npm:timers-browserify@1.4.2': {
             'map': {
                 'process': 'npm:process@0.11.10'
+            }
+        },
+        'npm:esformatter-jsx@8.0.1': {
+            'map': {
+                'extend': 'npm:extend@3.0.0',
+                'babylon': 'npm:babylon@6.14.1',
+                'js-beautify': 'npm:js-beautify@1.6.12',
+                'js-beautify-ejsx': 'npm:js-beautify-ejsx@1.6.12',
+                'esformatter-ignore': 'npm:esformatter-ignore@0.1.3'
+            }
+        },
+        'npm:js-beautify@1.6.12': {
+            'map': {
+                'config-chain': 'npm:config-chain@1.1.11',
+                'nopt': 'npm:nopt@3.0.6',
+                'mkdirp': 'npm:mkdirp@0.5.1',
+                'editorconfig': 'npm:editorconfig@0.13.3'
+            }
+        },
+        'npm:js-beautify-ejsx@1.6.12': {
+            'map': {
+                'config-chain': 'npm:config-chain@1.1.11',
+                'nopt': 'npm:nopt@3.0.6',
+                'mkdirp': 'npm:mkdirp@0.5.1',
+                'editorconfig': 'npm:editorconfig@0.13.3'
+            }
+        },
+        'npm:config-chain@1.1.11': {
+            'map': {
+                'ini': 'npm:ini@1.3.4',
+                'proto-list': 'npm:proto-list@1.2.4'
+            }
+        },
+        'npm:editorconfig@0.13.3': {
+            'map': {
+                'semver': 'npm:semver@5.3.0',
+                'lru-cache': 'npm:lru-cache@3.2.0',
+                'commander': 'npm:commander@2.11.0',
+                'sigmund': 'npm:sigmund@1.0.1',
+                'bluebird': 'npm:bluebird@3.5.0'
+            }
+        },
+        'npm:lru-cache@3.2.0': {
+            'map': {
+                'pseudomap': 'npm:pseudomap@1.0.2'
             }
         }
     }

@@ -1,7 +1,7 @@
 import React from 'react'
 import CodeMirror from 'react-codemirror'
 import jsx from 'jsx-transpiler'
-import Com from 'reactpen/component.js'
+import Avatar from 'reactpen/avatar'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
@@ -26,12 +26,39 @@ function wrapCss(css) {
     return '#' + rightPaneId + ' { ' + css + ' }'
 }
 
+const componentMap = {
+    avatar: {
+        name: 'Avatar',
+        path: 'reactpen/avatar'
+    }
+}
+
 export class App extends React.Component {
-    handleClick = () => {
+    addComponent = () => {
         SystemJS.import('reactpen/component.js').then(com => {
             console.log('component loaded', com)
             this.setState({
                 com
+            })
+        })
+    }
+
+    addAvatar = () => {
+        function addComponent(jsx, codeMirror, componentDetails) {
+            let codeToInsert = `<${componentDetails.name} src='https://unsplash.it/40/40'></${componentDetails.name}>`
+            codeMirror.replaceSelection(codeToInsert)
+            return codeMirror.getValue()
+        }
+
+        SystemJS.import(componentMap['avatar'].path).then(com => {
+            console.log('component loaded', com)
+            window[componentMap['avatar'].name] = com.default
+            this.setState({
+                jsxCode: addComponent(
+                    this.state.jsxCode,
+                    this.jsxCodemirror.getCodeMirror(),
+                    componentMap['avatar']
+                )
             })
         })
     }
@@ -45,6 +72,10 @@ export class App extends React.Component {
                 // styleEl.innerHTML = cssCode
             }
         )
+    }
+
+    formatJsx = () => {
+        console.log('jsxcode', this.state.jsxCode)
     }
 
     updateJsxCode = newCode => {
@@ -75,10 +106,11 @@ export class App extends React.Component {
             cssCode: startingCss,
             cssToInsert: wrapCss(startingCss)
         }
+        this.jsxCodemirror = null
     }
 
     render() {
-        const { com, jsxToInsert } = this.state
+        const { com, avatar, jsxCode, cssCode, jsxToInsert } = this.state
 
         const containerStyle = {
             display: 'grid',
@@ -98,8 +130,8 @@ export class App extends React.Component {
         const cssContainerStyle = { flex: 1 }
 
         const htmlCodeMirrorOptions = {
-            lineNumbers: true,
-            mode: 'jsx'
+            lineNumbers: true
+            /* mode: 'jsx'*/
         }
 
         const cssCodeMirrorOptions = {
@@ -109,13 +141,32 @@ export class App extends React.Component {
 
         return (
             <div style={containerStyle}>
-                <header style={{ gridColumn: '1 / -1' }}>
-                    <button onClick={this.run}>Run</button>
+                <header
+                    style={{
+                        gridColumn: '1 / -1',
+                        display: 'flex',
+                        flexDirection: 'row-reverse',
+                        alignItems: 'center',
+                        padding: '1em'
+                    }}
+                >
+                    <button style={{ marginRight: '1em' }} onClick={this.run}>
+                        Run
+                    </button>
+                    <button
+                        style={{ marginRight: '1em' }}
+                        onClick={this.formatJsx}
+                    >
+                        Format jsx
+                    </button>
+                    <button onClick={this.addAvatar}>Add Avatar</button>
                 </header>
                 <div style={leftPaneStyle}>
                     <div style={htmlContainerStyle}>
                         <CodeMirror
-                            value={this.state.jsxCode}
+                            ref={instance => (this.jsxCodemirror = instance)}
+                            autoFocus={true}
+                            value={jsxCode}
                             onChange={this.updateJsxCode}
                             options={htmlCodeMirrorOptions}
                         />
@@ -132,6 +183,11 @@ export class App extends React.Component {
                     <style>{this.state.cssToInsert}</style>
                     Right pane 3
                     {com ? React.createElement(com.default) : null}
+                    {avatar
+                        ? React.createElement(avatar.default, {
+                              src: 'https://unsplash.it/50/50'
+                          })
+                        : null}
                     {eval(jsxToInsert)}
                 </div>
             </div>
