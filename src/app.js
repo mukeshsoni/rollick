@@ -174,6 +174,9 @@ export class App extends React.Component {
 
         return (
             <div style={containerStyle}>
+                <style>
+                    {this.state.cssToInsert}
+                </style>
                 <header
                     style={{
                         gridColumn: '1 / -1',
@@ -213,8 +216,6 @@ export class App extends React.Component {
                     </div>
                 </div>
                 <div style={rightPaneStyle} id={rightPaneId}>
-                    <style>{this.state.cssToInsert}</style>
-                    Right pane 3
                     {com ? React.createElement(com.default) : null}
                     {avatar
                         ? React.createElement(avatar.default, {
