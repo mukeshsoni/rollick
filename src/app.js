@@ -5,6 +5,7 @@ import Avatar from 'reactpen/avatar'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
+import prettier from 'prettier'
 // import 'codemirror/lib/codemirror.css!'
 
 // oldVal is a hack until we have Either data type support
@@ -76,6 +77,16 @@ export class App extends React.Component {
 
     formatJsx = () => {
         console.log('jsxcode', this.state.jsxCode)
+        this.setState(
+            {
+                jsxCode: prettier
+                    .format(this.state.jsxCode, { semi: false })
+                    .slice(1) // slice(1) to remove the semicolon at the start of block prettier adds
+            },
+            () => {
+                this.jsxCodemirror.getCodeMirror().setValue(this.state.jsxCode)
+            }
+        )
     }
 
     updateJsxCode = newCode => {
