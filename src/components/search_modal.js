@@ -13,6 +13,7 @@ export default class SearchModal extends React.Component {
         this.state = {
             searchText: ''
         }
+        this.searchInputRef = null
     }
 
     render() {
@@ -21,7 +22,11 @@ export default class SearchModal extends React.Component {
 
         const modalStyle = {
             content: {
-                top: '20%'
+                top: '20%',
+                left: 'calc((100vw - 500px)/2)',
+                width: 500,
+                border: 'none',
+                background: 'none'
             }
         }
 
@@ -29,15 +34,19 @@ export default class SearchModal extends React.Component {
             <div>
                 <Modal
                     isOpen={true}
-                    onAfterOpen={() => {}}
+                    onAfterOpen={() => {
+                        this.searchInputRef && this.searchInputRef.focus()
+                    }}
                     onRequestClose={onRequestClose}
                     style={modalStyle}
                     contentLabel="Search Components"
                 >
                     <input
+                        ref={input => (this.searchInputRef = input)}
                         className="search-modal-input"
                         value={searchText}
                         onChange={this.handleInputChange}
+                        placeholder="Search Component"
                     />
                 </Modal>
             </div>
