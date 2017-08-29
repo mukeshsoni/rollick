@@ -14,6 +14,7 @@
       "prettier": "npm:prettier@^1.5.3",
       "react-codemirror": "npm:react-codemirror@^1.0.0",
       "react-jsx": "npm:react-jsx@^1.0.0",
+      "react-modal": "npm:react-modal@^2.2.4",
       "sass.js": "npm:sass.js@^0.10.6",
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.3.0"
     },
@@ -150,5 +151,8 @@
         "browser": "index.js"
       }
     }
+  },
+  "dependencies": {
+    "react-modal": "^2.2.4"
   }
 }

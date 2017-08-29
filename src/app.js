@@ -6,6 +6,7 @@ import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
 import prettier from 'prettier'
 import meta from 'components.meta.json!json'
+import SearchModal from 'src/components/search_modal'
 console.log('meta about components', meta)
 // import 'codemirror/lib/codemirror.css'
 
@@ -47,7 +48,9 @@ export class App extends React.Component {
     addAvatar = () => {
         function addComponent(jsx, codeMirror, componentDetails) {
             let codeToInsert = `<${componentDetails.name} `
-            let propValuePairs = Object.keys(meta[componentDetails.path].props).reduce((acc, propName) => {
+            let propValuePairs = Object.keys(
+                meta[componentDetails.path].props
+            ).reduce((acc, propName) => {
                 return acc + ` ${propName}={'https://unsplash.it/50/50'}`
             }, '')
 
@@ -110,6 +113,28 @@ export class App extends React.Component {
         })
     }
 
+    handleKeypress = e => {
+        const keyCode = e.keyCode || e.which
+
+        console.log('key pressed', keyCode)
+        switch (keyCode) {
+            case 105: // i
+                if (e.metaKey) {
+                    // command + i
+                    e.preventDefault()
+                    return this.setState({ showSearchModal: true })
+                }
+            case 27: // esc
+                e.preventDefault()
+                return this.setState({ showSearchModal: false })
+            case 207: // command + alt + f
+                e.preventDefault()
+                if (e.altKey && e.shiftKey) {
+                    return this.formatJsx()
+                }
+        }
+    }
+
     constructor(props) {
         super(props)
 
@@ -121,13 +146,26 @@ export class App extends React.Component {
             jsxCode: startingJsx,
             jsxToInsert: jsxToJs(startingJsx),
             cssCode: startingCss,
-            cssToInsert: wrapCss(startingCss)
+            cssToInsert: wrapCss(startingCss),
+            showSearchModal: false,
+            searchText: ''
         }
         this.jsxCodemirror = null
     }
 
+    componentWillMount() {
+        document.addEventListener('keypress', this.handleKeypress)
+    }
+
     render() {
-        const { com, avatar, jsxCode, cssCode, jsxToInsert } = this.state
+        const {
+            com,
+            avatar,
+            jsxCode,
+            cssCode,
+            jsxToInsert,
+            showSearchModal
+        } = this.state
 
         const containerStyle = {
             display: 'grid',
@@ -147,12 +185,14 @@ export class App extends React.Component {
         const cssContainerStyle = { flex: 1 }
 
         const htmlCodeMirrorOptions = {
-            lineNumbers: true
-            /* mode: 'jsx'*/
+            lineNumbers: true,
+            lineWrapping: true,
+            mode: 'jsx'
         }
 
         const cssCodeMirrorOptions = {
             lineNumbers: true,
+            lineWrapping: true,
             mode: 'css'
         }
 
@@ -208,6 +248,11 @@ export class App extends React.Component {
                         : null}
                     {eval(jsxToInsert)}
                 </div>
+                {showSearchModal &&
+                    <SearchModal
+                        onRequestClose={() =>
+                            this.setState({ showSearchModal: false })}
+                    />}
             </div>
         )
     }
