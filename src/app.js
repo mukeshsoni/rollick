@@ -7,6 +7,7 @@ import sass from 'sass.js'
 import prettier from 'prettier'
 import meta from 'components.meta.json!json'
 import SearchModal from 'src/components/search_modal'
+import debounce from 'debounce'
 console.log('meta about components', meta)
 // import 'codemirror/lib/codemirror.css'
 
@@ -98,9 +99,12 @@ export class App extends React.Component {
         )
     }
 
-    updateJsxCode = newCode => {
-        this.setState({ jsxCode: newCode })
-    }
+    updateJsxCode = debounce(newCode => {
+        this.setState({
+            jsxCode: newCode,
+            jsxToInsert: jsxToJs(newCode)
+        })
+    }, 500)
 
     updateCssCode = newCode => {
         sass.compile(wrapCss(newCode), result => {

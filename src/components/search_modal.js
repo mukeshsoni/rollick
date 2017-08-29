@@ -7,6 +7,14 @@ export default class SearchModal extends React.Component {
         this.setState({ searchText: e.target.value })
     }
 
+    handleKeypress = e => {
+        const keyCode = e.keyCode || e.which
+        if (keyCode === 27) {
+            e.preventDefault()
+            this.props.onRequestClose()
+        }
+    }
+
     constructor(props) {
         super(props)
 
@@ -14,6 +22,10 @@ export default class SearchModal extends React.Component {
             searchText: ''
         }
         this.searchInputRef = null
+    }
+
+    componentWillMount() {
+        document.addEventListener('keydown', this.handleKeypress)
     }
 
     render() {
@@ -31,7 +43,7 @@ export default class SearchModal extends React.Component {
         }
 
         return (
-            <div>
+            <div onKeyDown={this.handleKeypress}>
                 <Modal
                     isOpen={true}
                     onAfterOpen={() => {
@@ -43,6 +55,7 @@ export default class SearchModal extends React.Component {
                 >
                     <input
                         ref={input => (this.searchInputRef = input)}
+                        onKeyDown={this.handleKeypress}
                         className="search-modal-input"
                         value={searchText}
                         onChange={this.handleInputChange}
