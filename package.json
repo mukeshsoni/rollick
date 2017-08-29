@@ -14,7 +14,8 @@
       "prettier": "npm:prettier@^1.5.3",
       "react-codemirror": "npm:react-codemirror@^1.0.0",
       "react-jsx": "npm:react-jsx@^1.0.0",
-      "sass.js": "npm:sass.js@^0.10.6"
+      "sass.js": "npm:sass.js@^0.10.6",
+      "systemjs/plugin-json": "github:systemjs/plugin-json@^0.3.0"
     },
     "devDependencies": {
       "core-js": "npm:core-js@^2.5.0",

@@ -1,12 +1,13 @@
 import React from 'react'
 import CodeMirror from 'react-codemirror'
 import jsx from 'jsx-transpiler'
-import Avatar from 'reactpen/avatar'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
 import prettier from 'prettier'
-// import 'codemirror/lib/codemirror.css!'
+import meta from 'components.meta.json!json'
+console.log('meta about components', meta)
+// import 'codemirror/lib/codemirror.css'
 
 // oldVal is a hack until we have Either data type support
 function jsxToJs(jsxCode, oldVal = '') {
@@ -30,7 +31,7 @@ function wrapCss(css) {
 const componentMap = {
     avatar: {
         name: 'Avatar',
-        path: 'reactpen/avatar',
+        path: 'src/components/avatar.js',
         props: {
             src: {
                 defaultValue: "'https://unsplash.it/50/50'"
@@ -43,28 +44,11 @@ const componentMap = {
 }
 
 export class App extends React.Component {
-    addComponent = () => {
-        SystemJS.import('reactpen/component.js').then(com => {
-            console.log('component loaded', com)
-            this.setState({
-                com
-            })
-        })
-    }
-
     addAvatar = () => {
         function addComponent(jsx, codeMirror, componentDetails) {
             let codeToInsert = `<${componentDetails.name} `
-            let propValuePairs = Object.keys(
-                componentDetails.props
-            ).reduce((acc, propName) => {
-                if (componentDetails.props[propName].defaultValue) {
-                    return `${acc} ${propName}={${componentDetails.props[
-                        propName
-                    ].defaultValue}}`
-                } else {
-                    return acc
-                }
+            let propValuePairs = Object.keys(meta[componentDetails.path].props).reduce((acc, propName) => {
+                return acc + ` ${propName}={'https://unsplash.it/50/50'}`
             }, '')
 
             codeToInsert = `${codeToInsert} ${propValuePairs}></${componentDetails.name}>`
