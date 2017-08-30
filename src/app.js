@@ -74,7 +74,13 @@ function capitalize(str) {
 }
 
 function getNameFromPath(path) {
-    return capitalize(path.split('/').pop().split('.')[0])
+    return path
+        .split('/')
+        .pop()
+        .split('.')[0]
+        .split('_')
+        .map(capitalize)
+        .join('')
 }
 
 export class App extends React.Component {
@@ -268,6 +274,9 @@ export class App extends React.Component {
         const jsxCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
+            extraKeys: {
+                'Ctrl-Alt-Space': this.formatJsx
+            },
             mode: 'jsx'
         }
 
