@@ -9,12 +9,6 @@ import componentsMetaList from 'components.docgen.json!json'
 import SearchModal from 'src/components/search_modal'
 import debounce from 'debounce'
 
-// converting the docgen object to list of components
-/* const componentsMetaList = Object.keys(componentsMetaData).map(comPath => ({
- *     ...componentsMetaData[comPath],
- *     path: comPath,
- *     name: getNameFromPath(comPath)
- * }))*/
 // import 'codemirror/lib/codemirror.css'
 
 // oldVal is a hack until we have Either data type support
@@ -77,31 +71,13 @@ const componentMap = {
     }
 }
 
-function capitalize(str) {
-    if (str && str.length > 0) {
-        return str.charAt(0).toUpperCase() + str.slice(1)
-    } else {
-        return str
-    }
-}
-
-function getNameFromPath(path) {
-    return path
-        .split('/')
-        .pop()
-        .split('.')[0]
-        .split('_')
-        .map(capitalize)
-        .join('')
-}
-
 export class App extends React.Component {
     handleSearchSelection = selectedItem => {
         this.hideSearchModal()
         SystemJS.import(selectedItem.path)
             .then(com => {
                 console.log('component loaded', com)
-                window[getNameFromPath(selectedItem.path)] = com.default
+                window[selectedItem.name] = com.default
                 this.setState({
                     jsxCode: addComponent(
                         this.state.jsxCode,
@@ -128,14 +104,56 @@ export class App extends React.Component {
 
     formatJsx = () => {
         console.log('jsxcode', this.state.jsxCode)
+        function last(arr) {
+            return arr[arr.length - 1]
+        }
+
+        function cmToPrettierCursorOffset(code, cursor) {
+            const allLines = code.split('\n')
+            const charsInLineBeforeCursor =
+                cursor.line > 1
+                    ? allLines.slice(0, cursor.line - 1).join('\n').length
+                    : 0
+            return charsInLineBeforeCursor + cursor.ch
+        }
+
+        function prettierToCodeMirrorCursor(code, cursorOffset) {
+            const codeTillCursorOffset = code.slice(0, cursorOffset)
+
+            const lineNumber = codeTillCursorOffset.split('\n').length
+            const charNumber = last(codeTillCursorOffset.split('\n')).length
+            return { line: lineNumber, ch: charNumber }
+        }
+
+        const prettierCursorOffset = cmToPrettierCursorOffset(
+            this.state.jsxCode,
+            this.jsxCodemirror.getCodeMirror().getCursor()
+        )
+
+        console.log(
+            'current jsx cursor position',
+            this.jsxCodemirror.getCodeMirror().getCursor()
+        )
+        console.log('converted prettier cursor offset', prettierCursorOffset)
+        const prettified = prettier.formatWithCursor(this.state.jsxCode, {
+            semi: false,
+            cursorOffset: prettierCursorOffset
+        })
+
+        const cmCursor = prettierToCodeMirrorCursor(
+            prettified.formatted,
+            prettified.cursorOffset
+        )
+
+        console.log('prettified cursor offset', prettified.cursorOffset)
+        console.log('cm cursor after formatting', cmCursor)
         this.setState(
             {
-                jsxCode: prettier
-                    .format(this.state.jsxCode, { semi: false })
-                    .slice(1) // slice(1) to remove the semicolon at the start of block prettier adds
+                jsxCode: prettified.formatted.slice(1) // slice(1) to remove the semicolon at the start of block prettier adds
             },
             () => {
                 this.jsxCodemirror.getCodeMirror().setValue(this.state.jsxCode)
+                this.jsxCodemirror.getCodeMirror().setCursor(cmCursor)
             }
         )
     }
