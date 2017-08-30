@@ -27,7 +27,7 @@ export default class SearchModal extends React.Component {
                         ]
                     )
                 }
-
+                break
             case 27: // esc key
                 e.nativeEvent.stopImmediatePropagation()
                 e.preventDefault()

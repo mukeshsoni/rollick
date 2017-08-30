@@ -192,6 +192,7 @@ export class App extends React.Component {
                         showSearchModal: true
                     })
                 }
+                break
             case 27: // esc
                 e.preventDefault()
                 return this.hideSearchModal()
@@ -200,6 +201,7 @@ export class App extends React.Component {
                 if (e.altKey && e.shiftKey) {
                     return this.formatJsx()
                 }
+                break
         }
     }
 
