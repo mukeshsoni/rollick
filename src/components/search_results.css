@@ -1,0 +1,23 @@
+.search-list-container {
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    border-radius: 0 0 10px 10px;
+}
+
+.search-list-item {
+    border-bottom: 1px solid #aaa;
+    font-weight: lighter;
+    background: rgba(248, 248, 242, 0.8);
+    padding: 1em;
+}
+
+.search-list-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 10px 10px; /* so that it matches with bottom of the container */
+}
+
+.search-list-item--selected {
+    background: rgba(64, 150, 247, 1);
+    color: rgba(241, 247, 254, 1);
+}
