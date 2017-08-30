@@ -1,187 +1,230 @@
-{
-  "src/components/avatar.js": {
-    "description": "",
-    "methods": [],
-    "props": {
-      "src": {
-        "type": {
-          "name": "string"
+[
+    {
+        "name": "Avatar",
+        "path": "src/components/avatar.js",
+        "fakeProps": {
+            "src": "src",
+            "width": 1
         },
-        "required": true,
-        "description": ""
-      },
-      "width": {
-        "type": {
-          "name": "number"
+        "description": "",
+        "methods": [],
+        "props": {
+            "src": {
+                "type": {
+                    "name": "string"
+                },
+                "required": true,
+                "description": ""
+            },
+            "width": {
+                "type": {
+                    "name": "number"
+                },
+                "required": false,
+                "description": ""
+            }
+        }
+    },
+    {
+        "name": "Component",
+        "path": "src/components/component.js",
+        "fakeProps": {
+            "name": "name"
         },
-        "required": false,
-        "description": ""
-      }
-    }
-  },
-  "src/components/component.js": {
-    "description": "",
-    "methods": []
-  },
-  "src/components/search_item.js": {
-    "description": "",
-    "methods": [],
-    "props": {
-      "item": {
-        "type": {
-          "name": "shape",
-          "value": {
+        "description": "",
+        "methods": [],
+        "props": {
             "name": {
-              "name": "string",
-              "required": false
+                "type": {
+                    "name": "string"
+                },
+                "required": true,
+                "description": ""
             }
-          }
-        },
-        "required": false,
-        "description": ""
-      },
-      "selected": {
-        "type": {
-          "name": "bool"
-        },
-        "required": false,
-        "description": ""
-      },
-      "onClick": {
-        "type": {
-          "name": "func"
-        },
-        "required": false,
-        "description": ""
-      }
-    }
-  },
-  "src/components/search_modal.js": {
-    "description": "",
-    "methods": [
-      {
-        "name": "handleInputChange",
-        "docblock": null,
-        "modifiers": [],
-        "params": [
-          {
-            "name": "e",
-            "type": null
-          }
-        ],
-        "returns": null
-      },
-      {
-        "name": "handleItemClick",
-        "docblock": null,
-        "modifiers": [],
-        "params": [
-          {
-            "name": "item",
-            "type": null
-          }
-        ],
-        "returns": null
-      },
-      {
-        "name": "handleKeypress",
-        "docblock": null,
-        "modifiers": [],
-        "params": [
-          {
-            "name": "e",
-            "type": null
-          }
-        ],
-        "returns": null
-      },
-      {
-        "name": "getFilteredComponents",
-        "docblock": null,
-        "modifiers": [],
-        "params": [],
-        "returns": null
-      }
-    ],
-    "props": {
-      "items": {
-        "type": {
-          "name": "arrayOf",
-          "value": {
-            "name": "shape",
-            "value": {
-              "name": {
-                "name": "string",
-                "required": false
-              },
-              "path": {
-                "name": "string",
-                "required": false
-              }
-            }
-          }
-        },
-        "required": false,
-        "description": ""
-      },
-      "onSelection": {
-        "type": {
-          "name": "func"
-        },
-        "required": false,
-        "description": ""
-      },
-      "onRequestClose": {
-        "type": {
-          "name": "func"
-        },
-        "required": false,
-        "description": ""
-      }
-    }
-  },
-  "src/components/search_results.js": {
-    "description": "",
-    "methods": [],
-    "props": {
-      "items": {
-        "type": {
-          "name": "arrayOf",
-          "value": {
-            "name": "shape",
-            "value": {
-              "name": {
-                "name": "string",
-                "required": false
-              }
-            }
-          }
-        },
-        "required": false,
-        "description": "",
-        "defaultValue": {
-          "value": "[]",
-          "computed": false
         }
-      },
-      "selectedItemIndex": {
-        "type": {
-          "name": "number"
+    },
+    {
+        "name": "SearchItem",
+        "path": "src/components/search_item.js",
+        "fakeProps": {
+            "item": {
+                "name": "item.name"
+            },
+            "selected": true
         },
-        "required": false,
         "description": "",
-        "defaultValue": {
-          "value": "-1",
-          "computed": false
+        "methods": [],
+        "props": {
+            "item": {
+                "type": {
+                    "name": "shape",
+                    "value": {
+                        "name": {
+                            "name": "string",
+                            "required": false
+                        }
+                    }
+                },
+                "required": true,
+                "description": ""
+            },
+            "selected": {
+                "type": {
+                    "name": "bool"
+                },
+                "required": false,
+                "description": "",
+                "defaultValue": {
+                    "value": "false",
+                    "computed": false
+                }
+            },
+            "onClick": {
+                "type": {
+                    "name": "func"
+                },
+                "required": true,
+                "description": ""
+            }
         }
-      },
-      "onItemClick": {
-        "type": {
-          "name": "func"
-        },
-        "required": false,
-        "description": ""
-      }
+    },
+    {
+        "name": "SearchModal",
+        "path": "src/components/search_modal.js",
+        "description": "",
+        "methods": [
+            {
+                "name": "handleInputChange",
+                "docblock": null,
+                "modifiers": [],
+                "params": [
+                    {
+                        "name": "e",
+                        "type": null
+                    }
+                ],
+                "returns": null
+            },
+            {
+                "name": "handleItemClick",
+                "docblock": null,
+                "modifiers": [],
+                "params": [
+                    {
+                        "name": "item",
+                        "type": null
+                    }
+                ],
+                "returns": null
+            },
+            {
+                "name": "handleKeypress",
+                "docblock": null,
+                "modifiers": [],
+                "params": [
+                    {
+                        "name": "e",
+                        "type": null
+                    }
+                ],
+                "returns": null
+            },
+            {
+                "name": "getFilteredComponents",
+                "docblock": null,
+                "modifiers": [],
+                "params": [],
+                "returns": null
+            }
+        ],
+        "props": {
+            "isOpen": {
+                "type": {
+                    "name": "bool"
+                },
+                "required": true,
+                "description": ""
+            },
+            "items": {
+                "type": {
+                    "name": "arrayOf",
+                    "value": {
+                        "name": "shape",
+                        "value": {
+                            "name": {
+                                "name": "string",
+                                "required": false
+                            },
+                            "path": {
+                                "name": "string",
+                                "required": false
+                            }
+                        }
+                    }
+                },
+                "required": true,
+                "description": ""
+            },
+            "onSelection": {
+                "type": {
+                    "name": "func"
+                },
+                "required": true,
+                "description": ""
+            },
+            "onRequestClose": {
+                "type": {
+                    "name": "func"
+                },
+                "required": true,
+                "description": ""
+            }
+        }
+    },
+    {
+        "name": "SearchResults",
+        "path": "src/components/search_results.js",
+        "description": "",
+        "methods": [],
+        "props": {
+            "items": {
+                "type": {
+                    "name": "arrayOf",
+                    "value": {
+                        "name": "shape",
+                        "value": {
+                            "name": {
+                                "name": "string",
+                                "required": false
+                            }
+                        }
+                    }
+                },
+                "required": true,
+                "description": "",
+                "defaultValue": {
+                    "value": "[]",
+                    "computed": false
+                }
+            },
+            "selectedItemIndex": {
+                "type": {
+                    "name": "number"
+                },
+                "required": false,
+                "description": "",
+                "defaultValue": {
+                    "value": "-1",
+                    "computed": false
+                }
+            },
+            "onItemClick": {
+                "type": {
+                    "name": "func"
+                },
+                "required": true,
+                "description": ""
+            }
+        }
     }
-  }
-}
+]

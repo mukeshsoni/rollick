@@ -12,7 +12,7 @@ function stopAllPropagations(e) {
     e.stopPropagation()
 }
 
-export default class SearchModal extends React.Component {
+class SearchModal extends React.Component {
     handleInputChange = e => {
         this.setState({ searchText: e.target.value })
     }
@@ -155,3 +155,5 @@ SearchModal.propTypes = {
     onSelection: PropTypes.func.isRequired,
     onRequestClose: PropTypes.func.isRequired
 }
+
+export default SearchModal

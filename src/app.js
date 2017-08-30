@@ -5,16 +5,16 @@ import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
 import prettier from 'prettier'
-import componentsMetaData from 'components.meta.json!json'
+import componentsMetaList from 'components.docgen.json!json'
 import SearchModal from 'src/components/search_modal'
 import debounce from 'debounce'
 
 // converting the docgen object to list of components
-const componentsMetaList = Object.keys(componentsMetaData).map(comPath => ({
-    ...componentsMetaData[comPath],
-    path: comPath,
-    name: getNameFromPath(comPath)
-}))
+/* const componentsMetaList = Object.keys(componentsMetaData).map(comPath => ({
+ *     ...componentsMetaData[comPath],
+ *     path: comPath,
+ *     name: getNameFromPath(comPath)
+ * }))*/
 // import 'codemirror/lib/codemirror.css'
 
 // oldVal is a hack until we have Either data type support
@@ -41,7 +41,19 @@ function addComponent(jsx, codeMirror, componentDetails) {
     let propValuePairs = Object.keys(
         componentDetails.props
     ).reduce((acc, propName) => {
-        return acc + ` ${propName}={'https://unsplash.it/250/250'}`
+        if (
+            componentDetails.fakeProps &&
+            componentDetails.fakeProps[propName]
+        ) {
+            return (
+                acc +
+                ` ${propName}={${JSON.stringify(
+                    componentDetails.fakeProps[propName]
+                )}}`
+            )
+        } else {
+            return acc + ` ${propName}={'https://unsplash.it/250/250'}`
+        }
     }, '')
 
     codeToInsert = `${codeToInsert} ${propValuePairs}></${componentDetails.name}>`
