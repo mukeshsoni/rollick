@@ -11,6 +11,11 @@
     box-shadow: 10px 10px 20px 10px rgba(204, 204, 204, 0.62);
 }
 
+.search-modal-input.with-results {
+    border-radius: 10px 10px 0 0;
+    box-shadow: none;
+}
+
 .search-modal-input::placeholder {
     color: rgba(30, 30, 30, 0.25);
 }

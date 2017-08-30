@@ -2,6 +2,8 @@ import React from 'react'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import meta from 'components.meta.json!json'
 import SearchResults from './search_results'
+import classnames from 'classnames'
+import deboune from 'debounce'
 import 'src/components/search_modal.css'
 
 console.log('meta about components', meta)
@@ -13,9 +15,49 @@ export default class SearchModal extends React.Component {
 
     handleKeypress = e => {
         const keyCode = e.keyCode || e.which
-        if (keyCode === 27) {
-            e.preventDefault()
-            this.props.onRequestClose()
+        switch (keyCode) {
+            case 27:
+                e.nativeEvent.stopImmediatePropagation()
+                e.preventDefault()
+                e.stopPropagation()
+                this.props.onRequestClose()
+                break
+            case 40: // down arrow
+                e.nativeEvent.stopImmediatePropagation()
+                e.preventDefault()
+                e.stopPropagation()
+                this.setState(
+                    {
+                        selectedItemIndex:
+                            (this.state.selectedItemIndex + 1) %
+                            this.getFilteredComponents().length
+                    },
+                    () =>
+                        console.log(
+                            'next selected index',
+                            this.state.selectedItemIndex
+                        )
+                )
+                break
+            case 38: // up arrow
+                e.nativeEvent.stopImmediatePropagation()
+                e.preventDefault()
+                e.stopPropagation()
+                this.setState(
+                    {
+                        selectedItemIndex:
+                            (this.getFilteredComponents().length +
+                                this.state.selectedItemIndex -
+                                1) %
+                            this.getFilteredComponents().length
+                    },
+                    () =>
+                        console.log(
+                            'next selected index',
+                            this.state.selectedItemIndex
+                        )
+                )
+                break
         }
     }
 
@@ -35,18 +77,15 @@ export default class SearchModal extends React.Component {
         super(props)
 
         this.state = {
-            searchText: ''
+            searchText: '',
+            selectedItemIndex: -1
         }
         this.searchInputRef = null
     }
 
-    componentWillMount() {
-        document.addEventListener('keydown', this.handleKeypress)
-    }
-
     render() {
         const { onRequestClose } = this.props
-        const { searchText } = this.state
+        const { searchText, selectedItemIndex } = this.state
 
         const modalStyle = {
             content: {
@@ -58,8 +97,12 @@ export default class SearchModal extends React.Component {
             }
         }
 
+        const inputClassnames = classnames('search-modal-input', {
+            'with-results': this.getFilteredComponents().length > 0
+        })
+
         return (
-            <div onKeyDown={this.handleKeypress}>
+            <div>
                 <Modal
                     isOpen={true}
                     onAfterOpen={() => {
@@ -72,12 +115,15 @@ export default class SearchModal extends React.Component {
                     <input
                         ref={input => (this.searchInputRef = input)}
                         onKeyDown={this.handleKeypress}
-                        className="search-modal-input"
+                        className={inputClassnames}
                         value={searchText}
                         onChange={this.handleInputChange}
                         placeholder="Search Component"
                     />
-                    <SearchResults items={this.getFilteredComponents()} />
+                    <SearchResults
+                        items={this.getFilteredComponents()}
+                        selectedItemIndex={selectedItemIndex}
+                    />
                 </Modal>
             </div>
         )

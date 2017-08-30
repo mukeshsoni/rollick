@@ -245,6 +245,7 @@ SystemJS.config({
         'github:*/*.json'
     ],
     map: {
+        'classnames': 'npm:classnames@2.2.5',
         'debounce': 'npm:debounce@1.0.2',
         'acorn-jsx': 'npm:acorn-jsx@4.0.1',
         'assert': 'npm:jspm-nodelibs-assert@0.2.1',
