@@ -1,0 +1,187 @@
+{
+  "src/components/avatar.js": {
+    "description": "",
+    "methods": [],
+    "props": {
+      "src": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": ""
+      },
+      "width": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": ""
+      }
+    }
+  },
+  "src/components/component.js": {
+    "description": "",
+    "methods": []
+  },
+  "src/components/search_item.js": {
+    "description": "",
+    "methods": [],
+    "props": {
+      "item": {
+        "type": {
+          "name": "shape",
+          "value": {
+            "name": {
+              "name": "string",
+              "required": false
+            }
+          }
+        },
+        "required": false,
+        "description": ""
+      },
+      "selected": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": ""
+      },
+      "onClick": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": ""
+      }
+    }
+  },
+  "src/components/search_modal.js": {
+    "description": "",
+    "methods": [
+      {
+        "name": "handleInputChange",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "e",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "handleItemClick",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "item",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "handleKeypress",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "e",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "getFilteredComponents",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      }
+    ],
+    "props": {
+      "items": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "shape",
+            "value": {
+              "name": {
+                "name": "string",
+                "required": false
+              },
+              "path": {
+                "name": "string",
+                "required": false
+              }
+            }
+          }
+        },
+        "required": false,
+        "description": ""
+      },
+      "onSelection": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": ""
+      },
+      "onRequestClose": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": ""
+      }
+    }
+  },
+  "src/components/search_results.js": {
+    "description": "",
+    "methods": [],
+    "props": {
+      "items": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "shape",
+            "value": {
+              "name": {
+                "name": "string",
+                "required": false
+              }
+            }
+          }
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "[]",
+          "computed": false
+        }
+      },
+      "selectedItemIndex": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "-1",
+          "computed": false
+        }
+      },
+      "onItemClick": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": ""
+      }
+    }
+  }
+}

@@ -1,19 +1,8 @@
 import React from 'react'
-import classnames from 'classnames'
+import SearchItem from './search_item.js'
+import PropTypes from 'prop-types'
 
 import './search_results.css'
-
-const SearchItem = ({ item, selected, onClick }) => {
-    const itemClasses = classnames('search-list-item', {
-        'search-list-item--selected': selected
-    })
-
-    return (
-        <div className={itemClasses} onClick={onClick}>
-            {item.name}
-        </div>
-    )
-}
 
 const SearchResults = ({ items = [], selectedItemIndex = -1, onItemClick }) => {
     if (!items || items.length === 0) {
@@ -32,6 +21,16 @@ const SearchResults = ({ items = [], selectedItemIndex = -1, onItemClick }) => {
             )}
         </div>
     )
+}
+
+SearchResults.propTypes = {
+    items: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string
+        })
+    ).isRequired,
+    selectedItemIndex: PropTypes.number,
+    onItemClick: PropTypes.func.isRequired
 }
 
 export default SearchResults

@@ -179,7 +179,11 @@ export class App extends React.Component {
 
         switch (keyCode) {
             case 105: // i
-                if (e.metaKey) {
+                // only show the search box if the jsx code editor is in focus
+                if (
+                    e.metaKey &&
+                    this.jsxCodemirror.getCodeMirror().hasFocus()
+                ) {
                     // command + i
                     e.preventDefault()
                     return this.setState({
@@ -261,7 +265,7 @@ export class App extends React.Component {
         const htmlContainerStyle = { gridColumn: '1/2', gridRow: 'span 1' }
         const cssContainerStyle = { gridColumn: '1/2', gridRow: 'span 1' }
 
-        const htmlCodeMirrorOptions = {
+        const jsxCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
             mode: 'jsx'
@@ -304,7 +308,7 @@ export class App extends React.Component {
                             autoFocus={true}
                             value={jsxCode}
                             onChange={this.updateJsxCode}
-                            options={htmlCodeMirrorOptions}
+                            options={jsxCodeMirrorOptions}
                         />
                     </div>
                     <div style={cssContainerStyle}>
@@ -325,12 +329,12 @@ export class App extends React.Component {
                         : null}
                     {eval(jsxToInsert)}
                 </div>
-                {showSearchModal &&
-                    <SearchModal
-                        items={componentsMetaList}
-                        onSelection={this.handleSearchSelection}
-                        onRequestClose={this.hideSearchModal}
-                    />}
+                <SearchModal
+                    isOpen={showSearchModal}
+                    items={componentsMetaList}
+                    onSelection={this.handleSearchSelection}
+                    onRequestClose={this.hideSearchModal}
+                />
             </div>
         )
     }

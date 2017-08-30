@@ -283,6 +283,7 @@ SystemJS.config({
         'prettier': 'npm:prettier@1.6.0',
         'process': 'npm:jspm-nodelibs-process@0.2.1',
         'promise': 'npm:promise@7.3.1',
+        'prop-types': 'npm:prop-types@15.5.10',
         'querystring': 'npm:jspm-nodelibs-querystring@0.2.2',
         'react': 'npm:react@15.6.1',
         'react-codemirror': 'npm:react-codemirror@1.0.0',

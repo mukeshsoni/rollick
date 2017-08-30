@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import SearchResults from './search_results'
 import classnames from 'classnames'
@@ -98,7 +99,7 @@ export default class SearchModal extends React.Component {
     }
 
     render() {
-        const { onRequestClose } = this.props
+        const { onRequestClose, isOpen } = this.props
         const { searchText, selectedItemIndex } = this.state
 
         const modalStyle = {
@@ -116,31 +117,41 @@ export default class SearchModal extends React.Component {
         })
 
         return (
-            <div>
-                <Modal
-                    isOpen={true}
-                    onAfterOpen={() => {
-                        this.searchInputRef && this.searchInputRef.focus()
-                    }}
-                    onRequestClose={onRequestClose}
-                    style={modalStyle}
-                    contentLabel="Search Components"
-                >
-                    <input
-                        ref={input => (this.searchInputRef = input)}
-                        onKeyDown={this.handleKeypress}
-                        className={inputClassnames}
-                        value={searchText}
-                        onChange={this.handleInputChange}
-                        placeholder="Search Component"
-                    />
-                    <SearchResults
-                        items={this.getFilteredComponents()}
-                        selectedItemIndex={selectedItemIndex}
-                        onItemClick={this.handleItemClick}
-                    />
-                </Modal>
-            </div>
+            <Modal
+                isOpen={isOpen}
+                onAfterOpen={() => {
+                    this.searchInputRef && this.searchInputRef.focus()
+                }}
+                onRequestClose={onRequestClose}
+                style={modalStyle}
+                contentLabel="Search Components"
+            >
+                <input
+                    ref={input => (this.searchInputRef = input)}
+                    onKeyDown={this.handleKeypress}
+                    className={inputClassnames}
+                    value={searchText}
+                    onChange={this.handleInputChange}
+                    placeholder="Search Component"
+                />
+                <SearchResults
+                    items={this.getFilteredComponents()}
+                    selectedItemIndex={selectedItemIndex}
+                    onItemClick={this.handleItemClick}
+                />
+            </Modal>
         )
     }
+}
+
+SearchModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    items: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string,
+            path: PropTypes.string
+        })
+    ).isRequired,
+    onSelection: PropTypes.func.isRequired,
+    onRequestClose: PropTypes.func.isRequired
 }
