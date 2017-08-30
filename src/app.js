@@ -30,6 +30,22 @@ function wrapCss(css) {
     return '#' + rightPaneId + ' { ' + css + ' }'
 }
 
+function addComponent(jsx, codeMirror, componentDetails) {
+    let codeToInsert = `<${getNameFromPath(componentDetails.name)} `
+    let propValuePairs = Object.keys(
+        componentDetails.props
+    ).reduce((acc, propName) => {
+        return acc + ` ${propName}={'https://unsplash.it/50/50'}`
+    }, '')
+
+    codeToInsert = `${codeToInsert} ${propValuePairs}></${getNameFromPath(
+        componentDetails.name
+    )}>`
+
+    codeMirror.replaceSelection(codeToInsert)
+    return codeMirror.getValue()
+}
+
 const componentMap = {
     avatar: {
         name: 'Avatar',
@@ -45,33 +61,36 @@ const componentMap = {
     }
 }
 
+function capitalize(str) {
+    if (str && str.length > 0) {
+        return str.charAt(0).toUpperCase() + str.slice(1)
+    } else {
+        return str
+    }
+}
+
+function getNameFromPath(path) {
+    return capitalize(path.split('/').pop().split('.')[0])
+}
+
 export class App extends React.Component {
-    addAvatar = () => {
-        function addComponent(jsx, codeMirror, componentDetails) {
-            let codeToInsert = `<${componentDetails.name} `
-            let propValuePairs = Object.keys(
-                meta[componentDetails.path].props
-            ).reduce((acc, propName) => {
-                return acc + ` ${propName}={'https://unsplash.it/50/50'}`
-            }, '')
-
-            codeToInsert = `${codeToInsert} ${propValuePairs}></${componentDetails.name}>`
-
-            codeMirror.replaceSelection(codeToInsert)
-            return codeMirror.getValue()
-        }
-
-        SystemJS.import(componentMap['avatar'].path).then(com => {
-            console.log('component loaded', com)
-            window[componentMap['avatar'].name] = com.default
-            this.setState({
-                jsxCode: addComponent(
-                    this.state.jsxCode,
-                    this.jsxCodemirror.getCodeMirror(),
-                    componentMap['avatar']
-                )
+    handleSearchSelection = selectedItem => {
+        this.hideSearchModal()
+        SystemJS.import(selectedItem.path)
+            .then(com => {
+                console.log('component loaded', com)
+                window[getNameFromPath(selectedItem.path)] = com.default
+                this.setState({
+                    jsxCode: addComponent(
+                        this.state.jsxCode,
+                        this.jsxCodemirror.getCodeMirror(),
+                        selectedItem
+                    )
+                })
             })
-        })
+            .catch(e =>
+                console.log('error loading component', selectedItem.name, e)
+            )
     }
 
     run = () => {
@@ -271,7 +290,6 @@ export class App extends React.Component {
                     >
                         Format jsx
                     </button>
-                    <button onClick={this.addAvatar}>Add Avatar</button>
                 </header>
                 <div style={leftPaneStyle}>
                     <div style={htmlContainerStyle}>
@@ -302,7 +320,10 @@ export class App extends React.Component {
                     {eval(jsxToInsert)}
                 </div>
                 {showSearchModal &&
-                    <SearchModal onRequestClose={this.hideSearchModal} />}
+                    <SearchModal
+                        onSelection={this.handleSearchSelection}
+                        onRequestClose={this.hideSearchModal}
+                    />}
             </div>
         )
     }

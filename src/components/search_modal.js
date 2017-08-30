@@ -16,7 +16,19 @@ export default class SearchModal extends React.Component {
     handleKeypress = e => {
         const keyCode = e.keyCode || e.which
         switch (keyCode) {
-            case 27:
+            case 13: // enter key
+                if (this.state.selectedItemIndex >= 0) {
+                    e.nativeEvent.stopImmediatePropagation()
+                    e.preventDefault()
+                    e.stopPropagation()
+                    this.props.onSelection(
+                        this.getFilteredComponents()[
+                            this.state.selectedItemIndex
+                        ]
+                    )
+                }
+
+            case 27: // esc key
                 e.nativeEvent.stopImmediatePropagation()
                 e.preventDefault()
                 e.stopPropagation()
@@ -68,7 +80,11 @@ export default class SearchModal extends React.Component {
             return []
         } else {
             return Object.keys(meta)
-                .map(comPath => ({ ...meta[comPath], name: comPath }))
+                .map(comPath => ({
+                    ...meta[comPath],
+                    path: comPath,
+                    name: comPath
+                }))
                 .filter(com => com.name.indexOf(searchText.trim()) >= 0)
         }
     }
