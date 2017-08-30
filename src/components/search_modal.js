@@ -1,16 +1,23 @@
 import React from 'react'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
-import meta from 'components.meta.json!json'
 import SearchResults from './search_results'
 import classnames from 'classnames'
 import deboune from 'debounce'
 import 'src/components/search_modal.css'
 
-console.log('meta about components', meta)
+function stopAllPropagations(e) {
+    e.nativeEvent.stopImmediatePropagation()
+    e.preventDefault()
+    e.stopPropagation()
+}
 
 export default class SearchModal extends React.Component {
     handleInputChange = e => {
         this.setState({ searchText: e.target.value })
+    }
+
+    handleItemClick = item => {
+        this.props.onSelection(item)
     }
 
     handleKeypress = e => {
@@ -18,9 +25,7 @@ export default class SearchModal extends React.Component {
         switch (keyCode) {
             case 13: // enter key
                 if (this.state.selectedItemIndex >= 0) {
-                    e.nativeEvent.stopImmediatePropagation()
-                    e.preventDefault()
-                    e.stopPropagation()
+                    stopAllPropagations(e)
                     this.props.onSelection(
                         this.getFilteredComponents()[
                             this.state.selectedItemIndex
@@ -29,15 +34,11 @@ export default class SearchModal extends React.Component {
                 }
                 break
             case 27: // esc key
-                e.nativeEvent.stopImmediatePropagation()
-                e.preventDefault()
-                e.stopPropagation()
+                stopAllPropagations(e)
                 this.props.onRequestClose()
                 break
             case 40: // down arrow
-                e.nativeEvent.stopImmediatePropagation()
-                e.preventDefault()
-                e.stopPropagation()
+                stopAllPropagations(e)
                 this.setState(
                     {
                         selectedItemIndex:
@@ -52,9 +53,7 @@ export default class SearchModal extends React.Component {
                 )
                 break
             case 38: // up arrow
-                e.nativeEvent.stopImmediatePropagation()
-                e.preventDefault()
-                e.stopPropagation()
+                stopAllPropagations(e)
                 this.setState(
                     {
                         selectedItemIndex:
@@ -79,13 +78,12 @@ export default class SearchModal extends React.Component {
         if (searchText.trim() === '') {
             return []
         } else {
-            return Object.keys(meta)
-                .map(comPath => ({
-                    ...meta[comPath],
-                    path: comPath,
-                    name: comPath
-                }))
-                .filter(com => com.name.indexOf(searchText.trim()) >= 0)
+            return this.props.items.filter(
+                item =>
+                    item.name
+                        .toLowerCase()
+                        .indexOf(searchText.toLowerCase().trim()) >= 0
+            )
         }
     }
 
@@ -139,6 +137,7 @@ export default class SearchModal extends React.Component {
                     <SearchResults
                         items={this.getFilteredComponents()}
                         selectedItemIndex={selectedItemIndex}
+                        onItemClick={this.handleItemClick}
                     />
                 </Modal>
             </div>

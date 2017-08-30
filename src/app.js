@@ -5,10 +5,16 @@ import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
 import prettier from 'prettier'
-import meta from 'components.meta.json!json'
+import componentsMetaData from 'components.meta.json!json'
 import SearchModal from 'src/components/search_modal'
 import debounce from 'debounce'
-console.log('meta about components', meta)
+
+// converting the docgen object to list of components
+const componentsMetaList = Object.keys(componentsMetaData).map(comPath => ({
+    ...componentsMetaData[comPath],
+    path: comPath,
+    name: getNameFromPath(comPath)
+}))
 // import 'codemirror/lib/codemirror.css'
 
 // oldVal is a hack until we have Either data type support
@@ -31,16 +37,14 @@ function wrapCss(css) {
 }
 
 function addComponent(jsx, codeMirror, componentDetails) {
-    let codeToInsert = `<${getNameFromPath(componentDetails.name)} `
+    let codeToInsert = `<${componentDetails.name} `
     let propValuePairs = Object.keys(
         componentDetails.props
     ).reduce((acc, propName) => {
-        return acc + ` ${propName}={'https://unsplash.it/50/50'}`
+        return acc + ` ${propName}={'https://unsplash.it/250/250'}`
     }, '')
 
-    codeToInsert = `${codeToInsert} ${propValuePairs}></${getNameFromPath(
-        componentDetails.name
-    )}>`
+    codeToInsert = `${codeToInsert} ${propValuePairs}></${componentDetails.name}>`
 
     codeMirror.replaceSelection(codeToInsert)
     return codeMirror.getValue()
@@ -323,6 +327,7 @@ export class App extends React.Component {
                 </div>
                 {showSearchModal &&
                     <SearchModal
+                        items={componentsMetaList}
                         onSelection={this.handleSearchSelection}
                         onRequestClose={this.hideSearchModal}
                     />}
