@@ -1,6 +1,10 @@
 import React from 'react'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
+import meta from 'components.meta.json!json'
+import SearchResults from './search_results'
 import 'src/components/search_modal.css'
+
+console.log('meta about components', meta)
 
 export default class SearchModal extends React.Component {
     handleInputChange = e => {
@@ -12,6 +16,18 @@ export default class SearchModal extends React.Component {
         if (keyCode === 27) {
             e.preventDefault()
             this.props.onRequestClose()
+        }
+    }
+
+    getFilteredComponents = () => {
+        const { searchText } = this.state
+
+        if (searchText.trim() === '') {
+            return []
+        } else {
+            return Object.keys(meta)
+                .map(comPath => ({ ...meta[comPath], name: comPath }))
+                .filter(com => com.name.indexOf(searchText.trim()) >= 0)
         }
     }
 
@@ -61,6 +77,7 @@ export default class SearchModal extends React.Component {
                         onChange={this.handleInputChange}
                         placeholder="Search Component"
                     />
+                    <SearchResults items={this.getFilteredComponents()} />
                 </Modal>
             </div>
         )

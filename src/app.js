@@ -117,20 +117,65 @@ export class App extends React.Component {
         })
     }
 
+    hideSearchModal = () => {
+        return this.setState({ showSearchModal: false }, () => {
+            if (
+                this.state.editorInFocus &&
+                this.state.editorInFocus.length > 0
+            ) {
+                this[this.state.editorInFocus + 'Codemirror']
+                    .getCodeMirror()
+                    .focus()
+                this[this.state.editorInFocus + 'Codemirror']
+                    .getCodeMirror()
+                    .setCursor(this.state.jsxEditorCursorPosition)
+            }
+        })
+    }
+
     handleKeypress = e => {
         const keyCode = e.keyCode || e.which
 
-        console.log('key pressed', keyCode)
+        function getCursorIfFocused(cm) {
+            if (cm.hasFocus()) {
+                return cm.getCursor()
+            } else {
+                return {}
+            }
+        }
+
+        function getEditorInFocus(jsxEditor, cssEditor) {
+            if (jsxEditor.hasFocus()) {
+                return 'jsx'
+            } else if (cssEditor.hasFocus()) {
+                return 'css'
+            } else {
+                return ''
+            }
+        }
+
         switch (keyCode) {
             case 105: // i
                 if (e.metaKey) {
                     // command + i
                     e.preventDefault()
-                    return this.setState({ showSearchModal: true })
+                    return this.setState({
+                        jsxEditorCursorPosition: getCursorIfFocused(
+                            this.jsxCodemirror.getCodeMirror()
+                        ),
+                        cssEditorCursorPosition: getCursorIfFocused(
+                            this.cssCodemirror.getCodeMirror()
+                        ),
+                        editorInFocus: getEditorInFocus(
+                            this.jsxCodemirror.getCodeMirror(),
+                            this.cssCodemirror.getCodeMirror()
+                        ),
+                        showSearchModal: true
+                    })
                 }
             case 27: // esc
                 e.preventDefault()
-                return this.setState({ showSearchModal: false })
+                return this.hideSearchModal()
             case 207: // command + alt + f
                 e.preventDefault()
                 if (e.altKey && e.shiftKey) {
@@ -152,9 +197,11 @@ export class App extends React.Component {
             cssCode: startingCss,
             cssToInsert: wrapCss(startingCss),
             showSearchModal: false,
-            searchText: ''
+            searchText: '',
+            jsxEditorCursorPosition: {}
         }
         this.jsxCodemirror = null
+        this.cssCodemirror = null
     }
 
     componentWillMount() {
@@ -174,19 +221,20 @@ export class App extends React.Component {
         const containerStyle = {
             display: 'grid',
             gridTemplateColumns: '4fr 7fr',
-            gridTemplateRows: '40px auto',
+            gridTemplateRows: '40px 1fr 1fr',
             width: '100vw',
             height: '100vh'
         }
 
-        const leftPaneStyle = {
-            display: 'flex',
-            flexDirection: 'column'
-        }
+        const leftPaneStyle = {}
 
-        const rightPaneStyle = { background: 'gray' }
-        const htmlContainerStyle = { flex: 1 }
-        const cssContainerStyle = { flex: 1 }
+        const rightPaneStyle = {
+            background: 'gray',
+            gridColumn: '2/-1',
+            gridRow: '2/4'
+        }
+        const htmlContainerStyle = { gridColumn: '1/2', gridRow: 'span 1' }
+        const cssContainerStyle = { gridColumn: '1/2', gridRow: 'span 1' }
 
         const htmlCodeMirrorOptions = {
             lineNumbers: true,
@@ -237,6 +285,7 @@ export class App extends React.Component {
                     </div>
                     <div style={cssContainerStyle}>
                         <CodeMirror
+                            ref={instance => (this.cssCodemirror = instance)}
                             value={this.state.cssCode}
                             onChange={this.updateCssCode}
                             options={cssCodeMirrorOptions}
@@ -253,10 +302,7 @@ export class App extends React.Component {
                     {eval(jsxToInsert)}
                 </div>
                 {showSearchModal &&
-                    <SearchModal
-                        onRequestClose={() =>
-                            this.setState({ showSearchModal: false })}
-                    />}
+                    <SearchModal onRequestClose={this.hideSearchModal} />}
             </div>
         )
     }
