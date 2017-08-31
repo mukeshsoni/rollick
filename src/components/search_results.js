@@ -16,7 +16,7 @@ const SearchResults = ({ items = [], selectedItemIndex = -1, onItemClick }) => {
                     key={'search_item_' + index}
                     item={item}
                     selected={selectedItemIndex === index}
-                    onClick={onItemClick.bind(null, item)}
+                    onClick={onItemClick && onItemClick.bind(null, item)}
                 />
             )}
         </div>

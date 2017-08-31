@@ -5,7 +5,7 @@ import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
 import prettier from 'prettier'
-import componentsMetaList from 'components.docgen.json!json'
+import componentsMetaList from 'components.meta.json!json'
 import SearchModal from 'src/components/search_modal'
 import debounce from 'debounce'
 
@@ -30,6 +30,24 @@ function wrapCss(css) {
     return '#' + rightPaneId + ' { ' + css + ' }'
 }
 
+function getFakePropValue(fakeProp) {
+    // doing all this wrapper function stuff, because i serialized function as string. JSON.stringify does not support functions. But to deserialize a function which is encoded as string is tricky.
+    // one way is to use eval, but that will just create that function in that scope. No details on what type of data was provided to eval
+    // so i created this way where i wrap the JSON thing inside another function. And then call that function and check it's type. I don't stringify the JSON thing if it's already a string, since that just puts quotes on the quoted string. Which will make stuff like "function a() {}" into ""function a() {}"" which will then lead to `typeof wrapperFunction()` evaluate to string even for the function encoded as string
+    var wrapperFunction
+    if (typeof fakeProp === 'string') {
+        wrapperFunction = new Function('return ' + fakeProp)
+    } else {
+        wrapperFunction = new Function('return ' + JSON.stringify(fakeProp))
+    }
+
+    if (typeof wrapperFunction() === 'function') {
+        return wrapperFunction().toString()
+    } else {
+        return JSON.stringify(fakeProp)
+    }
+}
+
 function addComponent(jsx, codeMirror, componentDetails) {
     let codeToInsert = `<${componentDetails.name} `
     let propValuePairs = Object.keys(
@@ -41,7 +59,7 @@ function addComponent(jsx, codeMirror, componentDetails) {
         ) {
             return (
                 acc +
-                ` ${propName}={${JSON.stringify(
+                ` ${propName}={${getFakePropValue(
                     componentDetails.fakeProps[propName]
                 )}}`
             )

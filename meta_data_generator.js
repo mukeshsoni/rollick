@@ -1,10 +1,11 @@
 const reactDocs = require('react-docgen')
-const fakeProps = require('react-fake-props')
+const fakeProps = require('react-fake-props/src')
 const path = require('path')
 const exec = require('child_process').exec
 const fs = require('fs')
 
 const docgenOutputFile = 'components.docgen.json'
+const finalMetaFile = 'components.meta.json'
 
 function capitalize(str) {
     if (str && str.length > 0) {
@@ -25,6 +26,7 @@ function getNameFromPath(path) {
 }
 
 exec(
+    // './node_modules/.bin/react-docgen src/components_to_test -o ' +
     './node_modules/.bin/react-docgen src/components -o ' +
         docgenOutputFile +
         ' --pretty',
@@ -44,14 +46,33 @@ exec(
                         let fp = null
                         try {
                             fp = fakeProps(path, { optional: true })
-                        } catch (e) {}
+                        } catch (e) {
+                            console.log(
+                                'error generating fake props for ',
+                                path,
+                                ' Reason: ',
+                                e
+                            )
+                        }
 
                         if (fp) {
                             return Object.assign(
                                 {
                                     name: getNameFromPath(path),
                                     path: path,
-                                    fakeProps: fp
+                                    // doing the reduce stuff because JSON stringify doesn't work on function just like that. need to convert functions to string for JSON stringify to include them
+                                    fakeProps: Object.keys(fp).reduce(function(
+                                        acc,
+                                        key
+                                    ) {
+                                        return Object.assign({}, acc, {
+                                            [key]:
+                                                typeof fp[key] === 'function'
+                                                    ? fp[key] + ''
+                                                    : fp[key]
+                                        })
+                                    }, {})
+                                    // typeof fp === 'function' ? fp + '' : fp
                                 },
                                 metaData[path]
                             )
@@ -67,7 +88,7 @@ exec(
                     })
 
                     fs.writeFileSync(
-                        docgenOutputFile,
+                        finalMetaFile,
                         JSON.stringify(metaDataWithFakeProps, null, 4),
                         'utf-8'
                     )
