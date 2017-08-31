@@ -11,6 +11,7 @@ import Button from 'src/components/buttons/button'
 import debounce from 'debounce'
 import './app.css'
 import 'node_modules/codemirror/theme/night.css!css'
+import 'node_modules/codemirror/lib/codemirror.css!css'
 // import 'codemirror/lib/codemirror.css'
 
 // oldVal is a hack until we have Either data type support
