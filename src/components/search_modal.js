@@ -7,7 +7,7 @@ import deboune from 'debounce'
 import 'src/components/search_modal.css'
 
 function stopAllPropagations(e) {
-    e.nativeEvent.stopImmediatePropagation()
+    e && e.nativeEvent && e.nativeEvent.stopImmediatePropagation()
     e.preventDefault()
     e.stopPropagation()
 }
@@ -21,22 +21,30 @@ class SearchModal extends React.Component {
         this.props.onSelection(item)
     }
 
-    handleKeypress = e => {
+    handleContainerKeyDown = e => {
+        const keyCode = e.keyCode || e.which
+        switch (keyCode) {
+            case 27: // esc key
+                stopAllPropagations(e)
+                this.setState({ searchText: '', selectedItemIndex: 0 })
+                this.props.onRequestClose()
+                break
+        }
+    }
+
+    handleKeyDown = e => {
         const keyCode = e.keyCode || e.which
         switch (keyCode) {
             case 13: // enter key
                 if (this.state.selectedItemIndex >= 0) {
                     stopAllPropagations(e)
+                    this.setState({ searchText: '', selectedItemIndex: 0 })
                     this.props.onSelection(
                         this.getFilteredComponents()[
                             this.state.selectedItemIndex
                         ]
                     )
                 }
-                break
-            case 27: // esc key
-                stopAllPropagations(e)
-                this.props.onRequestClose()
                 break
             case 40: // down arrow
                 stopAllPropagations(e)
@@ -93,9 +101,17 @@ class SearchModal extends React.Component {
 
         this.state = {
             searchText: '',
-            selectedItemIndex: -1
+            selectedItemIndex: 0
         }
         this.searchInputRef = null
+    }
+
+    componentDidMount() {
+        document.addEventListener('keypress', this.handleContainerKeyDown)
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleContainerKeyDown)
     }
 
     render() {
@@ -128,7 +144,7 @@ class SearchModal extends React.Component {
             >
                 <input
                     ref={input => (this.searchInputRef = input)}
-                    onKeyDown={this.handleKeypress}
+                    onKeyDown={this.handleKeyDown}
                     className={inputClassnames}
                     value={searchText}
                     onChange={this.handleInputChange}

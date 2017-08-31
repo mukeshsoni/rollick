@@ -259,6 +259,7 @@ export class App extends React.Component {
                 }
                 break
             case 27: // esc
+                console.log('esc in app.js')
                 e.preventDefault()
                 return this.hideSearchModal()
             case 207: // command + alt + f
