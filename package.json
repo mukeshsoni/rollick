@@ -1,7 +1,7 @@
 {
-    "scripts": {
-        "jspm": "./node_modules/.bin/jspm install"
-    },
+  "scripts": {
+    "jspm": "./node_modules/.bin/jspm install"
+  },
   "jspm": {
     "name": "reactpen",
     "main": "reactpen.js",
@@ -160,6 +160,7 @@
     }
   },
   "dependencies": {
+    "codemirror": "^5.29.0",
     "react-modal": "^2.2.4"
   },
   "devDependencies": {

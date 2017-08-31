@@ -7,8 +7,10 @@ import sass from 'sass.js'
 import prettier from 'prettier'
 import componentsMetaList from 'components.meta.json!json'
 import SearchModal from 'src/components/search_modal'
+import Button from 'src/components/buttons/button'
 import debounce from 'debounce'
-
+import './app.css'
+import 'node_modules/codemirror/theme/night.css!css'
 // import 'codemirror/lib/codemirror.css'
 
 // oldVal is a hack until we have Either data type support
@@ -274,7 +276,7 @@ export class App extends React.Component {
     constructor(props) {
         super(props)
 
-        const startingJsx = '<div>abc</div>'
+        const startingJsx = ''
         const startingCss = 'div { font-size: 24px; }'
 
         this.state = {
@@ -309,18 +311,9 @@ export class App extends React.Component {
             showSearchModal
         } = this.state
 
-        const containerStyle = {
-            display: 'grid',
-            gridTemplateColumns: '4fr 7fr',
-            gridTemplateRows: '40px 1fr 1fr',
-            width: '100vw',
-            height: '100vh'
-        }
-
         const leftPaneStyle = {}
 
         const rightPaneStyle = {
-            background: 'gray',
             gridColumn: '2/-1',
             gridRow: '2/4'
         }
@@ -330,6 +323,7 @@ export class App extends React.Component {
         const jsxCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
+            theme: 'night',
             extraKeys: {
                 'Ctrl-Alt-Space': this.formatJsx
             },
@@ -339,11 +333,12 @@ export class App extends React.Component {
         const cssCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
+            theme: 'night',
             mode: 'css'
         }
 
         return (
-            <div style={containerStyle}>
+            <div className="page-container">
                 <style>
                     {this.state.cssToInsert}
                 </style>
@@ -353,21 +348,26 @@ export class App extends React.Component {
                         display: 'flex',
                         flexDirection: 'row-reverse',
                         alignItems: 'center',
-                        padding: '1em'
+                        padding: '1em',
+                        borderBottom: '5px solid #343436',
+                        boxShadow: '0 1px 1px black',
+                        background: '#1d1f20',
+                        height: 69,
+                        minHeight: 69
                     }}
                 >
-                    <button style={{ marginRight: '1em' }} onClick={this.run}>
-                        Run
-                    </button>
-                    <button
-                        style={{ marginRight: '1em' }}
+                    <Button onClick={this.run} label="Run" />
+                    <Button
                         onClick={this.formatJsx}
-                    >
-                        Format jsx
-                    </button>
+                        label="Format jsx"
+                        style={{ marginRight: '1em' }}
+                    />
                 </header>
                 <div style={leftPaneStyle}>
                     <div style={htmlContainerStyle}>
+                        <div className="editor-header">
+                            <h2>JSX</h2>
+                        </div>
                         <CodeMirror
                             ref={instance => (this.jsxCodemirror = instance)}
                             autoFocus={true}
@@ -377,6 +377,9 @@ export class App extends React.Component {
                         />
                     </div>
                     <div style={cssContainerStyle}>
+                        <div className="editor-header">
+                            <h2>SASS</h2>
+                        </div>
                         <CodeMirror
                             ref={instance => (this.cssCodemirror = instance)}
                             value={this.state.cssCode}
@@ -385,7 +388,7 @@ export class App extends React.Component {
                         />
                     </div>
                 </div>
-                <div style={rightPaneStyle} id={rightPaneId}>
+                <div className="editor-right-pane" id={rightPaneId}>
                     {com ? React.createElement(com.default) : null}
                     {avatar
                         ? React.createElement(avatar.default, {

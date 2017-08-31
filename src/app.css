@@ -1,0 +1,36 @@
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: sans-serif;
+}
+
+.page-container {
+    display: grid;
+    grid-template-columns: 4fr 7fr;
+    grid-template-rows: 69px 1fr 1fr;
+    grid-gap-column: 1em;
+    grid-gap-row: 0.2em;
+    width: 100vw;
+    height: 100vh;
+    background-color: #272729;
+}
+
+.editor-header {
+    color: rgba(204, 204, 204, 1);
+    background-color: #141516;
+    padding-left: 0.5em;
+    height: 100%;
+    overflow: hidden;
+}
+
+.editor-header h2 {
+    font-size: 1.3em;
+}
+
+.editor-right-pane {
+    background-color: white;
+    grid-column: 2 / -1;
+    gridRow: 2 / 4;
+}
