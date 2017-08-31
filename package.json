@@ -1,4 +1,7 @@
 {
+    "scripts": {
+        "jspm": "./node_modules/.bin/jspm install"
+    },
   "jspm": {
     "name": "reactpen",
     "main": "reactpen.js",
@@ -161,6 +164,7 @@
   },
   "devDependencies": {
     "classnames": "^2.2.5",
+    "jspm": "^0.17.0-beta.44",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-docgen": "^2.17.0",
