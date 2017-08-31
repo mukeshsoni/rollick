@@ -35,7 +35,7 @@ function getFakePropValue(fakeProp) {
     // one way is to use eval, but that will just create that function in that scope. No details on what type of data was provided to eval
     // so i created this way where i wrap the JSON thing inside another function. And then call that function and check it's type. I don't stringify the JSON thing if it's already a string, since that just puts quotes on the quoted string. Which will make stuff like "function a() {}" into ""function a() {}"" which will then lead to `typeof wrapperFunction()` evaluate to string even for the function encoded as string
     var wrapperFunction
-    if (typeof fakeProp === 'string') {
+    if (typeof fakeProp === 'string' && fakeProp.indexOf('function ') >= 0) {
         wrapperFunction = new Function('return ' + fakeProp)
     } else {
         wrapperFunction = new Function('return ' + JSON.stringify(fakeProp))
