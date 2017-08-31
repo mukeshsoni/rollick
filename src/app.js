@@ -311,7 +311,9 @@ export class App extends React.Component {
             showSearchModal
         } = this.state
 
-        const leftPaneStyle = {}
+        const leftPaneStyle = {
+            borderRight: '15px solid #343436'
+        }
 
         const rightPaneStyle = {
             gridColumn: '2/-1',
