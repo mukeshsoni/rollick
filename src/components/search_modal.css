@@ -7,8 +7,8 @@
     outline: none;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background: rgba(248, 248, 242, 0.8);
-    box-shadow: 10px 10px 20px 10px rgba(204, 204, 204, 0.62);
+    /* background: rgba(248, 248, 242, 0.8); */
+    /* box-shadow: 10px 10px 20px 10px rgba(204, 204, 204, 0.62); */
 }
 
 .search-modal-input.with-results {
