@@ -11,6 +11,7 @@
       "debounce": "npm:debounce@^1.0.2",
       "esformatter-jsx": "npm:esformatter-jsx@^8.0.1",
       "jsx-transpiler": "npm:jsx-transpiler@^0.1.4",
+      "keymaster": "npm:keymaster@^1.6.2",
       "less": "npm:less@^2.7.2",
       "node-sass": "npm:node-sass@^4.5.3",
       "prettier": "npm:prettier@^1.6.1",

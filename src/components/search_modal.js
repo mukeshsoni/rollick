@@ -4,6 +4,7 @@ import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import SearchResults from './search_results'
 import classnames from 'classnames'
 import deboune from 'debounce'
+import key from 'keymaster'
 import 'src/components/search_modal.css'
 
 function stopAllPropagations(e) {
@@ -107,11 +108,7 @@ class SearchModal extends React.Component {
     }
 
     componentDidMount() {
-        document.addEventListener('keypress', this.handleContainerKeyDown)
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.handleContainerKeyDown)
+        key('esc', this.handleContainerKeyDown)
     }
 
     render() {

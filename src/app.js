@@ -291,8 +291,12 @@ export class App extends React.Component {
         this.cssCodemirror = null
     }
 
-    componentWillMount() {
+    componentDidMount() {
         document.addEventListener('keypress', this.handleKeypress)
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keypress', this.handleKeypress)
     }
 
     render() {
