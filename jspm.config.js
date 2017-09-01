@@ -291,6 +291,7 @@ SystemJS.config({
         'react-dom': 'npm:react-dom@15.6.1',
         'react-jsx': 'npm:react-jsx@1.0.0',
         'react-modal': 'npm:react-modal@2.2.4',
+        'react-split-pane': 'npm:react-split-pane@0.1.66',
         'request': 'npm:request@2.81.0',
         'sass.js': 'npm:sass.js@0.10.6',
         'source-map': 'npm:source-map@0.5.7',
@@ -1540,6 +1541,29 @@ SystemJS.config({
                 'exenv': 'npm:exenv@1.2.2',
                 'react-dom-factories': 'npm:react-dom-factories@1.0.1',
                 'prop-types': 'npm:prop-types@15.5.10'
+            }
+        },
+        'npm:react-split-pane@0.1.66': {
+            'map': {
+                'prop-types': 'npm:prop-types@15.5.10',
+                'react-style-proptype': 'npm:react-style-proptype@3.0.0',
+                'inline-style-prefixer': 'npm:inline-style-prefixer@3.0.7'
+            }
+        },
+        'npm:react-style-proptype@3.0.0': {
+            'map': {
+                'prop-types': 'npm:prop-types@15.5.10'
+            }
+        },
+        'npm:inline-style-prefixer@3.0.7': {
+            'map': {
+                'bowser': 'npm:bowser@1.7.3',
+                'css-in-js-utils': 'npm:css-in-js-utils@1.0.3'
+            }
+        },
+        'npm:css-in-js-utils@1.0.3': {
+            'map': {
+                'hyphenate-style-name': 'npm:hyphenate-style-name@1.0.2'
             }
         }
     }

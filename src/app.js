@@ -9,6 +9,7 @@ import componentsMetaList from 'components.meta.json!json'
 import SearchModal from 'src/components/search_modal'
 import Button from 'src/components/buttons/button'
 import debounce from 'debounce'
+import SplitPane from 'react-split-pane'
 import './app.css'
 import 'node_modules/codemirror/theme/night.css!css'
 import 'node_modules/codemirror/lib/codemirror.css!css'
@@ -216,6 +217,15 @@ export class App extends React.Component {
         })
     }
 
+    adjustEditorSizes = () => {
+        this.jsxCodemirror
+            .getCodeMirror()
+            .setSize('100%', this.jsxContainerRef.clientHeight - 60)
+        this.cssCodemirror
+            .getCodeMirror()
+            .setSize('100%', this.cssContainerRef.clientHeight - 60)
+    }
+
     handleKeypress = e => {
         const keyCode = e.keyCode || e.which
 
@@ -296,6 +306,7 @@ export class App extends React.Component {
 
     componentDidMount() {
         document.addEventListener('keypress', this.handleKeypress)
+        this.adjustEditorSizes()
     }
 
     componentWillUnmount() {
@@ -355,40 +366,71 @@ export class App extends React.Component {
                         style={{ marginRight: '1em' }}
                     />
                 </header>
-                <div className="editor-left-pane">
-                    <div>
-                        <div className="editor-header">
-                            <h2>JSX</h2>
+                <SplitPane
+                    split="vertical"
+                    defaultSize={500}
+                    minSize={400}
+                    pane2Style={{ background: 'white' }}
+                    pane1Style={{ borderRight: '15px solid #343436' }}
+                >
+                    <SplitPane
+                        split="horizontal"
+                        defaultSize="50%"
+                        minSize={300}
+                        onChange={this.adjustEditorSizes}
+                    >
+                        <div
+                            ref={instance => (this.jsxContainerRef = instance)}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                width: '100%',
+                                height: '100%'
+                            }}
+                        >
+                            <div className="editor-header">
+                                <h2>JSX</h2>
+                            </div>
+                            <CodeMirror
+                                ref={instance =>
+                                    (this.jsxCodemirror = instance)}
+                                autoFocus={true}
+                                value={jsxCode}
+                                onChange={this.updateJsxCode}
+                                options={jsxCodeMirrorOptions}
+                            />
                         </div>
-                        <CodeMirror
-                            ref={instance => (this.jsxCodemirror = instance)}
-                            autoFocus={true}
-                            value={jsxCode}
-                            onChange={this.updateJsxCode}
-                            options={jsxCodeMirrorOptions}
-                        />
-                    </div>
-                    <div>
-                        <div className="editor-header">
-                            <h2>SASS</h2>
+                        <div
+                            ref={instance => (this.cssContainerRef = instance)}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                width: '100%',
+                                height: '100%'
+                            }}
+                        >
+                            <div className="editor-header">
+                                <h2>SASS</h2>
+                            </div>
+                            <CodeMirror
+                                ref={instance =>
+                                    (this.cssCodemirror = instance)}
+                                value={this.state.cssCode}
+                                onChange={this.updateCssCode}
+                                options={cssCodeMirrorOptions}
+                            />
                         </div>
-                        <CodeMirror
-                            ref={instance => (this.cssCodemirror = instance)}
-                            value={this.state.cssCode}
-                            onChange={this.updateCssCode}
-                            options={cssCodeMirrorOptions}
-                        />
+                    </SplitPane>
+                    <div className="editor-right-pane" id={rightPaneId}>
+                        {com ? React.createElement(com.default) : null}
+                        {avatar
+                            ? React.createElement(avatar.default, {
+                                  src: 'https://unsplash.it/50/50'
+                              })
+                            : null}
+                        {eval(jsxToInsert)}
                     </div>
-                </div>
-                <div className="editor-right-pane" id={rightPaneId}>
-                    {com ? React.createElement(com.default) : null}
-                    {avatar
-                        ? React.createElement(avatar.default, {
-                              src: 'https://unsplash.it/50/50'
-                          })
-                        : null}
-                    {eval(jsxToInsert)}
-                </div>
+                </SplitPane>
                 <SearchModal
                     isOpen={showSearchModal}
                     items={componentsMetaList}

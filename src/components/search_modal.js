@@ -54,12 +54,7 @@ class SearchModal extends React.Component {
                         selectedItemIndex:
                             (this.state.selectedItemIndex + 1) %
                             this.getFilteredComponents().length
-                    },
-                    () =>
-                        console.log(
-                            'next selected index',
-                            this.state.selectedItemIndex
-                        )
+                    }
                 )
                 break
             case 38: // up arrow
@@ -116,6 +111,9 @@ class SearchModal extends React.Component {
         const { searchText, selectedItemIndex } = this.state
 
         const modalStyle = {
+            overlay: {
+                backgroundColor: 'rgba(28, 26, 26, 0.52)'
+            },
             content: {
                 top: '20%',
                 left: 'calc((100vw - 500px)/2)',
