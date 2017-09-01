@@ -373,7 +373,6 @@ export class App extends React.Component {
                     defaultSize={500}
                     minSize={400}
                     pane2Style={{ background: 'white' }}
-                    pane1Style={{ borderRight: '15px solid #343436' }}
                 >
                     <SplitPane
                         split="horizontal"
@@ -421,17 +420,10 @@ export class App extends React.Component {
                                 value={this.state.cssCode}
                                 onChange={this.updateCssCode}
                                 options={cssCodeMirrorOptions}
-                                className="codemirror-custom-class"
                             />
                         </div>
                     </SplitPane>
                     <div className="editor-right-pane" id={rightPaneId}>
-                        {com ? React.createElement(com.default) : null}
-                        {avatar
-                            ? React.createElement(avatar.default, {
-                                  src: 'https://unsplash.it/50/50'
-                              })
-                            : null}
                         {eval(jsxToInsert)}
                     </div>
                 </SplitPane>
