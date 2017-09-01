@@ -20,7 +20,7 @@ import 'node_modules/codemirror/lib/codemirror.css!css'
 // oldVal is a hack until we have Either data type support
 function jsxToJs(jsxCode, oldVal = '') {
     try {
-        const compiledJsx = Babel.transform(jsxCode, {
+        const compiledJsx = Babel.transform(`<div>${jsxCode}</div>`, {
             presets: ['react']
         }).code
         return compiledJsx

@@ -1,6 +1,6 @@
 {
   "scripts": {
-      "build": "npm run jspm && npm run docgen",
+    "build": "npm run jspm && npm run docgen",
     "jspm": "./node_modules/.bin/jspm install",
     "docgen": "node meta_data_generator.js",
     "start": "serve ."
