@@ -19,6 +19,37 @@
       }
     }
   },
+  "src/components/buttons/button.js": {
+    "description": "",
+    "methods": [],
+    "props": {
+      "label": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": ""
+      },
+      "onClick": {
+        "type": {
+          "name": "func"
+        },
+        "required": true,
+        "description": ""
+      },
+      "style": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "{}",
+          "computed": false
+        }
+      }
+    }
+  },
   "src/components/component.js": {
     "description": "",
     "methods": [],
@@ -97,7 +128,19 @@
         "returns": null
       },
       {
-        "name": "handleKeypress",
+        "name": "handleContainerKeyDown",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "e",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "handleKeyDown",
         "docblock": null,
         "modifiers": [],
         "params": [
