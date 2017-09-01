@@ -3,6 +3,8 @@
 - [x] height of the editors
 - [x] add splitpane for left and right pane
 - [x] Emmet support for editors
+- [ ] Let 'command+i' work, even if the cursor is not in jsx editor
+  - [ ] show helpful suggestion for 'command+i' shortcut for searching components
 - [ ] host app on now.sh
 - [ ] send pull request to react-fake-props
 - [ ] export to react component
