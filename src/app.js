@@ -13,7 +13,7 @@ import SplitPane from 'react-split-pane'
 import './app.css'
 import './split_pane.css'
 import './codemirror_custom.css'
-import 'node_modules/codemirror/theme/night.css!css'
+import 'node_modules/codemirror/theme/twilight.css!css'
 import 'node_modules/codemirror/lib/codemirror.css!css'
 // import 'codemirror/lib/codemirror.css'
 
@@ -328,7 +328,7 @@ export class App extends React.Component {
         const jsxCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
-            theme: 'night',
+            theme: 'twilight',
             extraKeys: {
                 'Ctrl-Alt-Space': this.formatJsx
             },
@@ -338,7 +338,7 @@ export class App extends React.Component {
         const cssCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
-            theme: 'night',
+            theme: 'twilight',
             mode: 'css'
         }
 
