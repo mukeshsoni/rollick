@@ -289,6 +289,7 @@ SystemJS.config({
         'react': 'npm:react@15.6.1',
         'react-codemirror': 'npm:react-codemirror@1.0.0',
         'react-dom': 'npm:react-dom@15.6.1',
+        'react-frame-component': 'npm:react-frame-component@1.1.1',
         'react-jsx': 'npm:react-jsx@1.0.0',
         'react-modal': 'npm:react-modal@2.2.4',
         'react-split-pane': 'npm:react-split-pane@0.1.66',

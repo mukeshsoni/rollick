@@ -10,6 +10,7 @@ import SearchModal from 'src/components/search_modal'
 import Button from 'src/components/buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
+import Frame from 'react-frame-component'
 import './app.css'
 import './split_pane.css'
 import './codemirror_custom.css'
@@ -95,12 +96,40 @@ const componentMap = {
     }
 }
 
+function dedupe(arr) {
+    let seen = {}
+    return arr.filter(
+        item => (seen.hasOwnProperty(item) ? false : (seen[item] = true))
+    )
+}
+
 export class App extends React.Component {
+    registerServiceWorker = () => {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then(registration => {
+                // Registration was successful
+                console.log(
+                    'ServiceWorker registration successful with scope: ',
+                    registration.scope
+                )
+                navigator.serviceWorker.addEventListener('message', event => {
+                    this.setState({
+                        cssFilesToInject: dedupe(
+                            this.state.cssFilesToInject.concat(event.data)
+                        )
+                    })
+                })
+            }, function(err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err)
+            })
+        }
+    }
+
     handleSearchSelection = selectedItem => {
         this.hideSearchModal()
         SystemJS.import(selectedItem.path)
             .then(com => {
-                console.log('component loaded', com)
                 window[selectedItem.name] = com.default
                 this.setState(
                     {
@@ -130,7 +159,6 @@ export class App extends React.Component {
     }
 
     formatJsx = () => {
-        console.log('jsxcode', this.state.jsxCode)
         function last(arr) {
             return arr[arr.length - 1]
         }
@@ -157,11 +185,6 @@ export class App extends React.Component {
             this.jsxCodemirror.getCodeMirror().getCursor()
         )
 
-        console.log(
-            'current jsx cursor position',
-            this.jsxCodemirror.getCodeMirror().getCursor()
-        )
-        console.log('converted prettier cursor offset', prettierCursorOffset)
         const prettified = prettier.formatWithCursor(this.state.jsxCode, {
             semi: false,
             cursorOffset: prettierCursorOffset
@@ -172,8 +195,6 @@ export class App extends React.Component {
             prettified.cursorOffset
         )
 
-        console.log('prettified cursor offset', prettified.cursorOffset)
-        console.log('cm cursor after formatting', cmCursor)
         this.setState(
             {
                 jsxCode: prettified.formatted.slice(1) // slice(1) to remove the semicolon at the start of block prettier adds
@@ -195,8 +216,7 @@ export class App extends React.Component {
     updateCssCode = newCode => {
         sass.compile(wrapCss(newCode), result => {
             if (result.status === 0) {
-                console.log('sass to css conversion', result)
-                this.setState({ cssCode: newCode, cssToInsert: result.text })
+                this.setState({ cssCode: newCode, cssToInsert: newCode })
             } else {
                 console.log('error converting sass to css', result.message)
             }
@@ -226,6 +246,26 @@ export class App extends React.Component {
         this.cssCodemirror
             .getCodeMirror()
             .setSize('100%', this.cssContainerRef.clientHeight - 60)
+    }
+
+    getIframeHead = () => {
+        return (
+            <div>
+                <style>
+                    {this.state.cssToInsert}
+                </style>
+                {this.state.cssFilesToInject.map(cssFilePath => {
+                    return (
+                        <link
+                            key={'link_tag_' + cssFilePath}
+                            type="text/css"
+                            rel="stylesheet"
+                            href={cssFilePath}
+                        />
+                    )
+                })}
+            </div>
+        )
     }
 
     handleKeypress = e => {
@@ -300,10 +340,17 @@ export class App extends React.Component {
             cssToInsert: wrapCss(startingCss),
             showSearchModal: false,
             searchText: '',
-            jsxEditorCursorPosition: {}
+            jsxEditorCursorPosition: {},
+            cssFilesToInject: [
+                'http://localhost:5000/src/components/search_item.css'
+            ]
         }
         this.jsxCodemirror = null
         this.cssCodemirror = null
+    }
+
+    componentWillMount() {
+        this.registerServiceWorker()
     }
 
     componentDidMount() {
@@ -344,9 +391,6 @@ export class App extends React.Component {
 
         return (
             <div className="page-container">
-                <style>
-                    {this.state.cssToInsert}
-                </style>
                 <header
                     style={{
                         gridColumn: '1 / -1',
@@ -424,7 +468,12 @@ export class App extends React.Component {
                         </div>
                     </SplitPane>
                     <div className="editor-right-pane" id={rightPaneId}>
-                        {eval(jsxToInsert)}
+                        <Frame
+                            style={{ width: '100%', height: 600 }}
+                            head={this.getIframeHead()}
+                        >
+                            {eval(jsxToInsert)}
+                        </Frame>
                     </div>
                 </SplitPane>
                 <SearchModal

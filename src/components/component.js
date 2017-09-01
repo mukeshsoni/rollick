@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import './component.css'
 
 export default class HelloWorld extends React.Component {
     render() {
         return (
-            <h1>
+            <span className='com'>
                 Hello! {this.props.name}
-            </h1>
+            </span>
         )
     }
 }
