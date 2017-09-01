@@ -2,9 +2,9 @@
 - [x] editor theme - dark (night or ‘solarized dark’
 - [x] height of the editors
 - [x] add splitpane for left and right pane
+- [x] Emmet support for editors
 - [ ] host app on now.sh
 - [ ] send pull request to react-fake-props
-- [ ] Emmet support for editors
 - [ ] export to react component
 - [ ] preview in search results of components
 - [ ] vim mode for editor?

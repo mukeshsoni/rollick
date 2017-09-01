@@ -245,6 +245,8 @@ SystemJS.config({
         'github:*/*.json'
     ],
     map: {
+        '@emmetio/codemirror-plugin': 'npm:@emmetio/codemirror-plugin@0.3.5',
+        'emmet-codemirror': 'npm:emmet-codemirror@1.2.5',
         'classnames': 'npm:classnames@2.2.5',
         'debounce': 'npm:debounce@1.0.2',
         'acorn-jsx': 'npm:acorn-jsx@4.0.1',
@@ -1565,6 +1567,99 @@ SystemJS.config({
         'npm:css-in-js-utils@1.0.3': {
             'map': {
                 'hyphenate-style-name': 'npm:hyphenate-style-name@1.0.2'
+            }
+        },
+        'npm:emmet-codemirror@1.2.5': {
+            'map': {
+                'emmet': 'npm:emmet@1.6.3'
+            }
+        },
+        'npm:emmet@1.6.3': {
+            'map': {
+                'caniuse-db': 'npm:caniuse-db@1.0.30000721'
+            }
+        },
+        'npm:@emmetio/codemirror-plugin@0.3.5': {
+            'map': {
+                '@emmetio/css-snippets-resolver': 'npm:@emmetio/css-snippets-resolver@0.2.6',
+                '@emmetio/expand-abbreviation': 'npm:@emmetio/expand-abbreviation@0.5.8',
+                '@emmetio/html-matcher': 'npm:@emmetio/html-matcher@0.3.2',
+                '@emmetio/extract-abbreviation': 'npm:@emmetio/extract-abbreviation@0.1.3',
+                '@emmetio/stream-reader': 'npm:@emmetio/stream-reader@2.2.0'
+            }
+        },
+        'npm:@emmetio/expand-abbreviation@0.5.8': {
+            'map': {
+                '@emmetio/css-snippets-resolver': 'npm:@emmetio/css-snippets-resolver@0.2.6',
+                '@emmetio/stylesheet-formatters': 'npm:@emmetio/stylesheet-formatters@0.1.3',
+                '@emmetio/output-profile': 'npm:@emmetio/output-profile@0.1.5',
+                '@emmetio/css-abbreviation': 'npm:@emmetio/css-abbreviation@0.3.1',
+                '@emmetio/variable-resolver': 'npm:@emmetio/variable-resolver@0.2.1',
+                '@emmetio/lorem': 'npm:@emmetio/lorem@1.0.2',
+                '@emmetio/markup-formatters': 'npm:@emmetio/markup-formatters@0.3.3',
+                '@emmetio/snippets': 'npm:@emmetio/snippets@0.2.5',
+                '@emmetio/html-snippets-resolver': 'npm:@emmetio/html-snippets-resolver@0.1.4',
+                '@emmetio/snippets-registry': 'npm:@emmetio/snippets-registry@0.3.1',
+                '@emmetio/html-transform': 'npm:@emmetio/html-transform@0.3.3',
+                '@emmetio/abbreviation': 'npm:@emmetio/abbreviation@0.6.3'
+            }
+        },
+        'npm:@emmetio/html-matcher@0.3.2': {
+            'map': {
+                '@emmetio/stream-reader': 'npm:@emmetio/stream-reader@2.2.0',
+                '@emmetio/stream-reader-utils': 'npm:@emmetio/stream-reader-utils@0.1.0'
+            }
+        },
+        'npm:@emmetio/css-abbreviation@0.3.1': {
+            'map': {
+                '@emmetio/stream-reader': 'npm:@emmetio/stream-reader@2.2.0',
+                '@emmetio/stream-reader-utils': 'npm:@emmetio/stream-reader-utils@0.1.0',
+                '@emmetio/node': 'npm:@emmetio/node@0.1.2'
+            }
+        },
+        'npm:@emmetio/html-snippets-resolver@0.1.4': {
+            'map': {
+                '@emmetio/abbreviation': 'npm:@emmetio/abbreviation@0.6.3'
+            }
+        },
+        'npm:@emmetio/abbreviation@0.6.3': {
+            'map': {
+                '@emmetio/stream-reader': 'npm:@emmetio/stream-reader@2.2.0',
+                '@emmetio/stream-reader-utils': 'npm:@emmetio/stream-reader-utils@0.1.0',
+                '@emmetio/node': 'npm:@emmetio/node@0.1.2'
+            }
+        },
+        'npm:@emmetio/lorem@1.0.2': {
+            'map': {
+                '@emmetio/implicit-tag': 'npm:@emmetio/implicit-tag@1.0.0'
+            }
+        },
+        'npm:@emmetio/html-transform@0.3.3': {
+            'map': {
+                '@emmetio/implicit-tag': 'npm:@emmetio/implicit-tag@1.0.0'
+            }
+        },
+        'npm:@emmetio/stylesheet-formatters@0.1.3': {
+            'map': {
+                '@emmetio/field-parser': 'npm:@emmetio/field-parser@0.3.0',
+                '@emmetio/output-renderer': 'npm:@emmetio/output-renderer@0.1.2'
+            }
+        },
+        'npm:@emmetio/markup-formatters@0.3.3': {
+            'map': {
+                '@emmetio/field-parser': 'npm:@emmetio/field-parser@0.3.0',
+                '@emmetio/output-renderer': 'npm:@emmetio/output-renderer@0.1.2'
+            }
+        },
+        'npm:@emmetio/field-parser@0.3.0': {
+            'map': {
+                '@emmetio/stream-reader': 'npm:@emmetio/stream-reader@2.2.0',
+                '@emmetio/stream-reader-utils': 'npm:@emmetio/stream-reader-utils@0.1.0'
+            }
+        },
+        'npm:@emmetio/output-renderer@0.1.2': {
+            'map': {
+                '@emmetio/field-parser': 'npm:@emmetio/field-parser@0.3.0'
             }
         }
     }

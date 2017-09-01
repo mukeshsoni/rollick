@@ -11,6 +11,8 @@ import Button from 'src/components/buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
 import Frame from 'react-frame-component'
+/* import emmetCodemirror from 'emmet-codemirror'*/
+import emmetCodemirror from '@emmetio/codemirror-plugin'
 import './app.css'
 import './split_pane.css'
 import './codemirror_custom.css'
@@ -18,6 +20,8 @@ import 'node_modules/codemirror/theme/twilight.css!css'
 import 'node_modules/codemirror/lib/codemirror.css!css'
 // import 'codemirror/lib/codemirror.css'
 
+import codeMirrorInstance from 'node_modules/codemirror/lib/codemirror.js'
+emmetCodemirror(codeMirrorInstance)
 // oldVal is a hack until we have Either data type support
 function jsxToJs(jsxCode, oldVal = '') {
     try {
@@ -313,10 +317,6 @@ export class App extends React.Component {
                     })
                 }
                 break
-            case 27: // esc
-                console.log('esc in app.js')
-                e.preventDefault()
-                return this.hideSearchModal()
             case 207: // command + alt + f
                 e.preventDefault()
                 if (e.altKey && e.shiftKey) {
@@ -354,7 +354,7 @@ export class App extends React.Component {
     }
 
     componentDidMount() {
-        document.addEventListener('keypress', this.handleKeypress)
+        /* document.addEventListener('keypress', this.handleKeypress)*/
         this.adjustEditorSizes()
     }
 
@@ -379,14 +379,22 @@ export class App extends React.Component {
             extraKeys: {
                 'Ctrl-Alt-Space': this.formatJsx
             },
-            mode: 'jsx'
+            mode: 'jsx',
+            extraKeys: {
+                Tab: 'emmetExpandAbbreviation',
+                Enter: 'emmetInsertLineBreak'
+            }
         }
 
         const cssCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
             theme: 'twilight',
-            mode: 'css'
+            mode: 'css',
+            extraKeys: {
+                Tab: 'emmetExpandAbbreviation',
+                Enter: 'emmetInsertLineBreak'
+            }
         }
 
         return (
@@ -444,6 +452,7 @@ export class App extends React.Component {
                                 onChange={this.updateJsxCode}
                                 options={jsxCodeMirrorOptions}
                                 className="codemirror-custom-class"
+                                codeMirrorInstance={codeMirrorInstance}
                             />
                         </div>
                         <div
@@ -464,6 +473,7 @@ export class App extends React.Component {
                                 value={this.state.cssCode}
                                 onChange={this.updateCssCode}
                                 options={cssCodeMirrorOptions}
+                                codeMirrorInstance={codeMirrorInstance}
                             />
                         </div>
                     </SplitPane>
