@@ -11,6 +11,8 @@ import Button from 'src/components/buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
 import './app.css'
+import './split_pane.css'
+import './codemirror_custom.css'
 import 'node_modules/codemirror/theme/night.css!css'
 import 'node_modules/codemirror/lib/codemirror.css!css'
 // import 'codemirror/lib/codemirror.css'
@@ -354,7 +356,7 @@ export class App extends React.Component {
                         padding: '1em',
                         borderBottom: '5px solid #343436',
                         boxShadow: '0 1px 1px black',
-                        background: '#1d1f20',
+                        background: '#141516',
                         height: 69,
                         minHeight: 69
                     }}
@@ -398,6 +400,7 @@ export class App extends React.Component {
                                 value={jsxCode}
                                 onChange={this.updateJsxCode}
                                 options={jsxCodeMirrorOptions}
+                                className="codemirror-custom-class"
                             />
                         </div>
                         <div
@@ -418,6 +421,7 @@ export class App extends React.Component {
                                 value={this.state.cssCode}
                                 onChange={this.updateCssCode}
                                 options={cssCodeMirrorOptions}
+                                className="codemirror-custom-class"
                             />
                         </div>
                     </SplitPane>
