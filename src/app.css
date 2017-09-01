@@ -7,11 +7,6 @@ body, html {
 }
 
 .page-container {
-    display: grid;
-    grid-template-columns: 4fr 7fr;
-    grid-template-rows: 69px 1fr 1fr;
-    grid-gap-column: 1em;
-    grid-gap-row: 0.2em;
     width: 100vw;
     height: 100vh;
     background-color: #272729;
@@ -31,6 +26,8 @@ body, html {
 
 .editor-right-pane {
     background-color: white;
-    grid-column: 2 / -1;
-    gridRow: 2 / 4;
+}
+
+.editor-left-pane {
+    border-right: '15px solid #343436'
 }

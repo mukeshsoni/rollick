@@ -312,17 +312,6 @@ export class App extends React.Component {
             showSearchModal
         } = this.state
 
-        const leftPaneStyle = {
-            borderRight: '15px solid #343436'
-        }
-
-        const rightPaneStyle = {
-            gridColumn: '2/-1',
-            gridRow: '2/4'
-        }
-        const htmlContainerStyle = { gridColumn: '1/2', gridRow: 'span 1' }
-        const cssContainerStyle = { gridColumn: '1/2', gridRow: 'span 1' }
-
         const jsxCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
@@ -366,8 +355,8 @@ export class App extends React.Component {
                         style={{ marginRight: '1em' }}
                     />
                 </header>
-                <div style={leftPaneStyle}>
-                    <div style={htmlContainerStyle}>
+                <div className="editor-left-pane">
+                    <div>
                         <div className="editor-header">
                             <h2>JSX</h2>
                         </div>
@@ -379,7 +368,7 @@ export class App extends React.Component {
                             options={jsxCodeMirrorOptions}
                         />
                     </div>
-                    <div style={cssContainerStyle}>
+                    <div>
                         <div className="editor-header">
                             <h2>SASS</h2>
                         </div>
