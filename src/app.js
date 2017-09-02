@@ -469,7 +469,11 @@ export class App extends React.Component {
                     </SplitPane>
                     <div className="editor-right-pane" id={rightPaneId}>
                         <Frame
-                            style={{ width: '100%', height: 600 }}
+                            style={{
+                                width: '100%',
+                                height: 600
+                            }}
+                            frameBorder={'0'}
                             head={this.getIframeHead()}
                         >
                             {eval(jsxToInsert)}
