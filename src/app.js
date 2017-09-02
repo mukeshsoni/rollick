@@ -296,26 +296,28 @@ export class App extends React.Component {
         switch (keyCode) {
             case 105: // i
                 // only show the search box if the jsx code editor is in focus
-                if (
-                    e.metaKey &&
-                    this.jsxCodemirror.getCodeMirror().hasFocus()
-                ) {
-                    // command + i
-                    e.preventDefault()
-                    return this.setState({
-                        jsxEditorCursorPosition: getCursorIfFocused(
+                /* if (
+                 *     e.metaKey &&
+                 *     this.jsxCodemirror.getCodeMirror().hasFocus()
+                 * ) {*/
+                // command + i
+                e.preventDefault()
+                return this.setState({
+                    jsxEditorCursorPosition:
+                        getCursorIfFocused(
                             this.jsxCodemirror.getCodeMirror()
-                        ),
-                        cssEditorCursorPosition: getCursorIfFocused(
+                        ) || this.state.jsxEditorCursorPosition,
+                    cssEditorCursorPosition:
+                        getCursorIfFocused(
                             this.cssCodemirror.getCodeMirror()
-                        ),
-                        editorInFocus: getEditorInFocus(
-                            this.jsxCodemirror.getCodeMirror(),
-                            this.cssCodemirror.getCodeMirror()
-                        ),
-                        showSearchModal: true
-                    })
-                }
+                        ) || this.state.cssEditorCursorPosition,
+                    editorInFocus: getEditorInFocus(
+                        this.jsxCodemirror.getCodeMirror(),
+                        this.cssCodemirror.getCodeMirror()
+                    ),
+                    showSearchModal: true
+                })
+                /* }*/
                 break
             case 207: // command + alt + f
                 e.preventDefault()
