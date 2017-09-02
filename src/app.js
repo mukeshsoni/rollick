@@ -20,7 +20,8 @@ import 'node_modules/codemirror/theme/twilight.css!css'
 import 'node_modules/codemirror/lib/codemirror.css!css'
 // import 'codemirror/lib/codemirror.css'
 
-import { last } from 'belt.js'
+import belt from '../belt.js'
+const { last } = belt
 
 import codeMirrorInstance from 'node_modules/codemirror/lib/codemirror.js'
 emmetCodemirror(codeMirrorInstance)

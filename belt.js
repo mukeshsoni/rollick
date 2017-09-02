@@ -1,8 +1,8 @@
-export function last(arr) {
+function last(arr) {
     return arr[arr.length - 1]
 }
 
-export function capitalize(str) {
+function capitalize(str) {
     if (str && str.length > 0) {
         return str.charAt(0).toUpperCase() + str.slice(1)
     } else {
@@ -10,11 +10,11 @@ export function capitalize(str) {
     }
 }
 
-export function camelCaseFileName(fileName) {
+function camelCaseFileName(fileName) {
     return fileName.split('.')[0].split('_').map(capitalize).join('')
 }
 
-export function getNameFromPath(path) {
+function getNameFromPath(path) {
     const filePathParts = path.split('/')
 
     // if file is some variant of index.js or index.jsx or index.xyx.js, we need to taret the folder it's inside
@@ -23,4 +23,11 @@ export function getNameFromPath(path) {
     } else {
         return camelCaseFileName(last(filePathParts))
     }
+}
+
+module.exports = {
+    last,
+    capitalize,
+    camelCaseFileName,
+    getNameFromPath
 }

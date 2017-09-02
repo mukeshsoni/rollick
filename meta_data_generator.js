@@ -4,16 +4,16 @@ const path = require('path')
 const exec = require('child_process').exec
 const fs = require('fs')
 
-import { last, getNameFromPath } from 'belt.js'
+const { getNameFromPath } = require('./belt.js')
 
 const docgenOutputFile = 'components.docgen.json'
 const finalMetaFile = 'components.meta.json'
+const configFilePath = './reactpen.config.js'
+
+const config = require(configFilePath)
 
 exec(
-    // './node_modules/.bin/react-docgen src/components_to_test -o ' +
-    './node_modules/.bin/react-docgen src/components -o ' +
-        docgenOutputFile +
-        ' --pretty',
+    `./node_modules/.bin/react-docgen ${config.componentsPath} -o ${docgenOutputFile} --pretty`,
     function(err, stdout) {
         if (err) {
             console.log('error while generating docs for components', err)
