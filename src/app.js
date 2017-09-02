@@ -394,10 +394,10 @@ export class App extends React.Component {
             <div className="page-container">
                 <header
                     style={{
-                        gridColumn: '1 / -1',
                         display: 'flex',
-                        flexDirection: 'row-reverse',
+                        justifyContent: 'flex-end',
                         alignItems: 'center',
+                        color: 'white',
                         padding: '1em',
                         borderBottom: '5px solid #343436',
                         boxShadow: '0 1px 1px black',
@@ -406,12 +406,21 @@ export class App extends React.Component {
                         minHeight: 69
                     }}
                 >
-                    <Button onClick={this.run} label="Run" />
+                    <div
+                        style={{
+                            color: '#fd2700',
+                            marginRight: 'auto',
+                            fontSize: '1.2em'
+                        }}
+                    >
+                        Command + i to search component
+                    </div>
                     <Button
                         onClick={this.formatJsx}
                         label="Format jsx"
                         style={{ marginRight: '1em' }}
                     />
+                    <Button onClick={this.run} label="Run" />
                 </header>
                 <SplitPane
                     split="vertical"
