@@ -354,7 +354,7 @@ export class App extends React.Component {
     }
 
     componentDidMount() {
-        /* document.addEventListener('keypress', this.handleKeypress)*/
+        document.addEventListener('keypress', this.handleKeypress)
         this.adjustEditorSizes()
     }
 
