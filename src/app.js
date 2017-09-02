@@ -301,23 +301,24 @@ export class App extends React.Component {
                  *     this.jsxCodemirror.getCodeMirror().hasFocus()
                  * ) {*/
                 // command + i
-                e.preventDefault()
-                return this.setState({
-                    jsxEditorCursorPosition:
-                        getCursorIfFocused(
-                            this.jsxCodemirror.getCodeMirror()
-                        ) || this.state.jsxEditorCursorPosition,
-                    cssEditorCursorPosition:
-                        getCursorIfFocused(
+                if (e.metaKey) {
+                    e.preventDefault()
+                    return this.setState({
+                        jsxEditorCursorPosition:
+                            getCursorIfFocused(
+                                this.jsxCodemirror.getCodeMirror()
+                            ) || this.state.jsxEditorCursorPosition,
+                        cssEditorCursorPosition:
+                            getCursorIfFocused(
+                                this.cssCodemirror.getCodeMirror()
+                            ) || this.state.cssEditorCursorPosition,
+                        editorInFocus: getEditorInFocus(
+                            this.jsxCodemirror.getCodeMirror(),
                             this.cssCodemirror.getCodeMirror()
-                        ) || this.state.cssEditorCursorPosition,
-                    editorInFocus: getEditorInFocus(
-                        this.jsxCodemirror.getCodeMirror(),
-                        this.cssCodemirror.getCodeMirror()
-                    ),
-                    showSearchModal: true
-                })
-                /* }*/
+                        ),
+                        showSearchModal: true
+                    })
+                }
                 break
             case 207: // command + alt + f
                 e.preventDefault()
