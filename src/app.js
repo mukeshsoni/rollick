@@ -134,24 +134,27 @@ export class App extends React.Component {
     }
 
     handleSearchSelection = selectedItem => {
-        this.hideSearchModal()
-        SystemJS.import(selectedItem.path)
-            .then(com => {
-                window[selectedItem.name] = com.default
-                this.setState(
-                    {
-                        jsxCode: addComponent(
-                            this.state.jsxCode,
-                            this.jsxCodemirror.getCodeMirror(),
-                            selectedItem
-                        )
-                    },
-                    this.formatJsx
+        // handleSearchSelection is called even if enter is pressed when there are zero search results
+        if (selectedItem && selectedItem.path) {
+            this.hideSearchModal()
+            SystemJS.import(selectedItem.path)
+                .then(com => {
+                    window[selectedItem.name] = com.default
+                    this.setState(
+                        {
+                            jsxCode: addComponent(
+                                this.state.jsxCode,
+                                this.jsxCodemirror.getCodeMirror(),
+                                selectedItem
+                            )
+                        },
+                        this.formatJsx
+                    )
+                })
+                .catch(e =>
+                    console.log('error loading component', selectedItem.name, e)
                 )
-            })
-            .catch(e =>
-                console.log('error loading component', selectedItem.name, e)
-            )
+        }
     }
 
     run = () => {

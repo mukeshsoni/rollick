@@ -27,7 +27,7 @@ class SearchModal extends React.Component {
         switch (keyCode) {
             case 27: // esc key
                 stopAllPropagations(e)
-                this.setState({ searchText: '', selectedItemIndex: 0 })
+                this.setState({ searchText: '', selectedItemIndex: -1 })
                 this.props.onRequestClose()
                 break
         }
@@ -97,7 +97,7 @@ class SearchModal extends React.Component {
 
         this.state = {
             searchText: '',
-            selectedItemIndex: 0
+            selectedItemIndex: -1
         }
         this.searchInputRef = null
     }
