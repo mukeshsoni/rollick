@@ -4,26 +4,10 @@ const path = require('path')
 const exec = require('child_process').exec
 const fs = require('fs')
 
+import { last, getNameFromPath } from 'belt.js'
+
 const docgenOutputFile = 'components.docgen.json'
 const finalMetaFile = 'components.meta.json'
-
-function capitalize(str) {
-    if (str && str.length > 0) {
-        return str.charAt(0).toUpperCase() + str.slice(1)
-    } else {
-        return str
-    }
-}
-
-function getNameFromPath(path) {
-    return path
-        .split('/')
-        .pop()
-        .split('.')[0]
-        .split('_')
-        .map(capitalize)
-        .join('')
-}
 
 exec(
     // './node_modules/.bin/react-docgen src/components_to_test -o ' +

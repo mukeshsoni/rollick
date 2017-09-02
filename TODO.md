@@ -3,6 +3,7 @@
 - [x] height of the editors
 - [x] add splitpane for left and right pane
 - [x] Emmet support for editors
+- [ ] Provide a utility in the UI to easily fill in fake data for common cases like ‘email’, ‘url’, ‘photo url’, ‘name’, ‘age’, ‘sex’, ‘description’, ‘long description’ etc.
 - [ ] Let 'command+i' work, even if the cursor is not in jsx editor
   - [ ] show helpful suggestion for 'command+i' shortcut for searching components
 - [ ] host app on now.sh

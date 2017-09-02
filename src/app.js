@@ -20,6 +20,8 @@ import 'node_modules/codemirror/theme/twilight.css!css'
 import 'node_modules/codemirror/lib/codemirror.css!css'
 // import 'codemirror/lib/codemirror.css'
 
+import { last } from 'belt.js'
+
 import codeMirrorInstance from 'node_modules/codemirror/lib/codemirror.js'
 emmetCodemirror(codeMirrorInstance)
 // oldVal is a hack until we have Either data type support
@@ -163,10 +165,6 @@ export class App extends React.Component {
     }
 
     formatJsx = () => {
-        function last(arr) {
-            return arr[arr.length - 1]
-        }
-
         function cmToPrettierCursorOffset(code, cursor) {
             const allLines = code.split('\n')
             const charsInLineBeforeCursor =
