@@ -236,9 +236,6 @@ export class App extends React.Component {
                 this[this.state.editorInFocus + 'Codemirror']
                     .getCodeMirror()
                     .focus()
-                this[this.state.editorInFocus + 'Codemirror']
-                    .getCodeMirror()
-                    .setCursor(this.state.jsxEditorCursorPosition)
             }
         })
     }
@@ -304,14 +301,6 @@ export class App extends React.Component {
                 if (e.metaKey) {
                     e.preventDefault()
                     return this.setState({
-                        jsxEditorCursorPosition:
-                            getCursorIfFocused(
-                                this.jsxCodemirror.getCodeMirror()
-                            ) || this.state.jsxEditorCursorPosition,
-                        cssEditorCursorPosition:
-                            getCursorIfFocused(
-                                this.cssCodemirror.getCodeMirror()
-                            ) || this.state.cssEditorCursorPosition,
                         editorInFocus: getEditorInFocus(
                             this.jsxCodemirror.getCodeMirror(),
                             this.cssCodemirror.getCodeMirror()
@@ -343,7 +332,6 @@ export class App extends React.Component {
             cssToInsert: wrapCss(startingCss),
             showSearchModal: false,
             searchText: '',
-            jsxEditorCursorPosition: {},
             cssFilesToInject: [
                 'http://localhost:5000/src/components/search_item.css'
             ]
