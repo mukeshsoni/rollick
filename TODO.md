@@ -6,11 +6,12 @@
 - [x] add splitpane for left and right pane
 - [x] Emmet support for editors
 - [ ] Provide a utility in the UI to easily fill in fake data for common cases like ‘email’, ‘url’, ‘photo url’, ‘name’, ‘age’, ‘sex’, ‘description’, ‘long description’ etc.
-- [ ] Let 'command+i' work, even if the cursor is not in jsx editor
-  - [ ] show helpful suggestion for 'command+i' shortcut for searching components
+- [x] Let 'command+i' work, even if the cursor is not in jsx editor
+  - [x] show helpful suggestion for 'command+i' shortcut for searching components
 - [ ] host app on now.sh
+  - [ ] Tried and failed. Somehow fails while installing bluebird.
 - [ ] send pull request to react-fake-props
-- [ ] export to react component
+- [ ] export to react component feature
 - [ ] preview in search results of components
 - [ ] vim mode for editor?
 - [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
