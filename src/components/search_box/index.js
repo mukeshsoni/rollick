@@ -168,7 +168,7 @@ class SearchBox extends React.Component {
                             onShowPreviewClick={this.handleShowPreviewClick}
                         />
                     </div>
-                    <div style={{ width: searchBoxWidth }}>
+                    <div style={{ width: searchBoxWidth, height: 500 }}>
                         {previewComponent &&
                             previewComponent.component &&
                             <Preview component={previewComponent} />}

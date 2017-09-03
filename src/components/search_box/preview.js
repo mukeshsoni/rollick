@@ -10,7 +10,14 @@ class Preview extends React.Component {
         const { component } = this.props
 
         return (
-            <div style={{ background: 'cadetblue' }}>
+            <div
+                style={{
+                    background: 'cadetblue',
+                    height: '100%',
+                    marginLeft: 2,
+                    padding: '1em'
+                }}
+            >
                 {React.createElement(
                     component.component,
                     component.meta.fakeProps
