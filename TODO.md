@@ -5,14 +5,14 @@
 - [x] height of the editors
 - [x] add splitpane for left and right pane
 - [x] Emmet support for editors
-- [ ] Provide a utility in the UI to easily fill in fake data for common cases like ‘email’, ‘url’, ‘photo url’, ‘name’, ‘age’, ‘sex’, ‘description’, ‘long description’ etc.
 - [x] Let 'command+i' work, even if the cursor is not in jsx editor
   - [x] show helpful suggestion for 'command+i' shortcut for searching components
+- [ ] preview in search results of components
+- [ ] send pull request to react-fake-props
+- [ ] Provide a utility in the UI to easily fill in fake data for common cases like ‘email’, ‘url’, ‘photo url’, ‘name’, ‘age’, ‘sex’, ‘description’, ‘long description’ etc.
 - [ ] host app on now.sh
   - [ ] Tried and failed. Somehow fails while installing bluebird.
-- [ ] send pull request to react-fake-props
 - [ ] export to react component feature
-- [ ] preview in search results of components
 - [ ] vim mode for editor?
 - [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] Now there are two search places. One is the modal and another in the header. What if we wanted only one interface, the one in the header. Pressing command+i should then focus the input box in the search component in the header. How to set the focus declaratively based on the state (showSearchModal) of the parent? One way is to show dummy search input component and then swap to SearchBox when `showSearchModal={true}`. That didn't work though because i refactored the search input into it's own component and wanted to use it for the dummy search input box. Now the ref on the input box is not available to SearchBox component. So it can't focus it on componentDidMount. Question is - How to get ref handle from child to parent? One solution i found was to use cloneElement and then attach ref - https://github.com/facebook/react/issues/8873#issuecomment-275423780. Sadly that didn't work for me. The `node` returned in ref callback was null. I might be doing something wrong there.

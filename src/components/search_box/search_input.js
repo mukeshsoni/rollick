@@ -3,26 +3,19 @@ import PropTypes from 'prop-types'
 
 import './search_input.css'
 
-const SearchInput = ({
-    value = '',
-    className = '',
-    placeholder = '',
-    onChange,
-    onKeyDown,
-    onFocus,
-    onBlur
-}) => {
-    return (
-        <input
-            onKeyDown={onKeyDown}
-            className={'search-modal-input' + ' ' + className}
-            value={value}
-            placeholder={placeholder}
-            onChange={onChange}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-        />
-    )
+class SearchInput extends React.Component {
+    getInputRef = () => {
+        return this.inputRef
+    }
+
+    constructor(props) {
+        super(props)
+        this.inputRef = null
+    }
+
+    render() {
+        return <input ref={node => (this.inputRef = node)} {...this.props} />
+    }
 }
 
 SearchInput.propTypes = {
@@ -30,7 +23,9 @@ SearchInput.propTypes = {
     value: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func
+    onKeyDown: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func
 }
 
 export default SearchInput

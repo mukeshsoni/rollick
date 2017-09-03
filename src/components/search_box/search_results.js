@@ -4,7 +4,12 @@ import PropTypes from 'prop-types'
 
 import './search_results.css'
 
-const SearchResults = ({ items = [], selectedItemIndex = -1, onItemClick }) => {
+const SearchResults = ({
+    items = [],
+    selectedItemIndex = -1,
+    onItemClick,
+    onShowPreviewClick
+}) => {
     if (!items || items.length === 0) {
         return null
     }
@@ -17,6 +22,8 @@ const SearchResults = ({ items = [], selectedItemIndex = -1, onItemClick }) => {
                     item={item}
                     selected={selectedItemIndex === index}
                     onClick={onItemClick && onItemClick.bind(null, item)}
+                    onShowPreviewClick={() =>
+                        onShowPreviewClick && onShowPreviewClick(item)}
                 />
             )}
         </div>

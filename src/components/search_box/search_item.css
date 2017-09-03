@@ -1,4 +1,7 @@
 .search-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #aaa;
     font-weight: lighter;
     font-family: sans-serif;
@@ -8,7 +11,7 @@
 }
 
 .search-list-item:hover {
-    background: rgba(64, 150, 247, 0.6);
+    background: rgba(64, 150, 247, 1);
     cursor: pointer;
 }
 

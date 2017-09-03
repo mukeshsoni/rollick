@@ -90,6 +90,29 @@ class SearchBox extends React.Component {
         }
     }
 
+    handleShowPreviewClick = item => {
+        console.log('show preview for', item)
+    }
+
+    getInput = () => {
+        const { searchText } = this.state
+
+        const inputClassnames = classnames('search-modal-input', {
+            'with-results': this.getFilteredComponents().length > 0
+        })
+
+        return (
+            <SearchInput
+                ref={node => (this.searchInputRef = node)}
+                onKeyDown={this.handleKeyDown}
+                className={inputClassnames}
+                value={searchText}
+                onChange={this.handleInputChange}
+                placeholder="Search Component (Command + i)"
+            />
+        )
+    }
+
     constructor(props) {
         super(props)
 
@@ -103,32 +126,22 @@ class SearchBox extends React.Component {
     componentDidMount() {
         key('esc', this.handleContainerKeyDown)
         setTimeout(() => {
-            this.searchInputRef && this.searchInputRef.focus()
+            this.searchInputRef && this.searchInputRef.getInputRef().focus()
         }, 250)
     }
 
     render() {
         const { onRequestClose, isOpen } = this.props
-        const { searchText, selectedItemIndex } = this.state
-
-        const inputClassnames = classnames({
-            'with-results': this.getFilteredComponents().length > 0
-        })
+        const { selectedItemIndex } = this.state
 
         return (
             <div>
-                <SearchInput
-                    ref={input => (this.searchInputRef = input)}
-                    onKeyDown={this.handleKeyDown}
-                    className={inputClassnames}
-                    value={searchText}
-                    onChange={this.handleInputChange}
-                    placeholder="Search Component (Command + i)"
-                />
+                {this.getInput()}
                 <SearchResults
                     items={this.getFilteredComponents()}
                     selectedItemIndex={selectedItemIndex}
                     onItemClick={this.handleItemClick}
+                    onShowPreviewClick={this.handleShowPreviewClick}
                 />
             </div>
         )

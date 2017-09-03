@@ -6,7 +6,6 @@ import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
 import prettier from 'prettier'
 import componentsMetaList from 'components.meta.json!json'
-import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import SearchBox from 'src/components/search_box/index.js'
 import SearchInput from 'src/components/search_box/search_input.js'
 import Button from 'src/components/buttons/button'
@@ -405,6 +404,8 @@ export class App extends React.Component {
             }
         }
 
+        const inputClassnames = 'search-modal-input'
+
         return (
             <div className="page-container">
                 <header
@@ -429,12 +430,18 @@ export class App extends React.Component {
                             marginRight: 'auto'
                         }}
                     >
-                        <SearchBox
-                            focus={showSearchModal}
-                            items={componentsMetaList}
-                            onSelection={this.handleSearchSelection}
-                            onRequestClose={this.hideSearchModal}
-                        />
+                        {showSearchModal
+                            ? <SearchBox
+                                  items={componentsMetaList}
+                                  onSelection={this.handleSearchSelection}
+                                  onRequestClose={this.hideSearchModal}
+                              />
+                            : <SearchInput
+                                  className={inputClassnames}
+                                  placeholder="Search Component (Command + i)"
+                                  onFocus={() =>
+                                      this.setState({ showSearchModal: true })}
+                              />}
                     </div>
                     <Button
                         onClick={this.formatJsx}
@@ -513,18 +520,6 @@ export class App extends React.Component {
                         </Frame>
                     </div>
                 </SplitPane>
-                <Modal
-                    isOpen={showSearchModal}
-                    onRequestClose={this.hideSearchModal}
-                    style={modalStyle}
-                    contentLabel="Search Components"
-                >
-                    <SearchBox
-                        items={componentsMetaList}
-                        onSelection={this.handleSearchSelection}
-                        onRequestClose={this.hideSearchModal}
-                    />
-                </Modal>
             </div>
         )
     }
