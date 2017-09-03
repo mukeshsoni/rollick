@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import SearchResults from './search_results'
 import classnames from 'classnames'
 import deboune from 'debounce'
 import key from 'keymaster'
-import 'src/components/search_modal.css'
+import './search_box.css'
 
 function stopAllPropagations(e) {
     e && e.nativeEvent && e.nativeEvent.stopImmediatePropagation()
@@ -49,13 +48,11 @@ class SearchModal extends React.Component {
                 break
             case 40: // down arrow
                 stopAllPropagations(e)
-                this.setState(
-                    {
-                        selectedItemIndex:
-                            (this.state.selectedItemIndex + 1) %
-                            this.getFilteredComponents().length
-                    }
-                )
+                this.setState({
+                    selectedItemIndex:
+                        (this.state.selectedItemIndex + 1) %
+                        this.getFilteredComponents().length
+                })
                 break
             case 38: // up arrow
                 stopAllPropagations(e)
@@ -104,39 +101,21 @@ class SearchModal extends React.Component {
 
     componentDidMount() {
         key('esc', this.handleContainerKeyDown)
+        setTimeout(() => {
+            this.searchInputRef && this.searchInputRef.focus()
+        }, 250)
     }
 
     render() {
         const { onRequestClose, isOpen } = this.props
         const { searchText, selectedItemIndex } = this.state
 
-        const modalStyle = {
-            overlay: {
-                backgroundColor: 'rgba(28, 26, 26, 0.52)'
-            },
-            content: {
-                top: '20%',
-                left: 'calc((100vw - 500px)/2)',
-                width: 500,
-                border: 'none',
-                background: 'none'
-            }
-        }
-
         const inputClassnames = classnames('search-modal-input', {
             'with-results': this.getFilteredComponents().length > 0
         })
 
         return (
-            <Modal
-                isOpen={isOpen}
-                onAfterOpen={() => {
-                    this.searchInputRef && this.searchInputRef.focus()
-                }}
-                onRequestClose={onRequestClose}
-                style={modalStyle}
-                contentLabel="Search Components"
-            >
+            <div>
                 <input
                     ref={input => (this.searchInputRef = input)}
                     onKeyDown={this.handleKeyDown}
@@ -150,13 +129,12 @@ class SearchModal extends React.Component {
                     selectedItemIndex={selectedItemIndex}
                     onItemClick={this.handleItemClick}
                 />
-            </Modal>
+            </div>
         )
     }
 }
 
 SearchModal.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
     items: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string,

@@ -19,3 +19,8 @@
 ### Bugs
 -----
 - [ ] if the iframe (right pane) is in focus, keyboard events don't propagate to parent. So keybaord shortcuts don't work
+
+## Ambititious
+
+- [ ] since we already know how to show list of all components and load them when required with fake data, we can very easily generate a styleguide out of it. So the tool can morph between styleguide and reactor with almost zero cost! And since we have all the logic already for generating formatted jsx code for components, the preview pane for styleguide can have a text area inside where users can play with the props, just like styleguide by react velocity people.
+- [ ] When showing the styleguide, user will have an option to open that component in reactpen! Or a button which says "user this" or "copy code"

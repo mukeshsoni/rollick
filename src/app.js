@@ -6,7 +6,8 @@ import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 import sass from 'sass.js'
 import prettier from 'prettier'
 import componentsMetaList from 'components.meta.json!json'
-import SearchModal from 'src/components/search_modal'
+import Modal from 'node_modules/react-modal/dist/react-modal.js'
+import SearchBox from 'src/components/search_box/index.js'
 import Button from 'src/components/buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
@@ -365,6 +366,19 @@ export class App extends React.Component {
             showSearchModal
         } = this.state
 
+        const modalStyle = {
+            overlay: {
+                backgroundColor: 'rgba(28, 26, 26, 0.52)'
+            },
+            content: {
+                top: '20%',
+                left: 'calc((100vw - 500px)/2)',
+                width: 500,
+                border: 'none',
+                background: 'none'
+            }
+        }
+
         const jsxCodeMirrorOptions = {
             lineNumbers: true,
             lineWrapping: true,
@@ -492,12 +506,19 @@ export class App extends React.Component {
                         </Frame>
                     </div>
                 </SplitPane>
-                <SearchModal
+                <Modal
                     isOpen={showSearchModal}
-                    items={componentsMetaList}
-                    onSelection={this.handleSearchSelection}
                     onRequestClose={this.hideSearchModal}
-                />
+                    style={modalStyle}
+                    contentLabel="Search Components"
+                >
+                    <SearchBox
+                        isOpen={showSearchModal}
+                        items={componentsMetaList}
+                        onSelection={this.handleSearchSelection}
+                        onRequestClose={this.hideSearchModal}
+                    />
+                </Modal>
             </div>
         )
     }
