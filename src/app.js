@@ -430,7 +430,8 @@ export class App extends React.Component {
                             alignSelf: 'flex-start',
                             zIndex: 1000,
                             width: 500,
-                            marginRight: 'auto'
+                            marginRight: 'auto',
+                            marginTop: -5
                         }}
                     >
                         {showSearchModal
