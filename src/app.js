@@ -422,6 +422,21 @@ export class App extends React.Component {
                 >
                     <div
                         style={{
+                            alignSelf: 'flex-start',
+                            zIndex: 1000,
+                            width: 500,
+                            marginRight: '2em'
+                        }}
+                    >
+                        <SearchBox
+                            isOpen={showSearchModal}
+                            items={componentsMetaList}
+                            onSelection={this.handleSearchSelection}
+                            onRequestClose={this.hideSearchModal}
+                        />
+                    </div>
+                    <div
+                        style={{
                             color: '#fd2700',
                             marginRight: 'auto',
                             fontSize: '1.2em'
