@@ -8,7 +8,8 @@ const SearchResults = ({
     items = [],
     selectedItemIndex = -1,
     onItemClick,
-    onShowPreviewClick
+    onShowPreviewClick,
+    previewItemIndex = -1
 }) => {
     if (!items || items.length === 0) {
         return null
@@ -25,6 +26,7 @@ const SearchResults = ({
                         typeof onItemClick === 'function' && onItemClick(item)}
                     onShowPreviewClick={() =>
                         onShowPreviewClick && onShowPreviewClick(item)}
+                    withPreview={previewItemIndex === index}
                 />
             )}
         </div>
@@ -38,6 +40,7 @@ SearchResults.propTypes = {
         })
     ).isRequired,
     selectedItemIndex: PropTypes.number,
+    previewItemIndex: PropTypes.number,
     onItemClick: PropTypes.func.isRequired
 }
 

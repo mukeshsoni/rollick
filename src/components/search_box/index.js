@@ -8,6 +8,9 @@ import deboune from 'debounce'
 import key from 'keymaster'
 import './search_box.css'
 
+import belt from '../../../belt.js'
+const { findIndex } = belt
+
 function stopAllPropagations(e) {
     e && e.nativeEvent && e.nativeEvent.stopImmediatePropagation()
     e.preventDefault()
@@ -112,6 +115,19 @@ class SearchBox extends React.Component {
         }
     }
 
+    getPreviewComponentIndex = () => {
+        const { previewComponent } = this.state
+
+        if (previewComponent && previewComponent.meta) {
+            return findIndex(
+                this.getFilteredComponents(),
+                item => item.path === previewComponent.meta.path
+            )
+        } else {
+            return -1
+        }
+    }
+
     getInput = () => {
         const { searchText } = this.state
 
@@ -164,6 +180,7 @@ class SearchBox extends React.Component {
                         <SearchResults
                             items={this.getFilteredComponents()}
                             selectedItemIndex={selectedItemIndex}
+                            previewItemIndex={this.getPreviewComponentIndex()}
                             onItemClick={this.handleItemClick}
                             onShowPreviewClick={this.handleShowPreviewClick}
                         />

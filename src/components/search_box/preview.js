@@ -14,7 +14,7 @@ class Preview extends React.Component {
                 style={{
                     background: 'cadetblue',
                     height: '100%',
-                    marginLeft: 2,
+                    marginLeft: 10,
                     padding: '1em'
                 }}
             >

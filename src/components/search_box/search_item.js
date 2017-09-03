@@ -9,10 +9,12 @@ const SearchItem = ({
     item,
     selected = false,
     onClick,
-    onShowPreviewClick
+    onShowPreviewClick,
+    withPreview
 }) => {
     const itemClasses = classnames('search-list-item', {
-        'search-list-item--selected': selected
+        'search-list-item--selected': selected,
+        'with-preview': withPreview
     })
 
     return (
@@ -27,7 +29,7 @@ const SearchItem = ({
                         e.nativeEvent.stopImmediatePropagation()
                     onShowPreviewClick()
                 }}
-                label="Preview"
+                label={withPreview ? "Hide preview" : "Show preview"}
             />
         </div>
     )
@@ -36,6 +38,7 @@ const SearchItem = ({
 SearchItem.propTypes = {
     item: PropTypes.shape({ name: PropTypes.string }).isRequired,
     selected: PropTypes.bool,
+    withPreview: PropTypes.bool,
     onClick: PropTypes.func.isRequired
 }
 

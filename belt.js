@@ -25,9 +25,20 @@ function getNameFromPath(path) {
     }
 }
 
+function findIndex(list, predicate) {
+    for (let i = 0; i < list.length; i++) {
+        if (predicate(list[i]) === true) {
+            return i
+        }
+    }
+
+    return -1
+}
+
 module.exports = {
     last,
     capitalize,
     camelCaseFileName,
-    getNameFromPath
+    getNameFromPath,
+    findIndex
 }
