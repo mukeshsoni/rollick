@@ -21,7 +21,7 @@ const SearchResults = ({
                     key={'search_item_' + index}
                     item={item}
                     selected={selectedItemIndex === index}
-                    onClick={item =>
+                    onClick={e =>
                         typeof onItemClick === 'function' && onItemClick(item)}
                     onShowPreviewClick={() =>
                         onShowPreviewClick && onShowPreviewClick(item)}
