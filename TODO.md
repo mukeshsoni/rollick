@@ -21,6 +21,7 @@
 ### Bugs
 -----
 - [ ] if the iframe (right pane) is in focus, keyboard events don't propagate to parent. So keybaord shortcuts don't work
+- [ ] clicking outside of search box should close it
 
 ## Ambititious
 

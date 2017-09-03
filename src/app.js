@@ -149,7 +149,10 @@ export class App extends React.Component {
                                 selectedItem
                             )
                         },
-                        this.formatJsx
+                        () => {
+                            this.formatJsx()
+                            this.jsxCodemirror.getCodeMirror().focus()
+                        }
                     )
                 })
                 .catch(e =>
