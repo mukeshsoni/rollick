@@ -3,3 +3,4 @@ jspm_packages
 build\.*
 components.docgen.json
 components.meta.json
+.#*

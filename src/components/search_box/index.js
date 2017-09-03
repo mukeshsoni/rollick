@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SearchResults from './search_results'
+import SearchInput from './search_input'
 import classnames from 'classnames'
 import deboune from 'debounce'
 import key from 'keymaster'
@@ -12,7 +13,7 @@ function stopAllPropagations(e) {
     e.stopPropagation()
 }
 
-class SearchModal extends React.Component {
+class SearchBox extends React.Component {
     handleInputChange = e => {
         this.setState({ searchText: e.target.value })
     }
@@ -110,19 +111,19 @@ class SearchModal extends React.Component {
         const { onRequestClose, isOpen } = this.props
         const { searchText, selectedItemIndex } = this.state
 
-        const inputClassnames = classnames('search-modal-input', {
+        const inputClassnames = classnames({
             'with-results': this.getFilteredComponents().length > 0
         })
 
         return (
             <div>
-                <input
+                <SearchInput
                     ref={input => (this.searchInputRef = input)}
                     onKeyDown={this.handleKeyDown}
                     className={inputClassnames}
                     value={searchText}
                     onChange={this.handleInputChange}
-                    placeholder="Search Component"
+                    placeholder="Search Component (Command + i)"
                 />
                 <SearchResults
                     items={this.getFilteredComponents()}
@@ -134,7 +135,7 @@ class SearchModal extends React.Component {
     }
 }
 
-SearchModal.propTypes = {
+SearchBox.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string,
@@ -145,4 +146,4 @@ SearchModal.propTypes = {
     onRequestClose: PropTypes.func.isRequired
 }
 
-export default SearchModal
+export default SearchBox

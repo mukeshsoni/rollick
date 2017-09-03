@@ -8,6 +8,7 @@ import prettier from 'prettier'
 import componentsMetaList from 'components.meta.json!json'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import SearchBox from 'src/components/search_box/index.js'
+import SearchInput from 'src/components/search_box/search_input.js'
 import Button from 'src/components/buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
@@ -425,24 +426,15 @@ export class App extends React.Component {
                             alignSelf: 'flex-start',
                             zIndex: 1000,
                             width: 500,
-                            marginRight: '2em'
+                            marginRight: 'auto'
                         }}
                     >
                         <SearchBox
-                            isOpen={showSearchModal}
+                            focus={showSearchModal}
                             items={componentsMetaList}
                             onSelection={this.handleSearchSelection}
                             onRequestClose={this.hideSearchModal}
                         />
-                    </div>
-                    <div
-                        style={{
-                            color: '#fd2700',
-                            marginRight: 'auto',
-                            fontSize: '1.2em'
-                        }}
-                    >
-                        Command + i to search component
                     </div>
                     <Button
                         onClick={this.formatJsx}
@@ -528,7 +520,6 @@ export class App extends React.Component {
                     contentLabel="Search Components"
                 >
                     <SearchBox
-                        isOpen={showSearchModal}
                         items={componentsMetaList}
                         onSelection={this.handleSearchSelection}
                         onRequestClose={this.hideSearchModal}
