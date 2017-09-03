@@ -2,7 +2,8 @@
     border-bottom: 1px solid #aaa;
     font-weight: lighter;
     font-family: sans-serif;
-    background: rgba(248, 248, 242, 0.8);
+    background: rgba(248, 248, 242, 1);
+    color: black;
     padding: 1em;
 }
 

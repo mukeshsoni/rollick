@@ -336,7 +336,7 @@ export class App extends React.Component {
             showSearchModal: false,
             searchText: '',
             cssFilesToInject: [
-                'http://localhost:5000/src/components/search_item.css'
+                'http://localhost:5000/src/components/search_box/search_item.css'
             ]
         }
         this.jsxCodemirror = null
