@@ -4,6 +4,7 @@ import SearchResults from './search_results'
 import SearchInput from './search_input'
 import Preview from './preview.js'
 import classnames from 'classnames'
+import onClickOutside from 'react-onclickoutside'
 import deboune from 'debounce'
 import key from 'keymaster'
 import './search_box.css'
@@ -18,6 +19,10 @@ function stopAllPropagations(e) {
 }
 
 class SearchBox extends React.Component {
+    handleClickOutside = e => {
+        this.props.onRequestClose()
+    }
+
     handleInputChange = e => {
         this.setState({ searchText: e.target.value })
     }
@@ -161,9 +166,7 @@ class SearchBox extends React.Component {
 
     componentDidMount() {
         key('esc', this.handleContainerKeyDown)
-        setTimeout(() => {
-            this.searchInputRef && this.searchInputRef.getInputRef().focus()
-        }, 250)
+        this.searchInputRef && this.searchInputRef.getInputRef().focus()
     }
 
     render() {
@@ -207,4 +210,4 @@ SearchBox.propTypes = {
     onRequestClose: PropTypes.func.isRequired
 }
 
-export default SearchBox
+export default onClickOutside(SearchBox)

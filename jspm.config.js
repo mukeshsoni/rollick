@@ -289,11 +289,13 @@ SystemJS.config({
         'prop-types': 'npm:prop-types@15.5.10',
         'querystring': 'npm:jspm-nodelibs-querystring@0.2.2',
         'react': 'npm:react@15.6.1',
+        'react-click-outside': 'npm:react-click-outside@2.3.1',
         'react-codemirror': 'npm:react-codemirror@1.0.0',
         'react-dom': 'npm:react-dom@15.6.1',
         'react-frame-component': 'npm:react-frame-component@1.1.1',
         'react-jsx': 'npm:react-jsx@1.0.0',
         'react-modal': 'npm:react-modal@2.2.4',
+        'react-onclickoutside': 'npm:react-onclickoutside@6.5.0',
         'react-split-pane': 'npm:react-split-pane@0.1.66',
         'request': 'npm:request@2.81.0',
         'sass.js': 'npm:sass.js@0.10.6',
@@ -1660,6 +1662,11 @@ SystemJS.config({
         'npm:@emmetio/output-renderer@0.1.2': {
             'map': {
                 '@emmetio/field-parser': 'npm:@emmetio/field-parser@0.3.0'
+            }
+        },
+        'npm:react-click-outside@2.3.1': {
+            'map': {
+                'hoist-non-react-statics': 'npm:hoist-non-react-statics@1.2.0'
             }
         }
     }
