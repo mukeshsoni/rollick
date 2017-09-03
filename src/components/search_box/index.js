@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SearchResults from './search_results'
 import SearchInput from './search_input'
+import Preview from './preview.js'
 import classnames from 'classnames'
 import deboune from 'debounce'
 import key from 'keymaster'
@@ -90,8 +91,25 @@ class SearchBox extends React.Component {
         }
     }
 
+    // toggle preview on click of preview button
     handleShowPreviewClick = item => {
-        console.log('show preview for', item)
+        function sameItemPreviewClicked(newItem, previewComponent) {
+            if (!previewComponent || !previewComponent.meta) {
+                return false
+            }
+
+            return previewComponent.meta.path === newItem.path
+        }
+
+        if (sameItemPreviewClicked(item, this.state.previewComponent)) {
+            this.setState({ previewComponent: null })
+        } else if (item && item.path) {
+            SystemJS.import(item.path).then(com => {
+                this.setState({
+                    previewComponent: { component: com.default, meta: item }
+                })
+            })
+        }
     }
 
     getInput = () => {
@@ -118,8 +136,10 @@ class SearchBox extends React.Component {
 
         this.state = {
             searchText: '',
-            selectedItemIndex: -1
+            selectedItemIndex: -1,
+            previewComponent: null
         }
+
         this.searchInputRef = null
     }
 
@@ -132,17 +152,28 @@ class SearchBox extends React.Component {
 
     render() {
         const { onRequestClose, isOpen } = this.props
-        const { selectedItemIndex } = this.state
+        const { selectedItemIndex, previewComponent } = this.state
+
+        const searchBoxWidth = 500
 
         return (
             <div>
                 {this.getInput()}
-                <SearchResults
-                    items={this.getFilteredComponents()}
-                    selectedItemIndex={selectedItemIndex}
-                    onItemClick={this.handleItemClick}
-                    onShowPreviewClick={this.handleShowPreviewClick}
-                />
+                <div style={{ display: 'flex', width: searchBoxWidth * 2 }}>
+                    <div style={{ width: searchBoxWidth }}>
+                        <SearchResults
+                            items={this.getFilteredComponents()}
+                            selectedItemIndex={selectedItemIndex}
+                            onItemClick={this.handleItemClick}
+                            onShowPreviewClick={this.handleShowPreviewClick}
+                        />
+                    </div>
+                    <div style={{ width: searchBoxWidth }}>
+                        {previewComponent &&
+                            previewComponent.component &&
+                            <Preview component={previewComponent} />}
+                    </div>
+                </div>
             </div>
         )
     }
