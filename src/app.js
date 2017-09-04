@@ -247,12 +247,14 @@ export class App extends React.Component {
     }
 
     adjustEditorSizes = () => {
+        const headerHeight = 30
+
         this.jsxCodemirror
             .getCodeMirror()
-            .setSize('100%', this.jsxContainerRef.clientHeight - 60)
+            .setSize('100%', this.jsxContainerRef.clientHeight - headerHeight)
         this.cssCodemirror
             .getCodeMirror()
-            .setSize('100%', this.cssContainerRef.clientHeight - 60)
+            .setSize('100%', this.cssContainerRef.clientHeight - headerHeight)
     }
 
     getIframeHead = () => {
