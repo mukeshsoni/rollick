@@ -170,6 +170,9 @@
   },
   "dependencies": {
     "codemirror": "^5.29.0",
+    "fs-extra": "4.0.1",
+    "ncp": "2.0.0",
+    "pify": "3.0.0",
     "react-modal": "^2.2.4"
   },
   "devDependencies": {

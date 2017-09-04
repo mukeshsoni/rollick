@@ -11,3 +11,8 @@
   - JSON doesn't support javascript functions
   - i serialized functions as strings. That meant deserializing became a 2 step process. First do JSON.parse(serializedString), and then run another pass on each of the parsed entities to get the functions out specifically
 - Write your own utility library for each of your side projects. Don't just import lodash or ramda. Writing the utility functions again and again is good javascript practice ;)
+- react-docgen is awesome. It reads files which describe react components and creates meta data about that component
+- react-fake-props is an idea in the right direction. Read the meta data created by react docgen and then try creating fake data reading the types of the props
+- ASTs are awesome. probably. If one wants to do any fancy stuff with editors, knowing about ASTs is a must. Not yet directly using ASTs but through other tools like prettier/sass-compiler etc. But planning to use AST for multiple things
+  - AST to determine the component in which the cursor is placed in the jsx editor. And accordingly show a attribute pane where users can visually change prop values
+  - AST to show better auto completions for custom react components
