@@ -14,6 +14,7 @@
 
 var fs = require('fs-extra')
 var path = require('path')
+var exec = require('child_process').exec
 var pify = require('pify')
 var ncp = require('ncp').ncp
 var recursivelyCopy = pify(ncp)
@@ -49,3 +50,6 @@ fs
     .then(files => files.forEach(console.log))
     .catch(console.error)
 // npm install
+
+var promisifiedExec = pify(exec)
+promisifiedExec('npm i').then(() => promisifiedExec('npm run build'))
