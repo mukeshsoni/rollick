@@ -3,7 +3,7 @@ import CodeMirror from 'react-codemirror'
 import jsx from 'jsx-transpiler'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
-import sass from 'sass.js'
+/* import sass from 'sass.js'*/
 import prettier from 'prettier'
 import componentsMetaList from 'components.meta.json!json'
 import SearchBox from 'src/components/search_box/index.js'
@@ -224,13 +224,14 @@ export class App extends React.Component {
     }, 500)
 
     updateCssCode = newCode => {
-        sass.compile(wrapCss(newCode), result => {
-            if (result.status === 0) {
-                this.setState({ cssCode: newCode, cssToInsert: newCode })
-            } else {
-                console.log('error converting sass to css', result.message)
-            }
-        })
+        this.setState({ cssCode: newCode, cssToInsert: newCode })
+        /* sass.compile(wrapCss(newCode), result => {
+         *     if (result.status === 0) {
+         *         this.setState({ cssCode: newCode, cssToInsert: newCode })
+         *     } else {
+         *         console.log('error converting sass to css', result.message)
+         *     }
+         * })*/
     }
 
     hideSearchModal = () => {
@@ -501,7 +502,7 @@ export class App extends React.Component {
                             }}
                         >
                             <div className="editor-header">
-                                <h2>SASS</h2>
+                                <h2>CSS</h2>
                             </div>
                             <CodeMirror
                                 ref={instance =>

@@ -1,0 +1,13 @@
+- css reset
+  - Why it's important
+- css flexbox
+  - what is it and why it's awesome
+- iframe
+  - when to use it (scoping of styles for tools which render code from outside it's domain)
+  - gotchas
+  - how to use it with react
+    - react-frame-component is awesome
+- serializing javascript functions
+  - JSON doesn't support javascript functions
+  - i serialized functions as strings. That meant deserializing became a 2 step process. First do JSON.parse(serializedString), and then run another pass on each of the parsed entities to get the functions out specifically
+- Write your own utility library for each of your side projects. Don't just import lodash or ramda. Writing the utility functions again and again is good javascript practice ;)

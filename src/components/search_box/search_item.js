@@ -10,15 +10,15 @@ const SearchItem = ({
     selected = false,
     onClick,
     onShowPreviewClick,
-    withPreview
+    withPreview,
+    className=''
 }) => {
     const itemClasses = classnames('search-list-item', {
-        'search-list-item--selected': selected,
-        'with-preview': withPreview
+        'search-list-item--selected': selected
     })
 
     return (
-        <div className={itemClasses} onClick={onClick}>
+        <div className={itemClasses+ ' ' +className} onClick={onClick}>
             {item.name}
             <Button
                 onClick={e => {
@@ -39,6 +39,7 @@ SearchItem.propTypes = {
     item: PropTypes.shape({ name: PropTypes.string }).isRequired,
     selected: PropTypes.bool,
     withPreview: PropTypes.bool,
+    className: PropTypes.string,
     onClick: PropTypes.func.isRequired
 }
 

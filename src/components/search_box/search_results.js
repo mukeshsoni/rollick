@@ -27,6 +27,7 @@ const SearchResults = ({
                     onShowPreviewClick={() =>
                         onShowPreviewClick && onShowPreviewClick(item)}
                     withPreview={previewItemIndex === index}
+                    className={previewItemIndex === index ? 'with-preview' : ''}
                 />
             )}
         </div>
