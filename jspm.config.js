@@ -5,12 +5,12 @@ SystemJS.config({
         'reactpen/': 'src/'
     },
     browserConfig: {
-        baseURL: '/'
+        baseURL: '.'
     },
     devConfig: {
         map: {
             'plugin-babel': 'npm:systemjs-plugin-babel@0.0.25',
-            'core-js': 'npm:core-js@2.5.0'
+            'core-js': 'npm:core-js@2.5.1'
         }
     },
     transpiler: 'plugin-babel',
@@ -21,6 +21,8 @@ SystemJS.config({
                 '*.js': {
                     loader: 'plugin-babel',
                     babelOptions: {
+                        optional: ['runtime'],
+                        stage1: true,
                         plugins: ['babel-plugin-transform-react-jsx']
                     }
                 },
@@ -41,6 +43,8 @@ SystemJS.config({
 SystemJS.config({
     packageConfigPaths: ['npm:@*/*.json', 'npm:*.json', 'github:*/*.json'],
     map: {
+        'babel-plugin-transform-flow-strip-types':
+            'npm:babel-plugin-transform-flow-strip-types@6.22.0',
         '@emmetio/codemirror-plugin': 'npm:@emmetio/codemirror-plugin@0.3.5',
         'emmet-codemirror': 'npm:emmet-codemirror@1.2.5',
         classnames: 'npm:classnames@2.2.5',
@@ -545,7 +549,7 @@ SystemJS.config({
         },
         'npm:babel-runtime@6.26.0': {
             map: {
-                'core-js': 'npm:core-js@2.5.0',
+                'core-js': 'npm:core-js@2.5.1',
                 'regenerator-runtime': 'npm:regenerator-runtime@0.11.0'
             }
         },
@@ -671,7 +675,7 @@ SystemJS.config({
                 'babel-runtime': 'npm:babel-runtime@6.26.0',
                 'home-or-tmp': 'npm:home-or-tmp@2.0.0',
                 'source-map-support': 'npm:source-map-support@0.4.16',
-                'core-js': 'npm:core-js@2.5.0',
+                'core-js': 'npm:core-js@2.5.1',
                 mkdirp: 'npm:mkdirp@0.5.1'
             }
         },

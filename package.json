@@ -12,6 +12,7 @@
       "@emmetio/codemirror-plugin": "npm:@emmetio/codemirror-plugin@^0.3.5",
       "acorn-jsx": "npm:acorn-jsx@^4.0.1",
       "babel-core": "npm:babel-core@^6.26.0",
+      "babel-plugin-transform-flow-strip-types": "npm:babel-plugin-transform-flow-strip-types@^6.22.0",
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.24.1",
       "classnames": "npm:classnames@^2.2.5",
       "debounce": "npm:debounce@^1.0.2",

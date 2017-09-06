@@ -109,7 +109,12 @@ function updatePackagesProperty(reactpenConfig, jspmConfig) {
                     '*.js': {
                         loader: 'plugin-babel',
                         babelOptions: {
-                            plugins: ['babel-plugin-transform-react-jsx']
+                            optional: ['runtime'],
+                            stage1: true,
+                            plugins: [
+                                'babel-plugin-transform-react-jsx',
+                                'babel-plugin-transform-flow-strip-types'
+                            ]
                         }
                     },
                     '*.css': {
@@ -137,7 +142,10 @@ function updateJspmConfigFile() {
 
     let jspmConfig = fs.readFileSync(jspmConfigFilePath, 'utf-8')
     // change base url
-    jspmConfig = jspmConfig.replace("baseURL: '/", "baseURL: '.")
+    // somethings the quotes on baseURL are not there. Depends on what jspm generates or how a pretty printer decides to format it. Leads to all sorts of bugs in the next line. line not even finding that string and so no replacement
+    // chaning to '.' is required since otherwise we would serve wrong stuff for many
+    // jspmConfig = jspmConfig.replace("'baseURL': '/", "baseURL: '.")
+
     jspmConfig = updatePackagesProperty(reactpenConfig, jspmConfig)
     jspmConfig = updatePaths(reactpenConfig, jspmConfig)
 
