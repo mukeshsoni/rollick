@@ -89,7 +89,7 @@ function updatePaths(reactpenConfig, jspmConfig) {
         const newPaths = Object.keys(
             reactpenConfig.jspm.paths
         ).reduce((acc, key) => {
-            return `\n'${key}': '${reactpenConfig.jspm.paths[key]}'`
+            return acc + `\n'${key}': '${reactpenConfig.jspm.paths[key]}',`
         }, '')
         return jspmConfig.replace(
             "'reactpen/': 'src/'",
