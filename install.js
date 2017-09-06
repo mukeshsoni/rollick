@@ -137,7 +137,7 @@ function updateJspmConfigFile() {
 
     let jspmConfig = fs.readFileSync(jspmConfigFilePath, 'utf-8')
     // change base url
-    jspmConfig = jspmConfig.replace("baseURL: '/", "baseURL: '.reactpen/")
+    jspmConfig = jspmConfig.replace("baseURL: '/", "baseURL: '.")
     jspmConfig = updatePackagesProperty(reactpenConfig, jspmConfig)
     jspmConfig = updatePaths(reactpenConfig, jspmConfig)
 
