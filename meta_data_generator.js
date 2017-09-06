@@ -8,8 +8,11 @@ const { getNameFromPath } = require('./belt.js')
 
 const docgenOutputFile = 'components.docgen.json'
 const finalMetaFile = 'components.meta.json'
-const configFilePath = './reactpen.config.js'
 
+const configFilePath =
+    process.argv.length > 2
+        ? process.argv[2].split('=')[1]
+        : './reactpen.config.js'
 const config = require(configFilePath)
 
 exec(

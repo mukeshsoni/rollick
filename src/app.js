@@ -6,9 +6,9 @@ import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
 /* import sass from 'sass.js'*/
 import prettier from 'prettier'
 import componentsMetaList from 'components.meta.json!json'
-import SearchBox from 'src/components/search_box/index.js'
-import SearchInput from 'src/components/search_box/search_input.js'
-import Button from 'src/components/buttons/button'
+import SearchBox from './components/search_box/index.js'
+import SearchInput from './components/search_box/search_input.js'
+import Button from './components/buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
 import Frame from 'react-frame-component'
@@ -89,21 +89,6 @@ function addComponent(jsx, codeMirror, componentDetails) {
     return codeMirror.getValue()
 }
 
-const componentMap = {
-    avatar: {
-        name: 'Avatar',
-        path: 'src/components/avatar.js',
-        props: {
-            src: {
-                defaultValue: "'https://unsplash.it/50/50'"
-            },
-            width: {
-                defaultValue: 100
-            }
-        }
-    }
-}
-
 function dedupe(arr) {
     let seen = {}
     return arr.filter(
@@ -114,23 +99,33 @@ function dedupe(arr) {
 export class App extends React.Component {
     registerServiceWorker = () => {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').then(registration => {
-                // Registration was successful
-                console.log(
-                    'ServiceWorker registration successful with scope: ',
-                    registration.scope
-                )
-                navigator.serviceWorker.addEventListener('message', event => {
-                    this.setState({
-                        cssFilesToInject: dedupe(
-                            this.state.cssFilesToInject.concat(event.data)
+            navigator.serviceWorker
+                .register('/sw_reactpen.js')
+                .then(
+                    registration => {
+                        // Registration was successful
+                        console.log(
+                            'ServiceWorker registration successful with scope: ',
+                            registration.scope
                         )
-                    })
-                })
-            }, function(err) {
-                // registration failed :(
-                console.log('ServiceWorker registration failed: ', err)
-            })
+                        navigator.serviceWorker.addEventListener(
+                            'message',
+                            event => {
+                                this.setState({
+                                    cssFilesToInject: dedupe(
+                                        this.state.cssFilesToInject.concat(
+                                            event.data
+                                        )
+                                    )
+                                })
+                            }
+                        )
+                    },
+                    function(err) {
+                        // registration failed :(
+                        console.log('ServiceWorker registration failed: ', err)
+                    }
+                )
         }
     }
 

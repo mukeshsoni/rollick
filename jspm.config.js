@@ -26,6 +26,9 @@ SystemJS.config({
                 },
                 '*.css': {
                     loader: 'css'
+                },
+                '*.less': {
+                    loader: 'less'
                 }
             }
         }
@@ -69,7 +72,7 @@ SystemJS.config({
         jsbn: 'npm:jsbn@0.1.1',
         'jsx-transpiler': 'npm:jsx-transpiler@0.1.4',
         keymaster: 'npm:keymaster@1.6.2',
-        less: 'npm:less@2.7.2',
+        less: 'npm:systemjs-less-plugin@2.2.1',
         mime: 'npm:mime@1.3.6',
         mkdirp: 'npm:mkdirp@0.5.1',
         module: 'npm:jspm-nodelibs-module@0.2.1',

@@ -21,7 +21,7 @@ var ncp = require('ncp').ncp
 var recursivelyCopy = pify(ncp)
 var promisifiedExec = pify(exec)
 
-var reactpenFolder = './.reactpen'
+var reactpenFolder = path.resolve(process.cwd() + '/.reactpen')
 
 // create .reactpen folder if it doesn't exist
 function createReactpenFolder() {
@@ -46,12 +46,13 @@ function copyNeededFiles() {
         'jspm.config.js',
         'package.json',
         'main.js',
+        'sw_reactpen.js',
         'src'
     ]
 
     return Promise.all(
         filesToCopy.map(file => {
-            return fs.copy(file, reactpenFolder + '/' + file)
+            return fs.copy(__dirname + '/' + file, reactpenFolder + '/' + file)
         })
     )
 }
@@ -73,7 +74,7 @@ function installJspmModules() {
 }
 
 function generateMetaFile() {
-    return promisifiedExec('npm run docgen')
+    return promisifiedExec('npm run docgen -- --config=../reactpen.config.js')
 }
 
 function pifyLog(msg) {
@@ -91,8 +92,8 @@ pifyLog('Creating .reactpen  folder')
     .then(gotoReactpenFolder)
     .then(pifyLog.bind(null, 'installing npm modules'))
     .then(installNpmModules)
-    .then(pifyLog.bind(null, 'installing jspm modules'))
-    .then(installJspmModules)
+    // .then(pifyLog.bind(null, 'installing jspm modules'))
+    // .then(installJspmModules)
     .then(pifyLog.bind(null, 'generating meta file for components'))
     .then(generateMetaFile)
     .catch(e => console.log('Error creating reactpen stuff', e))
