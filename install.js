@@ -22,6 +22,8 @@ var recursivelyCopy = pify(ncp)
 var promisifiedExec = pify(exec)
 
 var reactpenFolder = path.resolve(process.cwd() + '/.reactpen')
+var reactpenConfig = require(path.resolve(process.cwd()) +
+    '/reactpen.config.js')
 
 // create .reactpen folder if it doesn't exist
 function createReactpenFolder() {
@@ -82,6 +84,66 @@ function pifyLog(msg) {
     return Promise.resolve({})
 }
 
+function updatePaths(reactpenConfig, jspmConfig) {
+    if (reactpenConfig.jspm && reactpenConfig.jspm.paths) {
+        const newPaths = Object.keys(
+            reactpenConfig.jspm.paths
+        ).reduce((acc, key) => {
+            return `\n'${key}': '${reactpenConfig.jspm.paths[key]}'`
+        }, '')
+        return jspmConfig.replace(
+            "'reactpen/': 'src/'",
+            "'reactpen/': 'src/'," + newPaths
+        )
+    } else {
+        return jspmConfig
+    }
+}
+
+function updatePackagesProperty(reactpenConfig, jspmConfig) {
+    if (reactpenConfig.jspm && reactpenConfig.jspm.paths) {
+        const packagesConfig = {
+            [Object.keys(reactpenConfig.jspm.paths)[0]]: {
+                main: 'pp_reactpen.js',
+                meta: {
+                    '*.js': {
+                        loader: 'plugin-babel',
+                        babelOptions: {
+                            plugins: ['babel-plugin-transform-react-jsx']
+                        }
+                    },
+                    '*.css': {
+                        loader: 'css'
+                    },
+                    '*.less': {
+                        loader: 'less'
+                    }
+                }
+            }
+        }
+
+        jspmConfig = jspmConfig.replace(
+            'packages: ',
+            'packages: ' + JSON.stringify(packagesConfig, null, 4)
+        )
+        return jspmConfig.replace('}\n}{', '},\n')
+    } else {
+        return jspmConfig
+    }
+}
+
+function updateJspmConfigFile() {
+    const jspmConfigFilePath = process.cwd() + '/jspm.config.js'
+
+    let jspmConfig = fs.readFileSync(jspmConfigFilePath, 'utf-8')
+    // change base url
+    jspmConfig = jspmConfig.replace("baseURL: '/", "baseURL: '.reactpen/")
+    jspmConfig = updatePackagesProperty(reactpenConfig, jspmConfig)
+    jspmConfig = updatePaths(reactpenConfig, jspmConfig)
+
+    return fs.writeFile(jspmConfigFilePath, jspmConfig)
+}
+
 pifyLog('Creating .reactpen  folder')
     .then(createReactpenFolder)
     .then(pifyLog.bind(null, 'Emptying .reactpen folder'))
@@ -90,10 +152,12 @@ pifyLog('Creating .reactpen  folder')
     .then(copyNeededFiles)
     .then(pifyLog.bind(null, 'going inside .reactpen folder'))
     .then(gotoReactpenFolder)
+    .then(pifyLog.bind(null, 'modifying jspm config file'))
+    .then(updateJspmConfigFile)
     .then(pifyLog.bind(null, 'installing npm modules'))
     .then(installNpmModules)
-    // .then(pifyLog.bind(null, 'installing jspm modules'))
-    // .then(installJspmModules)
+    .then(pifyLog.bind(null, 'installing jspm modules'))
+    .then(installJspmModules)
     .then(pifyLog.bind(null, 'generating meta file for components'))
     .then(generateMetaFile)
     .catch(e => console.log('Error creating reactpen stuff', e))
