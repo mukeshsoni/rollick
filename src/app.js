@@ -65,23 +65,28 @@ function getFakePropValue(fakeProp) {
 
 function addComponent(jsx, codeMirror, componentDetails) {
     let codeToInsert = `<${componentDetails.name} `
-    let propValuePairs = Object.keys(
-        componentDetails.props
-    ).reduce((acc, propName) => {
-        if (
-            componentDetails.fakeProps &&
-            componentDetails.fakeProps[propName]
-        ) {
-            return (
-                acc +
-                ` ${propName}={${getFakePropValue(
-                    componentDetails.fakeProps[propName]
-                )}}`
-            )
-        } else {
-            return acc + ` ${propName}={'https://unsplash.it/250/250'}`
-        }
-    }, '')
+    let propValuePairs = ''
+    if (componentDetails.props) {
+        propValuePairs = Object.keys(
+            componentDetails.props
+        ).reduce((acc, propName) => {
+            if (
+                componentDetails.fakeProps &&
+                componentDetails.fakeProps[propName]
+            ) {
+                return (
+                    acc +
+                    ` ${propName}={${getFakePropValue(
+                        componentDetails.fakeProps[propName]
+                    )}}`
+                )
+            } else {
+                return acc + ` ${propName}={'https://unsplash.it/250/250'}`
+            }
+        }, '')
+    } else {
+        propValuePairs = ''
+    }
 
     codeToInsert = `${codeToInsert} ${propValuePairs}></${componentDetails.name}>`
 
