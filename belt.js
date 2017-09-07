@@ -2,6 +2,14 @@ function last(arr) {
     return arr[arr.length - 1]
 }
 
+function init(arr) {
+    if (arr && arr.length > 1) {
+        return arr.slice(0, -1)
+    } else {
+        return null
+    }
+}
+
 function capitalize(str) {
     if (str && str.length > 0) {
         return str.charAt(0).toUpperCase() + str.slice(1)
@@ -18,8 +26,8 @@ function getNameFromPath(path) {
     const filePathParts = path.split('/')
 
     // if file is some variant of index.js or index.jsx or index.xyx.js, we need to taret the folder it's inside
-    if (last(filePathParts).split('.')[0] === 'index.js') {
-        return camelCaseFileName(last(filePathParts.slice(1)))
+    if (last(filePathParts) === 'index.js') {
+        return camelCaseFileName(last(init(filePathParts)))
     } else {
         return camelCaseFileName(last(filePathParts))
     }

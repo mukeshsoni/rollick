@@ -24,6 +24,21 @@
 - [ ] export to react component feature
 - [ ] vim mode for editor?
 - [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
+- [ ] Script which allows you to use reactpen with your own project. 
+- [ ] Production build setup. Should generate a minified bundle and point to react production file 
+- [ ] Error handling in editors and global errors 
+- [ ] Check for reactpen config file on install command and throw error if absent
+- [ ] Undo/redo feature 
+- [ ] Peerdependencies
+- [ ] Look at create react app and see what happens when we invoke create-react-app on the command line. Should have similar 'reactpen install' or something 
+- [ ] The name reactpen restricts future development scope to react users. Which should not be the case. Any component based architecture should be OK. Change the name. Jalebi? Nageen? Gambol? Jambol? Shenanigan? Kodai?
+- [ ] React fake props flowtype support 
+- [ ] Preview panel styling 
+- [ ] Make all dependencies as normal dependencies. In other words, move all dev dependencies to dependencies section in package.json
+- [ ] Don't need to copy meta data generator. In fact, should run it from project root and just copy the output files to .kodai folder 
+- [ ] Fix name generator from component path with index.js as the final file
+- [ ] fake props can be moved to frontend. Much more control.
+- [ ] react-docgen fails sometimes when it find emacs temp files in the directory and our script doesn’t show any error.
 
 ### Bugs
 -----
