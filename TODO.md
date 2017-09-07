@@ -11,11 +11,11 @@
         Fixed it by making the `SearchInput` component a class and not a function. That way, i can attach a ref to that component and get other stuff out of it.
 - [x] preview in search results of components
 - [ ] Script which allows you to use reactpen with your own project. Steps for the script should be - 
-      - Copy needed stuff to .reactpen folder inside that project
-      - read reactpen.config.js file in the root of the project
-      - mainly pickup the component folder path from the config
-      - generate the components meta file from the component path and store it inside .reactpen folder
-      - start server in project root
+      - [x] Copy needed stuff to .reactpen folder inside that project
+      - [x] read reactpen.config.js file in the root of the project
+      - [x] mainly pickup the component folder path from the config
+      - [x] generate the components meta file from the component path and store it inside .reactpen folder
+      - [ ] start server in project root
 - [ ] Integrate with PP components
 - [ ] send pull request to react-fake-props
 - [ ] Provide a utility in the UI to easily fill in fake data for common cases like ‘email’, ‘url’, ‘photo url’, ‘name’, ‘age’, ‘sex’, ‘description’, ‘long description’ etc.

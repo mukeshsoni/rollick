@@ -3,7 +3,7 @@ import CodeMirror from 'react-codemirror'
 import jsx from 'jsx-transpiler'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
-/* import sass from 'sass.js'*/
+import sass from 'sass.js'
 import prettier from 'prettier'
 import componentsMetaList from 'components.meta.json!json'
 import SearchBox from './components/search_box/index.js'
@@ -34,7 +34,7 @@ function jsxToJs(jsxCode, oldVal = '') {
         }).code
         return compiledJsx
     } catch (e) {
-        console.log('error compiling jsx', e.toString())
+        console.error('error compiling jsx', e.toString())
         return oldVal
     }
 }
@@ -128,7 +128,7 @@ export class App extends React.Component {
                     },
                     function(err) {
                         // registration failed :(
-                        console.log('ServiceWorker registration failed: ', err)
+                        console.error('ServiceWorker registration failed: ', err)
                     }
                 )
         }
@@ -156,7 +156,7 @@ export class App extends React.Component {
                     )
                 })
                 .catch(e =>
-                    console.log('error loading component', selectedItem.name, e)
+                    console.error('error loading component', selectedItem.name, e)
                 )
         }
     }
@@ -224,14 +224,14 @@ export class App extends React.Component {
     }, 500)
 
     updateCssCode = newCode => {
-        this.setState({ cssCode: newCode, cssToInsert: newCode })
-        /* sass.compile(wrapCss(newCode), result => {
-         *     if (result.status === 0) {
-         *         this.setState({ cssCode: newCode, cssToInsert: newCode })
-         *     } else {
-         *         console.log('error converting sass to css', result.message)
-         *     }
-         * })*/
+        /* this.setState({ cssCode: newCode, cssToInsert: newCode })*/
+        sass.compile(wrapCss(newCode), result => {
+            if (result.status === 0) {
+                this.setState({ cssCode: newCode, cssToInsert: newCode })
+            } else {
+                console.error('error converting sass to css', result.message)
+            }
+        })
     }
 
     hideSearchModal = () => {
