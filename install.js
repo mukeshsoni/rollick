@@ -146,8 +146,9 @@ function updatePackagesProperty(reactpenConfig, jspmConfig) {
                             optional: ['runtime'],
                             stage1: true,
                             plugins: [
-                                'babel-plugin-transform-react-jsx',
-                                'babel-plugin-transform-flow-strip-types'
+                                'babel-plugin-transform-react-remove-prop-types',
+                                'babel-plugin-transform-flow-strip-types',
+                                'babel-plugin-transform-react-jsx'
                             ]
                         }
                     },

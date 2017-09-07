@@ -51,6 +51,7 @@ SystemJS.config({
         'github:*/*.json'
     ],
     map: {
+        'babel-plugin-transform-react-remove-prop-types': 'npm:babel-plugin-transform-react-remove-prop-types@0.4.8',
         'babel-plugin-transform-flow-strip-types': 'npm:babel-plugin-transform-flow-strip-types@6.22.0',
         '@emmetio/codemirror-plugin': 'npm:@emmetio/codemirror-plugin@0.3.5',
         'emmet-codemirror': 'npm:emmet-codemirror@1.2.5',
@@ -335,8 +336,8 @@ SystemJS.config({
         'npm:browserify-cipher@1.0.0': {
             'map': {
                 'browserify-des': 'npm:browserify-des@1.0.0',
-                'evp_bytestokey': 'npm:evp_bytestokey@1.0.2',
-                'browserify-aes': 'npm:browserify-aes@1.0.6'
+                'evp_bytestokey': 'npm:evp_bytestokey@1.0.3',
+                'browserify-aes': 'npm:browserify-aes@1.0.8'
             }
         },
         'npm:sha.js@2.4.8': {
@@ -361,8 +362,8 @@ SystemJS.config({
             'map': {
                 'create-hash': 'npm:create-hash@1.1.3',
                 'pbkdf2': 'npm:pbkdf2@3.0.13',
-                'evp_bytestokey': 'npm:evp_bytestokey@1.0.2',
-                'browserify-aes': 'npm:browserify-aes@1.0.6',
+                'evp_bytestokey': 'npm:evp_bytestokey@1.0.3',
+                'browserify-aes': 'npm:browserify-aes@1.0.8',
                 'asn1.js': 'npm:asn1.js@4.9.1'
             }
         },
@@ -401,25 +402,10 @@ SystemJS.config({
                 'minimalistic-crypto-utils': 'npm:minimalistic-crypto-utils@1.0.1'
             }
         },
-        'npm:evp_bytestokey@1.0.2': {
-            'map': {
-                'safe-buffer': 'npm:safe-buffer@5.1.1',
-                'md5.js': 'npm:md5.js@1.3.4'
-            }
-        },
         'npm:hash.js@1.1.3': {
             'map': {
                 'inherits': 'npm:inherits@2.0.3',
                 'minimalistic-assert': 'npm:minimalistic-assert@1.0.0'
-            }
-        },
-        'npm:browserify-aes@1.0.6': {
-            'map': {
-                'cipher-base': 'npm:cipher-base@1.0.4',
-                'create-hash': 'npm:create-hash@1.1.3',
-                'inherits': 'npm:inherits@2.0.3',
-                'evp_bytestokey': 'npm:evp_bytestokey@1.0.2',
-                'buffer-xor': 'npm:buffer-xor@1.0.3'
             }
         },
         'npm:miller-rabin@4.0.0': {
@@ -1475,6 +1461,27 @@ SystemJS.config({
         'npm:react-click-outside@2.3.1': {
             'map': {
                 'hoist-non-react-statics': 'npm:hoist-non-react-statics@1.2.0'
+            }
+        },
+        'npm:babel-plugin-transform-react-remove-prop-types@0.4.8': {
+            'map': {
+                'babel-traverse': 'npm:babel-traverse@6.26.0'
+            }
+        },
+        'npm:browserify-aes@1.0.8': {
+            'map': {
+                'create-hash': 'npm:create-hash@1.1.3',
+                'inherits': 'npm:inherits@2.0.3',
+                'safe-buffer': 'npm:safe-buffer@5.1.1',
+                'evp_bytestokey': 'npm:evp_bytestokey@1.0.3',
+                'cipher-base': 'npm:cipher-base@1.0.4',
+                'buffer-xor': 'npm:buffer-xor@1.0.3'
+            }
+        },
+        'npm:evp_bytestokey@1.0.3': {
+            'map': {
+                'safe-buffer': 'npm:safe-buffer@5.1.1',
+                'md5.js': 'npm:md5.js@1.3.4'
             }
         }
     }
