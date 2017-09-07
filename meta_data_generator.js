@@ -19,11 +19,11 @@ exec(
     `./node_modules/.bin/react-docgen ${config.componentsPath} -o ${docgenOutputFile} --pretty`,
     function(err, stdout) {
         if (err) {
-            console.log('error while generating docs for components', err)
+            console.error('error while generating docs for components', err)
         } else {
             fs.readFile(docgenOutputFile, 'utf-8', function(err, meta) {
                 if (err) {
-                    console.log('Error reading docgen generated file', err)
+                    console.error('Error reading docgen generated file', err)
                 } else {
                     const metaData = JSON.parse(meta)
                     const componentPaths = Object.keys(metaData)
@@ -34,7 +34,7 @@ exec(
                         try {
                             fp = fakeProps(path, { optional: true })
                         } catch (e) {
-                            console.log(
+                            console.error(
                                 'error generating fake props for ',
                                 path,
                                 ' Reason: ',
