@@ -79,6 +79,40 @@ function generateMetaFile() {
     return promisifiedExec('npm run docgen -- --config=../reactpen.config.js')
 }
 
+function addGlobals(reactpenConfig) {
+    function createCssLinks(cssConfig) {
+        function wrapUrlInLinkTag(url) {
+            return `<link src="${url}" rel="stylesheet" />`
+        }
+
+        if (Array.isArray(cssConfig.urls)) {
+            return cssConfig.urls.reduce(
+                (acc, url) => `${acc}\n${wrapUrlInLinkTag(url)}`,
+                ''
+            )
+        } else {
+            return wrapUrlInLinkTag(cssConfig.urls)
+        }
+    }
+
+    if (reactpenConfig && reactpenConfig.globals) {
+        if (reactpenConfig.globals.css) {
+            let indexFile = fs.readFileSync(__dirname + '/index.html', 'utf-8')
+
+            indexFile = indexFile.replace(
+                '</head>',
+                `${createCssLinks(reactpenConfig.globals.css)}\n</head>`
+            )
+
+            return fs.writeFile(reactpenFolder + '/index.html', indexFile)
+        } else {
+            return Promise.resolve({})
+        }
+    } else {
+        return Promise.resolve({})
+    }
+}
+
 function pifyLog(msg) {
     console.log(msg)
     return Promise.resolve({})
@@ -162,6 +196,8 @@ pifyLog('Creating .reactpen  folder')
     .then(gotoReactpenFolder)
     .then(pifyLog.bind(null, 'modifying jspm config file'))
     .then(updateJspmConfigFile)
+    .then(pifyLog.bind(null, 'adding global links to index.html file'))
+    .then(addGlobals.bind(null, reactpenConfig))
     .then(pifyLog.bind(null, 'installing npm modules'))
     .then(installNpmModules)
     .then(pifyLog.bind(null, 'installing jspm modules'))
