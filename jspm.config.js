@@ -19,13 +19,11 @@ SystemJS.config({
             main: 'reactpen.js',
             meta: {
                 '*.js': {
-                    format: 'cjs',
                     loader: 'plugin-babel',
                     babelOptions: {
                         // 'optional': [
                         //     'runtime'
                         // ],
-                        modularRuntime: false,
                         stage1: true,
                         plugins: ['babel-plugin-transform-react-jsx']
                     }

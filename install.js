@@ -141,9 +141,11 @@ function updatePackagesProperty(reactpenConfig, jspmConfig) {
                 main: 'pp_reactpen.js',
                 meta: {
                     '*.js': {
+                        format: 'cjs',
                         loader: 'plugin-babel',
                         babelOptions: {
-                            optional: ['runtime'],
+                            // optional: ['runtime'],
+                            modularRuntime: false,
                             stage1: true,
                             plugins: [
                                 'babel-plugin-transform-react-remove-prop-types',
