@@ -331,7 +331,7 @@ export class App extends React.Component {
         super(props)
 
         const startingJsx = ''
-        const startingCss = 'div { font-size: 24px; }'
+        const startingCss = ''
 
         this.state = {
             com: null,

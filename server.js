@@ -60,7 +60,7 @@ function updateTildePaths(lessFile) {
 
     while (matches) {
         try {
-            console.log('modified file name', addLessExtIfNeeded(matches[3]))
+            // console.log('modified file name', addLessExtIfNeeded(matches[3]))
             modifiedFile = modifiedFile.replace(
                 matches[0],
                 `@import${matches[1]}${matches[2]}/frontend/harmony/src/pp/core/less/${addLessExtIfNeeded(
@@ -100,7 +100,7 @@ http
     .createServer(function(req, response) {
         var filePath = req.url.slice(1)
 
-        console.log('filePath', filePath)
+        // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
             response.writeHead(200)
             if (last(filePath.split('.')) === 'js') {
@@ -121,3 +121,5 @@ http
 process.on('uncaughtException', function(err) {
     console.error('Uncaught exception', err)
 })
+
+console.log('Server started on http://localhost:8000')
