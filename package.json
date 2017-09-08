@@ -16,6 +16,7 @@
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.24.1",
       "babel-plugin-transform-react-remove-prop-types": "npm:babel-plugin-transform-react-remove-prop-types@^0.4.8",
       "classnames": "npm:classnames@^2.2.5",
+      "cssbeautify": "npm:cssbeautify@^0.3.1",
       "debounce": "npm:debounce@^1.0.2",
       "emmet-codemirror": "npm:emmet-codemirror@^1.2.5",
       "esformatter-jsx": "npm:esformatter-jsx@^8.0.1",

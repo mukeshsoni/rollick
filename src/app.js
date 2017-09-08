@@ -12,6 +12,7 @@ import Button from './components/buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
 import Frame from 'react-frame-component'
+import cssbeautify from 'cssbeautify'
 /* import emmetCodemirror from 'emmet-codemirror'*/
 import emmetCodemirror from '@emmetio/codemirror-plugin'
 import './app.css'
@@ -105,32 +106,35 @@ export class App extends React.Component {
     registerServiceWorker = () => {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
-                     .register('/sw_reactpen.js')
-                     .then(
-                         registration => {
-                             // Registration was successful
-                             console.log(
-                                 'ServiceWorker registration successful with scope: ',
-                                 registration.scope
-                             )
-                             navigator.serviceWorker.addEventListener(
-                                 'message',
-                                 event => {
-                                     this.setState({
-                                         cssFilesToInject: dedupe(
-                                             this.state.cssFilesToInject.concat(
-                                                 event.data
-                                             )
-                                         )
-                                     })
-                                 }
-                             )
-                         },
-                         function(err) {
-                             // registration failed :(
-                             console.error('ServiceWorker registration failed: ', err)
-                         }
-                     )
+                .register('/sw_reactpen.js')
+                .then(
+                    registration => {
+                        // Registration was successful
+                        console.log(
+                            'ServiceWorker registration successful with scope: ',
+                            registration.scope
+                        )
+                        navigator.serviceWorker.addEventListener(
+                            'message',
+                            event => {
+                                this.setState({
+                                    cssFilesToInject: dedupe(
+                                        this.state.cssFilesToInject.concat(
+                                            event.data
+                                        )
+                                    )
+                                })
+                            }
+                        )
+                    },
+                    function(err) {
+                        // registration failed :(
+                        console.error(
+                            'ServiceWorker registration failed: ',
+                            err
+                        )
+                    }
+                )
         }
     }
 
@@ -156,7 +160,11 @@ export class App extends React.Component {
                     )
                 })
                 .catch(e =>
-                    console.error('error loading component', selectedItem.name, e)
+                    console.error(
+                        'error loading component',
+                        selectedItem.name,
+                        e
+                    )
                 )
         }
     }
@@ -172,13 +180,25 @@ export class App extends React.Component {
         )
     }
 
+    formatCss = () => {
+        this.setState(
+            {
+                cssCode: cssbeautify(this.state.cssCode)
+            },
+            () => {
+                this.cssCodemirror.getCodeMirror().setValue(this.state.cssCode)
+                this.cssCodemirror.getCodeMirror().setCursor(cmCursor)
+            }
+        )
+    }
+
     formatJsx = () => {
         function cmToPrettierCursorOffset(code, cursor) {
             const allLines = code.split('\n')
             const charsInLineBeforeCursor =
                 cursor.line > 1
-                ? allLines.slice(0, cursor.line - 1).join('\n').length
-                : 0
+                    ? allLines.slice(0, cursor.line - 1).join('\n').length
+                    : 0
             return charsInLineBeforeCursor + cursor.ch
         }
 
@@ -223,7 +243,7 @@ export class App extends React.Component {
         })
     }, 500)
 
-    updateCssCode = newCode => {
+    updateCssCode = debounce(newCode => {
         /* this.setState({ cssCode: newCode, cssToInsert: newCode })*/
         sass.compile(wrapCss(newCode), result => {
             if (result.status === 0) {
@@ -232,7 +252,7 @@ export class App extends React.Component {
                 console.error('error converting sass to css', result.message)
             }
         })
-    }
+    }, 500)
 
     hideSearchModal = () => {
         return this.setState({ showSearchModal: false }, () => {
@@ -265,14 +285,14 @@ export class App extends React.Component {
                     {this.state.cssToInsert}
                 </style>
                 {this.state.cssFilesToInject.map(cssFilePath => {
-                     return (
-                         <link
-                             key={'link_tag_' + cssFilePath}
-                             type="text/css"
-                             rel="stylesheet"
-                             href={cssFilePath}
-                         />
-                     )
+                    return (
+                        <link
+                            key={'link_tag_' + cssFilePath}
+                            type="text/css"
+                            rel="stylesheet"
+                            href={cssFilePath}
+                        />
+                    )
                 })}
             </div>
         )
@@ -442,18 +462,23 @@ export class App extends React.Component {
                         }}
                     >
                         {showSearchModal
-                         ? <SearchBox
-                               items={componentsMetaList}
-                               onSelection={this.handleSearchSelection}
-                               onRequestClose={this.hideSearchModal}
-                         />
-                         : <SearchInput
-                               className={inputClassnames}
-                               placeholder="Search Component (Command + i)"
-                               onFocus={() =>
-                                   this.setState({ showSearchModal: true })}
-                         />}
+                            ? <SearchBox
+                                  items={componentsMetaList}
+                                  onSelection={this.handleSearchSelection}
+                                  onRequestClose={this.hideSearchModal}
+                              />
+                            : <SearchInput
+                                  className={inputClassnames}
+                                  placeholder="Search Component (Command + i)"
+                                  onFocus={() =>
+                                      this.setState({ showSearchModal: true })}
+                              />}
                     </div>
+                    <Button
+                        onClick={this.formatCss}
+                        label="Format css"
+                        style={{ marginRight: '1em' }}
+                    />
                     <Button
                         onClick={this.formatJsx}
                         label="Format jsx"
@@ -524,7 +549,8 @@ export class App extends React.Component {
                 </SplitPane>
             </div>
         )
-        {/* <Frame
+        {
+            /* <Frame
             style={{
             width: '100%',
             height: 600
@@ -533,6 +559,7 @@ export class App extends React.Component {
             head={this.getIframeHead()}
             >
             {eval(jsxToInsert)}
-            </Frame> */}
+            </Frame> */
+        }
     }
 }
