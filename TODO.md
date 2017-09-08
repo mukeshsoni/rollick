@@ -13,6 +13,8 @@
 - [x] send pull request to react-fake-props
 - [ ] fake props can be moved to frontend. Much more control.
 - [ ] React fake props flowtype support
+- [ ] Auto format for css code
+- [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
 - [ ] Integrate with PP components
   - [ ] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
   - [ ] React.PropTypes is not present in the version of react i use for reactpen. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our package.json and use codemod to do the necessary changes
