@@ -1,5 +1,5 @@
 const reactDocs = require('react-docgen')
-const fakeProps = require('react-fake-props')
+const fakeProps = require('react-fake-props/src')
 const path = require('path')
 const exec = require('child_process').exec
 const fs = require('fs')
