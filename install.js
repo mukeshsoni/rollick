@@ -48,6 +48,7 @@ function copyNeededFiles() {
         'jspm.config.js',
         'package.json',
         'main.js',
+        'server.js',
         'sw_reactpen.js',
         'src'
     ]

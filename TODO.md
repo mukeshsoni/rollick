@@ -11,10 +11,18 @@
         Fixed it by making the `SearchInput` component a class and not a function. That way, i can attach a ref to that component and get other stuff out of it.
 - [x] preview in search results of components
 - [x] send pull request to react-fake-props
-- [x] React fake props flowtype support 
+- [ ] fake props can be moved to frontend. Much more control.
+- [ ] React fake props flowtype support
 - [ ] Integrate with PP components
   - [ ] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
   - [ ] React.PropTypes is not present in the version of react i use for reactpen. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our package.json and use codemod to do the necessary changes
+  - [ ] CSS still half breaks in a weird way. Probably connected to some other global css file.
+- [ ] own server to serve files
+  - [ ] Introduce concept of loaders through reactpen.config file. E.g. using tildeLoader for less files in projectplace project
+  - [ ] Use babel transpilation by default. Would take care of edge cases with named imports for ES6 modules which may/maynot work with systemjs 
+  currently
+    - [ ] reactpen config should give an option to set custom babel presets and plugins
+    - [ ] add default presets and plugins used in babel in the server to npm dependencies list
 - [ ] Script which allows you to use reactpen with your own project. Steps for the script should be - 
       - [x] Copy needed stuff to .reactpen folder inside that project
       - [x] read reactpen.config.js file in the root of the project
@@ -38,7 +46,6 @@
 - [ ] Make all dependencies as normal dependencies. In other words, move all dev dependencies to dependencies section in package.json
 - [ ] Don't need to copy meta data generator. In fact, should run it from project root and just copy the output files to .kodai folder 
   - [ ] More difficult to do than it looks like. Because of the way that script is setup
-- [ ] fake props can be moved to frontend. Much more control.
 - [ ] react-docgen fails sometimes when it find emacs temp files in the directory and our script doesn’t show any error.
 
 ### Bugs
