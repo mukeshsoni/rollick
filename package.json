@@ -176,6 +176,7 @@
     "fs-extra": "4.0.1",
     "ncp": "2.0.0",
     "pify": "3.0.0",
+    "react-fake-props": "git+https://github.com/mukeshsoni/react-fake-props.git",
     "react-modal": "^2.2.4"
   },
   "devDependencies": {
@@ -185,7 +186,6 @@
     "react": "^15.6.1",
     "react-docgen": "^2.17.0",
     "react-dom": "^15.6.1",
-    "react-fake-props": "^0.1.1",
     "serialize-javascript": "^1.4.0",
     "serve": "^6.0.6"
   }
