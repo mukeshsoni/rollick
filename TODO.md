@@ -14,9 +14,13 @@
 - [x] Auto format for css code
 - [ ] fake props can be moved to frontend. Much more control.
 - [ ] React fake props flowtype support
+  - [ ] simple types
+  - [ ] custom types - signature
+  - [ ] complex custom types - signature inside signature. E.g. type Person { repos: Array<Repo> }; type Repo = { url: string, commits: Array<Commit> }; type Commit = {...}`
 - [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
 - [ ] Add option to specify docgen options in reactpen config file. Example exclude list for folders/files.
 - [ ] Add option to specify fakeData options in reactpen config. Example - `optional: boolean` to generate data for optional types or not.
+- [ ] Looks like react-docgen does not understand flow exact types ({| <definitions> |}). Can use the beta version if feeling adventorous - https://github.com/reactjs/react-docgen/issues/173
 - [ ] Have two commands to run at top level - `reactpen install` and `reactpen start`. Use `args` npm module to generate help documentation for each.
   - [ ] Rename install.js file to index.js and then use `args` module to delegate to `install` or `start` functions internally.
   - [ ] `reactpen start` will start the server to serve the files
