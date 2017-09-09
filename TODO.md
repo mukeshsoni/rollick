@@ -15,6 +15,9 @@
 - [ ] React fake props flowtype support
 - [ ] Auto format for css code
 - [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
+- [ ] Have two commands to run at top level - `reactpen install` and `reactpen start`. Use `args` npm module to generate help documentation for each.
+  - [ ] Rename install.js file to index.js and then use `args` module to delegate to `install` or `start` functions internally.
+  - [ ] `reactpen start` will start the server to serve the files
 - [ ] Integrate with PP components
   - [ ] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
   - [ ] React.PropTypes is not present in the version of react i use for reactpen. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our package.json and use codemod to do the necessary changes
@@ -49,6 +52,15 @@
 - [ ] Don't need to copy meta data generator. In fact, should run it from project root and just copy the output files to .kodai folder 
   - [ ] More difficult to do than it looks like. Because of the way that script is setup
 - [ ] react-docgen fails sometimes when it find emacs temp files in the directory and our script doesn’t show any error.
+- [ ] Clean up dependencies
+- [ ] Performance optimisations
+- [ ] Generate fake data only for required props. There's too much noise because of all the props being there in the editor. Most are not required for the component to function.
+- [ ] If cursor is in between another element, the search result goes into a place which is not valid jsx. But it's hard to see in the editor what went wrong where. One solution is to first try to prettier format the resulting jsx. If there's an error, instead put the searched component at the end of the jsx stuff in the browser. User can then rearrange the jsx as needed. At least the jsx will be correct and user sees the added component 
+- [ ] Save and share the pen 
+- [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
+- [ ] Check why docgen fails for many of our components 
+- [ ] Add proptypes to components which are missing any proptype definitions
+- [ ] Create new npm packages, docgentofake, which takes description for one component produced by docgen and returns fake data for that
 
 ### Bugs
 -----
