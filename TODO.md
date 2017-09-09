@@ -11,10 +11,12 @@
         Fixed it by making the `SearchInput` component a class and not a function. That way, i can attach a ref to that component and get other stuff out of it.
 - [x] preview in search results of components
 - [x] send pull request to react-fake-props
+- [x] Auto format for css code
 - [ ] fake props can be moved to frontend. Much more control.
 - [ ] React fake props flowtype support
-- [ ] Auto format for css code
 - [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
+- [ ] Add option to specify docgen options in reactpen config file. Example exclude list for folders/files.
+- [ ] Add option to specify fakeData options in reactpen config. Example - `optional: boolean` to generate data for optional types or not.
 - [ ] Have two commands to run at top level - `reactpen install` and `reactpen start`. Use `args` npm module to generate help documentation for each.
   - [ ] Rename install.js file to index.js and then use `args` module to delegate to `install` or `start` functions internally.
   - [ ] `reactpen start` will start the server to serve the files
