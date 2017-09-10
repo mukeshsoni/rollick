@@ -18,16 +18,25 @@
   - [ ] custom types - signature
   - [ ] complex custom types - signature inside signature. E.g. type Person { repos: Array<Repo> }; type Repo = { url: string, commits: Array<Commit> }; type Commit = {...}`
 - [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
+- [ ] Don't need the docgen stuff and meta file to be pretty formatted. Waste of bytes.
 - [ ] Add option to specify docgen options in reactpen config file. Example exclude list for folders/files.
 - [ ] Add option to specify fakeData options in reactpen config. Example - `optional: boolean` to generate data for optional types or not.
 - [ ] Looks like react-docgen does not understand flow exact types ({| <definitions> |}). Can use the beta version if feeling adventorous - https://github.com/reactjs/react-docgen/issues/173
-- [ ] Have two commands to run at top level - `reactpen install` and `reactpen start`. Use `args` npm module to generate help documentation for each.
+- [ ] Have multiple commands to run at top level - `reactpen install`, `reactpen start`, `reactpen generate-meta`, `reactpen watch`. Use `args` npm module to generate help documentation for each.
   - [ ] Rename install.js file to index.js and then use `args` module to delegate to `install` or `start` functions internally.
   - [ ] `reactpen start` will start the server to serve the files
+  - [ ] `reactpen generate-meta` to regenerate meta files wheneven needed (after change in component definition)
+  - [ ] `reactpen watch` to watch all component files and automatically regenrate meta file on change of any component file
 - [ ] Integrate with PP components
   - [ ] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
-  - [ ] React.PropTypes is not present in the version of react i use for reactpen. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our package.json and use codemod to do the necessary changes
-  - [ ] CSS still half breaks in a weird way. Probably connected to some other global css file.
+    - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
+  - [x] React.PropTypes is not present in the version of react i use for reactpen. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
+  package.json and use codemod to do the necessary changes
+    - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
+  - [x] CSS still half breaks in a weird way. Probably connected to some other global css file.
+    - Looks like it breaks in weird ways all over the place, even in our system
+  - [ ] react-docgen does not understand exact types :(
+  - [ ] Need to manually add proptypes for components which are missing proptypes. Also need to modify proptypes for components which do not specify the isRequired flag correctly.
 - [ ] own server to serve files
   - [ ] Introduce concept of loaders through reactpen.config file. E.g. using tildeLoader for less files in projectplace project
   - [ ] Use babel transpilation by default. Would take care of edge cases with named imports for ES6 modules which may/maynot work with systemjs 
@@ -40,6 +49,7 @@
       - [x] mainly pickup the component folder path from the config
       - [x] generate the components meta file from the component path and store it inside .reactpen folder
       - [ ] start server in project root
+      - [ ] react-docgen does not understand exact types :(
 - [ ] Provide a utility in the UI to easily fill in fake data for common cases like ‘email’, ‘url’, ‘photo url’, ‘name’, ‘age’, ‘sex’, ‘description’, ‘long description’ etc.
 - [ ] host app on now.sh
   - [ ] Tried and failed. Somehow fails while installing bluebird.
