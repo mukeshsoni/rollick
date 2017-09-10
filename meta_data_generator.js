@@ -30,48 +30,55 @@ exec(
                     const metaDataWithFakeProps = componentPaths.map(function(
                         path
                     ) {
-                        let fp = null
-                        try {
-                            fp = fakeProps(path, { optional: true })
-                        } catch (e) {
-                            console.error(
-                                'error generating fake props for ',
-                                path,
-                                ' Reason: ',
-                                e
-                            )
-                        }
+                        return Object.assign(
+                            {
+                                name: getNameFromPath(path),
+                                path: path
+                            },
+                            metaData[path]
+                        )
+                        // let fp = null
+                        // try {
+                        //     fp = fakeProps(path, { optional: false })
+                        // } catch (e) {
+                        //     console.error(
+                        //         'error generating fake props for ',
+                        //         path,
+                        //         ' Reason: ',
+                        //         e
+                        //     )
+                        // }
 
-                        if (fp) {
-                            return Object.assign(
-                                {
-                                    name: getNameFromPath(path),
-                                    path: path,
-                                    // doing the reduce stuff because JSON stringify doesn't work on function just like that. need to convert functions to string for JSON stringify to include them
-                                    fakeProps: Object.keys(fp).reduce(function(
-                                        acc,
-                                        key
-                                    ) {
-                                        return Object.assign({}, acc, {
-                                            [key]:
-                                                typeof fp[key] === 'function'
-                                                    ? fp[key] + ''
-                                                    : fp[key]
-                                        })
-                                    }, {})
-                                    // typeof fp === 'function' ? fp + '' : fp
-                                },
-                                metaData[path]
-                            )
-                        } else {
-                            return Object.assign(
-                                {
-                                    name: getNameFromPath(path),
-                                    path: path
-                                },
-                                metaData[path]
-                            )
-                        }
+                        // if (fp) {
+                        //     return Object.assign(
+                        //         {
+                        //             name: getNameFromPath(path),
+                        //             path: path,
+                        //             // doing the reduce stuff because JSON stringify doesn't work on function just like that. need to convert functions to string for JSON stringify to include them
+                        //             fakeProps: Object.keys(fp).reduce(function(
+                        //                 acc,
+                        //                 key
+                        //             ) {
+                        //                 return Object.assign({}, acc, {
+                        //                     [key]:
+                        //                         typeof fp[key] === 'function'
+                        //                             ? fp[key] + ''
+                        //                             : fp[key]
+                        //                 })
+                        //             }, {})
+                        //             // typeof fp === 'function' ? fp + '' : fp
+                        //         },
+                        //         metaData[path]
+                        //     )
+                        // } else {
+                        //     return Object.assign(
+                        //         {
+                        //             name: getNameFromPath(path),
+                        //             path: path
+                        //         },
+                        //         metaData[path]
+                        //     )
+                        // }
                     })
 
                     fs.writeFileSync(

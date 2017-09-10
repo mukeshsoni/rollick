@@ -25,6 +25,8 @@ import 'node_modules/codemirror/lib/codemirror.css!css'
 import belt from '../belt.js'
 const { last } = belt
 
+import faker from './faker.js'
+
 import codeMirrorInstance from 'node_modules/codemirror/lib/codemirror.js'
 emmetCodemirror(codeMirrorInstance)
 // oldVal is a hack until we have Either data type support
@@ -68,21 +70,19 @@ function addComponent(jsx, codeMirror, componentDetails) {
     let codeToInsert = `<${componentDetails.name} `
     let propValuePairs = ''
     if (componentDetails.props) {
+        const fakeProps = faker(componentDetails.props)
         propValuePairs = Object.keys(
             componentDetails.props
         ).reduce((acc, propName) => {
-            if (
-                componentDetails.fakeProps &&
-                componentDetails.fakeProps[propName]
-            ) {
+            if (fakeProps && fakeProps[propName]) {
                 return (
                     acc +
-                    ` ${propName}={${getFakePropValue(
-                        componentDetails.fakeProps[propName]
-                    )}}`
+                    ` ${propName}={${getFakePropValue(fakeProps[propName])}}`
                 )
-            } else {
+            } else if (componentDetails.props[propName].required !== false) {
                 return acc + ` ${propName}={'https://unsplash.it/250/250'}`
+            } else {
+                return acc
             }
         }, '')
     } else {
@@ -551,15 +551,15 @@ export class App extends React.Component {
         )
         {
             /* <Frame
-            style={{
-            width: '100%',
-            height: 600
-            }}
-            frameBorder={'0'}
-            head={this.getIframeHead()}
-            >
-            {eval(jsxToInsert)}
-            </Frame> */
+               style={{
+               width: '100%',
+               height: 600
+               }}
+               frameBorder={'0'}
+               head={this.getIframeHead()}
+               >
+               {eval(jsxToInsert)}
+               </Frame> */
         }
     }
 }
