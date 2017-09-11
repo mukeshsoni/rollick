@@ -19,18 +19,18 @@
   - [ ] complex custom types - signature inside signature. E.g. type Person { repos: Array<Repo> }; type Repo = { url: string, commits: Array<Commit> }; type Commit = {...}`
 - [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
 - [ ] Don't need the docgen stuff and meta file to be pretty formatted. Waste of bytes.
-- [ ] Add option to specify docgen options in reactpen config file. Example exclude list for folders/files.
-- [ ] Add option to specify fakeData options in reactpen config. Example - `optional: boolean` to generate data for optional types or not.
+- [ ] Add option to specify docgen options in rollick config file. Example exclude list for folders/files.
+- [ ] Add option to specify fakeData options in rollick config. Example - `optional: boolean` to generate data for optional types or not.
 - [ ] Looks like react-docgen does not understand flow exact types ({| <definitions> |}). Can use the beta version if feeling adventorous - https://github.com/reactjs/react-docgen/issues/173
-- [ ] Have multiple commands to run at top level - `reactpen install`, `reactpen start`, `reactpen generate-meta`, `reactpen watch`. Use `args` npm module to generate help documentation for each.
+- [ ] Have multiple commands to run at top level - `rollick install`, `rollick start`, `rollick generate-meta`, `rollick watch`. Use `args` npm module to generate help documentation for each.
   - [ ] Rename install.js file to index.js and then use `args` module to delegate to `install` or `start` functions internally.
-  - [ ] `reactpen start` will start the server to serve the files
-  - [ ] `reactpen generate-meta` to regenerate meta files wheneven needed (after change in component definition)
-  - [ ] `reactpen watch` to watch all component files and automatically regenrate meta file on change of any component file
+  - [ ] `rollick start` will start the server to serve the files
+  - [ ] `rollick generate-meta` to regenerate meta files wheneven needed (after change in component definition)
+  - [ ] `rollick watch` to watch all component files and automatically regenrate meta file on change of any component file
 - [ ] Integrate with PP components
   - [ ] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
     - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
-  - [x] React.PropTypes is not present in the version of react i use for reactpen. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
+  - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
   package.json and use codemod to do the necessary changes
     - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
   - [x] CSS still half breaks in a weird way. Probably connected to some other global css file.
@@ -38,16 +38,16 @@
   - [ ] react-docgen does not understand exact types :(
   - [ ] Need to manually add proptypes for components which are missing proptypes. Also need to modify proptypes for components which do not specify the isRequired flag correctly.
 - [ ] own server to serve files
-  - [ ] Introduce concept of loaders through reactpen.config file. E.g. using tildeLoader for less files in projectplace project
+  - [ ] Introduce concept of loaders through rollick.config file. E.g. using tildeLoader for less files in projectplace project
   - [ ] Use babel transpilation by default. Would take care of edge cases with named imports for ES6 modules which may/maynot work with systemjs 
   currently
-    - [ ] reactpen config should give an option to set custom babel presets and plugins
+    - [ ] rollick config should give an option to set custom babel presets and plugins
     - [ ] add default presets and plugins used in babel in the server to npm dependencies list
-- [ ] Script which allows you to use reactpen with your own project. Steps for the script should be - 
-      - [x] Copy needed stuff to .reactpen folder inside that project
-      - [x] read reactpen.config.js file in the root of the project
+- [ ] Script which allows you to use rollick with your own project. Steps for the script should be - 
+      - [x] Copy needed stuff to .rollick folder inside that project
+      - [x] read rollick.config.js file in the root of the project
       - [x] mainly pickup the component folder path from the config
-      - [x] generate the components meta file from the component path and store it inside .reactpen folder
+      - [x] generate the components meta file from the component path and store it inside .rollick folder
       - [ ] start server in project root
       - [ ] react-docgen does not understand exact types :(
 - [ ] Provide a utility in the UI to easily fill in fake data for common cases like ‘email’, ‘url’, ‘photo url’, ‘name’, ‘age’, ‘sex’, ‘description’, ‘long description’ etc.
@@ -58,11 +58,11 @@
 - [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] Production build setup. Should generate a minified bundle and point to react production file 
 - [ ] Error handling in editors and global errors 
-- [ ] Check for reactpen config file on install command and throw error if absent
+- [ ] Check for rollick config file on install command and throw error if absent
 - [ ] Undo/redo feature 
 - [ ] Peerdependencies
-- [ ] Look at create react app and see what happens when we invoke create-react-app on the command line. Should have similar 'reactpen install' or something 
-- [ ] The name reactpen restricts future development scope to react users. Which should not be the case. Any component based architecture should be OK. Change the name. Jalebi? Nageen? Gambol? Jambol? Shenanigan? Kodai?
+- [ ] Look at create react app and see what happens when we invoke create-react-app on the command line. Should have similar 'rollick install' or something 
+- [ ] The name rollick restricts future development scope to react users. Which should not be the case. Any component based architecture should be OK. Change the name. Jalebi? Nageen? Gambol? Jambol? Shenanigan? Kodai?
 - [ ] Preview panel styling 
 - [ ] Make all dependencies as normal dependencies. In other words, move all dev dependencies to dependencies section in package.json
 - [ ] Don't need to copy meta data generator. In fact, should run it from project root and just copy the output files to .kodai folder 
@@ -87,4 +87,4 @@
 ## Ambititious
 
 - [ ] since we already know how to show list of all components and load them when required with fake data, we can very easily generate a styleguide out of it. So the tool can morph between styleguide and reactor with almost zero cost! And since we have all the logic already for generating formatted jsx code for components, the preview pane for styleguide can have a text area inside where users can play with the props, just like styleguide by react velocity people.
-- [ ] When showing the styleguide, user will have an option to open that component in reactpen! Or a button which says "user this" or "copy code"
+- [ ] When showing the styleguide, user will have an option to open that component in rollick! Or a button which says "user this" or "copy code"

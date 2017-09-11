@@ -8,6 +8,6 @@ var path = require('path')
 program.option('-p, --port <port_number>').parse(process.argv)
 const port = program.port || 4000
 
-const toolName = 'reactpen'
+const toolName = 'rollick'
 const toolFolder = `${process.cwd()}/.${toolName}`
 exec(`node ${toolFolder}/.server.js --port ${port}`)

@@ -9,7 +9,7 @@ var parseArgs = require('minimist')
 var args = parseArgs(process.argv.slice(1))
 const port = args.port || 4000
 
-const toolName = 'reactpen'
+const toolName = 'rollick'
 
 var opts = {
     presets: ['react', 'es2015', 'stage-2'],

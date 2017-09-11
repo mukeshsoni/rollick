@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { App } from 'reactpen/app.js'
+import { App } from 'rollick/app.js'
 
 let container = document.getElementById('container')
 

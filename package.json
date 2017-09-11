@@ -10,8 +10,8 @@
     "start": "serve ."
   },
   "jspm": {
-    "name": "reactpen",
-    "main": "reactpen.js",
+    "name": "rollick",
+    "main": "rollick.js",
     "dependencies": {
       "@emmetio/codemirror-plugin": "npm:@emmetio/codemirror-plugin@^0.3.5",
       "acorn-jsx": "npm:acorn-jsx@^4.0.1",

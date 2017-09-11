@@ -2,7 +2,7 @@ SystemJS.config({
     paths: {
         'npm:': 'jspm_packages/npm/',
         'github:': 'jspm_packages/github/',
-        'reactpen/': 'src/'
+        'rollick/': 'src/'
     },
     browserConfig: {
         'baseURL': '.'
@@ -15,8 +15,8 @@ SystemJS.config({
     },
     transpiler: 'plugin-babel',
     packages: {
-        'reactpen': {
-            'main': 'reactpen.js',
+        'rollick': {
+            'main': 'rollick.js',
             'meta': {
                 '*.js': {
                     'loader': 'plugin-babel',

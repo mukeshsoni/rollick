@@ -12,7 +12,7 @@ const finalMetaFile = 'components.meta.json'
 const configFilePath =
     process.argv.length > 2
         ? process.argv[2].split('=')[1]
-        : './reactpen.config.js'
+        : './rollick.config.js'
 const config = require(configFilePath)
 
 exec(

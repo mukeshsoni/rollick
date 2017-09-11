@@ -5,3 +5,4 @@ components.docgen.json
 components.meta.json
 .#*
 .reactpen
+.rollick
