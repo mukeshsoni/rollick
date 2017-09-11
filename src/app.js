@@ -104,38 +104,38 @@ function dedupe(arr) {
 
 export class App extends React.Component {
     registerServiceWorker = () => {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker
-                .register('/sw_reactpen.js')
-                .then(
-                    registration => {
-                        // Registration was successful
-                        console.log(
-                            'ServiceWorker registration successful with scope: ',
-                            registration.scope
-                        )
-                        navigator.serviceWorker.addEventListener(
-                            'message',
-                            event => {
-                                this.setState({
-                                    cssFilesToInject: dedupe(
-                                        this.state.cssFilesToInject.concat(
-                                            event.data
-                                        )
-                                    )
-                                })
-                            }
-                        )
-                    },
-                    function(err) {
-                        // registration failed :(
-                        console.error(
-                            'ServiceWorker registration failed: ',
-                            err
-                        )
-                    }
-                )
-        }
+        /* if ('serviceWorker' in navigator) {
+         *     navigator.serviceWorker
+         *         .register('/sw_reactpen.js')
+         *         .then(
+         *             registration => {
+         *                 // Registration was successful
+         *                 console.log(
+         *                     'ServiceWorker registration successful with scope: ',
+         *                     registration.scope
+         *                 )
+         *                 navigator.serviceWorker.addEventListener(
+         *                     'message',
+         *                     event => {
+         *                         this.setState({
+         *                             cssFilesToInject: dedupe(
+         *                                 this.state.cssFilesToInject.concat(
+         *                                     event.data
+         *                                 )
+         *                             )
+         *                         })
+         *                     }
+         *                 )
+         *             },
+         *             function(err) {
+         *                 // registration failed :(
+         *                 console.error(
+         *                     'ServiceWorker registration failed: ',
+         *                     err
+         *                 )
+         *             }
+         *         )
+         * }*/
     }
 
     handleSearchSelection = selectedItem => {
