@@ -114,7 +114,10 @@ class SearchBox extends React.Component {
         } else if (item && item.path) {
             SystemJS.import(item.path).then(com => {
                 this.setState({
-                    previewComponent: { component: com.default, meta: item }
+                    previewComponent: {
+                        component: com.default || com,
+                        meta: item
+                    }
                 })
             })
         }

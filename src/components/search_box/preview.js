@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import faker from '../../faker.js'
 
 class Preview extends React.Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class Preview extends React.Component {
             >
                 {React.createElement(
                     component.component,
-                    component.meta.fakeProps
+                    faker(component.meta.props)
                 )}
             </div>
         )
