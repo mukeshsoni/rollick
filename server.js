@@ -1,7 +1,15 @@
+#!/usr/bin/env node
+
 var babel = require('babel-core')
 var fs = require('fs')
 var http = require('http')
 var path = require('path')
+var parseArgs = require('minimist')
+
+var args = parseArgs(process.argv.slice(1))
+const port = args.port || 4000
+
+const toolName = 'reactpen'
 
 var opts = {
     presets: ['react', 'es2015', 'stage-2'],
@@ -116,10 +124,12 @@ http
             response.end()
         }
     })
-    .listen(8000)
+    .listen(port)
 
 process.on('uncaughtException', function(err) {
     console.error('Uncaught exception', err)
 })
 
-console.log('Server started on http://localhost:8000')
+console.log(
+    `${toolName} available at http://localhost:${port}/.${toolName}/index.html`
+)

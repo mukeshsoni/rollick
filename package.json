@@ -178,6 +178,7 @@
     "commander": "^2.11.0",
     "fs-extra": "4.0.1",
     "jspm": "^0.17.0-beta.44",
+    "minimist": "^1.2.0",
     "ncp": "2.0.0",
     "pify": "3.0.0",
     "prop-types": "^15.5.10",
