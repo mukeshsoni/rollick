@@ -16,7 +16,7 @@ const configFilePath =
 const config = require(configFilePath)
 
 exec(
-    `./node_modules/.bin/react-docgen ${config.componentsPath} -o ${docgenOutputFile} --pretty`,
+    `./node_modules/.bin/react-docgen ${config.componentsPath} -o ${docgenOutputFile}`,
     function(err, stdout) {
         if (err) {
             console.error('error while generating docs for components', err)
@@ -83,7 +83,7 @@ exec(
 
                     fs.writeFileSync(
                         finalMetaFile,
-                        JSON.stringify(metaDataWithFakeProps, null, 4),
+                        JSON.stringify(metaDataWithFakeProps),
                         'utf-8'
                     )
                 }

@@ -173,21 +173,20 @@
     }
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "codemirror": "^5.29.0",
+    "commander": "^2.11.0",
     "fs-extra": "4.0.1",
+    "jspm": "^0.17.0-beta.44",
     "ncp": "2.0.0",
     "pify": "3.0.0",
-    "react-fake-props": "git+https://github.com/mukeshsoni/react-fake-props.git",
-    "react-modal": "^2.2.4"
-  },
-  "devDependencies": {
-    "classnames": "^2.2.5",
-    "jspm": "^0.17.0-beta.44",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-docgen": "^2.17.0",
     "react-dom": "^15.6.1",
-    "serialize-javascript": "^1.4.0",
-    "serve": "^6.0.6"
-  }
+    "react-fake-props": "git+https://github.com/mukeshsoni/react-fake-props.git",
+    "react-modal": "^2.2.4",
+    "serialize-javascript": "^1.4.0"
+  },
+  "devDependencies": {}
 }
