@@ -19,10 +19,11 @@
   - [x] custom types - signature
   - [x] complex custom types - signature inside signature. E.g. type Person { repos: Array<Repo> }; type Repo = { url: string, commits: Array<Commit> }; type Commit = {...}`
 - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
-- [ ] Have a way to load the font icons specific to the project
-- [ ] Provide a UI to fix the config file
-- [ ] Fix highlight issues in editors
+- [x] Have a way to load the font icons specific to the project
+  - Fixed it by allowing a `paths` property in the config file. Works like the paths property in jspm and requirejs. Like aliases.
+- [ ] styleguide component. flip of a button on the header.
 - [ ] When search bar is in focus, cannot focus the jsx editor by clicking on it. It works if i first click the css editor (which get's the focus) and then click the jsx editor
+- [ ] Fix highlight issues in editors
 - [ ] After prettier formatting, the cursor offset is not correct. It doesn't work at all in some cases, which is ok. But when it's working, it calculates wrong offset.
 - [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
 - [ ] Add option to specify docgen options in rollick config file. Example exclude list for folders/files.
@@ -83,6 +84,7 @@
 - [ ] Generate fake data only for required props. There's too much noise because of all the props being there in the editor. Most are not required for the component to function.
 - [ ] If cursor is in between another element, the search result goes into a place which is not valid jsx. But it's hard to see in the editor what went wrong where. One solution is to first try to prettier format the resulting jsx. If there's an error, instead put the searched component at the end of the jsx stuff in the browser. User can then rearrange the jsx as needed. At least the jsx will be correct and user sees the added component 
 - [ ] Save and share the pen 
+- [ ] What happens if users copy/paste some existing jsx consisting of components?
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
   - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
     - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front.
@@ -90,6 +92,7 @@
   - [ ] One of the reasons is when there is a temp emacs file, which is actually a soft link. Starts with .#
 - [ ] Add proptypes to components which are missing any proptype definitions
 - [ ] Create new npm packages, docgentofake, which takes description for one component produced by docgen and returns fake data for that
+- [ ] Provide a UI to fix the config file
 
 ### Bugs
 -----
