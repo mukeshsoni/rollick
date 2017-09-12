@@ -19,6 +19,8 @@
   - [x] custom types - signature
   - [x] complex custom types - signature inside signature. E.g. type Person { repos: Array<Repo> }; type Repo = { url: string, commits: Array<Commit> }; type Commit = {...}`
 - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
+- [ ] Have a way to load the font icons specific to the project
+- [ ] Provide a UI to fix the config file
 - [ ] Fix highlight issues in editors
 - [ ] When search bar is in focus, cannot focus the jsx editor by clicking on it. It works if i first click the css editor (which get's the focus) and then click the jsx editor
 - [ ] After prettier formatting, the cursor offset is not correct. It doesn't work at all in some cases, which is ok. But when it's working, it calculates wrong offset.
@@ -32,6 +34,11 @@
   - [ ] `rollick generate-meta` to regenerate meta files wheneven needed (after change in component definition)
   - [ ] `rollick watch` to watch all component files and automatically regenrate meta file on change of any component file
 - [ ] Integrate with PP components
+  - [ ] The font icons loaded when the class is activated goes directly to server. Need to rewrite path for those (from /harmony/fonts to /frontend/web/wwwroot/harmony/fonts)
+           TODO - this should be by having custom loaders for *.eot files
+         or a alias mapping like we have for jspm, but for rollick
+        yup, the second one is a better solution since we just want to rewrite file paths
+
   - [ ] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
     - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
   package.json and use codemod to do the necessary changes

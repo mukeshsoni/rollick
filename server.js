@@ -106,7 +106,10 @@ function getContent(filePath) {
 // send the correct contentType header
 http
     .createServer(function(req, response) {
-        var filePath = req.url.slice(1)
+        var filePath = req.url.slice(1).split('?')[0]
+        if(filePath.indexOf('harmony/fonts') >= 0) {
+            filePath = filePath.replace('harmony/fonts', 'frontend/web/wwwroot/harmony/fonts')
+        }
 
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
@@ -119,6 +122,7 @@ http
                 response.end(fs.readFileSync(filePath), 'utf-8')
             }
         } else {
+            console.log('file does not exist', filePath, req.url)
             response.writeHead(500)
             response.end('file does not exist')
             response.end()
