@@ -10,6 +10,7 @@ var args = parseArgs(process.argv.slice(1))
 const port = args.port || 4000
 
 const toolName = 'rollick'
+const toolConfig = require(process.cwd() + '/' + toolName + '.config.js')
 
 var opts = {
     presets: ['react', 'es2015', 'stage-2'],
@@ -103,10 +104,26 @@ function getContent(filePath) {
     }
 }
 
+function adjustPaths(config, filePath) {
+    if(config.paths && Object.keys(config.paths).length > 0) {
+        return Object.keys(config.paths).reduce((acc, inUrl) => {
+            if(acc.indexOf(inUrl) >= 0) {
+                return acc.replace(inUrl, config.paths[inUrl])
+            } else {
+                return acc
+            }
+        }, filePath)
+    } else {
+        return filePath
+    }
+}
+
 // send the correct contentType header
 http
     .createServer(function(req, response) {
         var filePath = req.url.slice(1).split('?')[0]
+        filePath = adjustPaths(toolConfig, filePath)
+
         if(filePath.indexOf('harmony/fonts') >= 0) {
             filePath = filePath.replace('harmony/fonts', 'frontend/web/wwwroot/harmony/fonts')
         }

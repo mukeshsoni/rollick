@@ -189,7 +189,6 @@ export class App extends React.Component {
             },
             () => {
                 this.cssCodemirror.getCodeMirror().setValue(this.state.cssCode)
-                this.cssCodemirror.getCodeMirror().setCursor(cmCursor)
             }
         )
     }
