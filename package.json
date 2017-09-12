@@ -1,7 +1,7 @@
 {
-    "name": "rollick",
-    "version": "0.0.1",
-    "description": "like codepen. But for react components.",
+  "name": "rollick",
+  "version": "0.0.1",
+  "description": "like codepen. But for react components.",
   "scripts": {
     "build": "npm run jspm && npm run docgen",
     "jspm": "./node_modules/.bin/jspm install",
@@ -39,15 +39,15 @@
       "sass.js": "npm:sass.js@^0.10.6",
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.3.0"
     },
-      "repository": {
-          "type": "git",
-          "url": "https://github.com/mukeshsoni/rollick"
-      },
-      "keywords": [
-          "react",
-          "playground"
-      ],
-      "author": "Mukesh Soni",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/mukeshsoni/rollick"
+    },
+    "keywords": [
+      "react",
+      "playground"
+    ],
+    "author": "Mukesh Soni",
     "devDependencies": {
       "core-js": "npm:core-js@^2.5.0",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.25"

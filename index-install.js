@@ -24,7 +24,9 @@ var promisifiedExec = pify(exec)
 const toolName = 'rollick'
 var toolFolder = path.resolve(process.cwd() + '/.' + toolName)
 var toolConfig = require(path.resolve(process.cwd()) +
-    '/' + toolName + '.config.js')
+    '/' +
+    toolName +
+    '.config.js')
 
 // create .rollick folder if it doesn't exist
 function createtoolFolder() {
@@ -84,7 +86,7 @@ function generateMetaFile() {
 function addGlobals(toolConfig) {
     function createCssLinks(cssConfig) {
         function wrapUrlInLinkTag(url) {
-            return `<link src="${url}" rel="stylesheet" />`
+            return `<link href="${url}" rel="stylesheet" />`
         }
 
         if (Array.isArray(cssConfig.urls)) {

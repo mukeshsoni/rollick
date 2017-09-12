@@ -12,13 +12,17 @@
 - [x] preview in search results of components
 - [x] send pull request to react-fake-props
 - [x] Auto format for css code
-- [ ] fake props can be moved to frontend. Much more control.
+- [x] fake props can be moved to frontend. Much more control.
+- [x] Don't need the docgen stuff and meta file to be pretty formatted. Waste of bytes.
 - [ ] React fake props flowtype support
-  - [ ] simple types
-  - [ ] custom types - signature
-  - [ ] complex custom types - signature inside signature. E.g. type Person { repos: Array<Repo> }; type Repo = { url: string, commits: Array<Commit> }; type Commit = {...}`
+  - [x] simple types
+  - [x] custom types - signature
+  - [x] complex custom types - signature inside signature. E.g. type Person { repos: Array<Repo> }; type Repo = { url: string, commits: Array<Commit> }; type Commit = {...}`
+- [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
+- [ ] Fix highlight issues in editors
+- [ ] When search bar is in focus, cannot focus the jsx editor by clicking on it. It works if i first click the css editor (which get's the focus) and then click the jsx editor
+- [ ] After prettier formatting, the cursor offset is not correct. It doesn't work at all in some cases, which is ok. But when it's working, it calculates wrong offset.
 - [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
-- [ ] Don't need the docgen stuff and meta file to be pretty formatted. Waste of bytes.
 - [ ] Add option to specify docgen options in rollick config file. Example exclude list for folders/files.
 - [ ] Add option to specify fakeData options in rollick config. Example - `optional: boolean` to generate data for optional types or not.
 - [ ] Looks like react-docgen does not understand flow exact types ({| <definitions> |}). Can use the beta version if feeling adventorous - https://github.com/reactjs/react-docgen/issues/173
@@ -30,7 +34,6 @@
 - [ ] Integrate with PP components
   - [ ] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
     - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
-  - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
   package.json and use codemod to do the necessary changes
     - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
   - [x] CSS still half breaks in a weird way. Probably connected to some other global css file.
@@ -74,7 +77,10 @@
 - [ ] If cursor is in between another element, the search result goes into a place which is not valid jsx. But it's hard to see in the editor what went wrong where. One solution is to first try to prettier format the resulting jsx. If there's an error, instead put the searched component at the end of the jsx stuff in the browser. User can then rearrange the jsx as needed. At least the jsx will be correct and user sees the added component 
 - [ ] Save and share the pen 
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
+  - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
+    - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front.
 - [ ] Check why docgen fails for many of our components 
+  - [ ] One of the reasons is when there is a temp emacs file, which is actually a soft link. Starts with .#
 - [ ] Add proptypes to components which are missing any proptype definitions
 - [ ] Create new npm packages, docgentofake, which takes description for one component produced by docgen and returns fake data for that
 

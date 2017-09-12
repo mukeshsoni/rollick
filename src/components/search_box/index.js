@@ -31,14 +31,61 @@ class SearchBox extends React.Component {
         this.props.onSelection(item)
     }
 
+    handleEscKey = e => {
+        stopAllPropagations(e)
+        this.setState({ searchText: '', selectedItemIndex: -1 })
+        this.props.onRequestClose()
+    }
+
+    handleRightKey = e => {
+        if (this.state.selectedItemIndex >= 0) {
+            this.showPreview(
+                this.getFilteredComponents()[this.state.selectedItemIndex]
+            )
+        }
+    }
+
+    handleLeftKey = e => {
+        if (this.state.selectedItemIndex >= 0 && this.state.previewComponent) {
+            this.hidePreview()
+        }
+    }
+
+    handleDownKey = e => {
+        stopAllPropagations(e)
+        this.setState({
+            selectedItemIndex:
+                (this.state.selectedItemIndex + 1) %
+                this.getFilteredComponents().length
+        })
+    }
+
+    handleUpKey = e => {
+        stopAllPropagations(e)
+        this.setState({
+            selectedItemIndex:
+                (this.getFilteredComponents().length +
+                    this.state.selectedItemIndex -
+                    1) %
+                this.getFilteredComponents().length
+        })
+    }
+
+    handleEnterKey = e => {
+        if (this.state.selectedItemIndex >= 0) {
+            stopAllPropagations(e)
+            this.setState({ searchText: '', selectedItemIndex: 0 })
+            this.props.onSelection(
+                this.getFilteredComponents()[this.state.selectedItemIndex]
+            )
+        }
+    }
+
     handleContainerKeyDown = e => {
         const keyCode = e.keyCode || e.which
-        switch (keyCode) {
-            case 27: // esc key
-                stopAllPropagations(e)
-                this.setState({ searchText: '', selectedItemIndex: -1 })
-                this.props.onRequestClose()
-                break
+        if (keyCode === 27) {
+            // esc key
+            this.handleEscKey()
         }
     }
 
@@ -46,40 +93,19 @@ class SearchBox extends React.Component {
         const keyCode = e.keyCode || e.which
         switch (keyCode) {
             case 13: // enter key
-                if (this.state.selectedItemIndex >= 0) {
-                    stopAllPropagations(e)
-                    this.setState({ searchText: '', selectedItemIndex: 0 })
-                    this.props.onSelection(
-                        this.getFilteredComponents()[
-                            this.state.selectedItemIndex
-                        ]
-                    )
-                }
+                this.handleEnterKey(e)
                 break
-            case 40: // down arrow
-                stopAllPropagations(e)
-                this.setState({
-                    selectedItemIndex:
-                        (this.state.selectedItemIndex + 1) %
-                        this.getFilteredComponents().length
-                })
+            case 37: // left arrow
+                this.handleLeftKey(e)
                 break
             case 38: // up arrow
-                stopAllPropagations(e)
-                this.setState(
-                    {
-                        selectedItemIndex:
-                            (this.getFilteredComponents().length +
-                                this.state.selectedItemIndex -
-                                1) %
-                            this.getFilteredComponents().length
-                    },
-                    () =>
-                        console.log(
-                            'next selected index',
-                            this.state.selectedItemIndex
-                        )
-                )
+                this.handleUpKey(e)
+                break
+            case 39: // right arrow
+                this.handleRightKey(e)
+                break
+            case 40: // down arrow
+                this.handleDownKey(e)
                 break
         }
     }
@@ -99,6 +125,25 @@ class SearchBox extends React.Component {
         }
     }
 
+    showPreview = item => {
+        SystemJS.import(item.path)
+            .then(com => {
+                this.setState({
+                    previewComponent: {
+                        component: com.default || com,
+                        meta: item
+                    }
+                })
+            })
+            .catch(e =>
+                console.error('Failed to load ', item.name, ': ', item.path, e)
+            )
+    }
+
+    hidePreview = () => {
+        this.setState({ previewComponent: null })
+    }
+
     // toggle preview on click of preview button
     handleShowPreviewClick = item => {
         function sameItemPreviewClicked(newItem, previewComponent) {
@@ -112,14 +157,7 @@ class SearchBox extends React.Component {
         if (sameItemPreviewClicked(item, this.state.previewComponent)) {
             this.setState({ previewComponent: null })
         } else if (item && item.path) {
-            SystemJS.import(item.path).then(com => {
-                this.setState({
-                    previewComponent: {
-                        component: com.default || com,
-                        meta: item
-                    }
-                })
-            })
+            this.showPreview(item)
         }
     }
 
@@ -160,7 +198,7 @@ class SearchBox extends React.Component {
 
         this.state = {
             searchText: '',
-            selectedItemIndex: -1,
+            selectedItemIndex: 0,
             previewComponent: null
         }
 
@@ -168,7 +206,13 @@ class SearchBox extends React.Component {
     }
 
     componentDidMount() {
-        key('esc', this.handleContainerKeyDown)
+        key('esc', this.handleEscKey)
+        key('right', this.handleRightKey)
+        key('left', this.handleLeftKey)
+        key('down', this.handleDownKey)
+        key('up', this.handleUpKey)
+        key('enter', this.handleEnterKey)
+
         this.searchInputRef && this.searchInputRef.getInputRef().focus()
     }
 
