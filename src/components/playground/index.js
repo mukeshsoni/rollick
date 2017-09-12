@@ -10,9 +10,9 @@ import jsx from 'jsx-transpiler'
 import sass from 'sass.js'
 import prettier from 'prettier'
 import componentsMetaList from 'components.meta.json!json'
-import SearchBox from './components/search_box/index.js'
-import SearchInput from './components/search_box/search_input.js'
-import Button from './components/buttons/button'
+import SearchBox from '../search_box/index.js'
+import SearchInput from '../search_box/search_input.js'
+import Button from '../buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
 import Frame from 'react-frame-component'
@@ -24,10 +24,10 @@ import './split_pane.css'
 import './codemirror_custom.css'
 // import 'codemirror/lib/codemirror.css'
 
-import belt from '../belt.js'
+import belt from '../../../belt.js'
 const { last } = belt
 
-import faker from './faker.js'
+import faker from '../../faker.js'
 
 import codeMirrorInstance from 'node_modules/codemirror/lib/codemirror.js'
 emmetCodemirror(codeMirrorInstance)
