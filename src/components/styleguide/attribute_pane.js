@@ -54,7 +54,10 @@ export default class AttributePane extends React.Component {
         const detailsPaneStyle = {
             flex: 2,
             padding: '1em',
-            borderLeft: '1px solid rgba(200,200,200, 0.9)'
+            borderLeft: '1px solid rgba(200,200,200, 0.9)',
+            maxHeight: '100%',
+            overflow: 'hidden',
+            overflowY: 'auto'
         }
 
         return (
