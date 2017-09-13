@@ -102,6 +102,7 @@ SystemJS.config({
         'react-jsx': 'npm:react-jsx@1.0.0',
         'react-modal': 'npm:react-modal@2.3.2',
         'react-onclickoutside': 'npm:react-onclickoutside@6.5.0',
+        'react-spinkit': 'npm:react-spinkit@3.0.0',
         'react-split-pane': 'npm:react-split-pane@0.1.66',
         'request': 'npm:request@2.81.0',
         'sass': 'npm:sass@1.0.0-beta.2',
@@ -1480,6 +1481,14 @@ SystemJS.config({
                 'safe-buffer': 'npm:safe-buffer@5.1.1',
                 'ripemd160': 'npm:ripemd160@2.0.1',
                 'sha.js': 'npm:sha.js@2.4.8'
+            }
+        },
+        'npm:react-spinkit@3.0.0': {
+            'map': {
+                'object-assign': 'npm:object-assign@4.1.1',
+                'prop-types': 'npm:prop-types@15.5.10',
+                'loaders.css': 'npm:loaders.css@0.1.2',
+                'classnames': 'npm:classnames@2.2.5'
             }
         }
     }

@@ -2,10 +2,12 @@ import React from 'react'
 import SearchInput from '../search_box/search_input.js'
 import '../search_box/search_box.css'
 import './styleguide.css'
+import './loader.css'
 import componentsMetaList from 'components.meta.json!json'
 import { getComponent, getComponentElement } from './component_maker.js'
 import faker from '../../faker.js'
 import AttributePane from './attribute_pane.js'
+import debounce from 'debounce'
 
 export default class Styleguide extends React.Component {
     handleInputChange = e => {
@@ -65,17 +67,21 @@ export default class Styleguide extends React.Component {
         }
     }
 
-    handleComponentItemClick = com => {
-        getComponent(com).then(component =>
-            this.setState({
-                selectedComponent: {
-                    ...com,
-                    fakeProps: faker(com.props)
-                },
-                selectedComponentInstance: component
-            })
-        )
-    }
+    handleComponentItemClick = debounce(com => {
+        this.setState({ loadingComponent: true })
+        getComponent(com)
+            .then(component =>
+                this.setState({
+                    loadingComponent: false,
+                    selectedComponent: {
+                        ...com,
+                        fakeProps: faker(com.props)
+                    },
+                    selectedComponentInstance: component
+                })
+            )
+            .catch(e => this.setState({ loadingComponent: false }))
+    }, 500)
 
     getFiltedredComponentList = () => {
         const { searchText } = this.state
@@ -124,7 +130,8 @@ export default class Styleguide extends React.Component {
         this.state = {
             searchText: '',
             selectedComponent: null,
-            selectedComponentInstance: null
+            selectedComponentInstance: null,
+            loadingComponent: false
         }
     }
 
@@ -171,9 +178,11 @@ export default class Styleguide extends React.Component {
                             Preview
                         </h3>
                     </div>
-                    <div style={{ padding: '2em' }}>
-                        {this.getComponentPreview()}
-                    </div>
+                    {this.state.loadingComponent
+                        ? <div className="loader">Loading...</div>
+                        : <div style={{ padding: '2em' }}>
+                              {this.getComponentPreview()}
+                          </div>}
                 </div>
                 {this.state.selectedComponent &&
                     <AttributePane

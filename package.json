@@ -34,6 +34,7 @@
       "react-jsx": "npm:react-jsx@^1.0.0",
       "react-modal": "npm:react-modal@^2.3.2",
       "react-onclickoutside": "npm:react-onclickoutside@^6.5.0",
+      "react-spinkit": "npm:react-spinkit@^3.0.0",
       "react-split-pane": "npm:react-split-pane@^0.1.66",
       "sass": "npm:sass@^1.0.0-beta.2",
       "sass.js": "npm:sass.js@^0.10.6",
