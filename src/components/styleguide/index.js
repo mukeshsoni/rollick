@@ -35,7 +35,10 @@ export default class Styleguide extends React.Component {
         const { selectedComponent } = this.state
 
         function getPropValue(propMeta, val) {
-            if (propMeta.type && propMeta.type.name === 'func') {
+            if (
+                (propMeta.type && propMeta.type.name === 'func') ||
+                (propMeta.flowType && propMeta.flowType.type === 'function')
+            ) {
                 try {
                     const wrapper = new Function('return ' + val)
                     return wrapper()
