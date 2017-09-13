@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Button = ({ label, onClick, style = {} }) => {
+const Button = ({ label, onClick, style = {}, enabled=true }) => {
     const buttonStyle = {
         background: '#343436',
         fontSize: '1rem',
@@ -16,7 +16,7 @@ const Button = ({ label, onClick, style = {} }) => {
     }
 
     return (
-        <button onClick={onClick} style={{ ...buttonStyle, ...style }}>
+        <button onClick={onClick} style={{ ...buttonStyle, ...style }} disabled={!enabled}>
             {label}
         </button>
     )
@@ -25,7 +25,8 @@ const Button = ({ label, onClick, style = {} }) => {
 Button.propTypes = {
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
-    style: PropTypes.object
+    style: PropTypes.object,
+    enabled: PropTypes.bool
 }
 
 export default Button

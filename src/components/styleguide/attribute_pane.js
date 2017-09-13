@@ -1,16 +1,50 @@
 import React from 'react'
+import { isFunctionProp } from './prop_value_from_string.js'
+
+function getTextArea(value, onChangeHandler) {
+    return (
+        <textarea
+            onChange={e => onChangeHandler(e.target.value)}
+            value={value}
+            style={{
+                fontSize: 'inherit',
+                border: '1px solid gray',
+                borderRadius: 5,
+                padding: '1em',
+                flexBasis: '70%'
+            }}
+        />
+    )
+}
+
+function getInputField(propsMeta, value, onChangeHandler) {
+    switch (propsMeta.type.name) {
+        case 'bool':
+            return (
+                <input
+                    type="checkbox"
+                    checked={value && value.toString() === 'true'}
+                    onChange={e => onChangeHandler(e.target.checked)}
+                />
+            )
+        default:
+            return getTextArea(value, onChangeHandler)
+    }
+}
 
 export default class AttributePane extends React.Component {
+    handlePropChange = (propName, newValue) => {
+        this.setState({
+            props: {
+                ...this.state.props,
+                [propName]: newValue
+            }
+        })
+        this.props.onChange(propName, newValue)
+    }
+
     getAttributes = () => {
         const { component } = this.props
-
-        function serialize(component, propName) {
-            /* try {
-             *     return JSON.stringify(component.fakeProps[propName] || '')
-             * } catch (e) {*/
-            return component.fakeProps[propName] || ''
-            /* }*/
-        }
 
         if (!component) {
             return null
@@ -28,18 +62,11 @@ export default class AttributePane extends React.Component {
                         key={`attribute_${propName}`}
                     >
                         {propName}
-                        <textarea
-                            onChange={e =>
-                                this.props.onChange(propName, e.target.value)}
-                            value={serialize(component, propName)}
-                            style={{
-                                fontSize: 'inherit',
-                                border: '1px solid gray',
-                                borderRadius: 5,
-                                padding: '1em',
-                                flexBasis: '70%'
-                            }}
-                        />
+                        {getInputField(
+                            component.props[propName],
+                            this.state.props[propName],
+                            this.handlePropChange.bind(this, propName)
+                        )}
                     </div>
                 )
             })
@@ -48,6 +75,10 @@ export default class AttributePane extends React.Component {
 
     constructor(props) {
         super(props)
+
+        this.state = {
+            props: this.props.component ? this.props.component.fakeProps : {}
+        }
     }
 
     render() {

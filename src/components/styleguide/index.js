@@ -8,6 +8,7 @@ import { getComponent, getComponentElement } from './component_maker.js'
 import faker from '../../faker.js'
 import AttributePane from './attribute_pane.js'
 import debounce from 'debounce'
+import { getPropValue } from './prop_value_from_string.js'
 
 export default class Styleguide extends React.Component {
     handleInputChange = e => {
@@ -33,26 +34,6 @@ export default class Styleguide extends React.Component {
 
     handleAttributeValueChange = (propName, value) => {
         const { selectedComponent } = this.state
-
-        function getPropValue(propMeta, val) {
-            if (
-                (propMeta.type && propMeta.type.name === 'func') ||
-                (propMeta.flowType && propMeta.flowType.type === 'function')
-            ) {
-                try {
-                    const wrapper = new Function('return ' + val)
-                    return wrapper()
-                } catch (e) {
-                    return val
-                }
-            } else {
-                try {
-                    return JSON.parse(val)
-                } catch (e) {
-                    return val
-                }
-            }
-        }
 
         if (selectedComponent) {
             this.setState({

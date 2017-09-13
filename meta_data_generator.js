@@ -16,7 +16,7 @@ const configFilePath =
 const config = require(configFilePath)
 
 exec(
-    `./node_modules/.bin/react-docgen ${config.componentsPath} -o ${docgenOutputFile}`,
+    `./node_modules/.bin/react-docgen ${config.componentsPath} -o ${docgenOutputFile} --pretty`,
     function(err, stdout) {
         if (err) {
             console.error('error while generating docs for components', err)
