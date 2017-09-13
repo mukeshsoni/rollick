@@ -128,6 +128,10 @@ export default class Styleguide extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.searchInputRef && this.searchInputRef.getInputRef().focus()
+    }
+
     render() {
         const { searchText } = this.state
 

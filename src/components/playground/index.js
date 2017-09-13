@@ -455,6 +455,7 @@ export default class Playground extends React.Component {
                 >
                     <div
                         style={{
+                            display: 'flex',
                             alignSelf: 'flex-start',
                             width: 500,
                             marginRight: 'auto',
@@ -473,6 +474,14 @@ export default class Playground extends React.Component {
                                   onFocus={() =>
                                       this.setState({ showSearchModal: true })}
                               />}
+                        <Button
+                            onClick={this.props.fromStyleguideClick}
+                            label="Styleguide"
+                            style={{
+                                marginLeft: '1em',
+                                alignSelf: 'flex-start'
+                            }}
+                        />
                     </div>
                     <Button
                         onClick={this.formatCss}

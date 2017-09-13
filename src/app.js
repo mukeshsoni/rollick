@@ -21,7 +21,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            showStyleguide: true
+            showStyleguide: false
         }
     }
 
@@ -50,12 +50,6 @@ export default class App extends React.Component {
 
         return (
             <div>
-                <div style={{ headerStyle }}>
-                    <Button
-                        onClick={this.handleShowStyleguideClick}
-                        label="Show styleguide"
-                    />
-                </div>
                 <Modal
                     isOpen={this.state.showStyleguide}
                     onRequestClose={this.hideStyleguide}
@@ -65,7 +59,10 @@ export default class App extends React.Component {
                 >
                     <Styleguide onAddComponent={this.handleAddComponent} />
                 </Modal>
-                <Playground ref={node => (this.playgroundRef = node)} />
+                <Playground
+                    ref={node => (this.playgroundRef = node)}
+                    fromStyleguideClick={this.handleShowStyleguideClick}
+                />
             </div>
         )
     }
