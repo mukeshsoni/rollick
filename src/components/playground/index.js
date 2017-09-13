@@ -456,7 +456,6 @@ export default class Playground extends React.Component {
                     <div
                         style={{
                             alignSelf: 'flex-start',
-                            zIndex: 1000,
                             width: 500,
                             marginRight: 'auto',
                             marginTop: -5

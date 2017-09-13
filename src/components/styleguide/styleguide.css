@@ -1,0 +1,42 @@
+.styleguide-container {
+    display: flex;
+    z-index: 1001;
+    height: 100%
+}
+
+.styleguide-container > div {
+    margin-right: 1em;
+}
+
+.styleguide-container > div:last-child() {
+    margin-right: 0;
+}
+
+.styleguide-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.styleguide-list > div, input {
+    margin-bottom: 1em;
+}
+
+.styleguide-list > div:last-child(){
+    margin-bottom: 0;
+}
+
+.styleguide-list-item {
+    padding: 1em;
+    color: #000;
+}
+
+.styleguide-list-item.selected {
+    background-color: #000;
+    color: #FFF;
+}
+
+.styleguide-list-item:hover {
+    background-color: #555;
+    color: #FFF;
+    cursor: pointer;
+}

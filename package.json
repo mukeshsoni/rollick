@@ -32,7 +32,7 @@
       "react-codemirror": "npm:react-codemirror@^1.0.0",
       "react-frame-component": "npm:react-frame-component@^1.1.1",
       "react-jsx": "npm:react-jsx@^1.0.0",
-      "react-modal": "npm:react-modal@^2.2.4",
+      "react-modal": "npm:react-modal@^2.3.2",
       "react-onclickoutside": "npm:react-onclickoutside@^6.5.0",
       "react-split-pane": "npm:react-split-pane@^0.1.66",
       "sass": "npm:sass@^1.0.0-beta.2",
@@ -152,7 +152,7 @@
           "process": "@empty"
         }
       },
-      "npm:pbkdf2@3.0.13": {
+      "npm:pbkdf2@3.0.14": {
         "main": "browser.js"
       },
       "npm:react@0.14.9": {

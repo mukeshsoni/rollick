@@ -226,7 +226,7 @@ class SearchBox extends React.Component {
             <div>
                 {this.getInput()}
                 <div style={{ display: 'flex', width: searchBoxWidth * 2 }}>
-                    <div style={{ width: searchBoxWidth }}>
+                    <div style={{ width: searchBoxWidth, zIndex: 1000 }}>
                         <SearchResults
                             items={this.getFilteredComponents()}
                             selectedItemIndex={selectedItemIndex}

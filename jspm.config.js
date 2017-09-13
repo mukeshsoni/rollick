@@ -100,7 +100,7 @@ SystemJS.config({
         'react-dom': 'npm:react-dom@15.6.1',
         'react-frame-component': 'npm:react-frame-component@1.1.1',
         'react-jsx': 'npm:react-jsx@1.0.0',
-        'react-modal': 'npm:react-modal@2.2.4',
+        'react-modal': 'npm:react-modal@2.3.2',
         'react-onclickoutside': 'npm:react-onclickoutside@6.5.0',
         'react-split-pane': 'npm:react-split-pane@0.1.66',
         'request': 'npm:request@2.81.0',
@@ -126,39 +126,28 @@ SystemJS.config({
                 'object-assign': 'npm:object-assign@4.1.1',
                 'create-react-class': 'npm:create-react-class@15.6.0',
                 'prop-types': 'npm:prop-types@15.5.10',
-                'fbjs': 'npm:fbjs@0.8.14'
+                'fbjs': 'npm:fbjs@0.8.15'
             }
         },
         'npm:create-react-class@15.6.0': {
             'map': {
-                'fbjs': 'npm:fbjs@0.8.14',
+                'fbjs': 'npm:fbjs@0.8.15',
                 'loose-envify': 'npm:loose-envify@1.3.1',
                 'object-assign': 'npm:object-assign@4.1.1'
             }
         },
         'npm:prop-types@15.5.10': {
             'map': {
-                'fbjs': 'npm:fbjs@0.8.14',
+                'fbjs': 'npm:fbjs@0.8.15',
                 'loose-envify': 'npm:loose-envify@1.3.1'
             }
         },
         'npm:react-dom@15.6.1': {
             'map': {
-                'fbjs': 'npm:fbjs@0.8.14',
+                'fbjs': 'npm:fbjs@0.8.15',
                 'loose-envify': 'npm:loose-envify@1.3.1',
                 'object-assign': 'npm:object-assign@4.1.1',
                 'prop-types': 'npm:prop-types@15.5.10'
-            }
-        },
-        'npm:fbjs@0.8.14': {
-            'map': {
-                'loose-envify': 'npm:loose-envify@1.3.1',
-                'object-assign': 'npm:object-assign@4.1.1',
-                'setimmediate': 'npm:setimmediate@1.0.5',
-                'promise': 'npm:promise@7.3.1',
-                'ua-parser-js': 'npm:ua-parser-js@0.7.14',
-                'isomorphic-fetch': 'npm:isomorphic-fetch@2.2.1',
-                'core-js': 'npm:core-js@1.2.7'
             }
         },
         'npm:loose-envify@1.3.1': {
@@ -169,13 +158,7 @@ SystemJS.config({
         'npm:isomorphic-fetch@2.2.1': {
             'map': {
                 'whatwg-fetch': 'npm:whatwg-fetch@2.0.3',
-                'node-fetch': 'npm:node-fetch@1.7.2'
-            }
-        },
-        'npm:node-fetch@1.7.2': {
-            'map': {
-                'encoding': 'npm:encoding@0.1.12',
-                'is-stream': 'npm:is-stream@1.1.0'
+                'node-fetch': 'npm:node-fetch@1.7.3'
             }
         },
         'npm:promise@7.3.1': {
@@ -196,7 +179,7 @@ SystemJS.config({
         },
         'npm:encoding@0.1.12': {
             'map': {
-                'iconv-lite': 'npm:iconv-lite@0.4.18'
+                'iconv-lite': 'npm:iconv-lite@0.4.19'
             }
         },
         'npm:readable-stream@2.3.3': {
@@ -248,7 +231,7 @@ SystemJS.config({
                 'randombytes': 'npm:randombytes@2.0.5',
                 'create-hash': 'npm:create-hash@1.1.3',
                 'public-encrypt': 'npm:public-encrypt@4.0.0',
-                'pbkdf2': 'npm:pbkdf2@3.0.13',
+                'pbkdf2': 'npm:pbkdf2@3.0.14',
                 'browserify-cipher': 'npm:browserify-cipher@1.0.0',
                 'browserify-sign': 'npm:browserify-sign@4.0.4',
                 'diffie-hellman': 'npm:diffie-hellman@5.0.2',
@@ -305,15 +288,6 @@ SystemJS.config({
                 'miller-rabin': 'npm:miller-rabin@4.0.0'
             }
         },
-        'npm:pbkdf2@3.0.13': {
-            'map': {
-                'safe-buffer': 'npm:safe-buffer@5.1.1',
-                'create-hash': 'npm:create-hash@1.1.3',
-                'create-hmac': 'npm:create-hmac@1.1.6',
-                'ripemd160': 'npm:ripemd160@2.0.1',
-                'sha.js': 'npm:sha.js@2.4.8'
-            }
-        },
         'npm:jspm-nodelibs-os@0.2.2': {
             'map': {
                 'os-browserify': 'npm:os-browserify@0.3.0'
@@ -359,7 +333,7 @@ SystemJS.config({
         'npm:parse-asn1@5.1.0': {
             'map': {
                 'create-hash': 'npm:create-hash@1.1.3',
-                'pbkdf2': 'npm:pbkdf2@3.0.13',
+                'pbkdf2': 'npm:pbkdf2@3.0.14',
                 'evp_bytestokey': 'npm:evp_bytestokey@1.0.3',
                 'browserify-aes': 'npm:browserify-aes@1.0.8',
                 'asn1.js': 'npm:asn1.js@4.9.1'
@@ -1333,13 +1307,6 @@ SystemJS.config({
                 'pseudomap': 'npm:pseudomap@1.0.2'
             }
         },
-        'npm:react-modal@2.2.4': {
-            'map': {
-                'exenv': 'npm:exenv@1.2.2',
-                'react-dom-factories': 'npm:react-dom-factories@1.0.1',
-                'prop-types': 'npm:prop-types@15.5.10'
-            }
-        },
         'npm:react-split-pane@0.1.66': {
             'map': {
                 'prop-types': 'npm:prop-types@15.5.10',
@@ -1480,6 +1447,39 @@ SystemJS.config({
             'map': {
                 'safe-buffer': 'npm:safe-buffer@5.1.1',
                 'md5.js': 'npm:md5.js@1.3.4'
+            }
+        },
+        'npm:react-modal@2.3.2': {
+            'map': {
+                'prop-types': 'npm:prop-types@15.5.10',
+                'exenv': 'npm:exenv@1.2.2',
+                'react-dom-factories': 'npm:react-dom-factories@1.0.1'
+            }
+        },
+        'npm:fbjs@0.8.15': {
+            'map': {
+                'loose-envify': 'npm:loose-envify@1.3.1',
+                'object-assign': 'npm:object-assign@4.1.1',
+                'promise': 'npm:promise@7.3.1',
+                'core-js': 'npm:core-js@1.2.7',
+                'setimmediate': 'npm:setimmediate@1.0.5',
+                'ua-parser-js': 'npm:ua-parser-js@0.7.14',
+                'isomorphic-fetch': 'npm:isomorphic-fetch@2.2.1'
+            }
+        },
+        'npm:node-fetch@1.7.3': {
+            'map': {
+                'is-stream': 'npm:is-stream@1.1.0',
+                'encoding': 'npm:encoding@0.1.12'
+            }
+        },
+        'npm:pbkdf2@3.0.14': {
+            'map': {
+                'create-hash': 'npm:create-hash@1.1.3',
+                'create-hmac': 'npm:create-hmac@1.1.6',
+                'safe-buffer': 'npm:safe-buffer@5.1.1',
+                'ripemd160': 'npm:ripemd160@2.0.1',
+                'sha.js': 'npm:sha.js@2.4.8'
             }
         }
     }
