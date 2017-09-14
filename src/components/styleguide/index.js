@@ -13,6 +13,10 @@ import {
     populateDefaultValues
 } from '../../component_maker_helpers/prop_value_from_string.js'
 
+const componentsMetaListSorted = componentsMetaList.sort((a, b) =>
+    a.name.localeCompare(b.name)
+)
+
 export default class Styleguide extends React.Component {
     handleInputChange = e => {
         this.setState({ searchText: e.target.value })
@@ -81,9 +85,9 @@ export default class Styleguide extends React.Component {
         const { searchText } = this.state
 
         if (searchText.trim() === '') {
-            return componentsMetaList
+            return componentsMetaListSorted
         } else {
-            return componentsMetaList.filter(
+            return componentsMetaListSorted.filter(
                 item =>
                     item.name
                         .toLowerCase()
@@ -110,7 +114,7 @@ export default class Styleguide extends React.Component {
                 <div
                     className={className}
                     onClick={this.handleComponentItemClick.bind(this, com)}
-                    key={`styleguide_list_item_${com.name}`}
+                    key={`styleguide_list_item_${com.path}`}
                 >
                     {com.name}
                 </div>
