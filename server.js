@@ -124,10 +124,6 @@ http
         var filePath = req.url.slice(1).split('?')[0]
         filePath = adjustPaths(toolConfig, filePath)
 
-        if(filePath.indexOf('harmony/fonts') >= 0) {
-            filePath = filePath.replace('harmony/fonts', 'frontend/web/wwwroot/harmony/fonts')
-        }
-
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
             response.writeHead(200)

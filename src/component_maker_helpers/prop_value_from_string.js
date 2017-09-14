@@ -23,7 +23,7 @@ function getFunctionFromString(str) {
 
 function getObjectFromString(str) {
     try {
-        ;(0, eval)('var obj = ' + str)
+        ;(0, eval)('const obj = ' + str)
         console.log('obj', obj)
         return obj
     } catch (e) {
@@ -41,19 +41,41 @@ function getFlowPropValue(prop, val) {
     }
 }
 
+export function isObjectProp(prop) {
+    return (
+        (prop && prop.type && prop.type.name === 'object') ||
+        (prop && prop.flowType && prop.flowType.type === 'Object')
+    )
+}
+
+// if it's a react element type
+export function isElementProp(prop) {
+    // TODO - the flow check is wrong for react node type
+    return (
+        (prop && prop.type && prop.type.name === 'node') ||
+        (prop && prop.flowType && prop.flowType.type === 'node')
+    )
+}
+
+function getElementFromString(str) {
+    try {
+        ;(0, eval)('const jsxElement = ' + str)
+        return jsxElement
+    } catch (e) {
+        return str
+    }
+}
+
 export function getPropValue(prop, val) {
     if (prop.flowType) {
         return getFlowPropValue(prop, val)
     } else {
-        if (prop.type && prop.type.name) {
-            switch (prop.type.name) {
-                case 'func':
-                    return getFunctionFromString(val)
-                case 'object':
-                    return getObjectFromString(val)
-                default:
-                    return val
-            }
+        if (isFunctionProp(prop)) {
+            return getFunctionFromString(val)
+        } else if (isObjectProp(prop)) {
+            return getFunctionFromString(val)
+        } else if (isElementProp(prop)) {
+            return getElementFromString(val)
         } else {
             return val
         }

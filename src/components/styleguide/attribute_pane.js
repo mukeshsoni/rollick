@@ -1,11 +1,35 @@
 import React from 'react'
 import {
     isFunctionProp,
+    isObjectProp,
     isBoolProp
 } from '../../component_maker_helpers/prop_value_from_string.js'
 import './attribute_pane.css'
 import Textarea from 'node_modules/react-textarea-autosize/dist/react-textarea-autosize.min.js'
 
+function serialize(propsMeta, fakeProps) {
+    return Object.keys(fakeProps).reduce((acc, propName) => {
+        if (
+            isFunctionProp(propsMeta[propName]) ||
+            isBoolProp(propsMeta[propName])
+        ) {
+            return {
+                ...acc,
+                [propName]: fakeProps[propName].toString()
+            }
+        } else if (isObjectProp(propsMeta[propName])) {
+            return {
+                ...acc,
+                [propName]: JSON.stringify(fakeProps[propName], null, 4)
+            }
+        } else {
+            return {
+                ...acc,
+                [propName]: fakeProps[propName]
+            }
+        }
+    }, {})
+}
 function getTextArea(value, onChangeHandler) {
     return (
         <Textarea
@@ -77,7 +101,12 @@ export default class AttributePane extends React.Component {
         super(props)
 
         this.state = {
-            props: this.props.component ? this.props.component.fakeProps : {}
+            props: this.props.component
+                ? serialize(
+                      this.props.component.props,
+                      this.props.component.fakeProps
+                  )
+                : {}
         }
     }
 
