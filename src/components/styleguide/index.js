@@ -11,7 +11,7 @@ import debounce from 'debounce'
 import {
     getPropValue,
     populateDefaultValues
-} from './prop_value_from_string.js'
+} from '../../component_maker_helpers/prop_value_from_string.js'
 
 export default class Styleguide extends React.Component {
     handleInputChange = e => {

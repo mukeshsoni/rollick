@@ -1,5 +1,5 @@
 import React from 'react'
-import { isFunctionProp } from './prop_value_from_string.js'
+import { isFunctionProp } from '../../component_maker_helpers/prop_value_from_string.js'
 import './attribute_pane.css'
 import Textarea from 'node_modules/react-textarea-autosize/dist/react-textarea-autosize.min.js'
 

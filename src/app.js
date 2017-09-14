@@ -18,11 +18,28 @@ export default class App extends React.Component {
 
     handleAddComponent = component => {}
 
+    handleKeyDown = e => {
+        const keyCode = e.which || e.keyCode
+
+        if (keyCode === 27) {
+            // escape
+            this.hideStyleguide()
+        }
+    }
+
     constructor(props) {
         super(props)
         this.state = {
             showStyleguide: true
         }
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.handleKeyDown)
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKeyDown)
     }
 
     render() {
@@ -33,18 +50,12 @@ export default class App extends React.Component {
         }
 
         const styleguideModalStyle = {
-            style: {
-                /* left: 100,
-                 * right: 100,
-                 * top: 100,
-                 * bottom: 100*/
-            },
             overlay: {
                 left: 0,
                 right: 0,
                 top: 0,
                 bottom: 0,
-                background: 'rgba(255, 255, 255, 0.8)'
+                background: 'rgba(255, 255, 255, 0.9)'
             }
         }
 
@@ -57,6 +68,18 @@ export default class App extends React.Component {
                     style={styleguideModalStyle}
                     contentLabel="Styleguide"
                 >
+                    <a
+                        style={{
+                            position: 'absolute',
+                            top: '1em',
+                            right: '1em',
+                            cursor: 'pointer',
+                            fontWeight: 'bold'
+                        }}
+                        onClick={this.hideStyleguide}
+                    >
+                        Close
+                    </a>
                     <Styleguide onAddComponent={this.handleAddComponent} />
                 </Modal>
                 <Playground

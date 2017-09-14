@@ -28,6 +28,10 @@ import belt from '../../../belt.js'
 const { last } = belt
 
 import faker from '../../faker.js'
+import {
+    getPropValue,
+    populateDefaultValues
+} from '../../component_maker_helpers/prop_value_from_string.js'
 
 import codeMirrorInstance from 'node_modules/codemirror/lib/codemirror.js'
 emmetCodemirror(codeMirrorInstance)
@@ -72,7 +76,10 @@ function addComponent(jsx, codeMirror, componentDetails) {
     let codeToInsert = `<${componentDetails.name} `
     let propValuePairs = ''
     if (componentDetails.props) {
-        const fakeProps = faker(componentDetails.props)
+        const fakeProps = populateDefaultValues(
+            componentDetails.props,
+            faker(componentDetails.props)
+        )
         propValuePairs = Object.keys(
             componentDetails.props
         ).reduce((acc, propName) => {
@@ -381,6 +388,10 @@ export default class Playground extends React.Component {
 
     componentWillUnmount() {
         document.removeEventListener('keypress', this.handleKeypress)
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps !== this.props || nextState !== this.state
     }
 
     render() {
