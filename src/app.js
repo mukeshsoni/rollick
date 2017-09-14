@@ -16,7 +16,18 @@ export default class App extends React.Component {
 
     hideStyleguide = () => this.setState({ showStyleguide: false })
 
-    handleAddComponent = component => {}
+    handleAddComponent = component => {
+        this.setState(
+            {
+                showStyleguide: false
+            },
+            // the modal is taking some time to close. so putting a fake defer here before adding the component to playground
+            setTimeout(
+                () => this.playgroundRef.addComponentFromStyleguide(component),
+                1000
+            )
+        )
+    }
 
     handleKeyDown = e => {
         const keyCode = e.which || e.keyCode

@@ -18,6 +18,10 @@ export default class Styleguide extends React.Component {
         this.setState({ searchText: e.target.value })
     }
 
+    handleAddComponent = () => {
+        this.props.onAddComponent(this.state.selectedComponent)
+    }
+
     getComponentPreview = () => {
         const { selectedComponent, selectedComponentInstance } = this.state
 
@@ -158,15 +162,32 @@ export default class Styleguide extends React.Component {
                     </div>
                 </div>
                 <div className="styleguide-body" style={bodyStyle}>
-                    <div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between'
+                        }}
+                    >
                         <h3
                             style={{
-                                paddingBottom: '0.5em',
-                                borderBottom: '1px solid rgba(200,200,200,0.9)'
+                                paddingBottom: '0.5em'
                             }}
                         >
                             Preview
                         </h3>
+                        {!this.state.loadingComponent &&
+                        this.state.selectedComponent
+                            ? <a
+                                  style={{
+                                      cursor: 'pointer',
+                                      fontWeight: 'bold',
+                                      color: 'blue'
+                                  }}
+                                  onClick={this.handleAddComponent}
+                              >
+                                  Add this
+                              </a>
+                            : null}
                     </div>
                     {this.state.loadingComponent
                         ? <div className="loader">Loading...</div>
@@ -182,4 +203,8 @@ export default class Styleguide extends React.Component {
             </div>
         )
     }
+}
+
+Styleguide.propTypes = {
+    onAddComponent: React.PropTypes.func
 }

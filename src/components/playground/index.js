@@ -76,10 +76,16 @@ function addComponent(jsx, codeMirror, componentDetails) {
     let codeToInsert = `<${componentDetails.name} `
     let propValuePairs = ''
     if (componentDetails.props) {
-        const fakeProps = populateDefaultValues(
-            componentDetails.props,
-            faker(componentDetails.props)
-        )
+        let fakeProps
+
+        if (componentDetails.fakeProps) {
+            fakeProps = componentDetails.fakeProps
+        } else {
+            const fakeProps = populateDefaultValues(
+                componentDetails.props,
+                faker(componentDetails.props)
+            )
+        }
         propValuePairs = Object.keys(
             componentDetails.props
         ).reduce((acc, propName) => {
@@ -112,6 +118,10 @@ function dedupe(arr) {
 }
 
 export default class Playground extends React.Component {
+    addComponentFromStyleguide = component => {
+        this.handleSearchSelection(component)
+    }
+
     registerServiceWorker = () => {
         /* if ('serviceWorker' in navigator) {
          *     navigator.serviceWorker
