@@ -5,6 +5,13 @@ export function isFunctionProp(prop) {
     )
 }
 
+export function isBoolProp(prop) {
+    return (
+        (prop && prop.type && prop.type.name === 'bool') ||
+        (prop && prop.flowType && prop.flowType.type === 'boolean')
+    )
+}
+
 function getFunctionFromString(str) {
     try {
         const wrapper = new Function('return ' + str)

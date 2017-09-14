@@ -10,7 +10,7 @@ import Styleguide from './components/styleguide/index.js'
 export default class App extends React.Component {
     handleShowStyleguideClick = () => {
         this.setState({
-            showStyleguide: true
+            showStyleguide: false
         })
     }
 

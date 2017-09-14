@@ -1,5 +1,8 @@
 import React from 'react'
-import { isFunctionProp } from '../../component_maker_helpers/prop_value_from_string.js'
+import {
+    isFunctionProp,
+    isBoolProp
+} from '../../component_maker_helpers/prop_value_from_string.js'
 import './attribute_pane.css'
 import Textarea from 'node_modules/react-textarea-autosize/dist/react-textarea-autosize.min.js'
 
@@ -21,17 +24,16 @@ function getTextArea(value, onChangeHandler) {
 }
 
 function getInputField(propsMeta, value, onChangeHandler) {
-    switch (propsMeta.type.name) {
-        case 'bool':
-            return (
-                <input
-                    type="checkbox"
-                    checked={value && value.toString() === 'true'}
-                    onChange={e => onChangeHandler(e.target.checked)}
-                />
-            )
-        default:
-            return getTextArea(value, onChangeHandler)
+    if (isBoolProp(propsMeta)) {
+        return (
+            <input
+                type="checkbox"
+                checked={value && value.toString() === 'true'}
+                onChange={e => onChangeHandler(e.target.checked)}
+            />
+        )
+    } else {
+        return getTextArea(value, onChangeHandler)
     }
 }
 
