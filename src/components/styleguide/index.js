@@ -8,7 +8,10 @@ import { getComponent, getComponentElement } from './component_maker.js'
 import faker from '../../faker.js'
 import AttributePane from './attribute_pane.js'
 import debounce from 'debounce'
-import { getPropValue } from './prop_value_from_string.js'
+import {
+    getPropValue,
+    populateDefaultValues
+} from './prop_value_from_string.js'
 
 export default class Styleguide extends React.Component {
     handleInputChange = e => {
@@ -59,7 +62,10 @@ export default class Styleguide extends React.Component {
                     loadingComponent: false,
                     selectedComponent: {
                         ...com,
-                        fakeProps: faker(com.props)
+                        fakeProps: populateDefaultValues(
+                            com.props,
+                            faker(com.props)
+                        )
                     },
                     selectedComponentInstance: component
                 })

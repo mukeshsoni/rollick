@@ -52,3 +52,22 @@ export function getPropValue(prop, val) {
         }
     }
 }
+
+export function populateDefaultValues(props, fakeProps) {
+    return {
+        ...Object.keys(props).reduce((acc, propName) => {
+            if (
+                props[propName].defaultValue &&
+                props[propName].defaultValue.value
+            ) {
+                return {
+                    ...acc,
+                    [propName]: props[propName].defaultValue.value
+                }
+            } else {
+                return acc
+            }
+        }, {}),
+        ...fakeProps
+    }
+}

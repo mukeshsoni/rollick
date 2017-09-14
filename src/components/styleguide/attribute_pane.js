@@ -1,17 +1,20 @@
 import React from 'react'
 import { isFunctionProp } from './prop_value_from_string.js'
+import './attribute_pane.css'
+import Textarea from 'node_modules/react-textarea-autosize/dist/react-textarea-autosize.min.js'
 
 function getTextArea(value, onChangeHandler) {
     return (
-        <textarea
+        <Textarea
             onChange={e => onChangeHandler(e.target.value)}
             value={value}
+            maxRows={10}
             style={{
                 fontSize: 'inherit',
                 border: '1px solid gray',
                 borderRadius: 5,
-                padding: '1em',
-                flexBasis: '70%'
+                padding: '0.1em',
+                width: '100%'
             }}
         />
     )
@@ -49,24 +52,19 @@ export default class AttributePane extends React.Component {
         if (!component) {
             return null
         } else {
-            const attributeItemStyle = {
-                padding: '1em',
-                display: 'flex',
-                justifyContent: 'space-between'
-            }
-
             return Object.keys(component.props).map(propName => {
                 return (
-                    <div
-                        style={attributeItemStyle}
-                        key={`attribute_${propName}`}
-                    >
-                        {propName}
-                        {getInputField(
-                            component.props[propName],
-                            this.state.props[propName],
-                            this.handlePropChange.bind(this, propName)
-                        )}
+                    <div className="form-row" key={`attribute_${propName}`}>
+                        <span style={{ flex: 1 }}>
+                            {propName}
+                        </span>
+                        <div style={{ flex: 3, width: '100%' }}>
+                            {getInputField(
+                                component.props[propName],
+                                this.state.props[propName],
+                                this.handlePropChange.bind(this, propName)
+                            )}
+                        </div>
                     </div>
                 )
             })

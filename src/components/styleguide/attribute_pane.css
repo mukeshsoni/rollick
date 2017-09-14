@@ -1,0 +1,14 @@
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+.form-row > span,div:last-child() {
+    flex: 3;
+}
+
+.form-row > span,div:first-child() {
+    flex: 1;
+}
