@@ -7,6 +7,7 @@ import classnames from 'classnames'
 import onClickOutside from 'react-onclickoutside'
 import deboune from 'debounce'
 import key from 'keymaster'
+import looseFilter from '../../loose_filter.js'
 import './search_box.css'
 
 import belt from '../../../belt.js'
@@ -116,12 +117,7 @@ class SearchBox extends React.Component {
         if (searchText.trim() === '') {
             return []
         } else {
-            return this.props.items.filter(
-                item =>
-                    item.name
-                        .toLowerCase()
-                        .indexOf(searchText.toLowerCase().trim()) >= 0
-            )
+            return looseFilter(this.props.items, 'name', searchText)
         }
     }
 

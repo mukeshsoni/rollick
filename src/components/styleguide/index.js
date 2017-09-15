@@ -12,6 +12,7 @@ import {
     getPropValue,
     populateDefaultValues
 } from '../../component_maker_helpers/prop_value_from_string.js'
+import looseFilter from '../../tools/loose_filter.js'
 
 const componentsMetaListSorted = componentsMetaList.sort((a, b) =>
     a.name.localeCompare(b.name)
@@ -87,12 +88,7 @@ export default class Styleguide extends React.Component {
         if (searchText.trim() === '') {
             return componentsMetaListSorted
         } else {
-            return componentsMetaListSorted.filter(
-                item =>
-                    item.name
-                        .toLowerCase()
-                        .indexOf(searchText.toLowerCase().trim()) >= 0
-            )
+            return looseFilter(componentsMetaListSorted, 'name', searchText)
         }
     }
 
