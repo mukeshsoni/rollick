@@ -40,4 +40,4 @@ $ ./node_modules/rollick/index.js install
 $ node .rollock/server.js --port 4001
 ```
 
-This should start a localhost server on port 4001 and will serve the tool on 'http://localhost:4001/.rollick/index.html'
+This should start a localhost server on port 4001 and will serve the tool on <http://localhost:4001/.rollick/index.html>
