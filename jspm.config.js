@@ -89,7 +89,7 @@ SystemJS.config({
         'node-sass': 'npm:node-sass@4.5.3',
         'os': 'npm:jspm-nodelibs-os@0.2.2',
         'path': 'npm:jspm-nodelibs-path@0.2.3',
-        'prettier': 'npm:prettier@1.6.1',
+        'prettier': 'npm:prettier@latest',
         'process': 'npm:jspm-nodelibs-process@0.2.1',
         'promise': 'npm:promise@7.3.1',
         'prop-types': 'npm:prop-types@15.5.10',

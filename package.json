@@ -27,7 +27,7 @@
       "keymaster": "npm:keymaster@^1.6.2",
       "less": "npm:systemjs-less-plugin@^2.2.1",
       "node-sass": "npm:node-sass@^4.5.3",
-      "prettier": "npm:prettier@^1.6.1",
+      "prettier": "npm:prettier@latest",
       "react-click-outside": "npm:react-click-outside@^2.3.1",
       "react-codemirror": "npm:react-codemirror@^1.0.0",
       "react-frame-component": "npm:react-frame-component@^1.1.1",
