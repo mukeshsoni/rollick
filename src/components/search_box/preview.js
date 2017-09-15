@@ -32,7 +32,7 @@ Preview.propTypes = {
     component: PropTypes.shape({
         component: PropTypes.component,
         meta: PropTypes.object
-    })
+    }).isRequired
 }
 
 export default Preview

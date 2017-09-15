@@ -44,6 +44,7 @@ function getFlowPropValue(prop, val) {
 export function isObjectProp(prop) {
     return (
         (prop && prop.type && prop.type.name === 'object') ||
+        prop.type.name === 'shape' ||
         (prop && prop.flowType && prop.flowType.type === 'Object')
     )
 }
@@ -85,13 +86,10 @@ export function getPropValue(prop, val) {
 export function populateDefaultValues(props, fakeProps) {
     return {
         ...Object.keys(props).reduce((acc, propName) => {
-            if (
-                props[propName].defaultValue &&
-                props[propName].defaultValue.value
-            ) {
+            if (props[propName].defaultValue) {
                 return {
                     ...acc,
-                    [propName]: props[propName].defaultValue.value
+                    [propName]: props[propName].defaultValue.computed
                 }
             } else {
                 return acc

@@ -6,7 +6,7 @@ import './loader.css'
 import componentsMetaList from 'components.meta.json!json'
 import { getComponent, getComponentElement } from './component_maker.js'
 import faker from '../../faker.js'
-import AttributePane from './attribute_pane.js'
+import AttributePane from './attribute_pane/index.js'
 import debounce from 'debounce'
 import {
     getPropValue,

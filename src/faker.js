@@ -23,6 +23,7 @@ function getObjectOf(prefix, type, opts) {
     return { prop: getFakeProp(prefix, { type }, opts) }
 }
 
+// should the shape generator be also passed the `required` property of the shape itself. Right now we are only looking at the `required` property of each of the attribute inside the shapej
 function getShape(prefix, object, opts) {
     const res = {}
     Object.keys(object).forEach(key => {

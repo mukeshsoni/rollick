@@ -3,16 +3,16 @@ import {
     isFunctionProp,
     isObjectProp,
     isBoolProp
-} from '../../component_maker_helpers/prop_value_from_string.js'
+} from '../../../component_maker_helpers/prop_value_from_string.js'
 import './attribute_pane.css'
 import Textarea from 'node_modules/react-textarea-autosize/dist/react-textarea-autosize.min.js'
 
+// This function exists to convert between some javascript values to values which can be put inside some input component
+// E.g. if some prop is a function, We need to convert it to a string before putting it inside a textarea
+// Similarly, if the prop is an object, it would should up like [Object Object] if we don't do a JSON.stringify of the object
 function serialize(propsMeta, fakeProps) {
     return Object.keys(fakeProps).reduce((acc, propName) => {
-        if (
-            isFunctionProp(propsMeta[propName]) ||
-            isBoolProp(propsMeta[propName])
-        ) {
+        if (isFunctionProp(propsMeta[propName])) {
             return {
                 ...acc,
                 [propName]: fakeProps[propName].toString()
@@ -107,6 +107,24 @@ export default class AttributePane extends React.Component {
                       this.props.component.fakeProps
                   )
                 : {}
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // if this rerender is due to a new component being selected, let's rehydrate the state using the serialize function
+        if (
+            nextProps.component &&
+            this.props.component &&
+            nextProps.component.path !== this.props.component.path
+        ) {
+            this.setState({
+                props: nextProps.component
+                    ? serialize(
+                          nextProps.component.props,
+                          nextProps.component.fakeProps
+                      )
+                    : {}
+            })
         }
     }
 
