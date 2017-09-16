@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import onClickOutside from 'react-onclickoutside'
 import deboune from 'debounce'
 import key from 'keymaster'
-import looseFilter from '../../loose_filter.js'
+import looseFilter from '../../tools/loose_filter.js'
 import './search_box.css'
 
 import belt from '../../../belt.js'
