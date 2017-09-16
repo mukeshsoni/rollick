@@ -33,6 +33,13 @@ var opts = {
     ]
 }
 
+// for allowing wirdcards like '*.less' to test for all files with .less extension
+function wildCardMatcher(rule, text) {
+    const regex = new RegExp(rule.split('*').map(a => a.replace('.', '\\.'))).join('.*')
+
+    return regex.test(text)
+}
+
 function shouldBeTranspiled(filePath) {
     return filePath.indexOf('frontend/harmony') >= 0
 }
@@ -43,56 +50,6 @@ function last(arr) {
 
 function fileExtension(fileName) {
     return last(fileName.split('.'))
-}
-
-function addLessExtIfNeeded(fileName) {
-    if (fileExtension(fileName) !== 'less') {
-        return `${fileName}.less`
-    } else {
-        return fileName
-    }
-}
-
-function hasTildeImport(lessFile) {
-    return (
-        lessFile.indexOf("@import '~") >= 0 ||
-        lessFile.indexOf('@import "~') >= 0 ||
-        lessFile.indexOf("@import (reference) '~") >= 0 ||
-        lessFile.indexOf('@import (reference) "~') >= 0
-    )
-}
-
-function updateTildePaths(lessFile) {
-    var modifiedFile = lessFile
-    var regex = /@import(.+)([\'\"])~(.*)([\'\"])/g
-    var matches = regex.exec(lessFile)
-
-    while (matches) {
-        try {
-            // console.log('modified file name', addLessExtIfNeeded(matches[3]))
-            modifiedFile = modifiedFile.replace(
-                matches[0],
-                `@import${matches[1]}${matches[2]}/frontend/harmony/src/pp/core/less/${addLessExtIfNeeded(
-                    matches[3]
-                )}${matches[4]}`
-            )
-        } catch (e) {
-            console.error('error replacing modified stuff', lessFile)
-        }
-        matches = regex.exec(lessFile)
-    }
-
-    return modifiedFile
-}
-
-function lessLoader(filePath) {
-    const lessFile = fs.readFileSync(filePath, 'utf8')
-
-    if (hasTildeImport(lessFile)) {
-        return updateTildePaths(lessFile)
-    } else {
-        return lessFile
-    }
 }
 
 function getContent(filePath) {
@@ -118,6 +75,19 @@ function adjustPaths(config, filePath) {
     }
 }
 
+function applyLoaders(toolConfig, filePath, fileContent) {
+    if(toolConfig.loaders && toolConfig.loaders.length > 0) {
+        console.log('trying to apply loader')
+        return toolConfig.loaders.filter(loader => loader.test.test(filePath))
+            .reduce((acc, loader) => {
+                console.log('applying loader')
+                return loader.loader(acc)
+            }, fileContent)
+    } else {
+        return fileContent
+    }
+}
+
 // send the correct contentType header
 http
     .createServer(function(req, response) {
@@ -129,10 +99,8 @@ http
             response.writeHead(200)
             if (last(filePath.split('.')) === 'js') {
                 response.end(getContent(filePath), 'utf-8')
-            } else if (fileExtension(filePath) === 'less') {
-                response.end(lessLoader(filePath), 'utf8')
             } else {
-                response.end(fs.readFileSync(filePath), 'utf-8')
+                response.end(applyLoaders(toolConfig, filePath, fs.readFileSync(filePath)), 'utf-8')
             }
         } else {
             console.log('file does not exist', filePath, req.url)
