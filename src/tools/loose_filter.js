@@ -44,7 +44,7 @@ export default function looseFilter(list, key, searchText) {
         .filter(item => item.positions.length === searchText.length)
         // with above calculation, all positions arrays will be same length. But some will have negative numbers. When a character in the searchText is not found in the string. We will discard those items
         .filter(item => item.positions.every(pos => pos >= 0))
-        .map(item => ({ ...item, rank: rank(item.positions) }))
+        .map(item => assoc('rank', rank(item.positions), item))
         // putting a restriction on rank will definitely make search results better. But because of the way the rank function is defined right now, it might hide some possitive ones.
         .filter(item => item.rank < 25)
         .sort((a, b) => a.rank - b.rank)
