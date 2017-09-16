@@ -1,7 +1,8 @@
 {
   "name": "rollick",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "like codepen. But for react components.",
+    "main": "index.js",
   "scripts": {
     "build": "npm run jspm && npm run docgen",
     "jspm": "./node_modules/.bin/jspm install",

@@ -12,6 +12,7 @@ const port = args.port || 4000
 const toolName = 'rollick'
 const toolConfig = require(process.cwd() + '/' + toolName + '.config.js')
 
+// TODO - should be pulled out to config babel options. Few defaults can be there
 var opts = {
     presets: ['react', 'es2015', 'stage-2'],
     plugins: [
@@ -40,6 +41,7 @@ function wildCardMatcher(rule, text) {
     return regex.test(text)
 }
 
+// TODO - this is a problema. what is 'frontend/harmony'?
 function shouldBeTranspiled(filePath) {
     return filePath.indexOf('frontend/harmony') >= 0
 }
@@ -77,10 +79,8 @@ function adjustPaths(config, filePath) {
 
 function applyLoaders(toolConfig, filePath, fileContent) {
     if(toolConfig.loaders && toolConfig.loaders.length > 0) {
-        console.log('trying to apply loader')
         return toolConfig.loaders.filter(loader => loader.test.test(filePath))
             .reduce((acc, loader) => {
-                console.log('applying loader')
                 return loader.loader(acc)
             }, fileContent)
     } else {
