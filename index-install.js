@@ -163,6 +163,12 @@ function updatePackagesProperty(toolConfig, jspmConfig) {
                     },
                     '*.less': {
                         loader: 'less'
+                    },
+                    '*.sass': {
+                        loader: 'sass'
+                    },
+                    '*.scss': {
+                        loader: 'sass'
                     }
                 }
             }

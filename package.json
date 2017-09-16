@@ -36,7 +36,7 @@
       "react-onclickoutside": "npm:react-onclickoutside@^6.5.0",
       "react-spinkit": "npm:react-spinkit@^3.0.0",
       "react-split-pane": "npm:react-split-pane@^0.1.66",
-      "sass": "npm:sass@^1.0.0-beta.2",
+      "sass": "github:dougludlow/plugin-sass@^0.6.0",
       "sass.js": "npm:sass.js@^0.10.6",
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.3.0"
     },
@@ -182,6 +182,16 @@
       },
       "npm:safe-buffer@5.1.1": {
         "browser": "index.js"
+      },
+      "npm:sass.js@0.9.13": {
+        "map": {
+          "ws": "@empty"
+        },
+        "meta": {
+          "dist/sass.worker.js": {
+            "format": "global"
+          }
+        }
       }
     }
   },
