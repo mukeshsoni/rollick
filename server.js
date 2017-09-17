@@ -12,8 +12,8 @@ const port = args.port || 4000
 const toolName = 'rollick'
 const toolConfig = require(process.cwd() + '/' + toolName + '.config.js')
 
-// TODO - should be pulled out to config babel options. Few defaults can be there
-var opts = {
+// TODO - should be pulled out to config babel options. Few defaults can be here
+var babelOptions = {
     presets: ['react', 'es2015', 'stage-2'],
     plugins: [
         'dev-expression',
@@ -41,26 +41,12 @@ function wildCardMatcher(rule, text) {
     return regex.test(text)
 }
 
-// TODO - this is a problema. what is 'frontend/harmony'?
-function shouldBeTranspiled(filePath) {
-    return filePath.indexOf('frontend/harmony') >= 0
-}
-
 function last(arr) {
     return arr[arr.length - 1]
 }
 
 function fileExtension(fileName) {
     return last(fileName.split('.'))
-}
-
-function getContent(filePath) {
-    if (shouldBeTranspiled(filePath)) {
-        var transformed = babel.transformFileSync(filePath, opts)
-        return transformed.code
-    } else {
-        return fs.readFileSync(filePath, 'utf8')
-    }
 }
 
 function hasPaths(config) {
@@ -89,7 +75,12 @@ function applyLoaders(toolConfig, filePath, fileContent) {
     if(hasLoaders(toolConfig)) {
         return toolConfig.server.loaders.filter(loader => loader.test.test(filePath))
             .reduce((acc, loader) => {
-                return loader.loader(acc)
+                if(loader.loader === 'babel') {
+                    var transformed = babel.transformFileSync(filePath, babelOptions)
+                    return transformed.code
+                } else {
+                    return loader.loader(acc)
+                }
             }, fileContent)
     } else {
         return fileContent
@@ -105,11 +96,7 @@ http
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
             response.writeHead(200)
-            if (last(filePath.split('.')) === 'js') {
-                response.end(getContent(filePath), 'utf-8')
-            } else {
-                response.end(applyLoaders(toolConfig, filePath, fs.readFileSync(filePath)), 'utf-8')
-            }
+            response.end(applyLoaders(toolConfig, filePath, fs.readFileSync(filePath, 'utf8')), 'utf8')
         } else {
             console.log('file does not exist', filePath, req.url)
             response.writeHead(500)
