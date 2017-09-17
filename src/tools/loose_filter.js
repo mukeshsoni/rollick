@@ -16,12 +16,8 @@ function getPositions(key, searchText, item) {
         .reduce((acc, searchChar, index, arr) => {
             const str = item[key].toLowerCase()
             return acc.concat(
-                str
-                    .slice(
-                        // since acc will have array of indices for search characters starting from the next index onwards, i.e. for 'chk' and 'checkbox', search for 'h' will be done in 'heckbox'. Hence the second index in acc will also be 0. So we need to offset that by taking the sum of all indices and adding the total length of the accumulator too. Will fail when there's a negative index in between. Hmm.
-                        acc.length > 0 ? sum(acc) + acc.length : 0
-                    )
-                    .indexOf(searchChar)
+                // since acc will have array of indices for search characters starting from the next index onwards, i.e. for 'chk' and 'checkbox', search for 'h' will be done in 'heckbox'. Hence the second index in acc will also be 0. So we need to offset that by taking the sum of all indices and adding the total length of the accumulator too. Will fail when there's a negative index in between. Hmm.
+                str.slice(sum(acc) + acc.length).indexOf(searchChar)
             )
         }, [])
 }
