@@ -34,10 +34,6 @@ var babelOptions = {
     ]
 }
 
-function shouldBeTranspiled(filePath) {
-    return filePath.indexOf('frontend/harmony') >= 0
-}
-
 // for allowing wirdcards like '*.less' to test for all files with .less extension
 function wildCardMatcher(rule, text) {
     const regex = new RegExp(
@@ -75,15 +71,11 @@ function applyLoaders(toolConfig, filePath, fileContent) {
             .filter(loader => loader.test.test(filePath))
             .reduce((acc, loader) => {
                 if (loader.loader === 'babel') {
-                    if (shouldBeTranspiled(filePath)) {
-                        var transformed = babel.transformFileSync(
-                            filePath,
-                            babelOptions
-                        )
-                        return transformed.code
-                    } else {
-                        return fileContent
-                    }
+                    var transformed = babel.transformFileSync(
+                        filePath,
+                        babelOptions
+                    )
+                    return transformed.code
                 } else {
                     return loader.loader(acc)
                 }
