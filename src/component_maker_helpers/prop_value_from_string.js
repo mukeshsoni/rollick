@@ -43,8 +43,9 @@ function getFlowPropValue(prop, val) {
 
 export function isObjectProp(prop) {
     return (
-        (prop && prop.type && prop.type.name === 'object') ||
-        prop.type.name === 'shape' ||
+        (prop &&
+            prop.type &&
+            (prop.type.name === 'object' || prop.type.name === 'shape')) ||
         (prop && prop.flowType && prop.flowType.type === 'Object')
     )
 }
