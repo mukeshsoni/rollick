@@ -21,6 +21,16 @@
 - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
 - [x] Have a way to load the font icons specific to the project
   - Fixed it by allowing a `paths` property in the config file. Works like the paths property in jspm and requirejs. Like aliases.
+- [ ] Have to think about bundling the app into a single file for production use.
+  - [ ] Tried it and jspm throws a 'run out of heap memory' or something error. Followed a github issue on jspm repo and tried increasing nodejs heap size using - `node --max_old_space_size=4098 ./node_modules/.bin/jspm bundle main.js app-bundle.js --minify`, but that fails after a long time with the error `SyntaxError: Unexpected token: name (r)`. Also tried using `--skip-source-maps` but that didn't work either. The bundling however does with (albiet super slow) without the `--minify` option.
+    - Further digging showed that it's a uglifyjs problem. Tried to create the bundle first and then use uglifyjs on the bundle. Looks like the bundle has es6 code (e.g. let, const) and uglifyjs does not understand es6 completely.
+    - One idea can be to use another minifier. E.g. babel-minify
+  - [ ] Can just create a separate `index-dev.html` file which will have the contents of existing `index.html` file and the `index.html` file can point to the bundled file.
+  - [ ] Once the bundled file is there, we can remove these steps from the install script -
+      1. Copy src folder
+      2. `npm install`
+      3. `jspm install`
+      4. Loss. It's all profit now.
 - [ ] styleguide component. flip of a button on the header.
 - [ ] When search bar is in focus, cannot focus the jsx editor by clicking on it. It works if i first click the css editor (which get's the focus) and then click the jsx editor
 - [ ] Fix highlight issues in editors
