@@ -11,9 +11,6 @@ If you want to try it on any other project with components, you will need a roll
 ```
 module.exports = {
     componentsPath: 'src/components',
-    paths: {
-        'fonts': 'path/to/fontsfile'
-    },
     jspm: {
         paths: {
             lodash: '/node_modules/lodash/index.js',
@@ -27,8 +24,12 @@ module.exports = {
         css: {
             urls: '/path/to/global.css'
         }
+    },
+    server: {
+      paths: {
+          'fonts': 'path/to/fontsfile'
+      },
     }
-
 }
 ```
 
