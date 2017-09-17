@@ -124,7 +124,8 @@ export default class Styleguide extends React.Component {
             searchText: '',
             selectedComponent: null,
             selectedComponentInstance: null,
-            loadingComponent: false
+            loadingComponent: false,
+            componentsMetaListSorted: []
         }
     }
 
