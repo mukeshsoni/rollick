@@ -6,6 +6,7 @@
         <script src="jspm_packages/system.js"></script>
         <script src="jspm.config.js"></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <link href="src/components/styleguide/loader.css" rel="stylesheet"  type="text/css"  />
         <style>
          * {
              box-sizing: border-box;
@@ -17,7 +18,7 @@
     </head>
     <body>
         <style id="global_styles" ></style>
-        <div id="container"></div>
+        <div id="container" class="loader"></div>
         <script>
          SystemJS.import('main.js')
         </script>

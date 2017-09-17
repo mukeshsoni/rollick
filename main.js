@@ -5,4 +5,5 @@ import App from 'rollick/app.js'
 
 let container = document.getElementById('container')
 
+document.getElementById('container').classList.remove('loader')
 let component = ReactDOM.render(React.createElement(App), container)
