@@ -9,7 +9,8 @@ import 'node_modules/codemirror/theme/twilight.css!css'
 import jsx from 'jsx-transpiler'
 import sass from 'sass.js'
 import prettier from 'prettier'
-import componentsMetaList from 'components.meta.json!json'
+/* import componentsMetaList from 'components.meta.json!json'*/
+/* let componentsMetaList*/
 import SearchBox from '../search_box/index.js'
 import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
@@ -369,6 +370,7 @@ export default class Playground extends React.Component {
             cssToInsert: wrapCss(startingCss),
             showSearchModal: false,
             searchText: '',
+            componentsMetaList: [],
             cssFilesToInject: [
                 'http://localhost:5000/src/components/search_box/search_item.css'
             ]
@@ -379,6 +381,10 @@ export default class Playground extends React.Component {
 
     componentWillMount() {
         this.registerServiceWorker()
+
+        SystemJS.import('components.meta.json!json').then(meta => {
+            this.setState({ componentsMetaList: meta })
+        })
     }
 
     componentDidMount() {
@@ -402,7 +408,8 @@ export default class Playground extends React.Component {
             cssCode,
             jsxToInsert,
             cssToInsert,
-            showSearchModal
+            showSearchModal,
+            componentsMetaList
         } = this.state
 
         const modalStyle = {

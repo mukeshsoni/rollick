@@ -21,11 +21,15 @@
 - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
 - [x] Have a way to load the font icons specific to the project
   - Fixed it by allowing a `paths` property in the config file. Works like the paths property in jspm and requirejs. Like aliases.
+
 - [ ] Have to think about bundling the app into a single file for production use.
+  - Having a bundle for prod use will also allow easy use of hot-reloading in dev. 
   - [ ] Tried it and jspm throws a 'run out of heap memory' or something error. Followed a github issue on jspm repo and tried increasing nodejs heap size using - `node --max_old_space_size=4098 ./node_modules/.bin/jspm bundle main.js app-bundle.js --minify`, but that fails after a long time with the error `SyntaxError: Unexpected token: name (r)`. Also tried using `--skip-source-maps` but that didn't work either. The bundling however does with (albiet super slow) without the `--minify` option.
     - Further digging showed that it's a uglifyjs problem. Tried to create the bundle first and then use uglifyjs on the bundle. Looks like the bundle has es6 code (e.g. let, const) and uglifyjs does not understand es6 completely.
     - One idea can be to use another minifier. E.g. babel-minify
   - [ ] Can just create a separate `index-dev.html` file which will have the contents of existing `index.html` file and the `index.html` file can point to the bundled file.
+  - [ ] Can't import the components meta file using import statement if we create a bundle. That bundle will never access the project specific meta file. Three solutions. 1. Load the meta file dynamically in a react lifestyle method. 2. Generate meta file in the front-end for each component. 3. For each component, load the meta file. Which means, generating one meta file for each component and saving it in the same folder as the js file.
+
   - [ ] Once the bundled file is there, we can remove these steps from the install script -
       1. Copy src folder
       2. `npm install`

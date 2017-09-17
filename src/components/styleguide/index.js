@@ -3,7 +3,6 @@ import SearchInput from '../search_box/search_input.js'
 import '../search_box/search_box.css'
 import './styleguide.css'
 import './loader.css'
-import componentsMetaList from 'components.meta.json!json'
 import { getComponent, getComponentElement } from './component_maker.js'
 import faker from '../../faker.js'
 import AttributePane from './attribute_pane/index.js'
@@ -13,10 +12,6 @@ import {
     populateDefaultValues
 } from '../../component_maker_helpers/prop_value_from_string.js'
 import looseFilter from '../../tools/loose_filter.js'
-
-const componentsMetaListSorted = componentsMetaList.sort((a, b) =>
-    a.name.localeCompare(b.name)
-)
 
 export default class Styleguide extends React.Component {
     handleInputChange = e => {
@@ -86,9 +81,13 @@ export default class Styleguide extends React.Component {
         const { searchText } = this.state
 
         if (searchText.trim() === '') {
-            return componentsMetaListSorted
+            return this.state.componentsMetaListSorted
         } else {
-            return looseFilter(componentsMetaListSorted, 'name', searchText)
+            return looseFilter(
+                this.state.componentsMetaListSorted,
+                'name',
+                searchText
+            )
         }
     }
 
@@ -127,6 +126,17 @@ export default class Styleguide extends React.Component {
             selectedComponentInstance: null,
             loadingComponent: false
         }
+    }
+
+    componentWillMount() {
+        SystemJS.import('components.meta.json!json').then(meta => {
+            this.setState({
+                componentsMetaList: meta,
+                componentsMetaListSorted: meta.sort((a, b) =>
+                    a.name.localeCompare(b.name)
+                )
+            })
+        })
     }
 
     componentDidMount() {

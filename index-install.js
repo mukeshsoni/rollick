@@ -45,6 +45,7 @@ function emptytoolFolder() {
 function copyNeededFiles() {
     // copy stuff we need
     const filesToCopy = [
+        'app-bundle.js',
         'index.html',
         'meta_data_generator.js',
         'belt.js',
