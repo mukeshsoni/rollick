@@ -34,9 +34,15 @@ var babelOptions = {
     ]
 }
 
+function shouldBeTranspiled(filePath) {
+    return filePath.indexOf('frontend/harmony') >= 0
+}
+
 // for allowing wirdcards like '*.less' to test for all files with .less extension
 function wildCardMatcher(rule, text) {
-    const regex = new RegExp(rule.split('*').map(a => a.replace('.', '\\.'))).join('.*')
+    const regex = new RegExp(
+        rule.split('*').map(a => a.replace('.', '\\.'))
+    ).join('.*')
 
     return regex.test(text)
 }
@@ -46,9 +52,9 @@ function hasPaths(config) {
 }
 
 function adjustPaths(config, filePath) {
-    if(hasPaths(config)) {
+    if (hasPaths(config)) {
         return Object.keys(config.server.paths).reduce((acc, inUrl) => {
-            if(acc.indexOf(inUrl) >= 0) {
+            if (acc.indexOf(inUrl) >= 0) {
                 return acc.replace(inUrl, config.paths[inUrl])
             } else {
                 return acc
@@ -64,12 +70,20 @@ function hasLoaders(config) {
 }
 
 function applyLoaders(toolConfig, filePath, fileContent) {
-    if(hasLoaders(toolConfig)) {
-        return toolConfig.server.loaders.filter(loader => loader.test.test(filePath))
+    if (hasLoaders(toolConfig)) {
+        return toolConfig.server.loaders
+            .filter(loader => loader.test.test(filePath))
             .reduce((acc, loader) => {
-                if(loader.loader === 'babel') {
-                    var transformed = babel.transformFileSync(filePath, babelOptions)
-                    return transformed.code
+                if (loader.loader === 'babel') {
+                    if (shouldBeTranspiled(filePath)) {
+                        var transformed = babel.transformFileSync(
+                            filePath,
+                            babelOptions
+                        )
+                        return transformed.code
+                    } else {
+                        return fileContent
+                    }
                 } else {
                     return loader.loader(acc)
                 }
@@ -88,7 +102,14 @@ http
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
             response.writeHead(200)
-            response.end(applyLoaders(toolConfig, filePath, fs.readFileSync(filePath, 'utf8')), 'utf8')
+            response.end(
+                applyLoaders(
+                    toolConfig,
+                    filePath,
+                    fs.readFileSync(filePath, 'utf8')
+                ),
+                'utf8'
+            )
         } else {
             console.log('file does not exist', filePath, req.url)
             response.writeHead(500)
