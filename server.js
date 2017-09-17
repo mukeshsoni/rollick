@@ -51,7 +51,7 @@ function adjustPaths(config, filePath) {
     if (hasPaths(config)) {
         return Object.keys(config.server.paths).reduce((acc, inUrl) => {
             if (acc.indexOf(inUrl) >= 0) {
-                return acc.replace(inUrl, config.paths[inUrl])
+                return acc.replace(inUrl, config.server.paths[inUrl])
             } else {
                 return acc
             }
