@@ -63,9 +63,13 @@ function getContent(filePath) {
     }
 }
 
+function hasPaths(config) {
+    return config.server.paths && Object.keys(config.server.paths).length > 0
+}
+
 function adjustPaths(config, filePath) {
-    if(config.paths && Object.keys(config.paths).length > 0) {
-        return Object.keys(config.paths).reduce((acc, inUrl) => {
+    if(hasPaths(config)) {
+        return Object.keys(config.server.paths).reduce((acc, inUrl) => {
             if(acc.indexOf(inUrl) >= 0) {
                 return acc.replace(inUrl, config.paths[inUrl])
             } else {
@@ -77,9 +81,13 @@ function adjustPaths(config, filePath) {
     }
 }
 
+function hasLoaders(config) {
+    return config.server.loaders && config.server.loaders.length > 0
+}
+
 function applyLoaders(toolConfig, filePath, fileContent) {
-    if(toolConfig.loaders && toolConfig.loaders.length > 0) {
-        return toolConfig.loaders.filter(loader => loader.test.test(filePath))
+    if(hasLoaders(toolConfig)) {
+        return toolConfig.server.loaders.filter(loader => loader.test.test(filePath))
             .reduce((acc, loader) => {
                 return loader.loader(acc)
             }, fileContent)

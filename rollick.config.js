@@ -40,16 +40,19 @@ function updateTildePaths(lessFile) {
 
 module.exports = {
     componentsPath: 'src/components',
-    loaders: [
-        {
-            test: /\.less$/,
-            loader: function lessLoader(lessFile) {
-                if (hasTildeImport(lessFile)) {
-                    return updateTildePaths(lessFile)
-                } else {
-                    return lessFile
+    // server specific configuration goes here
+    server: {
+        loaders: [
+            {
+                test: /\.less$/,
+                loader: function lessLoader(lessFile) {
+                    if (hasTildeImport(lessFile)) {
+                        return updateTildePaths(lessFile)
+                    } else {
+                        return lessFile
+                    }
                 }
             }
-        }
-    ]
+        ]
+    }
 }
