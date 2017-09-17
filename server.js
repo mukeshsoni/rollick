@@ -41,14 +41,6 @@ function wildCardMatcher(rule, text) {
     return regex.test(text)
 }
 
-function last(arr) {
-    return arr[arr.length - 1]
-}
-
-function fileExtension(fileName) {
-    return last(fileName.split('.'))
-}
-
 function hasPaths(config) {
     return config.server.paths && Object.keys(config.server.paths).length > 0
 }
