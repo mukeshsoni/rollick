@@ -21,6 +21,7 @@
 - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
 - [x] Have a way to load the font icons specific to the project
   - Fixed it by allowing a `paths` property in the config file. Works like the paths property in jspm and requirejs. Like aliases.
+- [ ] Fake data for many things are not good enough. E.g. arrayOf(shape), oneOf etc. Fix that first thing.
 - [ ] Ability to save prop values
 - [ ] Save and share your design
 - [ ] The attribute pane should take care of converting data to the type of the prop when something changes. Returning string in some case, boolean in another and function some time else confuses the hell out of the consumer of onChange

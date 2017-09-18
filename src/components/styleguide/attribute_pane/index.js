@@ -35,6 +35,23 @@ function serialize(propsMeta, fakeProps) {
     }, {})
 }
 
+// this function is very important
+// it converts whatever comes from input (text, boolean, etc.) and converts it to a type which is expected out of it
+// e.g. we represent object as string in text area. But user of attribute pane, expect a changed object back
+// problem is when the input goes into error state (not valid object). We need to maintain internal state of values and only pass it across when there's a valid
+// output
+function inputValueToPropValue(prop, oldValue, newValue) {
+    if (isObjectProp(prop) || isArrayProp(prop)) {
+        try {
+            return JSON.parse(newValue)
+        } catch (e) {
+            return oldValue
+        }
+    } else {
+        return newValue
+    }
+}
+
 function getTextArea(value, onChangeHandler) {
     // The onChange handler should send back data based the type of the prop and not just strings. It's very difficult for consumer of attribute pane
     // to guess what might come out as a result of onChange
@@ -70,13 +87,27 @@ function getInputField(propsMeta, value, onChangeHandler) {
 
 export default class AttributePane extends React.Component {
     handlePropChange = (propName, newValue) => {
-        this.setState({
-            props: {
-                ...this.state.props,
-                [propName]: newValue
+        const oldValue = this.state.props[propName]
+
+        this.setState(
+            {
+                props: {
+                    ...this.state.props,
+                    [propName]: newValue
+                }
+            },
+            () => {
+                this.props.onChange(
+                    propName,
+                    inputValueToPropValue(
+                        propName,
+                        this.props.component.props[propName],
+                        oldValue,
+                        newValue
+                    )
+                )
             }
-        })
-        this.props.onChange(propName, newValue)
+        )
     }
 
     getAttributes = () => {
