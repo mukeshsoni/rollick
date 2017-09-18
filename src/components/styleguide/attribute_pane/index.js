@@ -36,6 +36,8 @@ function serialize(propsMeta, fakeProps) {
 }
 
 function getTextArea(value, onChangeHandler) {
+    // The onChange handler should send back data based the type of the prop and not just strings. It's very difficult for consumer of attribute pane
+    // to guess what might come out as a result of onChange
     return (
         <Textarea
             onChange={e => onChangeHandler(e.target.value)}

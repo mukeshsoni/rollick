@@ -85,7 +85,7 @@ function applyLoaders(toolConfig, filePath, fileContent) {
                     )
                     return transformed.code
                 } else {
-                    return loader.loader(acc)
+                    return loader.loader(acc.toString('utf8'))
                 }
             }, fileContent)
     } else {
@@ -103,21 +103,10 @@ http
         if (fs.existsSync(filePath)) {
             response.writeHead(200)
             // font files should not be loaded with 'utf8' encoding. They are binary files. Loading them with 'utf8' encoding and sending them across to browser breaks/corrupts them.
-            if (
-                fileExtension(filePath) === 'eot' ||
-                fileExtension(filePath) === 'woff' ||
-                fileExtension(filePath) === 'ttf'
-            ) {
-                response.end(fs.readFileSync(filePath))
-            } else {
-                response.end(
-                    applyLoaders(
-                        toolConfig,
-                        filePath,
-                        fs.readFileSync(filePath, 'utf8')
-                    )
-                )
-            }
+            // send buffered content to loaders. Let them convert to 'utf8' string manually (using .toString('utf'))
+            response.end(
+                applyLoaders(toolConfig, filePath, fs.readFileSync(filePath))
+            )
         } else {
             console.log('file does not exist', filePath, req.url)
             response.writeHead(500)

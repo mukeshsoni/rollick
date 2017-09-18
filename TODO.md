@@ -21,7 +21,9 @@
 - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
 - [x] Have a way to load the font icons specific to the project
   - Fixed it by allowing a `paths` property in the config file. Works like the paths property in jspm and requirejs. Like aliases.
-
+- [ ] Ability to save prop values
+- [ ] Save and share your design
+- [ ] The attribute pane should take care of converting data to the type of the prop when something changes. Returning string in some case, boolean in another and function some time else confuses the hell out of the consumer of onChange
 - [ ] Have to think about bundling the app into a single file for production use.
   - Having a bundle for prod use will also allow easy use of hot-reloading in dev. 
   - [ ] Tried it and jspm throws a 'run out of heap memory' or something error. Followed a github issue on jspm repo and tried increasing nodejs heap size using - `node --max_old_space_size=4098 ./node_modules/.bin/jspm bundle main.js app-bundle.js --minify`, but that fails after a long time with the error `SyntaxError: Unexpected token: name (r)`. Also tried using `--skip-source-maps` but that didn't work either. The bundling however does with (albiet super slow) without the `--minify` option.
