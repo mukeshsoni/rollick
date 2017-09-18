@@ -23,9 +23,7 @@ function getFunctionFromString(str) {
 
 function getObjectFromString(str) {
     try {
-        ;(0, eval)('const obj = ' + str)
-        console.log('obj', obj)
-        return obj
+        return JSON.parse(str)
     } catch (e) {
         console.error('error converting object', e)
         return str
@@ -85,7 +83,9 @@ export function getPropValue(prop, val) {
         if (isFunctionProp(prop)) {
             return getFunctionFromString(val)
         } else if (isObjectProp(prop)) {
-            return getFunctionFromString(val)
+            return getObjectFromString(val)
+        } else if (isArrayProp(prop)) {
+            return getObjectFromString(val)
         } else if (isElementProp(prop)) {
             return getElementFromString(val)
         } else {

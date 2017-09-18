@@ -3,7 +3,8 @@ import {
     isFunctionProp,
     isObjectProp,
     isArrayProp,
-    isBoolProp
+    isBoolProp,
+    getPropValue
 } from '../../../component_maker_helpers/prop_value_from_string.js'
 import './attribute_pane.css'
 import Textarea from 'node_modules/react-textarea-autosize/dist/react-textarea-autosize.min.js'
@@ -41,12 +42,8 @@ function serialize(propsMeta, fakeProps) {
 // problem is when the input goes into error state (not valid object). We need to maintain internal state of values and only pass it across when there's a valid
 // output
 function inputValueToPropValue(prop, oldValue, newValue) {
-    if (isObjectProp(prop) || isArrayProp(prop)) {
-        try {
-            return JSON.parse(newValue)
-        } catch (e) {
-            return oldValue
-        }
+    if (isObjectProp(prop) || isArrayProp(prop) || isFunctionProp(prop)) {
+        return getPropValue(prop, newValue)
     } else {
         return newValue
     }
@@ -100,7 +97,6 @@ export default class AttributePane extends React.Component {
                 this.props.onChange(
                     propName,
                     inputValueToPropValue(
-                        propName,
                         this.props.component.props[propName],
                         oldValue,
                         newValue
