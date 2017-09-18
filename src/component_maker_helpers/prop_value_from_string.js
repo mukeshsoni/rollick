@@ -21,9 +21,13 @@ function getFunctionFromString(str) {
     }
 }
 
+// cannot use JSON.parse here since the string can be something like
+// { width: 200, height: 200 }. Notice the absense of quotes around the property names? JSON.parse will
+// fail there
 function getObjectFromString(str) {
     try {
-        return JSON.parse(str)
+        ;(0, eval)('var obj = ' + str)
+        return obj
     } catch (e) {
         console.error('error converting object', e)
         return str
