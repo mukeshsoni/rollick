@@ -14,17 +14,23 @@
 - [x] Auto format for css code
 - [x] fake props can be moved to frontend. Much more control.
 - [x] Don't need the docgen stuff and meta file to be pretty formatted. Waste of bytes.
-- [ ] React fake props flowtype support
+- [x] React fake props flowtype support
   - [x] simple types
   - [x] custom types - signature
   - [x] complex custom types - signature inside signature. E.g. type Person { repos: Array<Repo> }; type Repo = { url: string, commits: Array<Commit> }; type Commit = {...}`
 - [x] React.PropTypes is not present in the version of react i use for rollick. Which breaks our components which import { PropTypes } from 'react'. One way is to add 'prop-types' dependency to our 
 - [x] Have a way to load the font icons specific to the project
   - Fixed it by allowing a `paths` property in the config file. Works like the paths property in jspm and requirejs. Like aliases.
-- [ ] Fake data for many things are not good enough. E.g. arrayOf(shape), oneOf etc. Fix that first thing.
+- [x] Fake data for many things are not good enough. E.g. arrayOf(shape), oneOf etc. Fix that first thing.
+- [x] The attribute pane should take care of converting data to the type of the prop when something changes. Returning string in some case, boolean in another and function some time else confuses the hell out of the consumer of onChange
+- [x] styleguide component. flip of a button on the header.
+- [x] Make all dependencies as normal dependencies. In other words, move all dev dependencies to dependencies section in package.json
+- [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
+- [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
+  - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
+    - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front.
 - [ ] Ability to save prop values
 - [ ] Save and share your design
-- [ ] The attribute pane should take care of converting data to the type of the prop when something changes. Returning string in some case, boolean in another and function some time else confuses the hell out of the consumer of onChange
 - [ ] Have to think about bundling the app into a single file for production use.
   - Having a bundle for prod use will also allow easy use of hot-reloading in dev. 
   - [ ] Tried it and jspm throws a 'run out of heap memory' or something error. Followed a github issue on jspm repo and tried increasing nodejs heap size using - `node --max_old_space_size=4098 ./node_modules/.bin/jspm bundle main.js app-bundle.js --minify`, but that fails after a long time with the error `SyntaxError: Unexpected token: name (r)`. Also tried using `--skip-source-maps` but that didn't work either. The bundling however does with (albiet super slow) without the `--minify` option.
@@ -38,7 +44,6 @@
       2. `npm install`
       3. `jspm install`
       4. Loss. It's all profit now.
-- [ ] styleguide component. flip of a button on the header.
 - [ ] When search bar is in focus, cannot focus the jsx editor by clicking on it. It works if i first click the css editor (which get's the focus) and then click the jsx editor
 - [ ] Fix highlight issues in editors
 - [ ] After prettier formatting, the cursor offset is not correct. It doesn't work at all in some cases, which is ok. But when it's working, it calculates wrong offset.
@@ -52,22 +57,17 @@
   - [ ] `rollick generate-meta` to regenerate meta files wheneven needed (after change in component definition)
   - [ ] `rollick watch` to watch all component files and automatically regenrate meta file on change of any component file
 - [ ] Integrate with PP components
-  - [ ] The font icons loaded when the class is activated goes directly to server. Need to rewrite path for those (from /harmony/fonts to /frontend/web/wwwroot/harmony/fonts)
-           TODO - this should be by having custom loaders for *.eot files
-         or a alias mapping like we have for jspm, but for rollick
-        yup, the second one is a better solution since we just want to rewrite file paths
-
-  - [ ] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
+  - [x] The font icons loaded when the class is activated goes directly to server. Need to rewrite path for those (from /harmony/fonts to /frontend/web/wwwroot/harmony/fonts)
+  - [x] less file paths from pp/core/less folder. Imported as '~pp-common-<someting>' in many less files
     - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
   package.json and use codemod to do the necessary changes
     - fixed it by writing custom server to serve js files. Passing all js files through babel and converting to commonjs file before being served to the browser. Not at all efficient but does the trick.
   - [x] CSS still half breaks in a weird way. Probably connected to some other global css file.
     - Looks like it breaks in weird ways all over the place, even in our system
-  - [ ] react-docgen does not understand exact types :(
   - [ ] Need to manually add proptypes for components which are missing proptypes. Also need to modify proptypes for components which do not specify the isRequired flag correctly.
-- [ ] own server to serve files
-  - [ ] Introduce concept of loaders through rollick.config file. E.g. using tildeLoader for less files in projectplace project
-  - [ ] Use babel transpilation by default. Would take care of edge cases with named imports for ES6 modules which may/maynot work with systemjs 
+- [x] own server to serve files
+  - [x] Introduce concept of loaders through rollick.config file. E.g. using tildeLoader for less files in projectplace project
+  - [x] Use babel transpilation by default. Would take care of edge cases with named imports for ES6 modules which may/maynot work with systemjs 
   currently
     - [ ] rollick config should give an option to set custom babel presets and plugins
     - [ ] add default presets and plugins used in babel in the server to npm dependencies list
@@ -77,13 +77,12 @@
       - [x] mainly pickup the component folder path from the config
       - [x] generate the components meta file from the component path and store it inside .rollick folder
       - [ ] start server in project root
-      - [ ] react-docgen does not understand exact types :(
 - [ ] Provide a utility in the UI to easily fill in fake data for common cases like ‘email’, ‘url’, ‘photo url’, ‘name’, ‘age’, ‘sex’, ‘description’, ‘long description’ etc.
 - [ ] host app on now.sh
   - [ ] Tried and failed. Somehow fails while installing bluebird.
-- [ ] export to react component feature
+    - Looks like a memory issue. Current dependency tree is huge.
+- [ ] Export to react component feature
 - [ ] vim mode for editor?
-- [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] Production build setup. Should generate a minified bundle and point to react production file 
 - [ ] Error handling in editors and global errors 
 - [ ] Check for rollick config file on install command and throw error if absent
@@ -92,7 +91,6 @@
 - [ ] Look at create react app and see what happens when we invoke create-react-app on the command line. Should have similar 'rollick install' or something 
 - [ ] The name rollick restricts future development scope to react users. Which should not be the case. Any component based architecture should be OK. Change the name. Jalebi? Nageen? Gambol? Jambol? Shenanigan? Kodai?
 - [ ] Preview panel styling 
-- [ ] Make all dependencies as normal dependencies. In other words, move all dev dependencies to dependencies section in package.json
 - [ ] Don't need to copy meta data generator. In fact, should run it from project root and just copy the output files to .kodai folder 
   - [ ] More difficult to do than it looks like. Because of the way that script is setup
 - [ ] react-docgen fails sometimes when it find emacs temp files in the directory and our script doesn’t show any error.
@@ -102,12 +100,8 @@
 - [ ] If cursor is in between another element, the search result goes into a place which is not valid jsx. But it's hard to see in the editor what went wrong where. One solution is to first try to prettier format the resulting jsx. If there's an error, instead put the searched component at the end of the jsx stuff in the browser. User can then rearrange the jsx as needed. At least the jsx will be correct and user sees the added component 
 - [ ] Save and share the pen 
 - [ ] What happens if users copy/paste some existing jsx consisting of components?
-- [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
-  - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
-    - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front.
 - [ ] Check why docgen fails for many of our components 
   - [ ] One of the reasons is when there is a temp emacs file, which is actually a soft link. Starts with .#
-- [ ] Add proptypes to components which are missing any proptype definitions
 - [ ] Create new npm packages, docgentofake, which takes description for one component produced by docgen and returns fake data for that
 - [ ] Provide a UI to fix the config file
 
