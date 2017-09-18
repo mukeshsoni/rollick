@@ -8,6 +8,7 @@ import {
 } from '../../../component_maker_helpers/prop_value_from_string.js'
 import './attribute_pane.css'
 import Textarea from 'node_modules/react-textarea-autosize/dist/react-textarea-autosize.min.js'
+import Tooltip from '../../tooltip/index.js'
 
 // This function exists to convert between some javascript values to values which can be put inside some input component
 // E.g. if some prop is a function, We need to convert it to a string before putting it inside a textarea
@@ -125,16 +126,16 @@ export default class AttributePane extends React.Component {
                                 this.handlePropChange.bind(this, propName)
                             )}
                         </div>
-                        <span
-                            style={{ marginLeft: '0.3em', cursor: 'pointer' }}
-                            onMouseOver={() => {
-                                console.log(
-                                    'should show popover with expected prop structure'
-                                )
-                            }}
-                        >
-                            ?
-                        </span>
+                        <Tooltip content={component.props[propName]}>
+                            <span
+                                style={{
+                                    marginLeft: '0.3em',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                ?
+                            </span>
+                        </Tooltip>
                     </div>
                 )
             })
