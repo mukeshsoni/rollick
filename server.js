@@ -34,6 +34,14 @@ var babelOptions = {
     ]
 }
 
+function last(arr) {
+    return arr[arr.length - 1]
+}
+
+function fileExtension(fileName) {
+    return last(fileName.split('.'))
+}
+
 // for allowing wirdcards like '*.less' to test for all files with .less extension
 function wildCardMatcher(rule, text) {
     const regex = new RegExp(
@@ -94,14 +102,22 @@ http
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
             response.writeHead(200)
-            response.end(
-                applyLoaders(
-                    toolConfig,
-                    filePath,
-                    fs.readFileSync(filePath, 'utf8')
-                ),
-                'utf8'
-            )
+            // font files should not be loaded with 'utf8' encoding. They are binary files. Loading them with 'utf8' encoding and sending them across to browser breaks/corrupts them.
+            if (
+                fileExtension(filePath) === 'eot' ||
+                fileExtension(filePath) === 'woff' ||
+                fileExtension(filePath) === 'ttf'
+            ) {
+                response.end(fs.readFileSync(filePath))
+            } else {
+                response.end(
+                    applyLoaders(
+                        toolConfig,
+                        filePath,
+                        fs.readFileSync(filePath, 'utf8')
+                    )
+                )
+            }
         } else {
             console.log('file does not exist', filePath, req.url)
             response.writeHead(500)

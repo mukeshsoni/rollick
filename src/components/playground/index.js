@@ -72,7 +72,7 @@ function addComponent(jsx, codeMirror, componentDetails) {
         if (componentDetails.fakeProps) {
             fakeProps = componentDetails.fakeProps
         } else {
-            const fakeProps = populateDefaultValues(
+            fakeProps = populateDefaultValues(
                 componentDetails.props,
                 faker(componentDetails.props)
             )
