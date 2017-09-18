@@ -2,6 +2,7 @@ import React from 'react'
 import {
     isFunctionProp,
     isObjectProp,
+    isArrayProp,
     isBoolProp
 } from '../../../component_maker_helpers/prop_value_from_string.js'
 import './attribute_pane.css'
@@ -17,7 +18,10 @@ function serialize(propsMeta, fakeProps) {
                 ...acc,
                 [propName]: fakeProps[propName].toString()
             }
-        } else if (isObjectProp(propsMeta[propName])) {
+        } else if (
+            isObjectProp(propsMeta[propName]) ||
+            isArrayProp(propsMeta[propName])
+        ) {
             return {
                 ...acc,
                 [propName]: JSON.stringify(fakeProps[propName], null, 4)
@@ -30,6 +34,7 @@ function serialize(propsMeta, fakeProps) {
         }
     }, {})
 }
+
 function getTextArea(value, onChangeHandler) {
     return (
         <Textarea

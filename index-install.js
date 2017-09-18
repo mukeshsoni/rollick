@@ -45,8 +45,9 @@ function emptytoolFolder() {
 function copyNeededFiles() {
     // copy stuff we need
     const filesToCopy = [
-        'app-bundle.js',
+        // 'app-bundle.js',
         'index.html',
+        'index-dev.html',
         'meta_data_generator.js',
         'belt.js',
         'jspm.config.js',
@@ -84,6 +85,33 @@ function generateMetaFile() {
     return promisifiedExec('npm run docgen -- --config=../rollick.config.js')
 }
 
+// function addOnLoadFunctions(toolConfig) {
+//     if (toolConfig && toolConfig.onLoad) {
+//         let indexFile = fs.readFileSync(__dirname + '/index.html', 'utf-8')
+//         let devIndexFile = fs.readFileSync(
+//             __dirname + '/index-dev.html',
+//             'utf-8'
+//         )
+
+//         indexFile = indexFile.replace(
+//             "SystemJS.import('main.js')",
+//             `${createCssLinks(toolConfig.globals.css)}\n</head>`
+//         )
+
+//         devIndexFile = devIndexFile.replace(
+//             '</head>',
+//             `${createCssLinks(toolConfig.globals.css)}\n</head>`
+//         )
+
+//         return Promise.all([
+//             fs.writeFile(toolFolder + '/index.html', indexFile),
+//             fs.writeFile(toolFolder + '/index-dev.html', devIndexFile)
+//         ])
+//     } else {
+//         return Promise.resolve({})
+//     }
+// }
+
 function addGlobals(toolConfig) {
     function createCssLinks(cssConfig) {
         function wrapUrlInLinkTag(url) {
@@ -103,13 +131,25 @@ function addGlobals(toolConfig) {
     if (toolConfig && toolConfig.globals) {
         if (toolConfig.globals.css) {
             let indexFile = fs.readFileSync(__dirname + '/index.html', 'utf-8')
+            let devIndexFile = fs.readFileSync(
+                __dirname + '/index-dev.html',
+                'utf-8'
+            )
 
             indexFile = indexFile.replace(
                 '</head>',
                 `${createCssLinks(toolConfig.globals.css)}\n</head>`
             )
 
-            return fs.writeFile(toolFolder + '/index.html', indexFile)
+            devIndexFile = devIndexFile.replace(
+                '</head>',
+                `${createCssLinks(toolConfig.globals.css)}\n</head>`
+            )
+
+            return Promise.all([
+                fs.writeFile(toolFolder + '/index.html', indexFile),
+                fs.writeFile(toolFolder + '/index-dev.html', devIndexFile)
+            ])
         } else {
             return Promise.resolve({})
         }
@@ -170,6 +210,9 @@ function updatePackagesProperty(toolConfig, jspmConfig) {
                     },
                     '*.scss': {
                         loader: 'sass'
+                    },
+                    '*.json': {
+                        loader: 'json'
                     }
                 }
             }
@@ -212,6 +255,8 @@ pifyLog('Creating .rollick  folder')
     .then(updateJspmConfigFile)
     .then(pifyLog.bind(null, 'adding global links to index.html file'))
     .then(addGlobals.bind(null, toolConfig))
+    // .then(pifyLog.bind(null, 'adding onLoad functions if any provided to index.html file'))
+    // .then(addOnLoadFunctions.bind(null, toolConfig))
     .then(pifyLog.bind(null, 'installing npm modules'))
     .then(installNpmModules)
     .then(pifyLog.bind(null, 'installing jspm modules'))

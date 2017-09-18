@@ -1,14 +1,14 @@
 export function isFunctionProp(prop) {
     return (
         (prop && prop.type && prop.type.name === 'func') ||
-        (prop && prop.flowType && prop.flowType.type === 'function')
+        (prop && prop.flowType && prop.flowType.name === 'function')
     )
 }
 
 export function isBoolProp(prop) {
     return (
         (prop && prop.type && prop.type.name === 'bool') ||
-        (prop && prop.flowType && prop.flowType.type === 'boolean')
+        (prop && prop.flowType && prop.flowType.name === 'boolean')
     )
 }
 
@@ -33,7 +33,7 @@ function getObjectFromString(str) {
 }
 
 function getFlowPropValue(prop, val) {
-    switch (prop.flowType.type) {
+    switch (prop.flowType.name) {
         case 'function':
             return getFunctionFromString(val)
         default:
@@ -46,7 +46,16 @@ export function isObjectProp(prop) {
         (prop &&
             prop.type &&
             (prop.type.name === 'object' || prop.type.name === 'shape')) ||
-        (prop && prop.flowType && prop.flowType.type === 'Object')
+        (prop && prop.flowType && prop.flowType.name === 'Object')
+    )
+}
+
+export function isArrayProp(prop) {
+    return (
+        (prop &&
+            prop.type &&
+            (prop.type.name === 'array' || prop.type.name === 'arrayOf')) ||
+        (prop && prop.flowType && prop.flowType.name === 'array')
     )
 }
 
@@ -55,7 +64,7 @@ export function isElementProp(prop) {
     // TODO - the flow check is wrong for react node type
     return (
         (prop && prop.type && prop.type.name === 'node') ||
-        (prop && prop.flowType && prop.flowType.type === 'node')
+        (prop && prop.flowType && prop.flowType.name === 'node')
     )
 }
 
@@ -68,6 +77,7 @@ function getElementFromString(str) {
     }
 }
 
+// TODO - all these value from prop and vice versa need to be standardized and be at a single place
 export function getPropValue(prop, val) {
     if (prop.flowType) {
         return getFlowPropValue(prop, val)
@@ -79,6 +89,23 @@ export function getPropValue(prop, val) {
         } else if (isElementProp(prop)) {
             return getElementFromString(val)
         } else {
+            try {
+                return JSON.parse(val)
+            } catch (e) {
+                return val
+            }
+        }
+    }
+}
+
+function getPropValueForFromDefaultValue(prop, val) {
+    if (isFunctionProp(prop)) {
+        return val.toString()
+    } else {
+        try {
+            return JSON.parse(val)
+        } catch (e) {
+            console.error('error parsing json', val, e)
             return val
         }
     }
@@ -90,7 +117,7 @@ export function populateDefaultValues(props, fakeProps) {
             if (props[propName].defaultValue) {
                 return {
                     ...acc,
-                    [propName]: getPropValue(
+                    [propName]: getPropValueForFromDefaultValue(
                         props[propName],
                         props[propName].defaultValue.value
                     )

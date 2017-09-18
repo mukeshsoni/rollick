@@ -21,11 +21,16 @@ export default class App extends React.Component {
             {
                 showStyleguide: false
             },
-            // the modal is taking some time to close. so putting a fake defer here before adding the component to playground
-            setTimeout(
-                () => this.playgroundRef.addComponentFromStyleguide(component),
-                1000
-            )
+            () => {
+                // the modal is taking some time to close. so putting a fake defer here before adding the component to playground
+                setTimeout(
+                    () =>
+                        this.playgroundRef.addComponentFromStyleguide(
+                            component
+                        ),
+                    1000
+                )
+            }
         )
     }
 
@@ -96,6 +101,7 @@ export default class App extends React.Component {
                 <Playground
                     ref={node => (this.playgroundRef = node)}
                     fromStyleguideClick={this.handleShowStyleguideClick}
+                    showStyleguide={this.handleShowStyleguideClick}
                 />
             </div>
         )

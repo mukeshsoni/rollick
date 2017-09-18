@@ -21,7 +21,13 @@
         <style id="global_styles" ></style>
         <div id="container" class="loader"></div>
         <script>
-         SystemJS.import('main.js')
+         SystemJS.import('main.js').then(() => {
+             SystemJS.import('/rollick.config.js').then(config => {
+                 if(config.onLoad && typeof config.onLoad === 'function') {
+                     config.onLoad()
+                 }
+             }).catch(e => console.error('error loading rollick config file', e))
+         })
         </script>
     </body>
 </html>

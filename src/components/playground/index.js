@@ -16,7 +16,7 @@ import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
-import Frame from 'react-frame-component'
+/* import Frame from 'react-frame-component'*/
 import cssbeautify from 'cssbeautify'
 /* import emmetCodemirror from 'emmet-codemirror'*/
 import emmetCodemirror from '@emmetio/codemirror-plugin'
@@ -116,7 +116,7 @@ export default class Playground extends React.Component {
     registerServiceWorker = () => {
         /* if ('serviceWorker' in navigator) {
          *     navigator.serviceWorker
-         *         .register('/sw_reactpen.js')
+         *         .register('/sw_rollick.js')
          *         .then(
          *             registration => {
          *                 // Registration was successful
@@ -338,13 +338,14 @@ export default class Playground extends React.Component {
                 // command + i
                 if (e.metaKey) {
                     e.preventDefault()
-                    return this.setState({
-                        editorInFocus: getEditorInFocus(
-                            this.jsxCodemirror.getCodeMirror(),
-                            this.cssCodemirror.getCodeMirror()
-                        ),
-                        showSearchModal: true
-                    })
+                    this.props.showStyleguide()
+                    /* return this.setState({
+                     *     editorInFocus: getEditorInFocus(
+                     *         this.jsxCodemirror.getCodeMirror(),
+                     *         this.cssCodemirror.getCodeMirror()
+                     *     ),
+                     *     showSearchModal: true
+                     * })*/
                 }
                 break
             case 207: // command + alt + f
