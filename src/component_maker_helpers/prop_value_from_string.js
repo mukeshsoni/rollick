@@ -90,7 +90,10 @@ export function populateDefaultValues(props, fakeProps) {
             if (props[propName].defaultValue) {
                 return {
                     ...acc,
-                    [propName]: props[propName].defaultValue.computed
+                    [propName]: getPropValue(
+                        props[propName],
+                        props[propName].defaultValue.value
+                    )
                 }
             } else {
                 return acc
