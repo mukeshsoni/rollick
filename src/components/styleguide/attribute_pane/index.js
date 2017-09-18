@@ -129,6 +129,16 @@ export default class AttributePane extends React.Component {
                                 this.handlePropChange.bind(this, propName)
                             )}
                         </div>
+                        <span
+                            style={{ marginLeft: '0.3em', cursor: 'pointer' }}
+                            onMouseOver={() => {
+                                console.log(
+                                    'should show popover with expected prop structure'
+                                )
+                            }}
+                        >
+                            ?
+                        </span>
                     </div>
                 )
             })
