@@ -27,7 +27,8 @@ export default class Editor extends React.Component {
             onCodeChange,
             mode,
             extraKeys,
-            errors
+            errors,
+            onFormatClick
         } = this.props
 
         const style = {
@@ -52,7 +53,7 @@ export default class Editor extends React.Component {
 
         return (
             <div ref={instance => (this.containerRef = instance)} style={style}>
-                <EditorHeader name={editorName} />
+                <EditorHeader name={editorName} formatButtonLabel={'Format ' + editorName} onFormatClick={onFormatClick}/>
                 <CodeMirror
                     ref={instance => (this.codeMirrorRef = instance)}
                     autoFocus={autoFocus}
@@ -79,7 +80,8 @@ Editor.propTypes = {
         PropTypes.shape({
             message: PropTypes.string.isRequired
         })
-    )
+    ),
+    onFormatClick: PropTypes.func,
 }
 
 Editor.defaultProps = {

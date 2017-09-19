@@ -1,4 +1,6 @@
 .editor-header {
+    display: flex;
+    justify-content: space-between;
     color: rgba(204, 204, 204, 1);
     background-color: #141516;
     padding: 4px 0.5em;

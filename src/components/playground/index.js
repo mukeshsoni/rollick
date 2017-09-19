@@ -508,22 +508,6 @@ export default class Playground extends React.Component {
                             }}
                         />
                     </div>
-                    <Button
-                        onClick={this.formatCss}
-                        label="Format css"
-                        style={{ marginRight: '1em' }}
-                    />
-                    <Button
-                        onClick={this.formatJsx}
-                        label="Format jsx"
-                        style={{ marginRight: '1em' }}
-                    />
-                    <Button
-                        onClick={this.formatJs}
-                        label="Format js"
-                        style={{ marginRight: '1em' }}
-                    />
-                    <Button onClick={this.run} label="Run" />
                 </header>
                 <SplitPane
                     split="vertical"
@@ -545,6 +529,7 @@ export default class Playground extends React.Component {
                             editorName="JSX"
                             autoFocus={true}
                             extraKeys={jsxEditorExtraKeys}
+                            onFormatClick={this.formatJsx}
                         />
                         <SplitPane
                             split="horizontal"
@@ -558,6 +543,7 @@ export default class Playground extends React.Component {
                                 onCodeChange={this.updateCssCode}
                                 mode="css"
                                 editorName="CSS"
+                                onFormatClick={this.formatCss}
                             />
                             <Editor
                                 ref={instance => (this.jsEditorRef = instance)}
@@ -565,6 +551,7 @@ export default class Playground extends React.Component {
                                 onCodeChange={this.updateJsCode}
                                 mode="js"
                                 editorName="JS"
+                                onFormatClick={this.formatJs}
                             />
                         </SplitPane>
                     </SplitPane>
