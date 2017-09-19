@@ -249,7 +249,7 @@ export default class Playground extends React.Component {
     updateJsxCode = debounce(newCode => {
         this.setState({
             jsxCode: newCode,
-            jsxToInsert: jsxToJs(newCode)
+            jsxToInsert: jsxToJs(newCode, this.state.jsxToInsert)
         })
     }, 500)
 
@@ -262,6 +262,10 @@ export default class Playground extends React.Component {
                 console.error('error converting sass to css', result.message)
             }
         })
+    }, 500)
+
+    updateJsCode = debounce(newCode => {
+        this.setState({ jsCode: newCode })
     }, 500)
 
     hideSearchModal = () => {
@@ -283,9 +287,20 @@ export default class Playground extends React.Component {
         this.jsxCodemirror
             .getCodeMirror()
             .setSize('100%', this.jsxContainerRef.clientHeight - headerHeight)
-        this.cssCodemirror
-            .getCodeMirror()
-            .setSize('100%', this.cssContainerRef.clientHeight - headerHeight)
+        this.cssCodemirror &&
+            this.cssCodemirror
+                .getCodeMirror()
+                .setSize(
+                    '100%',
+                    this.cssContainerRef.clientHeight - headerHeight
+                )
+        this.jsCodemirror &&
+            this.jsCodemirror
+                .getCodeMirror()
+                .setSize(
+                    '100%',
+                    this.jsContainerRef.clientHeight - headerHeight
+                )
     }
 
     getIframeHead = () => {
@@ -339,14 +354,14 @@ export default class Playground extends React.Component {
                 // command + i
                 if (e.metaKey) {
                     e.preventDefault()
-                    this.props.showStyleguide()
-                    /* return this.setState({
-                     *     editorInFocus: getEditorInFocus(
-                     *         this.jsxCodemirror.getCodeMirror(),
-                     *         this.cssCodemirror.getCodeMirror()
-                     *     ),
-                     *     showSearchModal: true
-                     * })*/
+                    /* this.props.showStyleguide()*/
+                    return this.setState({
+                        editorInFocus: getEditorInFocus(
+                            this.jsxCodemirror.getCodeMirror(),
+                            this.cssCodemirror.getCodeMirror()
+                        ),
+                        showSearchModal: true
+                    })
                 }
                 break
             case 207: // command + alt + f
@@ -370,6 +385,7 @@ export default class Playground extends React.Component {
             jsxToInsert: jsxToJs(startingJsx),
             cssCode: startingCss,
             cssToInsert: wrapCss(startingCss),
+            jsCode: '',
             showSearchModal: false,
             searchText: '',
             componentsMetaList: [],
@@ -379,6 +395,7 @@ export default class Playground extends React.Component {
         }
         this.jsxCodemirror = null
         this.cssCodemirror = null
+        this.jsCodemirror = null
     }
 
     componentWillMount() {
@@ -408,6 +425,7 @@ export default class Playground extends React.Component {
             avatar,
             jsxCode,
             cssCode,
+            jsCode,
             jsxToInsert,
             cssToInsert,
             showSearchModal,
@@ -523,7 +541,7 @@ export default class Playground extends React.Component {
                 >
                     <SplitPane
                         split="horizontal"
-                        defaultSize="50%"
+                        defaultSize="33j%"
                         minSize={300}
                         onChange={this.adjustEditorSizes}
                     >
@@ -550,30 +568,63 @@ export default class Playground extends React.Component {
                                 codeMirrorInstance={codeMirrorInstance}
                             />
                         </div>
-                        <div
-                            ref={instance => (this.cssContainerRef = instance)}
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                width: '100%',
-                                height: '100%'
-                            }}
+                        <SplitPane
+                            split="horizontal"
+                            defaultSize={'50%'}
+                            pane2Style={{ background: 'white' }}
+                            onChange={this.adjustEditorSizes}
                         >
-                            <div className="editor-header">
-                                <h2>CSS</h2>
-                            </div>
-                            <CodeMirror
+                            <div
                                 ref={instance =>
-                                    (this.cssCodemirror = instance)}
-                                value={this.state.cssCode}
-                                onChange={this.updateCssCode}
-                                options={cssCodeMirrorOptions}
-                                codeMirrorInstance={codeMirrorInstance}
-                            />
-                        </div>
+                                    (this.cssContainerRef = instance)}
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    width: '100%',
+                                    height: '100%'
+                                }}
+                            >
+                                <div className="editor-header">
+                                    <h2>CSS</h2>
+                                </div>
+                                <CodeMirror
+                                    ref={instance =>
+                                        (this.cssCodemirror = instance)}
+                                    value={cssCode}
+                                    onChange={this.updateCssCode}
+                                    options={cssCodeMirrorOptions}
+                                    codeMirrorInstance={codeMirrorInstance}
+                                />
+                            </div>
+                            <div
+                                ref={instance =>
+                                    (this.jsContainerRef = instance)}
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    width: '100%',
+                                    height: '100%'
+                                }}
+                            >
+                                <div className="editor-header">
+                                    <h2>JS</h2>
+                                </div>
+                                <CodeMirror
+                                    ref={instance =>
+                                        (this.jsCodemirror = instance)}
+                                    value={jsCode}
+                                    onChange={this.updateJsCode}
+                                    options={cssCodeMirrorOptions}
+                                    codeMirrorInstance={codeMirrorInstance}
+                                />
+                            </div>
+                        </SplitPane>
                     </SplitPane>
                     <div className="editor-right-pane" id={rightPaneId}>
-            <Preview jsxToInsert={jsxToInsert} />
+                        <Preview
+                            jsxToInsert={jsxToInsert}
+                            jsToInsert={jsCode}
+                        />
                     </div>
                 </SplitPane>
             </div>
