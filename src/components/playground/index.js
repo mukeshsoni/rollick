@@ -202,6 +202,12 @@ export default class Playground extends React.Component {
         )
     }
 
+    formatJs = () => {
+        this.setState({
+            jsCode: prettier.format(this.state.jsCode, { semi: false })
+        })
+    }
+
     formatJsx = () => {
         function cmToPrettierCursorOffset(code, cursor) {
             const allLines = code.split('\n')
@@ -529,6 +535,11 @@ export default class Playground extends React.Component {
                     <Button
                         onClick={this.formatJsx}
                         label="Format jsx"
+                        style={{ marginRight: '1em' }}
+                    />
+                    <Button
+                        onClick={this.formatJs}
+                        label="Format js"
                         style={{ marginRight: '1em' }}
                     />
                     <Button onClick={this.run} label="Run" />
