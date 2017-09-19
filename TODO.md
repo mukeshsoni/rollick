@@ -30,8 +30,8 @@
 - [x] Error footer for each editor 
 - [x] Fix highlight issues in editors
   - The highlight was not happening after i integrated emmet. Wasted so many hours trying to figure out the root cause. Was getting Codemirror instance from a different location (node_modules) to feed to emmet plugin and react-codemirror. And was calling the mode files from a different location (jspm_packages/npm/...). When i reconciled the locations, boom, it worked.
+- [x] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] Allow hiding of editor panels 
-- [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
   - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
     - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front.
