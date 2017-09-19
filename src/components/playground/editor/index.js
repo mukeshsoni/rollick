@@ -7,7 +7,7 @@ import 'jspm_packages/npm/codemirror@5.29.0/mode/javascript/javascript.js'
 import 'node_modules/codemirror/lib/codemirror.css!css'
 import 'node_modules/codemirror/theme/twilight.css!css'
 import emmetCodemirror from '@emmetio/codemirror-plugin'
-import codeMirrorInstance from 'node_modules/codemirror/lib/codemirror.js'
+import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.29.0/lib/codemirror.js'
 emmetCodemirror(codeMirrorInstance)
 import EditorHeader from './header.js'
 import EditorFooter from './footer.js'
