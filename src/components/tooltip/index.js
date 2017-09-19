@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default class Tooltip extends React.Component {
     handleMouseOver = e => {
@@ -18,10 +19,13 @@ export default class Tooltip extends React.Component {
     }
 
     render() {
+        const { position } = this.props
+
         const tooltipStyle = {
             position: 'absolute',
-            right: '1em',
-            top: 0,
+            right: position === 'left' ? '1em' : 0,
+            top: position === 'left' ? 0 : 'auto',
+            bottom: position === 'left' ? 'auto' : 20,
             background: 'gray',
             color: 'white',
             maxWidth: 300,
@@ -46,4 +50,14 @@ export default class Tooltip extends React.Component {
             </div>
         )
     }
+}
+
+Tooltip.propTypes = {
+    content: PropTypes.string.isRequired,
+    position: PropTypes.oneOf(['left', 'top']).isRequired,
+    children: PropTypes.element.isRequired
+}
+
+Tooltip.defaultProps = {
+    position: 'left'
 }

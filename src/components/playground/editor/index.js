@@ -76,11 +76,7 @@ Editor.propTypes = {
     autoFocus: PropTypes.bool,
     containerStyle: PropTypes.object,
     extraKeys: PropTypes.object,
-    errors: PropTypes.arrayOf(
-        PropTypes.shape({
-            message: PropTypes.string.isRequired
-        })
-    ),
+    errors: PropTypes.string,
     onFormatClick: PropTypes.func,
 }
 
@@ -88,5 +84,5 @@ Editor.defaultProps = {
     editorName: 'Code Editor',
     containerStyle: {},
     extraKeys: {},
-    errors: []
+    errors: ''
 }

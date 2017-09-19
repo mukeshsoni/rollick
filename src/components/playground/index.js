@@ -29,10 +29,16 @@ function jsxToJs(jsxCode, oldVal = '') {
         const compiledJsx = Babel.transform(`<div>${jsxCode}</div>`, {
             presets: ['react']
         }).code
-        return compiledJsx
+        return {
+            compiledJsx,
+            error: ''
+        }
     } catch (e) {
         console.error('error compiling jsx', e.toString())
-        return oldVal
+        return {
+            compiledJsx: oldVal,
+            error: e.toString()
+        }
     }
 }
 
@@ -167,18 +173,6 @@ export default class Playground extends React.Component {
                 )
         }
     }
-
-    run = () => {
-        const { jsxCode, cssCode } = this.state
-        this.setState(
-            { jsxToInsert: jsxToJs(jsxCode, this.state.jsxToInsert) },
-            () => {
-                // let styleEl = document.getElementById('global_styles')
-                // styleEl.innerHTML = cssCode
-            }
-        )
-    }
-
     formatCss = () => {
         this.setState(
             {
@@ -257,9 +251,12 @@ export default class Playground extends React.Component {
     }
 
     updateJsxCode = debounce(newCode => {
+        const js = jsxToJs(newCode, this.state.jsxToInsert)
+
         this.setState({
             jsxCode: newCode,
-            jsxToInsert: jsxToJs(newCode, this.state.jsxToInsert)
+            jsxToInsert: js.compiledJsx,
+            jsxError: js.error
         })
     }, 500)
 
@@ -267,9 +264,14 @@ export default class Playground extends React.Component {
         /* this.setState({ cssCode: newCode, cssToInsert: newCode })*/
         sass.compile(wrapCss(newCode), result => {
             if (result.status === 0) {
-                this.setState({ cssCode: newCode, cssToInsert: result.text })
+                this.setState({
+                    cssCode: newCode,
+                    cssToInsert: result.text,
+                    cssError: ''
+                })
             } else {
                 console.error('error converting sass to css', result.message)
+                this.setState({ cssError: result.message })
             }
         })
     }, 500)
@@ -293,7 +295,7 @@ export default class Playground extends React.Component {
 
     adjustEditorSizes = () => {
         const headerHeight = 30
-        const footerHeight = 0
+        const footerHeight = 20
         const editors = ['jsx', 'css', 'js']
 
         editors.forEach(editor => {
@@ -390,9 +392,11 @@ export default class Playground extends React.Component {
         this.state = {
             com: null,
             jsxCode: startingJsx,
-            jsxToInsert: jsxToJs(startingJsx),
+            jsxToInsert: jsxToJs(startingJsx).compiledJsx,
+            jsxError: '',
             cssCode: startingCss,
             cssToInsert: wrapCss(startingCss),
+            cssError: '',
             jsCode: '',
             showSearchModal: false,
             searchText: '',
@@ -436,7 +440,9 @@ export default class Playground extends React.Component {
             cssCode,
             jsCode,
             jsxToInsert,
+            jsxError,
             cssToInsert,
+            cssError,
             showSearchModal,
             componentsMetaList,
             editorLayout
@@ -561,6 +567,7 @@ export default class Playground extends React.Component {
                                 autoFocus={true}
                                 extraKeys={jsxEditorExtraKeys}
                                 onFormatClick={this.formatJsx}
+                                errors={jsxError}
                             />
                             <SplitPane
                                 split={
@@ -580,6 +587,7 @@ export default class Playground extends React.Component {
                                     mode="css"
                                     editorName="CSS"
                                     onFormatClick={this.formatCss}
+                                    errors={cssError}
                                 />
                                 <Editor
                                     ref={instance =>

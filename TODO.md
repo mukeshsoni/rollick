@@ -27,7 +27,7 @@
 - [x] Make all dependencies as normal dependencies. In other words, move all dev dependencies to dependencies section in package.json
 - [x] Put format button on each editors header 
 - [x] Allow another layout where the editors are on the top
-- [ ] Error footer for each editor 
+- [x] Error footer for each editor 
 - [ ] Allow hiding of editor panels 
 - [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
