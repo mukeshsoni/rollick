@@ -26,8 +26,10 @@
 - [x] styleguide component. flip of a button on the header.
 - [x] Make all dependencies as normal dependencies. In other words, move all dev dependencies to dependencies section in package.json
 - [x] Put format button on each editors header 
-- [x] Allow another layout where the editors are on the top
+ [x] Allow another layout where the editors are on the top
 - [x] Error footer for each editor 
+- [x] Fix highlight issues in editors
+  - The highlight was not happening after i integrated emmet. Wasted so many hours trying to figure out the root cause. Was getting Codemirror instance from a different location (node_modules) to feed to emmet plugin and react-codemirror. And was calling the mode files from a different location (jspm_packages/npm/...). When i reconciled the locations, boom, it worked.
 - [ ] Allow hiding of editor panels 
 - [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
@@ -49,9 +51,8 @@
       3. `jspm install`
       4. Loss. It's all profit now.
 - [ ] When search bar is in focus, cannot focus the jsx editor by clicking on it. It works if i first click the css editor (which get's the focus) and then click the jsx editor
-- [ ] Fix highlight issues in editors
 - [ ] After prettier formatting, the cursor offset is not correct. It doesn't work at all in some cases, which is ok. But when it's working, it calculates wrong offset.
-- [ ] Improve the editor experience. Cmd+/ should comment the current line. The jsx editor has no colors. More shortcuts should work.
+- [ ] Improve the editor experience. Cmd+/ should comment the current line. More shortcuts should work.
 - [ ] Add option to specify docgen options in rollick config file. Example exclude list for folders/files.
 - [ ] Add option to specify fakeData options in rollick config. Example - `optional: boolean` to generate data for optional types or not.
 - [ ] Looks like react-docgen does not understand flow exact types ({| <definitions> |}). Can use the beta version if feeling adventorous - https://github.com/reactjs/react-docgen/issues/173
@@ -89,6 +90,8 @@
 - [ ] vim mode for editor?
 - [ ] Production build setup. Should generate a minified bundle and point to react production file 
 - [ ] Error handling in editors and global errors 
+  - [x] Error handling in editors
+  - [ ] Global errors
 - [ ] Check for rollick config file on install command and throw error if absent
 - [ ] Undo/redo feature 
 - [ ] Peerdependencies

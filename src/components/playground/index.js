@@ -283,7 +283,7 @@ export default class Playground extends React.Component {
                 this.state.editorInFocus &&
                 this.state.editorInFocus.length > 0
             ) {
-                this[this.state.editorInFocus + 'Codemirror']
+                this[this.state.editorInFocus + 'EditorRef'].codeMirrorRef
                     .getCodeMirror()
                     .focus()
             }
@@ -341,11 +341,13 @@ export default class Playground extends React.Component {
             }
         }
 
-        function getEditorInFocus(jsxEditor, cssEditor) {
+        function getEditorInFocus(jsxEditor, cssEditor, jsEditor) {
             if (jsxEditor.hasFocus()) {
                 return 'jsx'
             } else if (cssEditor.hasFocus()) {
                 return 'css'
+            } else if (jsEditor.hasFocus()) {
+                return 'js'
             } else {
                 return ''
             }
@@ -365,7 +367,8 @@ export default class Playground extends React.Component {
                     return this.setState({
                         editorInFocus: getEditorInFocus(
                             this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
-                            this.cssEditorRef.codeMirrorRef.getCodeMirror()
+                            this.cssEditorRef.codeMirrorRef.getCodeMirror(),
+                            this.jsEditorRef.codeMirrorRef.getCodeMirror()
                         ),
                         showSearchModal: true
                     })
