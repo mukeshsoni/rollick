@@ -26,7 +26,8 @@ export default class Editor extends React.Component {
             containerStyle,
             onCodeChange,
             mode,
-            extraKeys
+            extraKeys,
+            errors
         } = this.props
 
         const style = {
@@ -41,11 +42,11 @@ export default class Editor extends React.Component {
             lineNumbers: true,
             lineWrapping: true,
             theme: 'twilight',
-            extraKeys: extraKeys,
             mode: mode,
             extraKeys: {
                 Tab: 'emmetExpandAbbreviation',
-                Enter: 'emmetInsertLineBreak'
+                Enter: 'emmetInsertLineBreak',
+                ...extraKeys
             }
         }
 

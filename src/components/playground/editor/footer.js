@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 export default class EditorFooter extends React.Component {
     render() {
+        const { errors } = this.props
         return (
             <div>
                 {errors && errors.length > 0 && errors.length}

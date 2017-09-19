@@ -1,16 +1,7 @@
 import React from 'react'
-import CodeMirror from 'react-codemirror'
-import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
-import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
-/* import 'jspm_packages/npm/codemirror@5.29.0/lib/codemirror.css!css'
- * import 'jspm_packages/npm/codemirror@5.29.0/theme/twilight.css!css'*/
-import 'node_modules/codemirror/lib/codemirror.css!css'
-import 'node_modules/codemirror/theme/twilight.css!css'
 import jsx from 'jsx-transpiler'
 import sass from 'sass.js'
 import prettier from 'prettier'
-/* import componentsMetaList from 'components.meta.json!json'*/
-/* let componentsMetaList*/
 import SearchBox from '../search_box/index.js'
 import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
@@ -18,12 +9,10 @@ import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
 /* import Frame from 'react-frame-component'*/
 import cssbeautify from 'cssbeautify'
-/* import emmetCodemirror from 'emmet-codemirror'*/
-import emmetCodemirror from '@emmetio/codemirror-plugin'
 import './app.css'
 import './split_pane.css'
-// import 'codemirror/lib/codemirror.css'
 import Preview from './playground_preview/index.js'
+import Editor from './editor/index.js'
 
 import belt from '../../../belt.js'
 const { last } = belt
@@ -34,8 +23,6 @@ import {
     populateDefaultValues
 } from '../../component_maker_helpers/prop_value_from_string.js'
 
-import codeMirrorInstance from 'node_modules/codemirror/lib/codemirror.js'
-emmetCodemirror(codeMirrorInstance)
 // oldVal is a hack until we have Either data type support
 function jsxToJs(jsxCode, oldVal = '') {
     try {
@@ -159,13 +146,15 @@ export default class Playground extends React.Component {
                         {
                             jsxCode: addComponent(
                                 this.state.jsxCode,
-                                this.jsxCodemirror.getCodeMirror(),
+                                this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
                                 selectedItem
                             )
                         },
                         () => {
                             this.formatJsx()
-                            this.jsxCodemirror.getCodeMirror().focus()
+                            this.jsxEditorRef.codeMirrorRef
+                                .getCodeMirror()
+                                .focus()
                         }
                     )
                 })
@@ -196,7 +185,9 @@ export default class Playground extends React.Component {
                 cssCode: cssbeautify(this.state.cssCode)
             },
             () => {
-                this.cssCodemirror.getCodeMirror().setValue(this.state.cssCode)
+                this.cssEditorRef.codeMirrorRef
+                    .getCodeMirror()
+                    .setValue(this.state.cssCode)
             }
         )
     }
@@ -207,8 +198,12 @@ export default class Playground extends React.Component {
                 jsCode: prettier.format(this.state.jsCode, { semi: false })
             },
             () => {
-                this.jsCodemirror.getCodeMirror().setValue(this.state.jsCode)
-                this.jsCodemirror.getCodeMirror().setCursor(cmCursor)
+                this.jsEditorRef.codeMirrorRef
+                    .getCodeMirror()
+                    .setValue(this.state.jsCode)
+                this.jsEditorRef.codeMirrorRef
+                    .getCodeMirror()
+                    .setCursor(cmCursor)
             }
         )
     }
@@ -233,7 +228,7 @@ export default class Playground extends React.Component {
 
         const prettierCursorOffset = cmToPrettierCursorOffset(
             this.state.jsxCode,
-            this.jsxCodemirror.getCodeMirror().getCursor()
+            this.jsxEditorRef.codeMirrorRef.getCodeMirror().getCursor()
         )
 
         const prettified = prettier.formatWithCursor(this.state.jsxCode, {
@@ -251,8 +246,12 @@ export default class Playground extends React.Component {
                 jsxCode: prettified.formatted.slice(1) // slice(1) to remove the semicolon at the start of block prettier adds
             },
             () => {
-                this.jsxCodemirror.getCodeMirror().setValue(this.state.jsxCode)
-                this.jsxCodemirror.getCodeMirror().setCursor(cmCursor)
+                this.jsxEditorRef.codeMirrorRef
+                    .getCodeMirror()
+                    .setValue(this.state.jsxCode)
+                this.jsxEditorRef.codeMirrorRef
+                    .getCodeMirror()
+                    .setCursor(cmCursor)
             }
         )
     }
@@ -294,28 +293,22 @@ export default class Playground extends React.Component {
 
     adjustEditorSizes = () => {
         const headerHeight = 30
+        const footerHeight = 0
+        const editors = ['jsx', 'css', 'js']
 
-        this.jsxCodemirror &&
-            this.jsxCodemirror
-                .getCodeMirror()
-                .setSize(
-                    '100%',
-                    this.jsxContainerRef.clientHeight - headerHeight
-                )
-        this.cssCodemirror &&
-            this.cssCodemirror
-                .getCodeMirror()
-                .setSize(
-                    '100%',
-                    this.cssContainerRef.clientHeight - headerHeight
-                )
-        this.jsCodemirror &&
-            this.jsCodemirror
-                .getCodeMirror()
-                .setSize(
-                    '100%',
-                    this.jsContainerRef.clientHeight - headerHeight
-                )
+        editors.forEach(editor => {
+            const editorRef = this[editor + 'EditorRef']
+
+            editorRef.codeMirrorRef &&
+                editorRef.codeMirrorRef
+                    .getCodeMirror()
+                    .setSize(
+                        '100%',
+                        editorRef.containerRef.clientHeight -
+                            headerHeight -
+                            footerHeight
+                    )
+        })
     }
 
     getIframeHead = () => {
@@ -364,7 +357,7 @@ export default class Playground extends React.Component {
                 // only show the search box if the jsx code editor is in focus
                 /* if (
                  *     e.metaKey &&
-                 *     this.jsxCodemirror.getCodeMirror().hasFocus()
+                 *     this.jsxEditorRef.codeMirrorRef.getCodeMirror().hasFocus()
                  * ) {*/
                 // command + i
                 if (e.metaKey) {
@@ -372,8 +365,8 @@ export default class Playground extends React.Component {
                     /* this.props.showStyleguide()*/
                     return this.setState({
                         editorInFocus: getEditorInFocus(
-                            this.jsxCodemirror.getCodeMirror(),
-                            this.cssCodemirror.getCodeMirror()
+                            this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
+                            this.cssEditorRef.codeMirrorRef.getCodeMirror()
                         ),
                         showSearchModal: true
                     })
@@ -408,9 +401,9 @@ export default class Playground extends React.Component {
                 'http://localhost:5000/src/components/search_box/search_item.css'
             ]
         }
-        this.jsxCodemirror = null
-        this.cssCodemirror = null
-        this.jsCodemirror = null
+        this.jsxEditorRef = null
+        this.cssEditorRef = null
+        this.jsEditorRef = null
     }
 
     componentWillMount() {
@@ -460,29 +453,8 @@ export default class Playground extends React.Component {
             }
         }
 
-        const jsxCodeMirrorOptions = {
-            lineNumbers: true,
-            lineWrapping: true,
-            theme: 'twilight',
-            extraKeys: {
-                'Ctrl-Alt-Space': this.formatJsx
-            },
-            mode: 'jsx',
-            extraKeys: {
-                Tab: 'emmetExpandAbbreviation',
-                Enter: 'emmetInsertLineBreak'
-            }
-        }
-
-        const cssCodeMirrorOptions = {
-            lineNumbers: true,
-            lineWrapping: true,
-            theme: 'twilight',
-            mode: 'css',
-            extraKeys: {
-                Tab: 'emmetExpandAbbreviation',
-                Enter: 'emmetInsertLineBreak'
-            }
+        const jsxEditorExtraKeys = {
+            'Ctrl-Alt-Space': this.formatJsx
         }
 
         const inputClassnames = 'search-modal-input'
@@ -565,79 +537,35 @@ export default class Playground extends React.Component {
                         minSize={300}
                         onChange={this.adjustEditorSizes}
                     >
-                        <div
-                            ref={instance => (this.jsxContainerRef = instance)}
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                width: '100%',
-                                height: '100%'
-                            }}
-                        >
-                            <div className="editor-header">
-                                <h2>JSX</h2>
-                            </div>
-                            <CodeMirror
-                                ref={instance =>
-                                    (this.jsxCodemirror = instance)}
-                                autoFocus={true}
-                                value={jsxCode}
-                                onChange={this.updateJsxCode}
-                                options={jsxCodeMirrorOptions}
-                                className="codemirror-custom-class"
-                                codeMirrorInstance={codeMirrorInstance}
-                            />
-                        </div>
+                        <Editor
+                            ref={instance => (this.jsxEditorRef = instance)}
+                            code={jsxCode}
+                            onCodeChange={this.updateJsxCode}
+                            mode="jsx"
+                            editorName="JSX"
+                            autoFocus={true}
+                            extraKeys={jsxEditorExtraKeys}
+                        />
                         <SplitPane
                             split="horizontal"
                             defaultSize={'50%'}
                             pane2Style={{ background: 'white' }}
                             onChange={this.adjustEditorSizes}
                         >
-                            <div
-                                ref={instance =>
-                                    (this.cssContainerRef = instance)}
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    width: '100%',
-                                    height: '100%'
-                                }}
-                            >
-                                <div className="editor-header">
-                                    <h2>CSS</h2>
-                                </div>
-                                <CodeMirror
-                                    ref={instance =>
-                                        (this.cssCodemirror = instance)}
-                                    value={cssCode}
-                                    onChange={this.updateCssCode}
-                                    options={cssCodeMirrorOptions}
-                                    codeMirrorInstance={codeMirrorInstance}
-                                />
-                            </div>
-                            <div
-                                ref={instance =>
-                                    (this.jsContainerRef = instance)}
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    width: '100%',
-                                    height: '100%'
-                                }}
-                            >
-                                <div className="editor-header">
-                                    <h2>JS</h2>
-                                </div>
-                                <CodeMirror
-                                    ref={instance =>
-                                        (this.jsCodemirror = instance)}
-                                    value={jsCode}
-                                    onChange={this.updateJsCode}
-                                    options={cssCodeMirrorOptions}
-                                    codeMirrorInstance={codeMirrorInstance}
-                                />
-                            </div>
+                            <Editor
+                                ref={instance => (this.cssEditorRef = instance)}
+                                code={cssCode}
+                                onCodeChange={this.updateCssCode}
+                                mode="css"
+                                editorName="CSS"
+                            />
+                            <Editor
+                                ref={instance => (this.jsEditorRef = instance)}
+                                code={cssCode}
+                                onCodeChange={this.updateJsCode}
+                                mode="js"
+                                editorName="JS"
+                            />
                         </SplitPane>
                     </SplitPane>
                     <div className="editor-right-pane" id={rightPaneId}>
