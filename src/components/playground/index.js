@@ -13,6 +13,7 @@ import './app.css'
 import './split_pane.css'
 import Preview from './playground_preview/index.js'
 import Editor from './editor/index.js'
+import Babel from 'jspm_packages/npm/babel-standalone@6.26.0/babel.min.js'
 
 import belt from '../../../belt.js'
 const { last } = belt
