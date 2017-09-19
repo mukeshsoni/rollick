@@ -533,7 +533,7 @@ export default class Playground extends React.Component {
                 >
                     <SplitPane
                         split="horizontal"
-                        defaultSize="33j%"
+                        defaultSize="33%"
                         minSize={300}
                         onChange={this.adjustEditorSizes}
                     >
