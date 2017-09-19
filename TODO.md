@@ -25,6 +25,10 @@
 - [x] The attribute pane should take care of converting data to the type of the prop when something changes. Returning string in some case, boolean in another and function some time else confuses the hell out of the consumer of onChange
 - [x] styleguide component. flip of a button on the header.
 - [x] Make all dependencies as normal dependencies. In other words, move all dev dependencies to dependencies section in package.json
+- [ ] Error footer for each editor 
+- [ ] Allow hiding of editor panels 
+- [ ] Put format button on each editors header 
+- [ ] Allow another layout where the editors are on the top
 - [ ] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
   - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
