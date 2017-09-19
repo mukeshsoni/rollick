@@ -24,6 +24,7 @@ import './app.css'
 import './split_pane.css'
 import './codemirror_custom.css'
 // import 'codemirror/lib/codemirror.css'
+import Preview from './playground_preview/index.js'
 
 import belt from '../../../belt.js'
 const { last } = belt
@@ -572,7 +573,7 @@ export default class Playground extends React.Component {
                         </div>
                     </SplitPane>
                     <div className="editor-right-pane" id={rightPaneId}>
-                        {eval(jsxToInsert)}
+            <Preview jsxToInsert={jsxToInsert} />
                     </div>
                 </SplitPane>
             </div>

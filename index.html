@@ -18,7 +18,8 @@
     </head>
     <body>
         <style id="global_styles" ></style>
-        <div id="container" class="loader"></div>
+        <style>.CodeMirror { z-index: 0 }</style>
+            <div id="container" class="loader"></div>
         <script>
          SystemJS.import('main.js').then(() => {
              SystemJS.import('/rollick.config.js').then(config => {
