@@ -195,9 +195,6 @@ export default class Playground extends React.Component {
                 this.jsEditorRef.codeMirrorRef
                     .getCodeMirror()
                     .setValue(this.state.jsCode)
-                this.jsEditorRef.codeMirrorRef
-                    .getCodeMirror()
-                    .setCursor(cmCursor)
             }
         )
     }
@@ -594,7 +591,7 @@ export default class Playground extends React.Component {
                                         (this.jsEditorRef = instance)}
                                     code={cssCode}
                                     onCodeChange={this.updateJsCode}
-                                    mode="js"
+                                    mode="javascript"
                                     editorName="JS"
                                     onFormatClick={this.formatJs}
                                 />
