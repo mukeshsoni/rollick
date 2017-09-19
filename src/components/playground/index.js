@@ -203,9 +203,15 @@ export default class Playground extends React.Component {
     }
 
     formatJs = () => {
-        this.setState({
-            jsCode: prettier.format(this.state.jsCode, { semi: false })
-        })
+        this.setState(
+            {
+                jsCode: prettier.format(this.state.jsCode, { semi: false })
+            },
+            () => {
+                this.jsCodemirror.getCodeMirror().setValue(this.state.jsCode)
+                this.jsCodemirror.getCodeMirror().setCursor(cmCursor)
+            }
+        )
     }
 
     formatJsx = () => {
