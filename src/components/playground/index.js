@@ -399,7 +399,8 @@ export default class Playground extends React.Component {
             componentsMetaList: [],
             cssFilesToInject: [
                 'http://localhost:5000/src/components/search_box/search_item.css'
-            ]
+            ],
+            editorLayout: 'left'
         }
         this.jsxEditorRef = null
         this.cssEditorRef = null
@@ -437,7 +438,8 @@ export default class Playground extends React.Component {
             jsxToInsert,
             cssToInsert,
             showSearchModal,
-            componentsMetaList
+            componentsMetaList,
+            editorLayout
         } = this.state
 
         const modalStyle = {
@@ -508,60 +510,96 @@ export default class Playground extends React.Component {
                             }}
                         />
                     </div>
+                    <Button
+                        onClick={() =>
+                            this.setState(
+                                {
+                                    editorLayout:
+                                        this.state.editorLayout === 'left'
+                                            ? 'top'
+                                            : 'left'
+                                },
+                                () => {
+                                    this.adjustEditorSizes()
+                                    if (this.state.editorLayout === 'top') {
+                                        document
+                                            .getElementsByClassName(
+                                                'SplitPane horizontal'
+                                            )[0]
+                                            .style.setProperty('top', '69px')
+                                    }
+                                }
+                            )}
+                        label="Toggle editor layout"
+                    />
                 </header>
-                <SplitPane
-                    split="vertical"
-                    defaultSize={500}
-                    minSize={400}
-                    pane2Style={{ background: 'white' }}
-                >
+                <div>
                     <SplitPane
-                        split="horizontal"
-                        defaultSize="33%"
-                        minSize={300}
+                        split={
+                            editorLayout === 'left' ? 'vertical' : 'horizontal'
+                        }
+                        minSize={editorLayout === 'left' ? 400 : 300}
+                        pane2Style={{ background: 'white' }}
                         onChange={this.adjustEditorSizes}
                     >
-                        <Editor
-                            ref={instance => (this.jsxEditorRef = instance)}
-                            code={jsxCode}
-                            onCodeChange={this.updateJsxCode}
-                            mode="jsx"
-                            editorName="JSX"
-                            autoFocus={true}
-                            extraKeys={jsxEditorExtraKeys}
-                            onFormatClick={this.formatJsx}
-                        />
                         <SplitPane
-                            split="horizontal"
-                            defaultSize={'50%'}
-                            pane2Style={{ background: 'white' }}
+                            split={
+                                editorLayout === 'left'
+                                    ? 'horizontal'
+                                    : 'vertical'
+                            }
+                            defaultSize="33%"
+                            minSize={300}
                             onChange={this.adjustEditorSizes}
                         >
                             <Editor
-                                ref={instance => (this.cssEditorRef = instance)}
-                                code={cssCode}
-                                onCodeChange={this.updateCssCode}
-                                mode="css"
-                                editorName="CSS"
-                                onFormatClick={this.formatCss}
+                                ref={instance => (this.jsxEditorRef = instance)}
+                                code={jsxCode}
+                                onCodeChange={this.updateJsxCode}
+                                mode="jsx"
+                                editorName="JSX"
+                                autoFocus={true}
+                                extraKeys={jsxEditorExtraKeys}
+                                onFormatClick={this.formatJsx}
                             />
-                            <Editor
-                                ref={instance => (this.jsEditorRef = instance)}
-                                code={cssCode}
-                                onCodeChange={this.updateJsCode}
-                                mode="js"
-                                editorName="JS"
-                                onFormatClick={this.formatJs}
-                            />
+                            <SplitPane
+                                split={
+                                    editorLayout === 'left'
+                                        ? 'horizontal'
+                                        : 'vertical'
+                                }
+                                defaultSize={'50%'}
+                                pane2Style={{ background: 'white' }}
+                                onChange={this.adjustEditorSizes}
+                            >
+                                <Editor
+                                    ref={instance =>
+                                        (this.cssEditorRef = instance)}
+                                    code={cssCode}
+                                    onCodeChange={this.updateCssCode}
+                                    mode="css"
+                                    editorName="CSS"
+                                    onFormatClick={this.formatCss}
+                                />
+                                <Editor
+                                    ref={instance =>
+                                        (this.jsEditorRef = instance)}
+                                    code={cssCode}
+                                    onCodeChange={this.updateJsCode}
+                                    mode="js"
+                                    editorName="JS"
+                                    onFormatClick={this.formatJs}
+                                />
+                            </SplitPane>
                         </SplitPane>
+                        <div className="editor-right-pane" id={rightPaneId}>
+                            <Preview
+                                jsxToInsert={jsxToInsert}
+                                jsToInsert={jsCode}
+                            />
+                        </div>
                     </SplitPane>
-                    <div className="editor-right-pane" id={rightPaneId}>
-                        <Preview
-                            jsxToInsert={jsxToInsert}
-                            jsToInsert={jsCode}
-                        />
-                    </div>
-                </SplitPane>
+                </div>
             </div>
         )
         {
