@@ -16,16 +16,6 @@ body, html {
     background-color: #272729;
 }
 
-.editor-header {
-    color: rgba(204, 204, 204, 1);
-    background-color: #141516;
-    padding: 4px 0.5em;
-}
-
-.editor-header h2 {
-    font-size: 1.2em;
-}
-
 .editor-right-pane {
     background-color: white;
 }

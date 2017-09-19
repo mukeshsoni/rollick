@@ -22,7 +22,6 @@ import cssbeautify from 'cssbeautify'
 import emmetCodemirror from '@emmetio/codemirror-plugin'
 import './app.css'
 import './split_pane.css'
-import './codemirror_custom.css'
 // import 'codemirror/lib/codemirror.css'
 import Preview from './playground_preview/index.js'
 
@@ -296,9 +295,13 @@ export default class Playground extends React.Component {
     adjustEditorSizes = () => {
         const headerHeight = 30
 
-        this.jsxCodemirror
-            .getCodeMirror()
-            .setSize('100%', this.jsxContainerRef.clientHeight - headerHeight)
+        this.jsxCodemirror &&
+            this.jsxCodemirror
+                .getCodeMirror()
+                .setSize(
+                    '100%',
+                    this.jsxContainerRef.clientHeight - headerHeight
+                )
         this.cssCodemirror &&
             this.cssCodemirror
                 .getCodeMirror()
