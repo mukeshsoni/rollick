@@ -36,9 +36,9 @@ module.exports = {
 And then run the following commands - 
 
 ```
-$ npm i rollick -D
-$ ./node_modules/rollick/index.js install
-$ node .rollock/server.js --port 4001
+$ npm i rollick -g
+$ rollick install
+$ rollick start --port 5005
 ```
 
 This should start a localhost server on port 4001 and will serve the tool on <http://localhost:4001/.rollick/index.html>
