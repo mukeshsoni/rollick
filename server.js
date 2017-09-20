@@ -5,6 +5,7 @@ var fs = require('fs')
 var http = require('http')
 var path = require('path')
 var parseArgs = require('minimist')
+var exec = require('child_process').exec
 
 var args = parseArgs(process.argv.slice(1))
 const port = args.port || 4000
@@ -94,7 +95,7 @@ function applyLoaders(toolConfig, filePath, fileContent) {
 }
 
 // send the correct contentType header
-http
+var request = http
     .createServer(function(req, response) {
         var filePath = req.url.slice(1).split('?')[0]
         filePath = adjustPaths(toolConfig, filePath)
@@ -114,12 +115,35 @@ http
             response.end()
         }
     })
-    .listen(port)
+    .listen(port, function(err) {
+        if (err) {
+            console.error('Error starting server', err)
+            exit()
+        } else {
+            const url = `http://localhost:${port}/.${toolName}/index.html`
+            console.log(
+                `${toolName} available at http://localhost:${port}/.${toolName}/index.html`
+            )
+            setTimeout(() => {
+                exec(`open ${url}`)
+            }, 1000)
+        }
+    })
+
+request.on('error', function(err) {
+    switch (err.code) {
+        case 'EADDRINUSE':
+            console.error(
+                'The port ',
+                err.port,
+                ' seems to be used by some other server. Please try another port using the --port option'
+            )
+            break
+        default:
+            console.error('Error in server', err.toString())
+    }
+})
 
 process.on('uncaughtException', function(err) {
     console.error('Uncaught exception', err)
 })
-
-console.log(
-    `${toolName} available at http://localhost:${port}/.${toolName}/index.html`
-)

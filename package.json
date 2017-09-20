@@ -1,12 +1,12 @@
 {
   "name": "rollick",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "like codepen. But for react components.",
     "main": "./index.js",
     "bin": {
         "rollick": "./index.js",
         "rollick-install": "./index-install.js",
-        "rollick-start": "./index-start.js"
+        "rollick-start": "./server.js"
     },
     "preferGlobal": true,
   "scripts": {

@@ -264,4 +264,10 @@ pifyLog('Creating .rollick  folder')
     .then(installJspmModules)
     .then(pifyLog.bind(null, 'generating meta file for components'))
     .then(generateMetaFile)
+    .then(
+        pifyLog.bind(
+            null,
+            'Please run "rollick start" on your terminal to start server'
+        )
+    )
     .catch(e => console.error('Error creating rollick stuff', e))
