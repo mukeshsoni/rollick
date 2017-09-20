@@ -216,10 +216,10 @@ class SearchBox extends React.Component {
         const { onRequestClose, isOpen } = this.props
         const { selectedItemIndex, previewComponent } = this.state
 
-        const searchBoxWidth = 500
+        const searchBoxWidth = 400
 
         return (
-            <div>
+            <div style={{ width: '100%' }}>
                 {this.getInput()}
                 <div style={{ display: 'flex', width: searchBoxWidth * 2 }}>
                     <div style={{ width: searchBoxWidth, zIndex: 1000 }}>
