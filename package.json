@@ -1,11 +1,14 @@
 {
   "name": "rollick",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "like codepen. But for react components.",
-    "main": "index.js",
+    "main": "./index.js",
     "bin": {
-        "rollick": "index.js"
+        "rollick": "./index.js",
+        "rollick-install": "./index-install.js",
+        "rollick-start": "./index-start.js"
     },
+    "preferGlobal": true,
   "scripts": {
     "build": "npm run jspm && npm run docgen",
     "jspm": "./node_modules/.bin/jspm install",

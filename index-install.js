@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // The plan
 // Create folder named .rollick in the directory it's invoked from
 // Copy these files in .rollick directory
