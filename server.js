@@ -40,7 +40,11 @@ function last(arr) {
 }
 
 function fileExtension(fileName) {
-    return last(fileName.split('.'))
+    if (fileName.split('.').length > 1) {
+        return last(fileName.split('.'))
+    } else {
+        return ''
+    }
 }
 
 // for allowing wirdcards like '*.less' to test for all files with .less extension
@@ -99,6 +103,13 @@ var request = http
     .createServer(function(req, response) {
         var filePath = req.url.slice(1).split('?')[0]
         filePath = adjustPaths(toolConfig, filePath)
+
+        // defaultExtension option does not work for relative paths (e.g. './x') in systemjs
+        // there are many node_modules libraries which require stuff without file extension
+        // we will add the js extension by default, if none exists
+        if (!fileExtension(filePath)) {
+            filePath = filePath + '.js'
+        }
 
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
