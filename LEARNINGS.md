@@ -16,3 +16,6 @@
 - ASTs are awesome. probably. If one wants to do any fancy stuff with editors, knowing about ASTs is a must. Not yet directly using ASTs but through other tools like prettier/sass-compiler etc. But planning to use AST for multiple things
   - AST to determine the component in which the cursor is placed in the jsx editor. And accordingly show a attribute pane where users can visually change prop values
   - AST to show better auto completions for custom react components
+- How to write an npm package which can be run as a system wide command
+  - add files which act as executables to "bin" property in package.json
+  - make those files executable by having this at the top of the file - `#!/usr/bin/env node`

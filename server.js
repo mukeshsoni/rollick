@@ -6,6 +6,7 @@ var http = require('http')
 var path = require('path')
 var parseArgs = require('minimist')
 var exec = require('child_process').exec
+var resolveFile = require('resolve-file')
 
 var args = parseArgs(process.argv.slice(1))
 const port = args.port || 4000
@@ -98,18 +99,48 @@ function applyLoaders(toolConfig, filePath, fileContent) {
     }
 }
 
+function tryResolvingFilePath(filePath) {
+    if (fs.existsSync(filePath)) {
+        return filePath
+    }
+
+    // give it to resolveFile to try and resolve it as such
+    if (resolveFile(filePath)) {
+        return resolveFile(filePath)
+    } else if (filePath.startsWith('.rollick')) {
+        // let's try stripping off .rollick from the url and try resolving what remains
+        const withoutDotRollick = filePath.replace('.rollick/', '')
+        if (resolveFile(withoutDotRollick)) {
+            return resolveFile(withoutDotRollick)
+        } else {
+            console.log(
+                'could not resolve even without rollick',
+                req.url,
+                withoutDotRollick
+            )
+            return filePath
+        }
+    } else if (!fileExtension(filePath)) {
+        // defaultExtension option does not work for relative paths (e.g. './x') in systemjs
+        // there are many node_modules libraries which require stuff without file extension
+        // we will add the js extension by default, if none exists
+        if (resolveFile(filePath + '.js')) {
+            return filePath + '.js'
+        }
+    }
+
+    // failed all attemps. return the original one.
+    // just returning the original one does not make sense
+    // should return some error
+    // or use Maybe or Either
+    return filePath
+}
+
 // send the correct contentType header
 var request = http
     .createServer(function(req, response) {
         var filePath = req.url.slice(1).split('?')[0]
-        filePath = adjustPaths(toolConfig, filePath)
-
-        // defaultExtension option does not work for relative paths (e.g. './x') in systemjs
-        // there are many node_modules libraries which require stuff without file extension
-        // we will add the js extension by default, if none exists
-        if (!fileExtension(filePath)) {
-            filePath = filePath + '.js'
-        }
+        filePath = tryResolvingFilePath(adjustPaths(toolConfig, filePath))
 
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
