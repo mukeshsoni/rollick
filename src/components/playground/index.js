@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import jsx from 'jsx-transpiler'
 import sass from 'sass.js'
 import prettier from 'prettier'
@@ -834,4 +835,9 @@ export default class Playground extends React.Component {
                </Frame> */
         }
     }
+}
+
+Playground.propTypes = {
+    fromStyleguideClick: PropTypes.func.isRequired,
+    showStyleguide: PropTypes.func.isRequired
 }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const Button = ({ label, onClick, style = {}, enabled = true }) => {
     const buttonStyle = {
         background: enabled ? 'rgba(52,52,52,1.0)' : 'rgba(52,52,52,0.6)',
-        fontSize: '0.8rem',
+        fontSize: '0.9rem',
         textShadow: 'none',
         padding: 10,
         borderRadius: 3,

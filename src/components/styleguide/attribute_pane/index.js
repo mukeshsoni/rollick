@@ -110,7 +110,7 @@ export default class AttributePane extends React.Component {
     getAttributes = () => {
         const { component } = this.props
 
-        if (!component) {
+        if (!component || !component.props) {
             return null
         } else {
             return Object.keys(component.props).map(propName => {

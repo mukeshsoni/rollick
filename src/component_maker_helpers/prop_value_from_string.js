@@ -116,6 +116,10 @@ function getPropValueForFromDefaultValue(prop, val) {
 }
 
 export function populateDefaultValues(props, fakeProps) {
+    if(!props || typeof props !== 'object') {
+        return fakeProps
+    }
+    
     return {
         ...Object.keys(props).reduce((acc, propName) => {
             if (props[propName].defaultValue) {

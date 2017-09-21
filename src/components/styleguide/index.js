@@ -71,10 +71,14 @@ export default class Styleguide extends React.Component {
                             faker(com.props, { optional: true })
                         )
                     },
-                    selectedComponentInstance: component
+                    selectedComponentInstance: component,
+                    errorLoadingComponent: null
                 })
             )
-            .catch(e => this.setState({ loadingComponent: false }))
+            .catch(e => {
+                console.error('error loading component', e)
+                this.setState({ loadingComponent: false, errorLoadingComponent: e.toString() })
+            })
     }, 500)
 
     getFiltedredComponentList = () => {
@@ -186,7 +190,7 @@ export default class Styleguide extends React.Component {
                         >
                             Preview
                         </h3>
-                        {!this.state.loadingComponent &&
+                        {!this.state.loadingComponent && !this.state.errorLoadingComponent &&
                         this.state.selectedComponent
                             ? <a
                                   style={{
@@ -202,9 +206,9 @@ export default class Styleguide extends React.Component {
                     </div>
                     {this.state.loadingComponent
                         ? <div className="loader">Loading...</div>
-                        : <div style={{ padding: '2em' }}>
+                        : !this.state.errorLoadingComponent ? <div style={{ padding: '2em' }}>
                               {this.getComponentPreview()}
-                          </div>}
+                        </div> : <div>{this.state.errorLoadingComponent}</div>}
                 </div>
                 {this.state.selectedComponent &&
                     <AttributePane

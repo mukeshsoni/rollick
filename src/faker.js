@@ -245,6 +245,10 @@ function getFakeProp(prefix, prop, opts) {
 }
 
 export default function fakeDataForProps(props, { optional = false } = {}) {
+    if(!props || typeof props !== 'object') {
+        return {}
+    }
+
     return Object.keys(props).reduce((acc, key) => {
         const prop = props[key]
         if (prop.required || optional) {
