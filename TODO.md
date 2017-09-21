@@ -32,7 +32,11 @@
   - The highlight was not happening after i integrated emmet. Wasted so many hours trying to figure out the root cause. Was getting Codemirror instance from a different location (node_modules) to feed to emmet plugin and react-codemirror. And was calling the mode files from a different location (jspm_packages/npm/...). When i reconciled the locations, boom, it worked.
 - [x] load babel-standalone from jspm_packages or node_modules instead of unpkg. The tool should work offline.
 - [ ] Try out new way of resolving node_modules files of the project. The paths way of specifying an alias for each and every node module does not scale. Breaks for one reason or another in one module or another. For dnd-core, it became a nightmare and non solvable at all
-  - [ ] try to use `resolve-file` package to try and resolve filenames given a require path - <link src="https://www.npmjs.com/package/resolve-file">
+  - [ ] try to use `resolve-file` package to try and resolve filenames given a require path - https://www.npmjs.com/package/resolve-file
+  - [ ] `resolve-file` only resolve the path of the file. If that file has a require('./x'), that will be sent by systemjs as `http://localhost/.rollick/x`, which then cannot be resolved by `resolve-file`
+    - What if we used `webpack` and bundled all node_modules before sending them across? e.g. when systemjs asks for `http://localhost/.rollick/bluebird`, we send across `webpack({entry: 'bluebird'})`. Systemjs then won't have to resolve other paths.
+    - Or use browserify. The node api seems much nicer
+    - Or precreate a systemjs bundle for all the shared components. That would take care of all the node_module dependencies. https://github.com/systemjs/builder
 - [ ] change editor mode for JS panel to 'jsx'. 'jsx' seems to handle both javascript and jsx
 - [ ] Pass the code from js editor through babel transpilation in case user uses some jsx or other fancy ES6 features there
 - [ ] Component state is not maintained on code change triggering a repaint
