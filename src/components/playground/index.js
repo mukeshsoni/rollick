@@ -540,6 +540,9 @@ export default class Playground extends React.Component {
         document.addEventListener('keypress', this.handleKeypress)
         window.adjustment = 10
         this.adjustEditorSizes()
+        this.formatJsx()
+        this.formatJs()
+        this.formatCss()
     }
 
     componentWillUnmount() {
