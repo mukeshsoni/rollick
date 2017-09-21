@@ -37,7 +37,8 @@
     - What if we used `webpack` and bundled all node_modules before sending them across? e.g. when systemjs asks for `http://localhost/.rollick/bluebird`, we send across `webpack({entry: 'bluebird'})`. Systemjs then won't have to resolve other paths.
     - Or use browserify. The node api seems much nicer
     - Or precreate a systemjs bundle for all the shared components. That would take care of all the node_module dependencies. https://github.com/systemjs/builder
-- [ ] change editor mode for JS panel to 'jsx'. 'jsx' seems to handle both javascript and jsx
+- [ ] Add a 'Load component' option, which user can use to just load the component, not necessarily using it. Use case - when jsx code gets hydrated from local storage, the components will not be there. The permanent solution to that is by going through the jsx tree and loading the components needed.   
+- [x] change editor mode for JS panel to 'jsx'. 'jsx' seems to handle both javascript and jsx
 - [ ] Pass the code from js editor through babel transpilation in case user uses some jsx or other fancy ES6 features there
 - [ ] Component state is not maintained on code change triggering a repaint
 - [ ] Allow hiding of editor panels 
