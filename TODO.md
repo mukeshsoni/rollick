@@ -35,6 +35,7 @@
   - [ ] try to use `resolve-file` package to try and resolve filenames given a require path - <link src="https://www.npmjs.com/package/resolve-file">
 - [ ] change editor mode for JS panel to 'jsx'. 'jsx' seems to handle both javascript and jsx
 - [ ] Pass the code from js editor through babel transpilation in case user uses some jsx or other fancy ES6 features there
+- [ ] Component state is not maintained on code change triggering a repaint
 - [ ] Allow hiding of editor panels 
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
   - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
