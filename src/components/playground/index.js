@@ -252,40 +252,80 @@ export default class Playground extends React.Component {
         )
     }
 
+    // don't do it any more than once a second. If needed, less (debounce will ensure that)
+    saveCode = debounce((key, code) => {
+        localStorage.setItem(key, code)
+    }, 1000)
+
+    saveJsxCode = () => {
+        return this.saveCode('jsxCode', this.state.jsxCode)
+    }
+
+    saveJsCode = () => {
+        return this.saveCode('jsCode', this.state.jsCode)
+    }
+
+    saveCssCode = () => {
+        return this.saveCode('cssCode', this.state.cssCode)
+    }
+
     updateJsxCode = debounce(newCode => {
         const js = jsxToJs(newCode, this.state.jsxToInsert)
 
-        this.setState({
-            jsxCode: newCode,
-            jsxToInsert: js.transpiledCode,
-            jsxError: js.error
+        this.setState(
+            {
+                jsxCode: newCode,
+                jsxToInsert: js.transpiledCode,
+                jsxError: js.error
+            },
+            this.saveJsxCode
+        )
+    }, 300)
+
+    compileCss = code => {
+        return new Promise((resolve, reject) => {
+            sass.compile(wrapCss(code), result => {
+                if (result.status === 0) {
+                    resolve({
+                        compiledCode: result.text,
+                        error: ''
+                    })
+                } else {
+                    /* console.error('error converting sass to css', result.message)*/
+                    reject({ error: result.message })
+                }
+            })
         })
-    }, 500)
+    }
 
     updateCssCode = debounce(newCode => {
-        /* this.setState({ cssCode: newCode, cssToInsert: newCode })*/
-        sass.compile(wrapCss(newCode), result => {
-            if (result.status === 0) {
-                this.setState({
-                    cssCode: newCode,
-                    cssToInsert: result.text,
-                    cssError: ''
-                })
-            } else {
-                /* console.error('error converting sass to css', result.message)*/
-                this.setState({ cssError: result.message })
-            }
-        })
-    }, 500)
+        this.compileCss(newCode)
+            .then(css => {
+                this.setState(
+                    {
+                        cssCode: newCode,
+                        cssToInsert: css.compiledCode,
+                        cssError: ''
+                    },
+                    this.saveCssCode
+                )
+            })
+            .catch(css => {
+                this.setState({ cssError: css.error })
+            })
+    }, 300)
 
     updateJsCode = debounce(newCode => {
         const js = transpile(newCode, this.state.jsToInsert)
-        this.setState({
-            jsCode: newCode,
-            jsToInsert: js.transpiledCode,
-            jsError: js.error
-        })
-    }, 500)
+        this.setState(
+            {
+                jsCode: newCode,
+                jsToInsert: js.transpiledCode,
+                jsError: js.error
+            },
+            this.saveJsCode
+        )
+    }, 300)
 
     hideSearchModal = () => {
         return this.setState({ showSearchModal: false }, () => {
@@ -396,20 +436,21 @@ export default class Playground extends React.Component {
     constructor(props) {
         super(props)
 
-        const startingJsx = ''
-        const startingCss = ''
+        const startingJsx = localStorage.getItem('jsxCode') || ''
+        const startingCss = localStorage.getItem('cssCode') || ''
+        const startingJs = localStorage.getItem('jsCode') || ''
 
         this.state = {
             com: null,
             jsxCode: startingJsx,
             jsxToInsert: jsxToJs(startingJsx).transpiledCode,
-            jsxError: '',
+            jsxError: jsxToJs(startingJsx).error,
             cssCode: startingCss,
             cssToInsert: wrapCss(startingCss),
             cssError: '',
-            jsCode: '',
-            jsToInsert: '',
-            jsError: '',
+            jsCode: localStorage.getItem('jsCode') || '',
+            jsToInsert: transpile(startingJsx).transpiledCode,
+            jsError: transpile(startingJsx).error,
             showSearchModal: false,
             searchText: '',
             componentsMetaList: [],
@@ -429,6 +470,19 @@ export default class Playground extends React.Component {
         SystemJS.import('components.meta.json!json').then(meta => {
             this.setState({ componentsMetaList: meta })
         })
+
+        // if we set initial cssCode in state from localstorage
+        // we can't get the compiled version (wrap with 'right-container' tag and compile with sass compiler)
+        // because sass compiler is async
+        // triggering css code update so that the load time css code get's compiled
+        if (this.state.cssCode && this.state.cssCode.trim() !== '') {
+            this.compileCss(this.state.cssCode).then(css => {
+                this.setState({
+                    cssToInsert: css.compiledCode,
+                    error: css.error
+                })
+            })
+        }
     }
 
     componentDidMount() {
