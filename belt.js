@@ -43,9 +43,23 @@ function findIndex(list, predicate) {
     return -1
 }
 
+// Component === true
+// component === false
+function isCapitalized(str) {
+    return str && str.length > 0 && str[0] === str[0].toUpperCase()
+}
+
+function any(predicate, arr) {
+    return arr.reduce((acc, item) => {
+        return acc || predicate(item)
+    }, false)
+}
+
 module.exports = {
+    any,
     last,
     capitalize,
+    isCapitalized,
     camelCaseFileName,
     getNameFromPath,
     findIndex

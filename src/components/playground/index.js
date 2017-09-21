@@ -16,7 +16,7 @@ import Editor from './editor/index.js'
 import Babel from 'jspm_packages/npm/babel-standalone@6.26.0/babel.min.js'
 
 import belt from '../../../belt.js'
-const { last } = belt
+const { any, isCapitalized, last } = belt
 
 import faker from '../../faker.js'
 import {
@@ -32,7 +32,8 @@ function transpile(code, oldVal = '') {
 
         return {
             transpiledCode: babelOutput.code,
-            error: ''
+            error: '',
+            ast: babelOutput.ast
         }
     } catch (e) {
         console.error('error compiling javascript', e.toString())
@@ -443,6 +444,49 @@ export default class Playground extends React.Component {
         }
     }
 
+    loadCustomComponents = () => {
+        // load custom components, if any, in the jsx editor
+        SystemJS.import('components.meta.json!json').then(meta => {
+            this.setState({ componentsMetaList: meta }, () => {
+                const js = transpile(this.state.jsxCode)
+
+                if (!js.error) {
+                    const customComponentTokens = js.ast.tokens.filter(
+                        token => {
+                            return (
+                                token.type.label === 'jsxName' &&
+                                isCapitalized(token.value)
+                            )
+                        }
+                    )
+
+                    const componentsToLoad = this.state.componentsMetaList.filter(
+                        comMeta => {
+                            return (
+                                any(
+                                    token => token.value === comMeta.name,
+                                    customComponentTokens
+                                ) && !window[comMeta.name]
+                            )
+                        }
+                    )
+
+                    const loadPromises = componentsToLoad.map(comMeta => {
+                        return SystemJS.import(comMeta.path).then(com => {
+                            window[comMeta.name] = com.default || com
+                        })
+                    })
+
+                    Promise.all(loadPromises)
+                        .then(() => {
+                            this.forceUpdate()
+                        })
+                        .catch(e => console.log('error loading component', e))
+                }
+            })
+        })
+    }
+
     constructor(props) {
         super(props)
 
@@ -477,10 +521,7 @@ export default class Playground extends React.Component {
     componentWillMount() {
         this.registerServiceWorker()
 
-        SystemJS.import('components.meta.json!json').then(meta => {
-            this.setState({ componentsMetaList: meta })
-        })
-
+        this.loadCustomComponents()
         // if we set initial cssCode in state from localstorage
         // we can't get the compiled version (wrap with 'right-container' tag and compile with sass compiler)
         // because sass compiler is async
