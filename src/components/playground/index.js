@@ -138,18 +138,14 @@ export default class Playground extends React.Component {
                 if (!jsCode && !jsxCode && !cssCode) {
                     return
                 } else {
-                    this.setState(
-                        {
-                            jsCode,
-                            jsxCode,
-                            cssCode
-                        },
-                        () => {
-                            this.formatJsx()
-                            this.formatJs()
-                            this.formatCss()
-                        }
-                    )
+                    this._updateJsxCode(jsxCode)
+                    this._updateJsCode(jsCode)
+                    this._updateCssCode(cssCode)
+                    this.formatJsx()
+                    this.formatJs()
+                    this.formatCss()
+
+                    this.setState({ loading: true }, this.loadCustomComponents)
                 }
             } catch (e) {
                 console.error('could not parse json', e.target.value)
@@ -321,7 +317,7 @@ export default class Playground extends React.Component {
         return this.saveCode('cssCode', this.state.cssCode)
     }
 
-    updateJsxCode = debounce(newCode => {
+    _updateJsxCode = newCode => {
         const js = jsxToJs(newCode, this.state.jsxToInsert)
 
         this.setState(
@@ -332,6 +328,10 @@ export default class Playground extends React.Component {
             },
             this.saveJsxCode
         )
+    }
+
+    updateJsxCode = debounce(newCode => {
+        this._updateJsxCode(newCode)
     }, 300)
 
     compileCss = code => {
@@ -350,7 +350,7 @@ export default class Playground extends React.Component {
         })
     }
 
-    updateCssCode = debounce(newCode => {
+    _updateCssCode = newCode => {
         this.compileCss(newCode)
             .then(css => {
                 this.setState(
@@ -365,9 +365,13 @@ export default class Playground extends React.Component {
             .catch(css => {
                 this.setState({ cssError: css.error })
             })
+    }
+
+    updateCssCode = debounce(newCode => {
+        this._updateCssCode(newCode)
     }, 300)
 
-    updateJsCode = debounce(newCode => {
+    _updateJsCode = newCode => {
         const js = transpile(newCode, this.state.jsToInsert)
         this.setState(
             {
@@ -377,6 +381,10 @@ export default class Playground extends React.Component {
             },
             this.saveJsCode
         )
+    }
+
+    updateJsCode = debounce(newCode => {
+        this._updateJsCode(newCode)
     }, 300)
 
     hideSearchModal = () => {
@@ -408,12 +416,6 @@ export default class Playground extends React.Component {
                 footerHeight -
                 resizerHeight +
                 randomAdjustment
-            console.log(
-                'calculated editor height: ',
-                editor,
-                ' :',
-                editorHeight
-            )
 
             editorRef.codeMirrorRef &&
                 editorRef.codeMirrorRef
