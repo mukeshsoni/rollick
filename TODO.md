@@ -52,6 +52,9 @@
 - [ ] Hot reloading. At least for development.
 - [ ] Component state is not maintained on code change triggering a repaint
 - [ ] Allow hiding of editor panels 
+- [ ] Start using these concepts/technologies going forward
+  - Use of Either/Maybe/Functors/Applicatives. Should make life easier while dealing with exception (which is a lot in this tool)
+  - Write parts of the system in purescript
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
   - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
     - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front.
