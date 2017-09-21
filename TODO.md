@@ -58,6 +58,7 @@
 - [ ] If the cursor is inside the definition of some component in the editor, show all possible props for the component somewhere along with the prop types. A detailspane for each component? Each prop can then be changed from the details pane too. Then we would need to maintain the jsx tree in data somehow. Too much for initial scope.
   - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front
     - [ ] Need to maintain the tree for jsx code if we wnat to do anything intersting on the editor front.
+    - Don't need to. We use babel.parse, which gives the ast for the code
 - [ ] Ability to save prop values
 - [ ] Save and share your design
 - [ ] Have to think about bundling the app into a single file for production use.
@@ -73,7 +74,7 @@
       2. `npm install`
       3. `jspm install`
       4. Loss. It's all profit now.
-- [ ] When search bar is in focus, cannot focus the jsx editor by clicking on it. It works if i first click the css editor (which get's the focus) and then click the jsx editor
+- [x] When search bar is in focus, cannot focus the jsx editor by clicking on it. It works if i first click the css editor (which get's the focus) and then click the jsx editor
 - [ ] After prettier formatting, the cursor offset is not correct. It doesn't work at all in some cases, which is ok. But when it's working, it calculates wrong offset.
 - [ ] Improve the editor experience. Cmd+/ should comment the current line. More shortcuts should work.
 - [ ] Add option to specify docgen options in rollick config file. Example exclude list for folders/files.
@@ -140,6 +141,7 @@
 - [x] Fix name generator from component path with index.js as the final file
 - [x] Fix the jumping search input box 
 - [x] Fix the preview pane z index issue 
+- [x] The editors go beyond 100% height. Looks like splitpane which covers the editors takes the height of grand parent (i.e. the whole page)
 - [ ] if the iframe (right pane) is in focus, keyboard events don't propagate to parent. So keybaord shortcuts don't work
 - [ ] clicking outside of search box should close it
 

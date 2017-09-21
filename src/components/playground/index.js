@@ -402,22 +402,15 @@ export default class Playground extends React.Component {
     }
 
     adjustEditorSizes = () => {
-        const topHeaderHeight = 69
-        const headerHeight = 30
+        const headerHeight = 31
         const footerHeight = 20
-        const resizerHeight = 11
-        const randomAdjustment = 10 // don't know why this is needed :P
         const editors = ['jsx', 'css', 'js']
 
         editors.forEach(editor => {
             const editorRef = this[editor + 'EditorRef']
-            const editorHeight =
-                editorRef.containerRef.clientHeight -
-                headerHeight -
-                footerHeight -
-                resizerHeight +
-                randomAdjustment
+            const parentHeight = this.paneContainerRef.clientHeight
 
+            const editorHeight = parentHeight / 3 - headerHeight - footerHeight
             editorRef.codeMirrorRef &&
                 editorRef.codeMirrorRef
                     .getCodeMirror()
@@ -578,6 +571,7 @@ export default class Playground extends React.Component {
         this.jsxEditorRef = null
         this.cssEditorRef = null
         this.jsEditorRef = null
+        this.paneContainerRef = null
     }
 
     componentWillMount() {
@@ -748,7 +742,14 @@ export default class Playground extends React.Component {
                         label="Toggle editor layout"
                     />
                 </header>
-                <div>
+                <div
+                    style={{
+                        height: '100%',
+                        display: 'table-cell',
+                        position: 'relative'
+                    }}
+                    ref={node => (this.paneContainerRef = node)}
+                >
                     <SplitPane
                         split={
                             editorLayout === 'left' ? 'vertical' : 'horizontal'
@@ -765,7 +766,6 @@ export default class Playground extends React.Component {
                                     : 'vertical'
                             }
                             defaultSize="33%"
-                            minSize={300}
                             onChange={this.adjustEditorSizes}
                         >
                             <Editor

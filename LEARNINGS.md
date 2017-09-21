@@ -19,3 +19,4 @@
 - How to write an npm package which can be run as a system wide command
   - add files which act as executables to "bin" property in package.json
   - make those files executable by having this at the top of the file - `#!/usr/bin/env node`
+- CSS position values can lead to weird calculations of heights. I had to use `display: table-cell` and `position: relative` on div which covered absolutely positioned split panes so that the split pane was not taking grand parents height. Still don't know why that worked.
