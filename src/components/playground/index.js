@@ -502,7 +502,7 @@ export default class Playground extends React.Component {
         SystemJS.import('components.meta.json!json')
             .then(meta => {
                 this.setState({ componentsMetaList: meta }, () => {
-                    const js = transpile(this.state.jsxCode)
+                    const js = transpile(`<div>${this.state.jsxCode}</div>`)
 
                     if (!js.error) {
                         const customComponentTokens = js.ast.tokens.filter(
@@ -676,9 +676,10 @@ export default class Playground extends React.Component {
                         style={{
                             display: 'flex',
                             alignSelf: 'flex-start',
-                            width: 500,
+                            width: 300,
                             marginRight: 'auto',
-                            marginTop: -5
+                            marginTop: -5,
+                            zIndex: 23
                         }}
                     >
                         {showSearchModal
@@ -687,14 +688,17 @@ export default class Playground extends React.Component {
                                   onSelection={this.handleSearchSelection}
                                   onRequestClose={this.hideSearchModal}
                               />
-                            : <SearchInput
-                                  className={inputClassnames}
-                                  placeholder="Search Component (Command + i)"
-                                  onFocus={() =>
-                                      this.setState({
-                                          showSearchModal: true
-                                      })}
-                              />}
+                            : <div style={{ width: '100%' }}>
+                                  <SearchInput
+                                      style={{ width: 300 }}
+                                      className={inputClassnames}
+                                      placeholder="Search Component (Command + i)"
+                                      onFocus={() =>
+                                          this.setState({
+                                              showSearchModal: true
+                                          })}
+                                  />
+                              </div>}
                         <Button
                             onClick={this.props.fromStyleguideClick}
                             label="Styleguide"

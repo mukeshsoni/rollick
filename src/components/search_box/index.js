@@ -179,6 +179,7 @@ class SearchBox extends React.Component {
 
         return (
             <SearchInput
+                style={{ width: 300 }}
                 ref={node => (this.searchInputRef = node)}
                 onKeyDown={this.handleKeyDown}
                 className={inputClassnames}
@@ -216,27 +217,28 @@ class SearchBox extends React.Component {
         const { onRequestClose, isOpen } = this.props
         const { selectedItemIndex, previewComponent } = this.state
 
-        const searchBoxWidth = 400
+        const searchBoxWidth = 300
 
         return (
             <div style={{ width: '100%' }}>
                 {this.getInput()}
-                <div style={{ display: 'flex', width: searchBoxWidth * 2 }}>
-                    <div style={{ width: searchBoxWidth, zIndex: 1000 }}>
-                        <SearchResults
-                            items={this.getFilteredComponents()}
-                            selectedItemIndex={selectedItemIndex}
-                            previewItemIndex={this.getPreviewComponentIndex()}
-                            onItemClick={this.handleItemClick}
-                            onShowPreviewClick={this.handleShowPreviewClick}
-                        />
-                    </div>
-                    <div style={{ width: searchBoxWidth, height: 500 }}>
-                        {previewComponent &&
-                            previewComponent.component &&
-                            <Preview component={previewComponent} />}
-                    </div>
-                </div>
+                {this.getFilteredComponents().length > 0 &&
+                    <div style={{ display: 'flex', width: searchBoxWidth * 2 }}>
+                        <div style={{ width: searchBoxWidth, zIndex: 1000 }}>
+                            <SearchResults
+                                items={this.getFilteredComponents()}
+                                selectedItemIndex={selectedItemIndex}
+                                previewItemIndex={this.getPreviewComponentIndex()}
+                                onItemClick={this.handleItemClick}
+                                onShowPreviewClick={this.handleShowPreviewClick}
+                            />
+                        </div>
+                        <div style={{ width: searchBoxWidth, height: 500 }}>
+                            {previewComponent &&
+                                previewComponent.component &&
+                                <Preview component={previewComponent} />}
+                        </div>
+                    </div>}
             </div>
         )
     }
