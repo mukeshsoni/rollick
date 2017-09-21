@@ -54,6 +54,7 @@ SystemJS.config({
         'github:*/*.json'
     ],
     map: {
+        'file-saver': 'npm:file-saver@1.3.3',
         'cssbeautify': 'npm:cssbeautify@0.3.1',
         'babel-plugin-transform-react-remove-prop-types': 'npm:babel-plugin-transform-react-remove-prop-types@0.4.8',
         'babel-plugin-transform-flow-strip-types': 'npm:babel-plugin-transform-flow-strip-types@6.22.0',

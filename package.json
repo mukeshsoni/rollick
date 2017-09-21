@@ -30,6 +30,7 @@
       "debounce": "npm:debounce@^1.0.2",
       "emmet-codemirror": "npm:emmet-codemirror@^1.2.5",
       "esformatter-jsx": "npm:esformatter-jsx@^8.0.1",
+      "file-saver": "npm:file-saver@^1.3.3",
       "jsx-transpiler": "npm:jsx-transpiler@^0.1.4",
       "keymaster": "npm:keymaster@^1.6.2",
       "less": "npm:systemjs-less-plugin@^2.2.1",

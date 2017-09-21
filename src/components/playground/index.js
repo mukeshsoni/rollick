@@ -14,6 +14,7 @@ import './split_pane.css'
 import Preview from './playground_preview/index.js'
 import Editor from './editor/index.js'
 import Babel from 'jspm_packages/npm/babel-standalone@6.26.0/babel.min.js'
+import FileSaver from 'file-saver'
 
 import belt from '../../../belt.js'
 const { any, isCapitalized, last } = belt
@@ -110,6 +111,56 @@ function dedupe(arr) {
 export default class Playground extends React.Component {
     addComponentFromStyleguide = component => {
         this.handleSearchSelection(component)
+    }
+
+    exportPen = () => {
+        const { jsCode, jsxCode, cssCode } = this.state
+        const json = { jsCode, jsxCode, cssCode }
+
+        var blob = new Blob([JSON.stringify(json, null, 2)], {
+            type: 'text/plain;charset=utf-8'
+        })
+        FileSaver.saveAs(blob, 'rollick.json')
+    }
+
+    importPen = e => {
+        var file = e.target.files[0]
+        if (!file) {
+            return
+        }
+
+        var reader = new FileReader()
+        reader.onload = e => {
+            try {
+                const contents = JSON.parse(e.target.result)
+                const { jsCode = '', jsxCode = '', cssCode = '' } = contents
+
+                if (!jsCode && !jsxCode && !cssCode) {
+                    return
+                } else {
+                    this.setState(
+                        {
+                            jsCode,
+                            jsxCode,
+                            cssCode
+                        },
+                        () => {
+                            this.formatJsx()
+                            this.formatJs()
+                            this.formatCss()
+                        }
+                    )
+                }
+            } catch (e) {
+                console.error('could not parse json', e.target.value)
+            }
+        }
+
+        reader.readAsText(file)
+    }
+
+    onImportClick = () => {
+        document.getElementById('import-file').click()
     }
 
     registerServiceWorker = () => {
@@ -651,6 +702,22 @@ export default class Playground extends React.Component {
                             }}
                         />
                     </div>
+                    <Button
+                        onClick={this.exportPen}
+                        label="Export"
+                        style={{ marginRight: '1em' }}
+                    />
+                    <Button
+                        onClick={this.onImportClick}
+                        label="Import"
+                        style={{ marginRight: '1em' }}
+                    />
+                    <input
+                        type="file"
+                        id="import-file"
+                        style={{ display: 'none' }}
+                        onChange={this.importPen}
+                    />
                     <Button
                         onClick={() =>
                             this.setState(
