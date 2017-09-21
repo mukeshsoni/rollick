@@ -1,6 +1,6 @@
 {
   "name": "rollick",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "like codepen. But for react components.",
   "main": "./index.js",
   "bin": {

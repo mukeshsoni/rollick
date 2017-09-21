@@ -68,7 +68,7 @@ export default class Styleguide extends React.Component {
                         ...com,
                         fakeProps: populateDefaultValues(
                             com.props,
-                            faker(com.props)
+                            faker(com.props, { optional: true })
                         )
                     },
                     selectedComponentInstance: component

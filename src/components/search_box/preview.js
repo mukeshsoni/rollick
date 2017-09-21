@@ -21,7 +21,7 @@ class Preview extends React.Component {
             >
                 {React.createElement(
                     component.component,
-                    faker(component.meta.props)
+                    faker(component.meta.props, { optional: true })
                 )}
             </div>
         )
