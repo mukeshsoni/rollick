@@ -53,6 +53,10 @@ export default class PlaygroundPreview extends React.Component {
     }
 
     render() {
+        if (this.props.loading) {
+            return <div className="loader" />
+        }
+
         return (
             <div>
                 {this.getJsxToInsert()}

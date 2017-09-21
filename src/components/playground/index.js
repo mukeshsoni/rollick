@@ -446,45 +446,52 @@ export default class Playground extends React.Component {
 
     loadCustomComponents = () => {
         // load custom components, if any, in the jsx editor
-        SystemJS.import('components.meta.json!json').then(meta => {
-            this.setState({ componentsMetaList: meta }, () => {
-                const js = transpile(this.state.jsxCode)
+        SystemJS.import('components.meta.json!json')
+            .then(meta => {
+                this.setState({ componentsMetaList: meta }, () => {
+                    const js = transpile(this.state.jsxCode)
 
-                if (!js.error) {
-                    const customComponentTokens = js.ast.tokens.filter(
-                        token => {
-                            return (
-                                token.type.label === 'jsxName' &&
-                                isCapitalized(token.value)
-                            )
-                        }
-                    )
+                    if (!js.error) {
+                        const customComponentTokens = js.ast.tokens.filter(
+                            token => {
+                                return (
+                                    token.type.label === 'jsxName' &&
+                                    isCapitalized(token.value)
+                                )
+                            }
+                        )
 
-                    const componentsToLoad = this.state.componentsMetaList.filter(
-                        comMeta => {
-                            return (
-                                any(
-                                    token => token.value === comMeta.name,
-                                    customComponentTokens
-                                ) && !window[comMeta.name]
-                            )
-                        }
-                    )
+                        const componentsToLoad = this.state.componentsMetaList.filter(
+                            comMeta => {
+                                return (
+                                    any(
+                                        token => token.value === comMeta.name,
+                                        customComponentTokens
+                                    ) && !window[comMeta.name]
+                                )
+                            }
+                        )
 
-                    const loadPromises = componentsToLoad.map(comMeta => {
-                        return SystemJS.import(comMeta.path).then(com => {
-                            window[comMeta.name] = com.default || com
+                        const loadPromises = componentsToLoad.map(comMeta => {
+                            return SystemJS.import(comMeta.path).then(com => {
+                                window[comMeta.name] = com.default || com
+                            })
                         })
-                    })
 
-                    Promise.all(loadPromises)
-                        .then(() => {
-                            this.forceUpdate()
-                        })
-                        .catch(e => console.log('error loading component', e))
-                }
+                        Promise.all(loadPromises)
+                            .then(() => {
+                                this.setState({ loading: false })
+                            })
+                            .catch(e => {
+                                console.log('error loading component', e)
+                                this.setState({ loading: false })
+                            })
+                    } else {
+                        this.setState({ loading: false })
+                    }
+                })
             })
-        })
+            .catch(() => this.setState({ loading: false }))
     }
 
     constructor(props) {
@@ -511,7 +518,8 @@ export default class Playground extends React.Component {
             cssFilesToInject: [
                 'http://localhost:5000/src/components/search_box/search_item.css'
             ],
-            editorLayout: 'left'
+            editorLayout: 'left',
+            loading: true
         }
         this.jsxEditorRef = null
         this.cssEditorRef = null
@@ -568,7 +576,8 @@ export default class Playground extends React.Component {
             jsError,
             showSearchModal,
             componentsMetaList,
-            editorLayout
+            editorLayout,
+            loading
         } = this.state
 
         const modalStyle = {
@@ -741,6 +750,7 @@ export default class Playground extends React.Component {
                             </SplitPane>
                             <div className="editor-right-pane" id={rightPaneId}>
                                 <Preview
+                                    loading={loading}
                                     jsxToInsert={jsxToInsert}
                                     jsToInsert={jsToInsert}
                                 />
