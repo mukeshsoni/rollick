@@ -28,9 +28,10 @@ export default class Tooltip extends React.Component {
             bottom: position === 'left' ? 'auto' : 20,
             background: 'gray',
             color: 'white',
-            maxWidth: 300,
+            width: 300,
             height: 'auto',
-            padding: '1em'
+            padding: '1em',
+            wordWrap: 'break-word'
         }
 
         return (
@@ -41,7 +42,7 @@ export default class Tooltip extends React.Component {
             >
                 {this.state.showTooltip
                     ? <div style={tooltipStyle}>
-                          <pre>
+                          <pre style={{ whiteSpace: 'pre-wrap' }}>
                               {JSON.stringify(this.props.content, null, 4)}
                           </pre>
                       </div>

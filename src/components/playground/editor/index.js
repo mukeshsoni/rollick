@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import CodeMirror from 'react-codemirror'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
-import 'jspm_packages/npm/codemirror@5.29.0/mode/javascript/javascript.js'
+/* import 'jspm_packages/npm/codemirror@5.29.0/mode/javascript/javascript.js'*/
 import 'node_modules/codemirror/lib/codemirror.css!css'
 import 'node_modules/codemirror/theme/twilight.css!css'
 import emmetCodemirror from '@emmetio/codemirror-plugin'

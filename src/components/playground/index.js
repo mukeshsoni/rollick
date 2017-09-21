@@ -35,7 +35,7 @@ function jsxToJs(jsxCode, oldVal = '') {
             error: ''
         }
     } catch (e) {
-        console.error('error compiling jsx', e.toString())
+        /* console.error('error compiling jsx', e.toString())*/
         return {
             compiledJsx: oldVal,
             error: e.toString()
@@ -268,14 +268,19 @@ export default class Playground extends React.Component {
                     cssError: ''
                 })
             } else {
-                console.error('error converting sass to css', result.message)
+                /* console.error('error converting sass to css', result.message)*/
                 this.setState({ cssError: result.message })
             }
         })
     }, 500)
 
     updateJsCode = debounce(newCode => {
-        this.setState({ jsCode: newCode })
+        const js = jsxToJs(newCode, this.state.jsCodeToInsert)
+        this.setState({
+            jsCode: newCode,
+            jsCodeToInsert: js.compiledJsx,
+            jsError: js.error
+        })
     }, 500)
 
     hideSearchModal = () => {
@@ -399,6 +404,8 @@ export default class Playground extends React.Component {
             cssToInsert: wrapCss(startingCss),
             cssError: '',
             jsCode: '',
+            jsxToInsert: '',
+            jsError: '',
             showSearchModal: false,
             searchText: '',
             componentsMetaList: [],
@@ -438,12 +445,14 @@ export default class Playground extends React.Component {
             com,
             avatar,
             jsxCode,
-            cssCode,
-            jsCode,
             jsxToInsert,
             jsxError,
+            cssCode,
             cssToInsert,
             cssError,
+            jsCode,
+            jsToInsert,
+            jsError,
             showSearchModal,
             componentsMetaList,
             editorLayout
@@ -546,6 +555,7 @@ export default class Playground extends React.Component {
                             editorLayout === 'left' ? 'vertical' : 'horizontal'
                         }
                         minSize={editorLayout === 'left' ? 400 : 300}
+                        pane1Style={{ height: '100%' }}
                         pane2Style={{ background: 'white' }}
                         onChange={this.adjustEditorSizes}
                     >
@@ -593,19 +603,17 @@ export default class Playground extends React.Component {
                                 <Editor
                                     ref={instance =>
                                         (this.jsEditorRef = instance)}
-                                    code={cssCode}
+                                    code={jsCode}
                                     onCodeChange={this.updateJsCode}
-                                    mode="javascript"
+                                    mode="jsx"
                                     editorName="JS"
                                     onFormatClick={this.formatJs}
+                                    errors={jsError}
                                 />
                             </SplitPane>
                         </SplitPane>
                         <div className="editor-right-pane" id={rightPaneId}>
-                            <Preview
-                                jsxToInsert={jsxToInsert}
-                                jsToInsert={jsCode}
-                            />
+                            <Preview jsxToInsert={jsxToInsert} />
                         </div>
                     </SplitPane>
                 </div>

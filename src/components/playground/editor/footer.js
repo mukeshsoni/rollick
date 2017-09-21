@@ -13,7 +13,8 @@ export default class EditorFooter extends React.Component {
             alignItems: 'center',
             fontSize: '0.8em',
             color: 'red',
-            height: 20
+            height: 20,
+            background: '#141516'
         }
 
         return (
