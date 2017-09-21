@@ -1,9 +1,15 @@
 import React from 'react'
 window.React = React
 
+function myEval(thisObject, code) {
+    return function() {
+        return eval(code)
+    }.call(thisObject)
+}
+
 function validJs(jsToInsert) {
     try {
-        ;(0, eval)(jsToInsert)
+        myEval(this, jsToInsert)
         return true
     } catch (e) {
         return false
@@ -42,11 +48,7 @@ export default class PlaygroundPreview extends React.Component {
             nextProps.jsToInsert !== this.props.jsToInsert &&
             validJs.bind(this, nextProps.jsToInsert)
         ) {
-            try {
-                ;(0, eval)(nextProps.jsToInsert)
-            } catch (e) {
-                console.log('Error evaling js code', e)
-            }
+            myEval(this, nextProps.jsToInsert)
         }
     }
 
