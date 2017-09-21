@@ -24,23 +24,27 @@ import {
     populateDefaultValues
 } from '../../component_maker_helpers/prop_value_from_string.js'
 
-// oldVal is a hack until we have Either data type support
-function jsxToJs(jsxCode, oldVal = '') {
+function transpile(code, oldVal = '') {
     try {
-        const compiledJsx = Babel.transform(`<div>${jsxCode}</div>`, {
+        const transpiledCode = Babel.transform(`${code}`, {
             presets: ['react']
         }).code
+
         return {
-            compiledJsx,
+            transpiledCode,
             error: ''
         }
     } catch (e) {
-        /* console.error('error compiling jsx', e.toString())*/
+        console.error('error compiling javascript', e.toString())
         return {
-            compiledJsx: oldVal,
+            transpiledCode: oldVal,
             error: e.toString()
         }
     }
+}
+// oldVal is a hack until we have Either data type support
+function jsxToJs(jsxCode, oldVal = '') {
+    return transpile(`<div>${jsxCode}</div>`)
 }
 
 const rightPaneId = 'reactpen-right-pane'
@@ -253,7 +257,7 @@ export default class Playground extends React.Component {
 
         this.setState({
             jsxCode: newCode,
-            jsxToInsert: js.compiledJsx,
+            jsxToInsert: js.transpiledCode,
             jsxError: js.error
         })
     }, 500)
@@ -275,10 +279,10 @@ export default class Playground extends React.Component {
     }, 500)
 
     updateJsCode = debounce(newCode => {
-        const js = jsxToJs(newCode, this.state.jsCodeToInsert)
+        const js = transpile(newCode, this.state.jsCodeToInsert)
         this.setState({
             jsCode: newCode,
-            jsCodeToInsert: js.compiledJsx,
+            jsCodeToInsert: js.transpiledCode,
             jsError: js.error
         })
     }, 500)
@@ -398,7 +402,7 @@ export default class Playground extends React.Component {
         this.state = {
             com: null,
             jsxCode: startingJsx,
-            jsxToInsert: jsxToJs(startingJsx).compiledJsx,
+            jsxToInsert: jsxToJs(startingJsx).transpiledCode,
             jsxError: '',
             cssCode: startingCss,
             cssToInsert: wrapCss(startingCss),
