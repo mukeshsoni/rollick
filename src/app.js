@@ -71,7 +71,8 @@ export default class App extends React.Component {
                 right: 0,
                 top: 0,
                 bottom: 0,
-                background: 'rgba(255, 255, 255, 0.9)'
+                background: 'rgba(255, 255, 255, 0.9)',
+                zIndex: 25
             }
         }
 
