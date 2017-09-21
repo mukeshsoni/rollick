@@ -279,10 +279,10 @@ export default class Playground extends React.Component {
     }, 500)
 
     updateJsCode = debounce(newCode => {
-        const js = transpile(newCode, this.state.jsCodeToInsert)
+        const js = transpile(newCode, this.state.jsToInsert)
         this.setState({
             jsCode: newCode,
-            jsCodeToInsert: js.transpiledCode,
+            jsToInsert: js.transpiledCode,
             jsError: js.error
         })
     }, 500)
@@ -408,7 +408,7 @@ export default class Playground extends React.Component {
             cssToInsert: wrapCss(startingCss),
             cssError: '',
             jsCode: '',
-            jsxToInsert: '',
+            jsToInsert: '',
             jsError: '',
             showSearchModal: false,
             searchText: '',
@@ -617,7 +617,10 @@ export default class Playground extends React.Component {
                             </SplitPane>
                         </SplitPane>
                         <div className="editor-right-pane" id={rightPaneId}>
-                            <Preview jsxToInsert={jsxToInsert} />
+                            <Preview
+                                jsxToInsert={jsxToInsert}
+                                jsToInsert={jsToInsert}
+                            />
                         </div>
                     </SplitPane>
                 </div>
