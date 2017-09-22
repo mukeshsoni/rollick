@@ -136,20 +136,23 @@ export default class Playground extends React.Component {
                 const contents = JSON.parse(e.target.result)
                 const { jsCode = '', jsxCode = '', cssCode = '' } = contents
 
+                // TODO - need to wrap jsx in container div if none exists. Otherwise, jsxFormat fails
                 if (!jsCode && !jsxCode && !cssCode) {
                     return
                 } else {
                     this._updateJsxCode(jsxCode)
                     this._updateJsCode(jsCode)
                     this._updateCssCode(cssCode)
-                    this.formatJsx()
-                    this.formatJs()
-                    this.formatCss()
 
-                    this.setState({ loading: true }, this.loadCustomComponents)
+                    this.setState({ loading: true }, () => {
+                        this.loadCustomComponents()
+                        this.formatJsx() // putting formatting stuff after loading, since they might blow up and not lead to loading of custom components at all
+                        this.formatJs()
+                        this.formatCss()
+                    })
                 }
             } catch (e) {
-                console.error('could not parse json', e.target.value)
+                console.error('could not parse json', e)
             }
         }
 
@@ -253,6 +256,7 @@ export default class Playground extends React.Component {
         )
     }
 
+    // This function should never throw an exception. It should handle all exception and finally do a setState
     formatJsx = () => {
         function cmToPrettierCursorOffset(code, cursor) {
             const allLines = code.split('\n')
@@ -276,29 +280,37 @@ export default class Playground extends React.Component {
             this.jsxEditorRef.codeMirrorRef.getCodeMirror().getCursor()
         )
 
-        const prettified = prettier.formatWithCursor(this.state.jsxCode, {
-            semi: false,
-            cursorOffset: prettierCursorOffset
-        })
+        // TODO
+        // prettier throws an exception if it finds a syntax error.
+        // need to find out if it returns a promise or not
+        try {
+            var prettified = prettier.formatWithCursor(this.state.jsxCode, {
+                semi: false,
+                cursorOffset: prettierCursorOffset
+            })
+            const cmCursor = prettierToCodeMirrorCursor(
+                prettified.formatted,
+                prettified.cursorOffset
+            )
 
-        const cmCursor = prettierToCodeMirrorCursor(
-            prettified.formatted,
-            prettified.cursorOffset
-        )
-
-        this.setState(
-            {
-                jsxCode: prettified.formatted.slice(1) // slice(1) to remove the semicolon at the start of block prettier adds
-            },
-            () => {
-                this.jsxEditorRef.codeMirrorRef
-                    .getCodeMirror()
-                    .setValue(this.state.jsxCode)
-                this.jsxEditorRef.codeMirrorRef
-                    .getCodeMirror()
-                    .setCursor(cmCursor)
-            }
-        )
+            this.setState(
+                {
+                    jsxCode: prettified.formatted.slice(1) // slice(1) to remove the semicolon at the start of block prettier adds
+                },
+                () => {
+                    this.jsxEditorRef.codeMirrorRef
+                        .getCodeMirror()
+                        .setValue(this.state.jsxCode)
+                    this.jsxEditorRef.codeMirrorRef
+                        .getCodeMirror()
+                        .setCursor(cmCursor)
+                }
+            )
+        } catch (e) {
+            this.jsxEditorRef.codeMirrorRef
+                .getCodeMirror()
+                .setValue(this.state.jsxCode)
+        }
     }
 
     // don't do it any more than once a second. If needed, less (debounce will ensure that)

@@ -48,7 +48,11 @@ export default class PlaygroundPreview extends React.Component {
             nextProps.jsToInsert !== this.props.jsToInsert &&
             validJs.bind(this, nextProps.jsToInsert)
         ) {
-            myEval(this, nextProps.jsToInsert)
+            try {
+                myEval(this, nextProps.jsToInsert)
+            } catch (e) {
+                console.error('error loading jsx', e)
+            }
         }
     }
 
