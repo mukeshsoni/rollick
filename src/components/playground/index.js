@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import jsx from 'jsx-transpiler'
 import sass from 'sass.js'
-import prettier from 'prettier'
 import SearchBox from '../search_box/index.js'
 import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
@@ -19,6 +18,7 @@ import FileSaver from 'file-saver'
 
 import belt from '../../../belt.js'
 const { any, isCapitalized, last } = belt
+import { formatCode, cmToPrettierCursorOffset } from './code_formatter.js'
 
 import faker from '../../faker.js'
 import {
@@ -64,7 +64,7 @@ function getFakePropValue(fakeProp) {
     }
 }
 
-function addComponent(jsx, codeMirror, componentDetails) {
+function addComponent(jsx, codeMirror, componentDetails, addToEnd = false) {
     let codeToInsert = `<${componentDetails.name} `
     let propValuePairs = ''
     if (componentDetails.props) {
@@ -98,8 +98,26 @@ function addComponent(jsx, codeMirror, componentDetails) {
 
     codeToInsert = `${codeToInsert} ${propValuePairs}></${componentDetails.name}>`
 
-    codeMirror.replaceSelection(codeToInsert)
-    return codeMirror.getValue()
+    // TODO - refactor this part
+    // setting value in editor, checking if values causes problem and then resetting will not work. Once we set it, it triggers onChange event for the code which leads to all sorts of unpredictable stuff.
+    // set codemirror value means mutation. which means bugs which we can't trace easily
+    // writing this comment when i actually faced a bug due to this mutation shit
+    const oldCode = codeMirror.getValue()
+    const cursor = codeMirror.getCursor()
+    const cursorOffset = cmToPrettierCursorOffset(oldCode, cursor)
+    let codeAfterInsertion =
+        oldCode.slice(0, cursorOffset) +
+        codeToInsert +
+        oldCode.slice(cursorOffset + 1)
+
+    /* codeMirror.replaceSelection(codeToInsert)*/
+    let formatted = formatCode(codeAfterInsertion, cursor)
+
+    if (formatted.error) {
+        codeAfterInsertion = oldCode + codeToInsert
+    }
+
+    return codeAfterInsertion
 }
 
 function dedupe(arr) {
@@ -205,21 +223,19 @@ export default class Playground extends React.Component {
             SystemJS.import(selectedItem.path)
                 .then(com => {
                     window[selectedItem.name] = com.default || com
-                    this.setState(
-                        {
-                            jsxCode: addComponent(
-                                this.state.jsxCode,
-                                this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
-                                selectedItem
-                            )
-                        },
-                        () => {
-                            this.formatJsx()
-                            this.jsxEditorRef.codeMirrorRef
-                                .getCodeMirror()
-                                .focus()
-                        }
+                    let jsxWithNewComponent = addComponent(
+                        this.state.jsxCode,
+                        this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
+                        selectedItem
                     )
+
+                    this.jsxEditorRef.codeMirrorRef
+                        .getCodeMirror()
+                        .setValue(jsxWithNewComponent)
+
+                    // TODO - no idea why i am doing so much stuff here. Need to refactor
+                    // TODO - need to probably format code after adding component
+                    this.updateJsxCode(jsxWithNewComponent)
                 })
                 .catch(e =>
                     console.error(
@@ -243,74 +259,45 @@ export default class Playground extends React.Component {
         )
     }
 
-    formatJs = () => {
-        this.setState(
-            {
-                jsCode: prettier.format(this.state.jsCode, { semi: false })
-            },
-            () => {
-                this.jsEditorRef.codeMirrorRef
-                    .getCodeMirror()
-                    .setValue(this.state.jsCode)
-            }
-        )
-    }
+    // formats both js and jsx code
+    // mode can be oneOf(['js', 'jsx'])
+    formatJsLikeCode = mode => {
+        const code = this.state[`${mode}Code`]
+        const codeMirrorRef = this[`${mode}EditorRef`].codeMirrorRef
 
-    // This function should never throw an exception. It should handle all exception and finally do a setState
-    formatJsx = () => {
-        function cmToPrettierCursorOffset(code, cursor) {
-            const allLines = code.split('\n')
-            const charsInLineBeforeCursor =
-                cursor.line > 1
-                    ? allLines.slice(0, cursor.line - 1).join('\n').length
-                    : 0
-            return charsInLineBeforeCursor + cursor.ch
-        }
-
-        function prettierToCodeMirrorCursor(code, cursorOffset) {
-            const codeTillCursorOffset = code.slice(0, cursorOffset)
-
-            const lineNumber = codeTillCursorOffset.split('\n').length
-            const charNumber = last(codeTillCursorOffset.split('\n')).length
-            return { line: lineNumber, ch: charNumber }
-        }
-
-        const prettierCursorOffset = cmToPrettierCursorOffset(
-            this.state.jsxCode,
-            this.jsxEditorRef.codeMirrorRef.getCodeMirror().getCursor()
+        const formatted = formatCode(
+            code,
+            codeMirrorRef.getCodeMirror().getCursor()
         )
 
-        // TODO
-        // prettier throws an exception if it finds a syntax error.
-        // need to find out if it returns a promise or not
-        try {
-            var prettified = prettier.formatWithCursor(this.state.jsxCode, {
-                semi: false,
-                cursorOffset: prettierCursorOffset
-            })
-            const cmCursor = prettierToCodeMirrorCursor(
-                prettified.formatted,
-                prettified.cursorOffset
-            )
-
+        if (!formatted.error) {
             this.setState(
                 {
-                    jsxCode: prettified.formatted.slice(1) // slice(1) to remove the semicolon at the start of block prettier adds
+                    [`${mode}Code`]:
+                        mode === 'jsx'
+                            ? formatted.formattedCode.slice(1)
+                            : formatted.formattedCode
                 },
                 () => {
-                    this.jsxEditorRef.codeMirrorRef
+                    codeMirrorRef
                         .getCodeMirror()
-                        .setValue(this.state.jsxCode)
-                    this.jsxEditorRef.codeMirrorRef
-                        .getCodeMirror()
-                        .setCursor(cmCursor)
+                        .setValue(this.state[`${mode}Code`])
+                    codeMirrorRef.getCodeMirror().setCursor(formatted.cursor)
                 }
             )
-        } catch (e) {
-            this.jsxEditorRef.codeMirrorRef
-                .getCodeMirror()
-                .setValue(this.state.jsxCode)
+        } else {
+            this.setState({
+                [`${mode}Code`]: formatted.error
+            })
         }
+    }
+
+    formatJs = () => {
+        this.formatJsLikeCode('js')
+    }
+
+    formatJsx = () => {
+        this.formatJsLikeCode('jsx')
     }
 
     // don't do it any more than once a second. If needed, less (debounce will ensure that)
