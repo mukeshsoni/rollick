@@ -201,16 +201,16 @@ function addGlobals(toolConfig) {
 
 function pifyLogStart(msg) {
     spinner = ora(msg)
-    return Promise.resolve({})
+    return Promise.resolve(spinner)
 }
 
 function pifyLogStop() {
     spinner.succeed()
-    spinner.stop()
+    return Promise.resolve(spinner.stop())
 }
 
 function pifyFailAndStop(error) {
-    spinner.fail(error)
+    return Promise.resolve(spinner.fail(error))
 }
 
 function pifyLog(msg) {
@@ -332,5 +332,7 @@ pifyLogStart('Creating .rollick  folder')
     )
     .then(pifyLogStop)
     .catch(e => {
-        pifyFailAndStop()
+        pifyFailAndStop().then(() =>
+            console.error('Error doing rollick stuff', e)
+        )
     })
