@@ -209,6 +209,11 @@ function pifyLogStop() {
     spinner.stop()
 }
 
+function pifyFailAndStop(error) {
+    spinner.fail()
+    spinner.stop()
+}
+
 function pifyLog(msg) {
     spinner.succeed()
     return Promise.resolve(spinner.start(msg))
@@ -327,4 +332,4 @@ pifyLogStart('Creating .rollick  folder')
         )
     )
     .then(pifyLogStop)
-    .catch(e => console.error('Error creating rollick stuff', e))
+    .catch(e => pifyFailAndStop(e))
