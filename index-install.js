@@ -96,17 +96,23 @@ function installHostNpmModules() {
         const packages = toolConfig.jspm.install.npm.packages
         // TODO - object.keys stuff should be replaced with zipWith. Or try Object.entries (if it's supported in node)
         // Thought of running the jspm install commands concurrently at first. Then decided it might lead to some order problems in jspm.config.js
-        return Object.keys(packages).reduce((acc, packageName) => {
+        return packages.reduce((acc, package) => {
+            const withVersion = `${package.name}@${package.version}`
             return acc
                 .then(() =>
-                    pifyLog('Installing npm:' + packageName + ' using jspm')
+                    pifyLog('Installing npm:' + withVersion + ' using jspm')
                 )
                 .then(() =>
                     promisifiedExec(
-                        './node_modules/.bin/jspm install npm:' +
-                            packageName +
-                            '@' +
-                            packages[packageName]
+                        './node_modules/.bin/jspm install --yes --log warn npm:' +
+                            withVersion
+                    )
+                )
+                .catch(e =>
+                    console.error(
+                        'error install host npm package ',
+                        withVersion,
+                        e
                     )
                 )
         }, Promise.resolve({}))
@@ -197,11 +203,13 @@ function pifyLogStart(msg) {
     return Promise.resolve({})
 }
 
+function pifyLogStop(msg) {
+    spinner.stop(msg)
+}
+
 function pifyLog(msg) {
-    // console.log(msg);
     spinner.succeed()
-    spinner.start(msg)
-    return Promise.resolve({})
+    return Promise.resolve(spinner.start(msg))
 }
 
 function updatePaths(toolConfig, jspmConfig) {
@@ -298,10 +306,10 @@ pifyLogStart('Creating .rollick  folder')
     .then(addGlobals.bind(null, toolConfig))
     // .then(pifyLog.bind(null, 'adding onLoad functions if any provided to index.html file'))
     // .then(addOnLoadFunctions.bind(null, toolConfig))
-    .then(pifyLog.bind(null, 'installing npm modules'))
-    .then(installNpmModules)
-    .then(pifyLog.bind(null, 'installing jspm modules'))
-    .then(installJspmModules)
+    // .then(pifyLog.bind(null, 'installing npm modules'))
+    // .then(installNpmModules)
+    // .then(pifyLog.bind(null, 'installing jspm modules'))
+    // .then(installJspmModules)
     .then(
         pifyLog.bind(null, 'Installing npm modules for host project using jspm')
     )
@@ -316,4 +324,5 @@ pifyLogStart('Creating .rollick  folder')
             'Please run "rollick start" on your terminal to start server'
         )
     )
+    .then(pifyLogStop)
     .catch(e => console.error('Error creating rollick stuff', e))
