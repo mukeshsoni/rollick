@@ -331,4 +331,6 @@ pifyLogStart('Creating .rollick  folder')
         )
     )
     .then(pifyLogStop)
-    .catch(e => pifyFailAndStop(e))
+    .catch(e => {
+        pifyFailAndStop()
+    })
