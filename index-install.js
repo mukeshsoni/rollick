@@ -203,8 +203,9 @@ function pifyLogStart(msg) {
     return Promise.resolve({})
 }
 
-function pifyLogStop(msg) {
-    spinner.stop(msg)
+function pifyLogStop() {
+    spinner.succeed()
+    spinner.stop()
 }
 
 function pifyLog(msg) {
@@ -306,10 +307,10 @@ pifyLogStart('Creating .rollick  folder')
     .then(addGlobals.bind(null, toolConfig))
     // .then(pifyLog.bind(null, 'adding onLoad functions if any provided to index.html file'))
     // .then(addOnLoadFunctions.bind(null, toolConfig))
-    // .then(pifyLog.bind(null, 'installing npm modules'))
-    // .then(installNpmModules)
-    // .then(pifyLog.bind(null, 'installing jspm modules'))
-    // .then(installJspmModules)
+    .then(pifyLog.bind(null, 'installing npm modules'))
+    .then(installNpmModules)
+    .then(pifyLog.bind(null, 'installing jspm modules'))
+    .then(installJspmModules)
     .then(
         pifyLog.bind(null, 'Installing npm modules for host project using jspm')
     )
