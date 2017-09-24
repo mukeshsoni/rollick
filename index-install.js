@@ -210,8 +210,7 @@ function pifyLogStop() {
 }
 
 function pifyFailAndStop(error) {
-    spinner.fail()
-    spinner.stop()
+    spinner.fail(error)
 }
 
 function pifyLog(msg) {
