@@ -19,8 +19,12 @@ var exec = require('child_process').exec
 var pify = require('pify')
 // TODO - remove ncp
 var ncp = require('ncp').ncp
+var belt = require('./belt.js')
+var { zipWith } = belt
 var recursivelyCopy = pify(ncp)
 var promisifiedExec = pify(exec)
+var ora = require('ora')
+var spinner
 
 const toolName = 'rollick'
 var toolFolder = path.resolve(process.cwd() + '/.' + toolName)
@@ -80,6 +84,35 @@ function installNpmModules() {
 
 function installJspmModules() {
     return promisifiedExec('npm run jspm')
+}
+
+function installHostNpmModules() {
+    if (
+        toolConfig.jspm &&
+        toolConfig.jspm.install &&
+        toolConfig.jspm.install.npm &&
+        toolConfig.jspm.install.npm.packages
+    ) {
+        const packages = toolConfig.jspm.install.npm.packages
+        // TODO - object.keys stuff should be replaced with zipWith. Or try Object.entries (if it's supported in node)
+        // Thought of running the jspm install commands concurrently at first. Then decided it might lead to some order problems in jspm.config.js
+        return Object.keys(packages).reduce((acc, packageName) => {
+            return acc
+                .then(() =>
+                    pifyLog('Installing npm:' + packageName + ' using jspm')
+                )
+                .then(() =>
+                    promisifiedExec(
+                        './node_modules/.bin/jspm install npm:' +
+                            packageName +
+                            '@' +
+                            packages[packageName]
+                    )
+                )
+        }, Promise.resolve({}))
+    } else {
+        return Promise.resolve({})
+    }
 }
 
 function generateMetaFile() {
@@ -159,8 +192,15 @@ function addGlobals(toolConfig) {
     }
 }
 
+function pifyLogStart(msg) {
+    spinner = ora(msg)
+    return Promise.resolve({})
+}
+
 function pifyLog(msg) {
-    console.log(msg)
+    // console.log(msg);
+    spinner.succeed()
+    spinner.start(msg)
     return Promise.resolve({})
 }
 
@@ -244,7 +284,7 @@ function updateJspmConfigFile() {
     return fs.writeFile(jspmConfigFilePath, jspmConfig)
 }
 
-pifyLog('Creating .rollick  folder')
+pifyLogStart('Creating .rollick  folder')
     .then(createtoolFolder)
     .then(pifyLog.bind(null, 'Emptying .rollick folder'))
     .then(emptytoolFolder)
@@ -262,7 +302,13 @@ pifyLog('Creating .rollick  folder')
     .then(installNpmModules)
     .then(pifyLog.bind(null, 'installing jspm modules'))
     .then(installJspmModules)
+    .then(
+        pifyLog.bind(null, 'Installing npm modules for host project using jspm')
+    )
+    .then(installHostNpmModules)
     .then(pifyLog.bind(null, 'generating meta file for components'))
+    .then(updateJspmConfigFile)
+    .then(pifyLog.bind(null, 'adding global links to index.html file'))
     .then(generateMetaFile)
     .then(
         pifyLog.bind(

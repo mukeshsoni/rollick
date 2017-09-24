@@ -1,58 +1,74 @@
 function last(arr) {
-    return arr[arr.length - 1]
+    return arr[arr.length - 1];
 }
 
 function init(arr) {
     if (arr && arr.length > 1) {
-        return arr.slice(0, -1)
+        return arr.slice(0, -1);
     } else {
-        return null
+        return null;
     }
 }
 
 function capitalize(str) {
     if (str && str.length > 0) {
-        return str.charAt(0).toUpperCase() + str.slice(1)
+        return str.charAt(0).toUpperCase() + str.slice(1);
     } else {
-        return str
+        return str;
     }
 }
 
 function camelCaseFileName(fileName) {
-    return fileName.split('.')[0].split('_').map(capitalize).join('')
+    return fileName
+        .split(".")[0]
+        .split("_")
+        .map(capitalize)
+        .join("");
 }
 
 function getNameFromPath(path) {
-    const filePathParts = path.split('/')
+    const filePathParts = path.split("/");
 
     // if file is some variant of index.js or index.jsx or index.xyx.js, we need to taret the folder it's inside
-    if (last(filePathParts) === 'index.js') {
-        return camelCaseFileName(last(init(filePathParts)))
+    if (last(filePathParts) === "index.js") {
+        return camelCaseFileName(last(init(filePathParts)));
     } else {
-        return camelCaseFileName(last(filePathParts))
+        return camelCaseFileName(last(filePathParts));
     }
 }
 
 function findIndex(list, predicate) {
     for (let i = 0; i < list.length; i++) {
         if (predicate(list[i]) === true) {
-            return i
+            return i;
         }
     }
 
-    return -1
+    return -1;
 }
 
 // Component === true
 // component === false
 function isCapitalized(str) {
-    return str && str.length > 0 && str[0] === str[0].toUpperCase()
+    return str && str.length > 0 && str[0] === str[0].toUpperCase();
 }
 
 function any(predicate, arr) {
     return arr.reduce((acc, item) => {
-        return acc || predicate(item)
-    }, false)
+        return acc || predicate(item);
+    }, false);
+}
+
+function zipWith(zipper, la, lb) {
+    if (la.length < lb.length) {
+        return la.map((laItem, index) => {
+            return zipper(laItem, lb[index]);
+        });
+    } else {
+        return lb.map((lbItem, index) => {
+            return zipper(lbItem, la[index]);
+        });
+    }
 }
 
 module.exports = {
@@ -62,5 +78,6 @@ module.exports = {
     isCapitalized,
     camelCaseFileName,
     getNameFromPath,
-    findIndex
-}
+    findIndex,
+    zipWith
+};
