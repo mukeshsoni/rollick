@@ -93,6 +93,7 @@ function installHostNpmModules() {
         toolConfig.jspm.install.npm &&
         toolConfig.jspm.install.npm.packages
     ) {
+        // packages is an array so that users can specify an order of installation
         const packages = toolConfig.jspm.install.npm.packages
         // TODO - object.keys stuff should be replaced with zipWith. Or try Object.entries (if it's supported in node)
         // Thought of running the jspm install commands concurrently at first. Then decided it might lead to some order problems in jspm.config.js

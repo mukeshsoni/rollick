@@ -99,7 +99,7 @@ function applyLoaders(toolConfig, filePath, fileContent) {
     }
 }
 
-function tryResolvingFilePath(filePath) {
+function tryResolvingFilePath(filePath, req) {
     if (fs.existsSync(filePath)) {
         return filePath
     }
@@ -140,7 +140,7 @@ function tryResolvingFilePath(filePath) {
 var request = http
     .createServer(function(req, response) {
         var filePath = req.url.slice(1).split('?')[0]
-        filePath = tryResolvingFilePath(adjustPaths(toolConfig, filePath))
+        filePath = tryResolvingFilePath(adjustPaths(toolConfig, filePath), req)
 
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {

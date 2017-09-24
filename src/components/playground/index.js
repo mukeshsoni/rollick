@@ -405,24 +405,25 @@ export default class Playground extends React.Component {
         const footerHeight = 20
         const editors = ['jsx', 'css', 'js']
 
-        editors.forEach(editor => {
-            const editorRef = this[editor + 'EditorRef']
-            const parentHeight = this.paneContainerRef.clientHeight
+        if (this.paneContainerRef && this.paneContainerRef.clientHeight) {
+            editors.forEach(editor => {
+                const editorRef = this[editor + 'EditorRef']
+                const parentHeight = this.paneContainerRef.clientHeight
 
-            const editorHeight = parentHeight / 3 - headerHeight - footerHeight
-            editorRef.codeMirrorRef &&
-                editorRef.codeMirrorRef
-                    .getCodeMirror()
-                    .setSize('100%', editorHeight)
-        })
+                const editorHeight =
+                    parentHeight / 3 - headerHeight - footerHeight
+                editorRef.codeMirrorRef &&
+                    editorRef.codeMirrorRef
+                        .getCodeMirror()
+                        .setSize('100%', editorHeight)
+            })
+        }
     }
 
     getIframeHead = () => {
         return (
             <div>
-                <style>
-                    {this.state.cssToInsert}
-                </style>
+                <style>{this.state.cssToInsert}</style>
                 {this.state.cssFilesToInject.map(cssFilePath => {
                     return (
                         <link
@@ -648,9 +649,7 @@ export default class Playground extends React.Component {
 
         return (
             <div className="page-container">
-                <style>
-                    {cssToInsert}
-                </style>
+                <style>{cssToInsert}</style>
                 <header
                     style={{
                         display: 'flex',
@@ -676,23 +675,25 @@ export default class Playground extends React.Component {
                             zIndex: 23
                         }}
                     >
-                        {showSearchModal
-                            ? <SearchBox
-                                  items={componentsMetaList}
-                                  onSelection={this.handleSearchSelection}
-                                  onRequestClose={this.hideSearchModal}
-                              />
-                            : <div style={{ width: '100%' }}>
-                                  <SearchInput
-                                      style={{ width: 300 }}
-                                      className={inputClassnames}
-                                      placeholder="Search Component (Command + i)"
-                                      onFocus={() =>
-                                          this.setState({
-                                              showSearchModal: true
-                                          })}
-                                  />
-                              </div>}
+                        {showSearchModal ? (
+                            <SearchBox
+                                items={componentsMetaList}
+                                onSelection={this.handleSearchSelection}
+                                onRequestClose={this.hideSearchModal}
+                            />
+                        ) : (
+                            <div style={{ width: '100%' }}>
+                                <SearchInput
+                                    style={{ width: 300 }}
+                                    className={inputClassnames}
+                                    placeholder="Search Component (Command + i)"
+                                    onFocus={() =>
+                                        this.setState({
+                                            showSearchModal: true
+                                        })}
+                                />
+                            </div>
+                        )}
                         <Button
                             onClick={this.props.fromStyleguideClick}
                             label="Styleguide"
@@ -760,9 +761,11 @@ export default class Playground extends React.Component {
                     >
                         <SplitPane
                             split={
-                                editorLayout === 'left'
-                                    ? 'horizontal'
-                                    : 'vertical'
+                                editorLayout === 'left' ? (
+                                    'horizontal'
+                                ) : (
+                                    'vertical'
+                                )
                             }
                             defaultSize="33%"
                             onChange={this.adjustEditorSizes}
@@ -780,9 +783,11 @@ export default class Playground extends React.Component {
                             />
                             <SplitPane
                                 split={
-                                    editorLayout === 'left'
-                                        ? 'horizontal'
-                                        : 'vertical'
+                                    editorLayout === 'left' ? (
+                                        'horizontal'
+                                    ) : (
+                                        'vertical'
+                                    )
                                 }
                                 defaultSize={'50%'}
                                 pane2Style={{ background: 'white' }}
