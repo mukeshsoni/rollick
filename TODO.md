@@ -39,6 +39,7 @@
 - [x] Error footer for each editor 
 - [x] Put format button on each editors header 
 - [x] Allow another layout where the editors are on the top
+- [ ] change `exec` calls to `spawn` calls. Spawn takes params where we can give the pwd.
 - [ ] Try out new way of resolving node_modules files of the project. The paths way of specifying an alias for each and every node module does not scale. Breaks for one reason or another in one module or another. For dnd-core, it became a nightmare and non solvable at all
   - [ ] try to use `resolve-file` package to try and resolve filenames given a require path - https://www.npmjs.com/package/resolve-file
   - [ ] `resolve-file` only resolve the path of the file. If that file has a require('./x'), that will be sent by systemjs as `http://localhost/.rollick/x`, which then cannot be resolved by `resolve-file`
