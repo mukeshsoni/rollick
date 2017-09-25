@@ -68,16 +68,20 @@ export default class Styleguide extends React.Component {
                         ...com,
                         fakeProps: populateDefaultValues(
                             com.props,
-                            faker(com.props, { optional: true })
+                            faker(com.props, { optional: false })
                         )
                     },
                     selectedComponentInstance: component,
+
                     errorLoadingComponent: null
                 })
             )
             .catch(e => {
                 console.error('error loading component', e)
-                this.setState({ loadingComponent: false, errorLoadingComponent: e.toString() })
+                this.setState({
+                    loadingComponent: false,
+                    errorLoadingComponent: e.toString()
+                })
             })
     }, 500)
 
@@ -172,9 +176,7 @@ export default class Styleguide extends React.Component {
                         onChange={this.handleInputChange}
                         placeholder="Search Component"
                     />
-                    <div>
-                        {this.getComponentList()}
-                    </div>
+                    <div>{this.getComponentList()}</div>
                 </div>
                 <div className="styleguide-body" style={bodyStyle}>
                     <div
@@ -190,31 +192,37 @@ export default class Styleguide extends React.Component {
                         >
                             Preview
                         </h3>
-                        {!this.state.loadingComponent && !this.state.errorLoadingComponent &&
-                        this.state.selectedComponent
-                            ? <a
-                                  style={{
-                                      cursor: 'pointer',
-                                      fontWeight: 'bold',
-                                      color: 'blue'
-                                  }}
-                                  onClick={this.handleAddComponent}
-                              >
-                                  Add this
-                              </a>
-                            : null}
+                        {!this.state.loadingComponent &&
+                        !this.state.errorLoadingComponent &&
+                        this.state.selectedComponent ? (
+                            <a
+                                style={{
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold',
+                                    color: 'blue'
+                                }}
+                                onClick={this.handleAddComponent}
+                            >
+                                Add this
+                            </a>
+                        ) : null}
                     </div>
-                    {this.state.loadingComponent
-                        ? <div className="loader">Loading...</div>
-                        : !this.state.errorLoadingComponent ? <div style={{ padding: '2em' }}>
-                              {this.getComponentPreview()}
-                        </div> : <div>{this.state.errorLoadingComponent}</div>}
+                    {this.state.loadingComponent ? (
+                        <div className="loader">Loading...</div>
+                    ) : !this.state.errorLoadingComponent ? (
+                        <div style={{ padding: '2em' }}>
+                            {this.getComponentPreview()}
+                        </div>
+                    ) : (
+                        <div>{this.state.errorLoadingComponent}</div>
+                    )}
                 </div>
-                {this.state.selectedComponent &&
+                {this.state.selectedComponent && (
                     <AttributePane
                         component={this.state.selectedComponent}
                         onChange={this.handleAttributeValueChange}
-                    />}
+                    />
+                )}
             </div>
         )
     }

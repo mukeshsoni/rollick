@@ -57,7 +57,7 @@ export function isArrayProp(prop) {
         (prop &&
             prop.type &&
             (prop.type.name === 'array' || prop.type.name === 'arrayOf')) ||
-        (prop && prop.flowType && prop.flowType.name === 'array')
+        (prop && prop.flowType && prop.flowType.name === 'Array')
     )
 }
 
@@ -116,10 +116,10 @@ function getPropValueForFromDefaultValue(prop, val) {
 }
 
 export function populateDefaultValues(props, fakeProps) {
-    if(!props || typeof props !== 'object') {
+    if (!props || typeof props !== 'object') {
         return fakeProps
     }
-    
+
     return {
         ...Object.keys(props).reduce((acc, propName) => {
             if (props[propName].defaultValue) {

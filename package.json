@@ -15,6 +15,11 @@
         "docgen": "node meta_data_generator.js",
         "start": "serve ."
     },
+    "prettier": {
+        "tabWidth": 4,
+        "semi": false,
+        "singleQuote": true
+    },
     "jspm": {
         "name": "rollick",
         "main": "rollick.js",
