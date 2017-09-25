@@ -24,16 +24,12 @@
         "name": "rollick",
         "main": "rollick.js",
         "dependencies": {
-            "@emmetio/codemirror-plugin":
-                "npm:@emmetio/codemirror-plugin@^0.3.5",
+            "@emmetio/codemirror-plugin": "npm:@emmetio/codemirror-plugin@^0.3.5",
             "acorn-jsx": "npm:acorn-jsx@^4.0.1",
             "babel-core": "npm:babel-core@^6.26.0",
-            "babel-plugin-transform-flow-strip-types":
-                "npm:babel-plugin-transform-flow-strip-types@^6.22.0",
-            "babel-plugin-transform-react-jsx":
-                "npm:babel-plugin-transform-react-jsx@^6.24.1",
-            "babel-plugin-transform-react-remove-prop-types":
-                "npm:babel-plugin-transform-react-remove-prop-types@^0.4.8",
+            "babel-plugin-transform-flow-strip-types": "npm:babel-plugin-transform-flow-strip-types@^6.22.0",
+            "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.24.1",
+            "babel-plugin-transform-react-remove-prop-types": "npm:babel-plugin-transform-react-remove-prop-types@^0.4.8",
             "classnames": "npm:classnames@^2.2.5",
             "cssbeautify": "npm:cssbeautify@^0.3.1",
             "debounce": "npm:debounce@^1.0.2",
@@ -61,7 +57,10 @@
             "type": "git",
             "url": "https://github.com/mukeshsoni/rollick"
         },
-        "keywords": ["react", "playground"],
+        "keywords": [
+            "react",
+            "playground"
+        ],
         "author": "Mukesh Soni",
         "devDependencies": {
             "core-js": "npm:core-js@^2.5.0",
@@ -157,7 +156,9 @@
                 "dependencies": {}
             },
             "npm:inherits@2.0.3": {
-                "ignore": ["test.js"]
+                "ignore": [
+                    "test.js"
+                ]
             },
             "npm:lodash@4.17.4": {
                 "map": {
@@ -221,8 +222,7 @@
         "react": "^15.6.1",
         "react-docgen": "^2.17.0",
         "react-dom": "^15.6.1",
-        "react-fake-props":
-            "git+https://github.com/mukeshsoni/react-fake-props.git",
+        "react-fake-props": "git+https://github.com/mukeshsoni/react-fake-props.git",
         "react-modal": "^2.2.4",
         "react-textarea-autosize": "^5.1.0",
         "resolve-file": "0.3.0",

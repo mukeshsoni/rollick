@@ -39,7 +39,6 @@
 - [x] Error footer for each editor 
 - [x] Put format button on each editors header 
 - [x] Allow another layout where the editors are on the top
-- [ ] change `exec` calls to `spawn` calls. Spawn takes params where we can give the pwd.
 - [ ] Try out new way of resolving node_modules files of the project. The paths way of specifying an alias for each and every node module does not scale. Breaks for one reason or another in one module or another. For dnd-core, it became a nightmare and non solvable at all
   - [ ] try to use `resolve-file` package to try and resolve filenames given a require path - https://www.npmjs.com/package/resolve-file
   - [ ] `resolve-file` only resolve the path of the file. If that file has a require('./x'), that will be sent by systemjs as `http://localhost/.rollick/x`, which then cannot be resolved by `resolve-file`
@@ -48,7 +47,6 @@
     - Or precreate a systemjs bundle for all the shared components. That would take care of all the node_module dependencies. https://github.com/systemjs/builder
   - [ ] What if we tried merging host project package.json with rollick packge.json and somehow trying installing those dependencies with `jspm install npm:<npm_module_name>`? Only problem i could see is that sometimes `jspm install npm:<module_name>` fails for unknown reasons
 - [ ] If user adds components from search/styleguide when cursor is in wrong position and leads to invalid jsx, automatically place componentat the end of the code 
-- [ ] using exec in install does not console log the errors which commands might be throwing. Nor are we catching them anyhow.
 - [ ] Save in local. Allow create new pen. Show list of saved pens and allow loading any of the saved ones. 
 - [ ] Add "save", "create new" and "open" feature. Both will work using local storage for now. Save will also add a query Param to the URL 
 - [ ] In styleguide, when a component can't be loaded, user gets no feedback. The preview section is empty. Instead just show the last error itself. Also show helpful message in what might be the problem and how it can be probably fixed
