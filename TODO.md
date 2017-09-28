@@ -39,6 +39,7 @@
 - [x] Error footer for each editor 
 - [x] Put format button on each editors header 
 - [x] Allow another layout where the editors are on the top
+- [ ] The js panel can be reserved for creating a new react component of your own and use it in the jex-editor. The problem then would be - we would lose the ability to link components inside jsx editor. People would start writing the whole thing they wanted to do in jsx editor, in the js editor. But what if jsx-editor and js-editor are both there, catering to 2 types of audiences? One is javascript and react savvy (js-editor then works like a normal editor) and another is designers, who use the jsx-editor with less js power but more affordance in terms of UX, like attributes pane to change jsx element properties.
 - [ ] Try out new way of resolving node_modules files of the project. The paths way of specifying an alias for each and every node module does not scale. Breaks for one reason or another in one module or another. For dnd-core, it became a nightmare and non solvable at all
   - [ ] try to use `resolve-file` package to try and resolve filenames given a require path - https://www.npmjs.com/package/resolve-file
   - [ ] `resolve-file` only resolve the path of the file. If that file has a require('./x'), that will be sent by systemjs as `http://localhost/.rollick/x`, which then cannot be resolved by `resolve-file`
