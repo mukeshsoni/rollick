@@ -2,16 +2,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8a1e527">1. ### P1 <code>[49/97]</code></a></li>
-<li><a href="#bugs">2. ### Bugs <code>[5/7]</code></a></li>
-<li><a href="#ambititious">3. Ambititious <code>[2/2]</code></a></li>
+<li><a href="#org10149ae">0.1. ### P1 <code>[44/91]</code></a></li>
+<li><a href="#bugs">0.2. ### Bugs <code>[5/7]</code></a></li>
+</ul>
+</li>
+<li><a href="#server">1. Rollick server - own server to serve files <code>[1/2]</code></a></li>
+<li><a href="#projectplace">2. Integrate with PP components <code>[3/4]</code></a>
+<ul>
+<li><a href="#ambititious">2.1. Ambititious <code>[2/2]</code></a></li>
 </ul>
 </div>
 </div>
 
-<a id="org8a1e527"></a>
+<a id="org10149ae"></a>
 
-# ### P1 <code>[49/97]</code>
+## ### P1 <code>[44/91]</code>
 
 -   [ ] Start using these concepts/technologies going forward
     -   [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier
@@ -93,6 +98,73 @@ Users will be also then able to modify the prop values from the jsx usage sectio
     create-react-app on the command line. Should have similar 'rollick
     install' or something
 -   [ ] Save and share your design. Should create a unique url which can be loaded anywhere.
+-   [ ] Hot reloading. At least for development.
+-   [ ] Component state is not maintained on code change triggering a
+    repaint
+-   [ ] Allow hiding of editor panels
+-   [ ] Have to think about bundling the app into a single file for
+    production use.
+    
+    -   Having a bundle for prod use will also allow easy use of
+    
+    hot-reloading in dev.
+    
+    -   [ ] Tried it and jspm throws a 'run out of heap memory' or something
+    
+    error. Followed a github issue on jspm repo and tried increasing
+    nodejs heap size using -
+      `node --max_old_space_size=4098 ./node_modules/.bin/jspm bundle main.js app-bundle.js --minify`,
+      but that fails after a long time with the error
+      `SyntaxError: Unexpected token: name (r)`. Also tried using
+      `--skip-source-maps` but that didn't work either. The bundling
+      however does with (albiet super slow) without the `--minify` option.
+    
+    -   Further digging showed that it's a uglifyjs problem. Tried to
+        create the bundle first and then use uglifyjs on the bundle. Looks
+        like the bundle has es6 code (e.g. let, const) and uglifyjs does
+        not understand es6 completely.
+    -   One idea can be to use another minifier. E.g. babel-minify
+
+-   [ ] Can just create a separate `index-dev.html` file which will have
+    the contents of existing `index.html` file and the `index.html` file
+    can point to the bundled file.
+-   [ ] Can't import the components meta file using import statement if
+    we create a bundle. That bundle will never access the project
+    specific meta file. Three solutions. 1. Load the meta file
+    dynamically in a react lifestyle method. 2. Generate meta file in the
+    front-end for each component. 3. For each component, load the meta
+    file. Which means, generating one meta file for each component and
+    saving it in the same folder as the js file.
+
+-   [ ] Once the bundled file is there, we can remove these steps from
+    the install script -
+    1.  Copy src folder
+    2.  `npm install`
+    3.  `jspm install`
+    4.  Loss. It's all profit now.
+
+-   [ ] After prettier formatting, the cursor offset is not correct. It
+    doesn't work at all in some cases, which is ok. But when it's
+    working, it calculates wrong offset.
+-   [ ] Improve the editor experience. Cmd+/ should comment the current
+    line. More shortcuts should work.
+-   [ ] Add option to specify docgen options in rollick config file.
+    Example exclude list for folders/files.
+-   [ ] Add option to specify fakeData options in rollick config. Example
+    -   `optional: boolean` to generate data for optional types or not.
+-   [ ] Looks like react-docgen does not understand flow exact types ({|
+    <definitions> |}). Can use the beta version if feeling
+    adventorous - <https://github.com/reactjs/react-docgen/issues/173>
+-   [ ] Have multiple commands to run at top level - `rollick install`,
+    `rollick start`, `rollick generate-meta`, `rollick watch`. Use `args`
+    npm module to generate help documentation for each.
+-   [ ] Rename install.js file to index.js and then use `args` module to
+    delegate to `install` or `start` functions internally.
+-   [ ] `rollick start` will start the server to serve the files
+-   [ ] `rollick generate-meta` to regenerate meta files wheneven needed
+    (after change in component definition)
+-   [ ] `rollick watch` to watch all component files and automatically
+    regenrate meta file on change of any component file
 -   [X] editor theme - dark (night or ‘solarized dark'
 -   [X] height of the editors
 -   [X] add splitpane for left and right pane
@@ -198,107 +270,6 @@ Users will be also then able to modify the prop values from the jsx usage sectio
     feedback. The preview section is empty. Instead just show the last
     error itself. Also show helpful message in what might be the problem
     and how it can be probably fixed
--   [ ] Hot reloading. At least for development.
--   [ ] Component state is not maintained on code change triggering a
-    repaint
--   [ ] Allow hiding of editor panels
--   [ ] Have to think about bundling the app into a single file for
-    production use.
-    
-    -   Having a bundle for prod use will also allow easy use of
-    
-    hot-reloading in dev.
-    
-    -   [ ] Tried it and jspm throws a 'run out of heap memory' or something
-    
-    error. Followed a github issue on jspm repo and tried increasing
-    nodejs heap size using -
-      `node --max_old_space_size=4098 ./node_modules/.bin/jspm bundle main.js app-bundle.js --minify`,
-      but that fails after a long time with the error
-      `SyntaxError: Unexpected token: name (r)`. Also tried using
-      `--skip-source-maps` but that didn't work either. The bundling
-      however does with (albiet super slow) without the `--minify` option.
-    
-    -   Further digging showed that it's a uglifyjs problem. Tried to
-        create the bundle first and then use uglifyjs on the bundle. Looks
-        like the bundle has es6 code (e.g. let, const) and uglifyjs does
-        not understand es6 completely.
-    -   One idea can be to use another minifier. E.g. babel-minify
-
--   [ ] Can just create a separate `index-dev.html` file which will have
-    the contents of existing `index.html` file and the `index.html` file
-    can point to the bundled file.
--   [ ] Can't import the components meta file using import statement if
-    we create a bundle. That bundle will never access the project
-    specific meta file. Three solutions. 1. Load the meta file
-    dynamically in a react lifestyle method. 2. Generate meta file in the
-    front-end for each component. 3. For each component, load the meta
-    file. Which means, generating one meta file for each component and
-    saving it in the same folder as the js file.
-
--   [ ] Once the bundled file is there, we can remove these steps from
-    the install script -
-    1.  Copy src folder
-    2.  `npm install`
-    3.  `jspm install`
-    4.  Loss. It's all profit now.
-
--   [ ] After prettier formatting, the cursor offset is not correct. It
-    doesn't work at all in some cases, which is ok. But when it's
-    working, it calculates wrong offset.
--   [ ] Improve the editor experience. Cmd+/ should comment the current
-    line. More shortcuts should work.
--   [ ] Add option to specify docgen options in rollick config file.
-    Example exclude list for folders/files.
--   [ ] Add option to specify fakeData options in rollick config. Example
-    -   `optional: boolean` to generate data for optional types or not.
--   [ ] Looks like react-docgen does not understand flow exact types ({|
-    <definitions> |}). Can use the beta version if feeling
-    adventorous - <https://github.com/reactjs/react-docgen/issues/173>
--   [ ] Have multiple commands to run at top level - `rollick install`,
-    `rollick start`, `rollick generate-meta`, `rollick watch`. Use `args`
-    npm module to generate help documentation for each.
--   [ ] Rename install.js file to index.js and then use `args` module to
-    delegate to `install` or `start` functions internally.
--   [ ] `rollick start` will start the server to serve the files
--   [ ] `rollick generate-meta` to regenerate meta files wheneven needed
-    (after change in component definition)
--   [ ] `rollick watch` to watch all component files and automatically
-    regenrate meta file on change of any component file
--   [ ] Integrate with PP components
--   [X] The font icons loaded when the class is activated goes directly
-    to server. Need to rewrite path for those (from /harmony/fonts to
-    /frontend/web/wwwroot/harmony/fonts)
--   [X] less file paths from pp/core/less folder. Imported as
-    '~pp-common-<someting>' in many less files
-    -   fixed it by writing custom server to serve js files. Passing all
-        js files through babel and converting to commonjs file before
-        being served to the browser. Not at all efficient but does the
-        trick. package.json and use codemod to do the necessary changes
-    -   fixed it by writing custom server to serve js files. Passing all
-        js files through babel and converting to commonjs file before
-        being served to the browser. Not at all efficient but does the
-        trick.
-
--   [X] CSS still half breaks in a weird way. Probably connected to some
-    other global css file.
-    -   Looks like it breaks in weird ways all over the place, even in our
-        system
-
--   [ ] Need to manually add proptypes for components which are missing
-    proptypes. Also need to modify proptypes for components which do not
-    specify the isRequired flag correctly.
--   [X] own server to serve files
--   [X] Introduce concept of loaders through rollick.config file. E.g.
-    using tildeLoader for less files in projectplace project
--   [ ] Rollick server
-    -   [ ] Use babel transpilation by default. Would take care of edge cases
-        with named imports for ES6 modules which may/maynot work with
-        systemjs currently
-        -   [ ] rollick config should give an option to set custom babel
-            presets and plugins
-        -   [ ] add default presets and plugins used in babel in the server to
-            npm dependencies list
 -   [X] Script which allows you to use rollick with your own project.
     Steps for the script should be -
     -   [X] Copy needed stuff to .rollick folder inside that project
@@ -324,7 +295,7 @@ babel parser, find those components in the docgen meta file and try to load them
 
 <a id="bugs"></a>
 
-# ### Bugs <code>[5/7]</code>
+## ### Bugs <code>[5/7]</code>
 
 -   [X] Fix name generator from component path with index.js as the final
     file
@@ -341,9 +312,50 @@ babel parser, find those components in the docgen meta file and try to load them
 -   [ ] clicking outside of search box should close it
 
 
+<a id="server"></a>
+
+# Rollick server - own server to serve files <code>[1/2]</code>
+
+-   [X] Introduce concept of loaders through rollick.config file. E.g.
+    using tildeLoader for less files in projectplace project
+-   [ ] Use babel transpilation by default. Would take care of edge cases
+    with named imports for ES6 modules which may/maynot work with
+    systemjs currently
+    -   [ ] rollick config should give an option to set custom babel
+        presets and plugins
+    -   [ ] add default presets and plugins used in babel in the server to
+        npm dependencies list
+
+
+<a id="projectplace"></a>
+
+# Integrate with PP components <code>[3/4]</code>
+
+-   [X] The font icons loaded when the class is activated goes directly
+    to server. Need to rewrite path for those (from /harmony/fonts to
+    /frontend/web/wwwroot/harmony/fonts)
+-   [X] less file paths from pp/core/less folder. Imported as
+    '~pp-common-<someting>' in many less files
+    -   fixed it by writing custom server to serve js files. Passing all
+        js files through babel and converting to commonjs file before
+        being served to the browser. Not at all efficient but does the
+        trick. package.json and use codemod to do the necessary changes
+    -   fixed it by writing custom server to serve js files. Passing all
+        js files through babel and converting to commonjs file before
+        being served to the browser. Not at all efficient but does the
+        trick.
+-   [X] CSS still half breaks in a weird way. Probably connected to some
+    other global css file.
+    -   Looks like it breaks in weird ways all over the place, even in our
+        system
+-   [ ] Need to manually add proptypes for components which are missing
+    proptypes. Also need to modify proptypes for components which do not
+    specify the isRequired flag correctly.
+
+
 <a id="ambititious"></a>
 
-# Ambititious <code>[2/2]</code>
+## Ambititious <code>[2/2]</code>
 
 -   [X] since we already know how to show list of all components and load
     them when required with fake data, we can very easily generate a
