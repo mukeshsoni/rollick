@@ -2,21 +2,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org10149ae">0.1. ### P1 <code>[44/91]</code></a></li>
-<li><a href="#bugs">0.2. ### Bugs <code>[5/7]</code></a></li>
+<li><a href="#org5c78416">1. P1 <code>[44/89]</code></a></li>
+<li><a href="#bugs">2. Bugs <code>[5/7]</code></a></li>
+<li><a href="#server">3. Rollick server - own server to serve files <code>[1/2]</code></a></li>
+<li><a href="#projectplace">4. Integrate with PP components <code>[3/4]</code></a>
+<ul>
+<li><a href="#ambititious">4.1. Ambititious <code>[2/2]</code></a></li>
 </ul>
 </li>
-<li><a href="#server">1. Rollick server - own server to serve files <code>[1/2]</code></a></li>
-<li><a href="#projectplace">2. Integrate with PP components <code>[3/4]</code></a>
-<ul>
-<li><a href="#ambititious">2.1. Ambititious <code>[2/2]</code></a></li>
 </ul>
 </div>
 </div>
 
-<a id="org10149ae"></a>
+<a id="org5c78416"></a>
 
-## ### P1 <code>[44/91]</code>
+# P1 <code>[44/89]</code>
 
 -   [ ] Start using these concepts/technologies going forward
     -   [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier
@@ -295,7 +295,7 @@ babel parser, find those components in the docgen meta file and try to load them
 
 <a id="bugs"></a>
 
-## ### Bugs <code>[5/7]</code>
+# Bugs <code>[5/7]</code>
 
 -   [X] Fix name generator from component path with index.js as the final
     file
