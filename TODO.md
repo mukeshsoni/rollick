@@ -2,7 +2,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5c78416">1. P1 <code>[44/89]</code></a></li>
+<li><a href="#org06d0729">1. P1 <code>[44/93]</code></a></li>
 <li><a href="#bugs">2. Bugs <code>[5/7]</code></a></li>
 <li><a href="#server">3. Rollick server - own server to serve files <code>[1/2]</code></a></li>
 <li><a href="#projectplace">4. Integrate with PP components <code>[3/4]</code></a>
@@ -14,9 +14,16 @@
 </div>
 </div>
 
-<a id="org5c78416"></a>
+<a id="org06d0729"></a>
 
-# P1 <code>[44/89]</code>
+# P1 <code>[44/93]</code>
+
+-   [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
+
+Sharing through url? Store the code in database against the unique url.
+Saving configuration for the tool? Store in the database.
+Storing particular values for props and state? Store in the database.
+Enhancing documentation of components through a rich text editor or however way? Store it in the database.
 
 -   [ ] Start using these concepts/technologies going forward
     -   [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier
@@ -36,6 +43,15 @@
 
 One way can be to maintain a .rollick or .meta file for each component.
 
+-   [ ] Look at the todo item for having a database for rollick
+
+-   [ ] Option to mark a component as ‘filtered’ in the style guide.
+
+The search list will then filter those components.
+There would be an option to ‘Show all components’ and then toggle the filter option back.
+Why is it needed? The automatic sweep of the components folder also finds many components which are not necessarily part of the UI kit.
+We don’t want them to clutter the list. They also cause confusion because they might have names similar to some proper component.
+
 -   [ ] Show a `How to use` section in the styleguide preview section. Like victory.js does.
 
 Users will be also then able to modify the prop values from the jsx usage section.
@@ -53,6 +69,14 @@ Users will be also then able to modify the prop values from the jsx usage sectio
     available in the iframe. One way can be to intercept network
     requests, filter css ones and add those link tags in iframe head. Can
     use service worker for that.
+    -   [ ] See how we can inject the css required in a component into the iframe
+        -   [ ] The iframe is a problem because while loading a component the css required by that file is inlined.
+
+But that need not be. Systemjs css plugin had an option whereby the css can be loaded as a separate file.
+<https://github.com/systemjs/plugin-css/blob/master/README.md>
+
+-   [ ] Checkout react-storybook code. They also render the stories inside an iframe
+
 -   [ ] Preview panel styling
 -   [ ] Don't need to copy meta data generator. In fact, should run it
     from project root and just copy the output files to .kodai folder

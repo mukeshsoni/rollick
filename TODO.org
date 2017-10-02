@@ -1,4 +1,4 @@
-* P1 [44/89]
+* P1 [44/93]
 - [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
 Sharing through url? Store the code in database against the unique url.
 Saving configuration for the tool? Store in the database.
@@ -42,6 +42,9 @@ Users will be also then able to modify the prop values from the jsx usage sectio
   requests, filter css ones and add those link tags in iframe head. Can
   use service worker for that.
   - [ ] See how we can inject the css required in a component into the iframe
+    - [ ] The iframe is a problem because while loading a component the css required by that file is inlined.
+But that need not be. Systemjs css plugin had an option whereby the css can be loaded as a separate file.
+https://github.com/systemjs/plugin-css/blob/master/README.md
   - [ ] Checkout react-storybook code. They also render the stories inside an iframe
 - [ ] Preview panel styling
 - [ ] Don't need to copy meta data generator. In fact, should run it
