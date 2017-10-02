@@ -1,4 +1,9 @@
 * P1 [44/89]
+- [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
+Sharing through url? Store the code in database against the unique url.
+Saving configuration for the tool? Store in the database.
+Storing particular values for props and state? Store in the database.
+Enhancing documentation of components through a rich text editor or however way? Store it in the database.
 - [ ] Start using these concepts/technologies going forward
   - [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier
     while dealing with exception (which is a lot in this tool)
@@ -15,6 +20,12 @@
 - [ ] Ability to save prop values
   - [ ] Think about the best place to save those values.
 One way can be to maintain a .rollick or .meta file for each component.
+  - [ ] Look at the todo item for having a database for rollick
+- [ ] Option to mark a component as ‘filtered’ in the style guide.
+The search list will then filter those components.
+There would be an option to ‘Show all components’ and then toggle the filter option back.
+Why is it needed? The automatic sweep of the components folder also finds many components which are not necessarily part of the UI kit.
+We don’t want them to clutter the list. They also cause confusion because they might have names similar to some proper component.
 - [ ] Show a =How to use= section in the styleguide preview section. Like victory.js does.
 Users will be also then able to modify the prop values from the jsx usage section.
 - [ ] Save in local. Allow create new pen. Show list of saved pens and
@@ -30,6 +41,8 @@ Users will be also then able to modify the prop values from the jsx usage sectio
   available in the iframe. One way can be to intercept network
   requests, filter css ones and add those link tags in iframe head. Can
   use service worker for that.
+  - [ ] See how we can inject the css required in a component into the iframe
+  - [ ] Checkout react-storybook code. They also render the stories inside an iframe
 - [ ] Preview panel styling
 - [ ] Don't need to copy meta data generator. In fact, should run it
   from project root and just copy the output files to .kodai folder
