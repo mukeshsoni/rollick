@@ -7,7 +7,7 @@ import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
-/* import Frame from 'react-frame-component'*/
+import Frame from 'react-frame-component'
 import cssbeautify from 'cssbeautify'
 import './app.css'
 import './split_pane.css'
@@ -182,38 +182,38 @@ export default class Playground extends React.Component {
     }
 
     registerServiceWorker = () => {
-        /* if ('serviceWorker' in navigator) {
-         *     navigator.serviceWorker
-         *         .register('/sw_rollick.js')
-         *         .then(
-         *             registration => {
-         *                 // Registration was successful
-         *                 console.log(
-         *                     'ServiceWorker registration successful with scope: ',
-         *                     registration.scope
-         *                 )
-         *                 navigator.serviceWorker.addEventListener(
-         *                     'message',
-         *                     event => {
-         *                         this.setState({
-         *                             cssFilesToInject: dedupe(
-         *                                 this.state.cssFilesToInject.concat(
-         *                                     event.data
-         *                                 )
-         *                             )
-         *                         })
-         *                     }
-         *                 )
-         *             },
-         *             function(err) {
-         *                 // registration failed :(
-         *                 console.error(
-         *                     'ServiceWorker registration failed: ',
-         *                     err
-         *                 )
-         *             }
-         *         )
-         * }*/
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker
+                .register('/sw_rollick.js')
+                .then(
+                    registration => {
+                        // Registration was successful
+                        console.log(
+                            'ServiceWorker registration successful with scope: ',
+                            registration.scope
+                        )
+                        navigator.serviceWorker.addEventListener(
+                            'message',
+                            event => {
+                                this.setState({
+                                    cssFilesToInject: dedupe(
+                                        this.state.cssFilesToInject.concat(
+                                            event.data
+                                        )
+                                    )
+                                })
+                            }
+                        )
+                    },
+                    function(err) {
+                        // registration failed :(
+                        console.error(
+                            'ServiceWorker registration failed: ',
+                            err
+                        )
+                    }
+                )
+        }
     }
 
     handleSearchSelection = selectedItem => {
@@ -423,7 +423,9 @@ export default class Playground extends React.Component {
     getIframeHead = () => {
         return (
             <div>
-                <style>{this.state.cssToInsert}</style>
+                <style>
+                    {this.state.cssToInsert}
+                </style>
                 {this.state.cssFilesToInject.map(cssFilePath => {
                     return (
                         <link
@@ -562,9 +564,7 @@ export default class Playground extends React.Component {
             showSearchModal: false,
             searchText: '',
             componentsMetaList: [],
-            cssFilesToInject: [
-                'http://localhost:5000/src/components/search_box/search_item.css'
-            ],
+            cssFilesToInject: [],
             editorLayout: 'left',
             loading: true
         }
@@ -578,6 +578,13 @@ export default class Playground extends React.Component {
         this.registerServiceWorker()
 
         this.loadCustomComponents()
+
+        // get global css which user wants to inject to all preview panes. In our case, the iframes
+        SystemJS.import('/rollick.config.js').then(config => {
+            if(config.globals && config.globals.css && config.globals.css.urls) {
+                this.setState({ cssFilesToInject: this.state.cssFilesToInject.concat(config.globals.css.urls)})
+            }
+        })
         // if we set initial cssCode in state from localstorage
         // we can't get the compiled version (wrap with 'right-container' tag and compile with sass compiler)
         // because sass compiler is async
@@ -649,7 +656,9 @@ export default class Playground extends React.Component {
 
         return (
             <div className="page-container">
-                <style>{cssToInsert}</style>
+                <style>
+                    {cssToInsert}
+                </style>
                 <header
                     style={{
                         display: 'flex',
@@ -675,25 +684,23 @@ export default class Playground extends React.Component {
                             zIndex: 23
                         }}
                     >
-                        {showSearchModal ? (
-                            <SearchBox
-                                items={componentsMetaList}
-                                onSelection={this.handleSearchSelection}
-                                onRequestClose={this.hideSearchModal}
-                            />
-                        ) : (
-                            <div style={{ width: '100%' }}>
-                                <SearchInput
-                                    style={{ width: 300 }}
-                                    className={inputClassnames}
-                                    placeholder="Search Component (Command + i)"
-                                    onFocus={() =>
-                                        this.setState({
-                                            showSearchModal: true
-                                        })}
-                                />
-                            </div>
-                        )}
+                        {showSearchModal
+                            ? <SearchBox
+                                  items={componentsMetaList}
+                                  onSelection={this.handleSearchSelection}
+                                  onRequestClose={this.hideSearchModal}
+                              />
+                            : <div style={{ width: '100%' }}>
+                                  <SearchInput
+                                      style={{ width: 300 }}
+                                      className={inputClassnames}
+                                      placeholder="Search Component (Command + i)"
+                                      onFocus={() =>
+                                          this.setState({
+                                              showSearchModal: true
+                                          })}
+                                  />
+                              </div>}
                         <Button
                             onClick={this.props.fromStyleguideClick}
                             label="Styleguide"
@@ -761,11 +768,9 @@ export default class Playground extends React.Component {
                     >
                         <SplitPane
                             split={
-                                editorLayout === 'left' ? (
-                                    'horizontal'
-                                ) : (
-                                    'vertical'
-                                )
+                                editorLayout === 'left'
+                                    ? 'horizontal'
+                                    : 'vertical'
                             }
                             defaultSize="33%"
                             onChange={this.adjustEditorSizes}
@@ -783,11 +788,9 @@ export default class Playground extends React.Component {
                             />
                             <SplitPane
                                 split={
-                                    editorLayout === 'left' ? (
-                                        'horizontal'
-                                    ) : (
-                                        'vertical'
-                                    )
+                                    editorLayout === 'left'
+                                        ? 'horizontal'
+                                        : 'vertical'
                                 }
                                 defaultSize={'50%'}
                                 pane2Style={{ background: 'white' }}
@@ -816,28 +819,25 @@ export default class Playground extends React.Component {
                             </SplitPane>
                         </SplitPane>
                         <div className="editor-right-pane" id={rightPaneId}>
-                            <Preview
-                                loading={loading}
-                                jsxToInsert={jsxToInsert}
-                                jsToInsert={jsToInsert}
-                            />
+                            <Frame
+                                style={{
+                                    width: '100%',
+                                    height: 600
+                                }}
+                                frameBorder={'0'}
+                                head={this.getIframeHead()}
+                            >
+                                <Preview
+                                    loading={loading}
+                                    jsxToInsert={jsxToInsert}
+                                    jsToInsert={jsToInsert}
+                                />
+                            </Frame>
                         </div>
                     </SplitPane>
                 </div>
             </div>
         )
-        {
-            /* <Frame
-               style={{
-               width: '100%',
-               height: 600
-               }}
-               frameBorder={'0'}
-               head={this.getIframeHead()}
-               >
-               {eval(jsxToInsert)}
-               </Frame> */
-        }
     }
 }
 

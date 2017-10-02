@@ -31,7 +31,11 @@ SystemJS.config({
                     'loader': 'css'
                 },
                 '*.less': {
-                    'loader': 'less'
+                    'loader': 'less',
+                    loaderOptions: {
+                        separateCss: true,
+                        buildCss: false
+                    }
                 },
                 '*.sass': {
                     'loader': 'sass'

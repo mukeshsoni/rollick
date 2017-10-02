@@ -54,5 +54,10 @@ module.exports = {
                 }
             }
         ]
+    },
+    globals: {
+        css: {
+            urls: '/not/going/to/work.css'
+        }
     }
 }
