@@ -16,11 +16,11 @@ function getFakeProps(component) {
     }
 }
 
-export default function loadComponentFromPath(selectedItem) {
-    return SystemJS.import(selectedItem.path)
+export default function loadComponentFromPath(item) {
+    return SystemJS.import(item.path)
         .then(com => {
             // TODO - this is not acceptable. It's a ticking time bomb, attaching stuff to window
-            const fakeProps = getFakeProps(selectedItem)
+            const fakeProps = getFakeProps(item)
 
             return {
                 component: com,
