@@ -502,7 +502,7 @@ export default class Playground extends React.Component {
     }
 
     componentWillMount() {
-        this.registerServiceWorker()
+        // this.registerServiceWorker()
 
         this.loadCustomComponents()
 
