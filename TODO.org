@@ -1,4 +1,4 @@
-* P1 [44/93]
+* P1 [88/176]
 - [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
 Sharing through url? Store the code in database against the unique url.
 Saving configuration for the tool? Store in the database.
@@ -42,12 +42,18 @@ Users will be also then able to modify the prop values from the jsx usage sectio
   requests, filter css ones and add those link tags in iframe head. Can
   use service worker for that.
   - [ ] See how we can inject the css required in a component into the iframe
+    - [ ] Rithwik has another solution. What if the fetching of components is done inside the preview component. 
+          The preview component is loaded inside the iframe. So that css will automatically be loaded inside the iframe.
     - [ ] The iframe is a problem because while loading a component the css required by that file is inlined.
 But that need not be. Systemjs css plugin had an option whereby the css can be loaded as a separate file.
 https://github.com/systemjs/plugin-css/blob/master/README.md
-  - [ ] Checkout react-storybook code. They also render the stories inside an iframe
-- [ ] Preview panel styling
-- [ ] Don't need to copy meta data generator. In fact, should run it
+    - [ ] Use serviceworker to intercept less/css calls and supply the raw contents of the file
+      - [ ] css
+      - [ ] less file
+        - [ ] How to handle further resolution of less dependencies? Should less be transpiled in the frontend?
+    - [ ] Checkout react-storybook code. They also render the stories inside an iframe
+    - [ ] Preview panel styling
+    - [ ] Don't need to copy meta data generator. In fact, should run it
   from project root and just copy the output files to .kodai folder
   - [ ] More difficult to do than it looks like. Because of the way that
     script is setup

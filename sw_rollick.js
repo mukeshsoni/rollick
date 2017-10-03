@@ -32,7 +32,7 @@ function send_message_to_client(client, msg) {
 }
 
 self.addEventListener('fetch', function(event) {
-    if (last(event.request.url.split('.')) === 'css') {
+    if (last(event.request.url.split('.')) === 'css' || last(event.request.url.split('.')) === 'less') {
         // just intercepting css links and injecting them to iframe is not enough.
         // it's important that we stop the main page to load css for these components, since that css might interfere with the main page css
         // one way is to somehow determine that css loaded later on is all about components loaded dynamically. service worker can then send empty content. I think this service worker cannot intercept the network requests from the iframe. Hence the iframe will load the correct css

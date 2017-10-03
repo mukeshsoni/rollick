@@ -260,10 +260,18 @@ function updatePackagesProperty(toolConfig, jspmConfig) {
                         }
                     },
                     "*.css": {
-                        loader: "css"
+                        loader: "css",
+                        'loaderOptions': {
+                            'separateCss': true,
+                            'buildCss': false
+                        }
                     },
                     "*.less": {
-                        loader: "less"
+                        loader: "less",
+                        'loaderOptions': {
+                            'separateCss': true,
+                            'buildCss': false
+                        }
                     },
                     "*.sass": {
                         loader: "sass"
@@ -313,8 +321,8 @@ pifyLogStart("Creating .rollick  folder")
     .then(gototoolFolder)
     .then(pifyLog.bind(null, "modifying jspm config file"))
     .then(updateJspmConfigFile)
-    .then(pifyLog.bind(null, "adding global links to index.html file"))
-    .then(addGlobals.bind(null, toolConfig))
+    // .then(pifyLog.bind(null, "adding global links to index.html file"))
+    // .then(addGlobals.bind(null, toolConfig))
     // .then(pifyLog.bind(null, 'adding onLoad functions if any provided to index.html file'))
     // .then(addOnLoadFunctions.bind(null, toolConfig))
     .then(pifyLog.bind(null, "installing npm modules"))

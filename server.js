@@ -7,6 +7,7 @@ var path = require('path')
 var parseArgs = require('minimist')
 var exec = require('child_process').exec
 var resolveFile = require('resolve-file')
+var mime = require('mime-types')
 
 var args = parseArgs(process.argv.slice(1))
 const port = args.port || 4000
@@ -144,7 +145,7 @@ var request = http
 
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
-            response.writeHead(200)
+            response.writeHead(200, {'Content-Type': mime.lookup(filePath)})
             // font files should not be loaded with 'utf8' encoding. They are binary files. Loading them with 'utf8' encoding and sending them across to browser breaks/corrupts them.
             // send buffered content to loaders. Let them convert to 'utf8' string manually (using .toString('utf'))
             response.end(

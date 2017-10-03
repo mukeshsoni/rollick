@@ -52,8 +52,10 @@ function jsxToJs(jsxCode, oldVal = '') {
 
 const rightPaneId = 'reactpen-right-pane'
 
+// TODO - returning the same css for now while trying to load preview in iframe
 function wrapCss(css) {
-    return '#' + rightPaneId + ' { ' + css + ' }'
+    return css
+    // return '#' + rightPaneId + ' { ' + css + ' }'
 }
 
 function getFakePropValue(fakeProp) {
@@ -127,6 +129,14 @@ function dedupe(arr) {
     )
 }
 
+function fileExtension(fileName) {
+    if (fileName.split('.').length > 1) {
+        return last(fileName.split('.'))
+    } else {
+        return ''
+    }
+}
+
 export default class Playground extends React.Component {
     addComponentFromStyleguide = component => {
         this.handleSearchSelection(component)
@@ -184,7 +194,7 @@ export default class Playground extends React.Component {
     registerServiceWorker = () => {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
-                .register('/sw_rollick.js')
+                .register('sw_rollick.js')
                 .then(
                     registration => {
                         // Registration was successful
@@ -195,13 +205,21 @@ export default class Playground extends React.Component {
                         navigator.serviceWorker.addEventListener(
                             'message',
                             event => {
-                                this.setState({
-                                    cssFilesToInject: dedupe(
-                                        this.state.cssFilesToInject.concat(
-                                            event.data
+                                if(fileExtension(event.data) === 'less') {
+                                    SystemJS.import(event.data).then(lessContent => {
+                                        console.log('less file content', lessContent)
+                                    }).catch(err => {
+                                        console.error('error loading less file', event.data)
+                                    })
+                                } else {
+                                    this.setState({
+                                        cssFilesToInject: dedupe(
+                                            this.state.cssFilesToInject.concat(
+                                                event.data
+                                            )
                                         )
-                                    )
-                                })
+                                    })
+                                }
                             }
                         )
                     },
@@ -213,6 +231,9 @@ export default class Playground extends React.Component {
                         )
                     }
                 )
+                .catch(e => {
+                    console.error('error loading service worker file', e)
+                })
         }
     }
 
@@ -654,11 +675,11 @@ export default class Playground extends React.Component {
 
         const inputClassnames = 'search-modal-input'
 
+        //       <style>
+        //       {cssToInsert}
+        // </style>
         return (
             <div className="page-container">
-                <style>
-                    {cssToInsert}
-                </style>
                 <header
                     style={{
                         display: 'flex',
@@ -829,6 +850,9 @@ export default class Playground extends React.Component {
                             >
                                 <Preview
                                     loading={loading}
+                                    jsxCode={jsxCode}
+                                    jsCode={jsCode}
+                                    cssCode={cssCode}
                                     jsxToInsert={jsxToInsert}
                                     jsToInsert={jsToInsert}
                                 />
