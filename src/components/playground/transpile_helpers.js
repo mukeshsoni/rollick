@@ -39,58 +39,42 @@ function getFakePropValue(fakeProp) {
     }
 }
 
-export function addComponent(
-    jsx,
-    codeMirror,
-    componentDetails,
-    addToEnd = false
-) {
-    let codeToInsert = `<${componentDetails.name} `
-    let propValuePairs = ''
-    if (componentDetails.props) {
-        let fakeProps
+function propsAsJsxKeyValue(component) {
+    const { fakeProps } = component
 
-        if (componentDetails.fakeProps) {
-            fakeProps = componentDetails.fakeProps
-        } else {
-            fakeProps = populateDefaultValues(
-                componentDetails.props,
-                faker(componentDetails.props, { optional: false })
-            )
-        }
-        propValuePairs = Object.keys(
-            componentDetails.props
-        ).reduce((acc, propName) => {
-            if (fakeProps && fakeProps[propName]) {
-                return (
-                    acc +
+    return Object.keys(
+        component.props
+    ).reduce((acc, propName) => {
+        if (fakeProps && fakeProps[propName]) {
+            return (
+                acc +
                     ` ${propName}={${getFakePropValue(fakeProps[propName])}}`
-                )
-            } else if (componentDetails.props[propName].required !== false) {
-                return acc + ` ${propName}={'https://unsplash.it/250/250'}`
-            } else {
-                return acc
-            }
-        }, '')
-    } else {
-        propValuePairs = ''
-    }
+            )
+        } else if (component.props[propName].required !== false) {
+            return acc + ` ${propName}={''}`
+        } else {
+            return acc
+        }
+    }, '')
+}
 
-    codeToInsert = `${codeToInsert} ${propValuePairs}></${componentDetails.name}>`
+export function addComponentToExistingJsx(
+    oldCode='',
+    cursor,
+    component,
+) {
+    const propValuePairs = component.props ? propsAsJsxKeyValue(component) : ''
+    const codeToInsert = `<${component.name} ${propValuePairs}></${component.name}>`
 
-    // TODO - refactor this part
-    // setting value in editor, checking if values causes problem and then resetting will not work. Once we set it, it triggers onChange event for the code which leads to all sorts of unpredictable stuff.
-    // set codemirror value means mutation. which means bugs which we can't trace easily
-    // writing this comment when i actually faced a bug due to this mutation shit
-    const oldCode = codeMirror.getValue()
-    const cursor = codeMirror.getCursor()
+    // need to insert new jsx into the existing jsx code at the right place
+    // 1. Right place can be where the cursor is
+    // 2. If that throws an error, just append the new jsx to the end of the existing code in editor
     const cursorOffset = cmToPrettierCursorOffset(oldCode, cursor)
     let codeAfterInsertion =
         oldCode.slice(0, cursorOffset) +
         codeToInsert +
         oldCode.slice(cursorOffset + 1)
 
-    /* codeMirror.replaceSelection(codeToInsert)*/
     let formatted = formatCode(codeAfterInsertion, cursor)
 
     if (formatted.error) {

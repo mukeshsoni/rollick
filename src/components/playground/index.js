@@ -21,8 +21,13 @@ import {
     transpile,
     jsxToJs,
     getFakePropValue,
-    addComponent
+    addComponentToExistingJsx
 } from './transpile_helpers.js'
+import {
+    getPropValue,
+    populateDefaultValues
+} from '../../component_maker_helpers/prop_value_from_string.js'
+import faker from '../../faker.js'
 
 const rightPaneId = 'reactpen-right-pane'
 
@@ -148,10 +153,15 @@ export default class Playground extends React.Component {
             SystemJS.import(selectedItem.path)
                 .then(com => {
                     window[selectedItem.name] = com.default || com
-                    let jsxWithNewComponent = addComponent(
+                    let jsxWithNewComponent = addComponentToExistingJsx(
                         this.state.jsxCode,
-                        this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
-                        selectedItem
+                        this.jsxEditorRef.codeMirrorRef.getCodeMirror().getCursor(),
+                        { ...selectedItem, fakeProps: selectedItem.fakeProps ||
+                          populateDefaultValues(
+                              selectedItem.props,
+                              faker(selectedItem.props, { optional: false })
+                          )
+                        }
                     )
 
                     this.jsxEditorRef.codeMirrorRef
@@ -212,7 +222,7 @@ export default class Playground extends React.Component {
             )
         } else {
             this.setState({
-                [`${mode}Code`]: formatted.error
+                [`${mode}Error`]: formatted.error
             })
         }
     }
