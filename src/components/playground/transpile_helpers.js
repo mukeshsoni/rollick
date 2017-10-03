@@ -1,11 +1,6 @@
 import React from 'react'
 import Babel from 'jspm_packages/npm/babel-standalone@6.26.0/babel.min.js'
 import { formatCode, cmToPrettierCursorOffset } from './code_formatter.js'
-import {
-    getPropValue,
-    populateDefaultValues
-} from '../../component_maker_helpers/prop_value_from_string.js'
-import faker from '../../faker.js'
 
 export function transpile(code, oldVal = '') {
     try {

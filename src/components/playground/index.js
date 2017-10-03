@@ -20,14 +20,9 @@ import { formatCode } from './code_formatter.js'
 import {
     transpile,
     jsxToJs,
-    getFakePropValue,
     addComponentToExistingJsx
 } from './transpile_helpers.js'
-import {
-    getPropValue,
-    populateDefaultValues
-} from '../../component_maker_helpers/prop_value_from_string.js'
-import faker from '../../faker.js'
+import loadComponentFromPath from './load_component_from_path.js'
 
 const rightPaneId = 'reactpen-right-pane'
 
@@ -150,18 +145,13 @@ export default class Playground extends React.Component {
         // handleSearchSelection is called even if enter is pressed when there are zero search results
         if (selectedItem && selectedItem.path) {
             this.hideSearchModal()
-            SystemJS.import(selectedItem.path)
+            loadComponentFromPath(selectedItem)
                 .then(com => {
-                    window[selectedItem.name] = com.default || com
+                    window[selectedItem.name] = com.component.default || com.component
                     let jsxWithNewComponent = addComponentToExistingJsx(
                         this.state.jsxCode,
                         this.jsxEditorRef.codeMirrorRef.getCodeMirror().getCursor(),
-                        { ...selectedItem, fakeProps: selectedItem.fakeProps ||
-                          populateDefaultValues(
-                              selectedItem.props,
-                              faker(selectedItem.props, { optional: false })
-                          )
-                        }
+                        {...selectedItem, fakeProps: com.fakeProps}
                     )
 
                     this.jsxEditorRef.codeMirrorRef

@@ -1,5 +1,4 @@
 import {
-    getPropValue,
     populateDefaultValues
 } from '../../component_maker_helpers/prop_value_from_string.js'
 import faker from '../../faker.js'
@@ -15,4 +14,21 @@ export function getFakeProps(component) {
             faker(component.props, { optional: false })
         )
     }
+}
+
+export default function loadComponentFromPath(selectedItem) {
+    return SystemJS.import(selectedItem.path)
+        .then(com => {
+            // TODO - this is not acceptable. It's a ticking time bomb, attaching stuff to window
+            const fakeProps = selectedItem.fakeProps ||
+                  populateDefaultValues(
+                      selectedItem.props,
+                      faker(selectedItem.props, { optional: false })
+                  )
+
+            return {
+                component: com,
+                fakeProps
+            }
+        })
 }
