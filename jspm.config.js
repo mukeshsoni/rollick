@@ -29,37 +29,9 @@ SystemJS.config({
                 },
                 '*.css': {
                     'loader': 'css',
-                    options: {
-                        separateCss: true,
-                        buildCss: false
-                    },
-                    cssOptions: {
-                        separateCss: true,
-                        buildCss: false
-                    },
-                    loaderOptions: {
-                        separateCss: true,
-                        buildCss: false
-                    }
                 },
                 '*.less': {
                     'loader': 'less',
-                    options: {
-                        separateCss: true,
-                        buildCss: false
-                    },
-                    cssOptions: {
-                        separateCss: true,
-                        buildCss: false
-                    },
-                    lessOptions: {
-                        separateCss: true,
-                        buildCss: false
-                    },
-                    loaderOptions: {
-                        separateCss: true,
-                        buildCss: false
-                    }
                 },
                 '*.sass': {
                     'loader': 'sass'

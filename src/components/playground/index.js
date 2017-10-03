@@ -101,10 +101,11 @@ export default class Playground extends React.Component {
                             'message',
                             event => {
                                 if (fileExtension(event.data) === 'less') {
-                                    SystemJS.import(event.data)
+                                    SystemJS.import(event.data + '!')
                                         .then(lessContent => {
                                             console.log(
                                                 'less file content',
+                                                event.data,
                                                 lessContent
                                             )
                                         })
@@ -348,6 +349,7 @@ export default class Playground extends React.Component {
         return (
             <div>
                 <style>
+                    {this.state.cssToInsertInIframe.join('\n')}
                     {this.state.cssToInsert}
                 </style>
                 {this.state.cssFilesToInject.map(cssFilePath => {
@@ -490,7 +492,8 @@ export default class Playground extends React.Component {
             componentsMetaList: [],
             cssFilesToInject: [],
             editorLayout: 'left',
-            loading: true
+            loading: true,
+            cssToInsertInIframe: []
         }
         this.jsxEditorRef = null
         this.cssEditorRef = null
@@ -529,6 +532,42 @@ export default class Playground extends React.Component {
                 })
             })
         }
+
+        var mo = new MutationObserver(mutations => {
+            if (
+                mutations &&
+                mutations.length > 0 &&
+                mutations[0].addedNodes &&
+                mutations[0].addedNodes.length > 0
+            ) {
+                const addedNodes = mutations[0].addedNodes
+                if (addedNodes[0].nodeName === 'STYLE') {
+                    if (
+                        addedNodes[0].innerText.includes(
+                            'display: none !important'
+                        )
+                    ) {
+                        console.log('problem styles', addedNodes[0].innerText)
+                    } else {
+                        this.setState(
+                            {
+                                cssToInsertInIframe: dedupe(
+                                    this.state.cssToInsertInIframe.concat(
+                                        addedNodes[0].innerText
+                                    )
+                                )
+                            },
+                            () => {
+                                addedNodes[0].remove()
+                            }
+                        )
+                    }
+                }
+            }
+            console.log('new node added to head')
+        })
+        var config = { attributes: true, childList: true, characterData: true }
+        mo.observe(document.head, config)
     }
 
     componentDidMount() {

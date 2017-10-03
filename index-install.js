@@ -261,17 +261,17 @@ function updatePackagesProperty(toolConfig, jspmConfig) {
                     },
                     "*.css": {
                         loader: "css",
-                        'loaderOptions': {
-                            'separateCss': true,
-                            'buildCss': false
-                        }
+                        // 'loaderOptions': {
+                        //     'separateCss': true,
+                        //     'buildCss': false
+                        // }
                     },
                     "*.less": {
                         loader: "less",
-                        'loaderOptions': {
-                            'separateCss': true,
-                            'buildCss': false
-                        }
+                        // 'loaderOptions': {
+                        //     'separateCss': true,
+                        //     'buildCss': false
+                        // }
                     },
                     "*.sass": {
                         loader: "sass"
