@@ -2,12 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SearchResults from './search_results'
 import SearchInput from './search_input'
-import Preview from './preview.js'
+import Preview from '../previews/single_component_preview.js'
 import classnames from 'classnames'
 import onClickOutside from 'react-onclickoutside'
 import deboune from 'debounce'
 import key from 'keymaster'
 import looseFilter from '../../tools/loose_filter.js'
+import faker from '../../faker.js'
 import './search_box.css'
 
 import belt from '../../../belt.js'
@@ -236,7 +237,16 @@ class SearchBox extends React.Component {
                         <div style={{ width: searchBoxWidth, height: 500 }}>
                             {previewComponent &&
                                 previewComponent.component &&
-                                <Preview component={previewComponent} />}
+                             <Preview
+                                component={previewComponent.component}
+                                fakeProps={faker(previewComponent.meta.props, {optional: false})}
+                                style={{
+                                    background: 'cadetblue',
+                                    height: '100%',
+                                    marginLeft: 10,
+                                    padding: '1em'
+                                }}
+                             />}
                         </div>
                     </div>}
             </div>

@@ -12,6 +12,7 @@ import {
     populateDefaultValues
 } from '../../component_maker_helpers/prop_value_from_string.js'
 import looseFilter from '../../tools/loose_filter.js'
+import SingleComponentPreview from '../previews/single_component_preview.js'
 
 export default class Styleguide extends React.Component {
     handleInputChange = e => {
@@ -20,23 +21,6 @@ export default class Styleguide extends React.Component {
 
     handleAddComponent = () => {
         this.props.onAddComponent(this.state.selectedComponent)
-    }
-
-    getComponentPreview = () => {
-        const { selectedComponent, selectedComponentInstance } = this.state
-
-        if (!selectedComponentInstance) {
-            return null
-        } else {
-            return (
-                <div>
-                    {React.createElement(
-                        selectedComponentInstance,
-                        selectedComponent.fakeProps
-                    )}
-                </div>
-            )
-        }
     }
 
     handleAttributeValueChange = (propName, value) => {
@@ -153,7 +137,7 @@ export default class Styleguide extends React.Component {
     }
 
     render() {
-        const { searchText } = this.state
+        const { searchText, selectedComponent, selectedComponentInstance } = this.state
 
         const leftPaneStyle = {
             flex: 1,
@@ -211,7 +195,10 @@ export default class Styleguide extends React.Component {
                         <div className="loader">Loading...</div>
                     ) : !this.state.errorLoadingComponent ? (
                         <div style={{ padding: '2em' }}>
-                            {this.getComponentPreview()}
+                            <SingleComponentPreview
+                                component={selectedComponentInstance}
+                        fakeProps={selectedComponent && selectedComponent.fakeProps}
+                            />
                         </div>
                     ) : (
                         <div>{this.state.errorLoadingComponent}</div>
