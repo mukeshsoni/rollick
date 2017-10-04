@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import Frame from 'react-frame-component'
 window.React = React
 
 function myEval(thisObject, code) {
@@ -32,6 +34,27 @@ export default class PlaygroundPreview extends React.Component {
         }
     }
 
+    getIframeHead = () => {
+        return (
+            <div>
+                <style>
+                    {this.props.cssToInsertInIframe.join('\n')}
+                    {this.props.cssToInsert}
+                </style>
+                {this.props.cssFilesToInject.map(cssFilePath => {
+                    return (
+                        <link
+                            key={'link_tag_' + cssFilePath}
+                            type="text/css"
+                            rel="stylesheet"
+                            href={cssFilePath}
+                        />
+                    )
+                })}
+            </div>
+        )
+    }
+
     constructor(props) {
         super(props)
 
@@ -62,9 +85,36 @@ export default class PlaygroundPreview extends React.Component {
         }
 
         return (
-            <div>
-                {this.getJsxToInsert()}
-            </div>
+            <Frame
+                style={{
+                    width: '100%',
+                    height: 600
+                }}
+                frameBorder={'0'}
+                head={this.getIframeHead()}
+            >
+                <div>
+                    {this.getJsxToInsert()}
+                </div>
+            </Frame>
         )
     }
+}
+
+PlaygroundPreview.propTypes = {
+    loading: PropTypes.bool,
+    jsxToInsert: PropTypes.string.isRequired,
+    jsToInsert: PropTypes.string,
+    cssToInsert: PropTypes.string,
+    cssToInsertInIframe: PropTypes.arrayOf(PropTypes.string),
+    cssFilesToInject: PropTypes.arrayOf(PropTypes.string)
+}
+
+PlaygroundPreview.defaultProps = {
+    loading: false,
+    jsxToInsert: '',
+    jsToInsert: '',
+    cssToInsert: '',
+    cssToInsertInIframe: [],
+    cssFilesToInject: []
 }

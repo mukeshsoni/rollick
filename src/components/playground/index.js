@@ -7,7 +7,6 @@ import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
-import Frame from 'react-frame-component'
 import cssbeautify from 'cssbeautify'
 import './app.css'
 import './split_pane.css'
@@ -147,11 +146,14 @@ export default class Playground extends React.Component {
             this.hideSearchModal()
             loadComponentFromPath(selectedItem)
                 .then(com => {
-                    window[selectedItem.name] = com.component.default || com.component
+                    window[selectedItem.name] =
+                        com.component.default || com.component
                     let jsxWithNewComponent = addComponentToExistingJsx(
                         this.state.jsxCode,
-                        this.jsxEditorRef.codeMirrorRef.getCodeMirror().getCursor(),
-                        {...selectedItem, fakeProps: com.fakeProps}
+                        this.jsxEditorRef.codeMirrorRef
+                            .getCodeMirror()
+                            .getCursor(),
+                        { ...selectedItem, fakeProps: com.fakeProps }
                     )
 
                     this.jsxEditorRef.codeMirrorRef
@@ -343,27 +345,6 @@ export default class Playground extends React.Component {
                         .setSize('100%', editorHeight)
             })
         }
-    }
-
-    getIframeHead = () => {
-        return (
-            <div>
-                <style>
-                    {this.state.cssToInsertInIframe.join('\n')}
-                    {this.state.cssToInsert}
-                </style>
-                {this.state.cssFilesToInject.map(cssFilePath => {
-                    return (
-                        <link
-                            key={'link_tag_' + cssFilePath}
-                            type="text/css"
-                            rel="stylesheet"
-                            href={cssFilePath}
-                        />
-                    )
-                })}
-            </div>
-        )
     }
 
     handleKeypress = e => {
@@ -790,23 +771,16 @@ export default class Playground extends React.Component {
                             </SplitPane>
                         </SplitPane>
                         <div className="editor-right-pane" id={rightPaneId}>
-                            <Frame
-                                style={{
-                                    width: '100%',
-                                    height: 600
-                                }}
-                                frameBorder={'0'}
-                                head={this.getIframeHead()}
-                            >
-                                <Preview
-                                    loading={loading}
-                                    jsxCode={jsxCode}
-                                    jsCode={jsCode}
-                                    cssCode={cssCode}
-                                    jsxToInsert={jsxToInsert}
-                                    jsToInsert={jsToInsert}
-                                />
-                            </Frame>
+                            <Preview
+                                loading={loading}
+                                jsxToInsert={jsxToInsert}
+                                jsToInsert={jsToInsert}
+                                cssToInsert={this.state.cssToInsert}
+                                cssToInsertInIframe={
+                                    this.state.cssToInsertInIframe
+                                }
+                                cssFilesToInject={this.state.cssFilesToInject}
+                            />
                         </div>
                     </SplitPane>
                 </div>
