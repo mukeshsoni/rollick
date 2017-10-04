@@ -1,6 +1,4 @@
-import {
-    populateDefaultValues
-} from '../../component_maker_helpers/prop_value_from_string.js'
+import { populateDefaultValues } from '../../component_maker_helpers/prop_value_from_string.js'
 import faker from '../../faker.js'
 
 // get's fake props for a component using it's react-docgen generated meta data
@@ -24,13 +22,12 @@ function getFakeProps(component) {
 // and sends it across
 // TODO - should also send across the css associated with the component
 export default function loadComponentFromPath(item) {
-    return SystemJS.import(item.path)
-        .then(com => {
-            const fakeProps = getFakeProps(item)
+    return SystemJS.import(item.path).then(com => {
+        const fakeProps = getFakeProps(item)
 
-            return {
-                component: com,
-                fakeProps
-            }
-        })
+        return {
+            component: com.default || com,
+            fakeProps
+        }
+    })
 }

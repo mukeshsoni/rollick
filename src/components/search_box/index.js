@@ -8,7 +8,6 @@ import onClickOutside from 'react-onclickoutside'
 import deboune from 'debounce'
 import key from 'keymaster'
 import looseFilter from '../../tools/loose_filter.js'
-import faker from '../../faker.js'
 import './search_box.css'
 
 import belt from '../../../belt.js'
@@ -48,7 +47,7 @@ class SearchBox extends React.Component {
     }
 
     handleLeftKey = e => {
-        if (this.state.selectedItemIndex >= 0 && this.state.previewComponent) {
+        if (this.state.selectedItemIndex >= 0 && this.state.previewItem) {
             this.hidePreview()
         }
     }
@@ -123,48 +122,37 @@ class SearchBox extends React.Component {
     }
 
     showPreview = item => {
-        SystemJS.import(item.path)
-            .then(com => {
-                this.setState({
-                    previewComponent: {
-                        component: com.default || com,
-                        meta: item
-                    }
-                })
-            })
-            .catch(e =>
-                console.error('Failed to load ', item.name, ': ', item.path, e)
-            )
+        this.setState({ previewItem: item })
     }
 
     hidePreview = () => {
-        this.setState({ previewComponent: null })
+        this.setState({ previewItem: null })
     }
 
     // toggle preview on click of preview button
     handleShowPreviewClick = item => {
-        function sameItemPreviewClicked(newItem, previewComponent) {
-            if (!previewComponent || !previewComponent.meta) {
+        function sameItemPreviewClicked(newItem, previewItem) {
+            if (!previewItem) {
                 return false
             }
 
-            return previewComponent.meta.path === newItem.path
+            return previewItem.path === newItem.path
         }
 
-        if (sameItemPreviewClicked(item, this.state.previewComponent)) {
-            this.setState({ previewComponent: null })
+        if (sameItemPreviewClicked(item, this.state.previewItem)) {
+            this.setState({ previewItem: null })
         } else if (item && item.path) {
             this.showPreview(item)
         }
     }
 
     getPreviewComponentIndex = () => {
-        const { previewComponent } = this.state
+        const { previewItem } = this.state
 
-        if (previewComponent && previewComponent.meta) {
+        if (previewItem) {
             return findIndex(
                 this.getFilteredComponents(),
-                item => item.path === previewComponent.meta.path
+                item => item.path === previewItem.path
             )
         } else {
             return -1
@@ -197,7 +185,7 @@ class SearchBox extends React.Component {
         this.state = {
             searchText: '',
             selectedItemIndex: 0,
-            previewComponent: null
+            previewItem: null
         }
 
         this.searchInputRef = null
@@ -216,7 +204,7 @@ class SearchBox extends React.Component {
 
     render() {
         const { onRequestClose, isOpen } = this.props
-        const { selectedItemIndex, previewComponent } = this.state
+        const { selectedItemIndex, previewItem } = this.state
 
         const searchBoxWidth = 300
 
@@ -235,18 +223,16 @@ class SearchBox extends React.Component {
                             />
                         </div>
                         <div style={{ width: searchBoxWidth, height: 500 }}>
-                            {previewComponent &&
-                                previewComponent.component &&
-                             <Preview
-                                component={previewComponent.component}
-                                fakeProps={faker(previewComponent.meta.props, {optional: false})}
-                                style={{
-                                    background: 'cadetblue',
-                                    height: '100%',
-                                    marginLeft: 10,
-                                    padding: '1em'
-                                }}
-                             />}
+                            {previewItem &&
+                                <Preview
+                                    item={previewItem}
+                                    style={{
+                                        background: 'cadetblue',
+                                        height: '100%',
+                                        marginLeft: 10,
+                                        padding: '1em'
+                                    }}
+                                />}
                         </div>
                     </div>}
             </div>

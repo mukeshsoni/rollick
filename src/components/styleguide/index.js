@@ -43,30 +43,12 @@ export default class Styleguide extends React.Component {
     }
 
     handleComponentItemClick = debounce(com => {
-        this.setState({ loadingComponent: true })
-        getComponent(com)
-            .then(component =>
-                this.setState({
-                    loadingComponent: false,
-                    selectedComponent: {
-                        ...com,
-                        fakeProps: populateDefaultValues(
-                            com.props,
-                            faker(com.props, { optional: false })
-                        )
-                    },
-                    selectedComponentInstance: component,
-
-                    errorLoadingComponent: null
-                })
-            )
-            .catch(e => {
-                console.error('error loading component', e)
-                this.setState({
-                    loadingComponent: false,
-                    errorLoadingComponent: e.toString()
-                })
-            })
+        this.setState({
+            selectedComponent: {
+                ...com,
+                fakeProps: faker(com.props, { optional: true })
+            }
+        })
     }, 500)
 
     getFiltedredComponentList = () => {
@@ -116,7 +98,6 @@ export default class Styleguide extends React.Component {
             searchText: '',
             selectedComponent: null,
             selectedComponentInstance: null,
-            loadingComponent: false,
             componentsMetaListSorted: []
         }
     }
@@ -137,7 +118,11 @@ export default class Styleguide extends React.Component {
     }
 
     render() {
-        const { searchText, selectedComponent, selectedComponentInstance } = this.state
+        const {
+            searchText,
+            selectedComponent,
+            selectedComponentInstance
+        } = this.state
 
         const leftPaneStyle = {
             flex: 1,
@@ -160,7 +145,9 @@ export default class Styleguide extends React.Component {
                         onChange={this.handleInputChange}
                         placeholder="Search Component"
                     />
-                    <div>{this.getComponentList()}</div>
+                    <div>
+                        {this.getComponentList()}
+                    </div>
                 </div>
                 <div className="styleguide-body" style={bodyStyle}>
                     <div
@@ -176,40 +163,29 @@ export default class Styleguide extends React.Component {
                         >
                             Preview
                         </h3>
-                        {!this.state.loadingComponent &&
-                        !this.state.errorLoadingComponent &&
-                        this.state.selectedComponent ? (
-                            <a
-                                style={{
-                                    cursor: 'pointer',
-                                    fontWeight: 'bold',
-                                    color: 'blue'
-                                }}
-                                onClick={this.handleAddComponent}
-                            >
-                                Add this
-                            </a>
-                        ) : null}
+                        {this.state.selectedComponent
+                            ? <a
+                                  style={{
+                                      cursor: 'pointer',
+                                      fontWeight: 'bold',
+                                      color: 'blue'
+                                  }}
+                                  onClick={this.handleAddComponent}
+                              >
+                                  Add this
+                              </a>
+                            : null}
                     </div>
-                    {this.state.loadingComponent ? (
-                        <div className="loader">Loading...</div>
-                    ) : !this.state.errorLoadingComponent ? (
+                    {this.state.selectedComponent &&
                         <div style={{ padding: '2em' }}>
-                            <SingleComponentPreview
-                                component={selectedComponentInstance}
-                        fakeProps={selectedComponent && selectedComponent.fakeProps}
-                            />
-                        </div>
-                    ) : (
-                        <div>{this.state.errorLoadingComponent}</div>
-                    )}
+                            <SingleComponentPreview item={selectedComponent} />
+                        </div>}
                 </div>
-                {this.state.selectedComponent && (
+                {this.state.selectedComponent &&
                     <AttributePane
                         component={this.state.selectedComponent}
                         onChange={this.handleAttributeValueChange}
-                    />
-                )}
+                    />}
             </div>
         )
     }
