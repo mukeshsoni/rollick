@@ -7,18 +7,40 @@ import faker from '../../faker.js'
 // TODO - need to get css for the component in here
 export default class SingleComponentPreview extends React.Component {
     getIframeHead() {
-        return <div />
+        return (
+            <div>
+                <style>
+                    {this.state.cssToInsertInIframe}
+                </style>
+                {this.state.cssFilesToInject.map(cssFilePath => {
+                    return (
+                        <link
+                            key={'link_tag_' + cssFilePath}
+                            type="text/css"
+                            rel="stylesheet"
+                            href={cssFilePath}
+                        />
+                    )
+                })}
+            </div>
+        )
     }
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            loading: true,
-            component: null,
-            fakeProps: {},
-            error: null
-        }
+    globalCssLinks = () => {
+        // get global css which user wants to inject to all preview panes. In our case, the iframes
+        SystemJS.import('/rollick.config.js').then(config => {
+            if (
+                config.globals &&
+                config.globals.css &&
+                config.globals.css.urls
+            ) {
+                this.setState({
+                    cssFilesToInject: this.state.cssFilesToInject.concat(
+                        config.globals.css.urls
+                    )
+                })
+            }
+        })
     }
 
     getComponent = item => {
@@ -40,6 +62,19 @@ export default class SingleComponentPreview extends React.Component {
             })
     }
 
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            loading: true,
+            component: null,
+            fakeProps: {},
+            error: null,
+            cssToInsertInIframe: '',
+            cssFilesToInject: []
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (
             nextProps.item !== this.props.item &&
@@ -51,6 +86,37 @@ export default class SingleComponentPreview extends React.Component {
 
     componentWillMount() {
         this.getComponent(this.props.item)
+        this.globalCssLinks()
+
+        var mo = new MutationObserver(mutations => {
+            if (
+                mutations &&
+                mutations.length > 0 &&
+                mutations[0].addedNodes &&
+                mutations[0].addedNodes.length > 0
+            ) {
+                const addedNodes = mutations[0].addedNodes
+                if (addedNodes[0].nodeName === 'STYLE') {
+                    if (
+                        addedNodes[0].innerText.includes(
+                            'display: none !important'
+                        )
+                    ) {
+                        console.log('problem styles', addedNodes[0].innerText)
+                    } else {
+                        this.setState(
+                            { cssToInsertInIframe: addedNodes[0].innerText },
+                            () => {
+                                addedNodes[0].remove()
+                            }
+                        )
+                    }
+                }
+            }
+            console.log('new node added to head')
+        })
+        var config = { attributes: true, childList: true, characterData: true }
+        mo.observe(document.head, config)
     }
 
     render() {
