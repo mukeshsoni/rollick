@@ -165,3 +165,7 @@ SingleComponentPreview.propTypes = {
     item: PropTypes.object.isRequired,
     style: PropTypes.object
 }
+
+SingleComponentPreview.defaultProps = {
+    style: {}
+}
