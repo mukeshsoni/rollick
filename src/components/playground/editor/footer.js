@@ -20,7 +20,7 @@ export default class EditorFooter extends React.Component {
         return (
             <div style={style}>
                 {errors && errors.length > 0 &&
-                 <Tooltip position='top' content={errors}>Errors</Tooltip>}
+                 <Tooltip position='top' content={errors}><span>Errors</span></Tooltip>}
             </div>
         )
     }

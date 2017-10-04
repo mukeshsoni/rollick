@@ -214,7 +214,7 @@ export default class Playground extends React.Component {
             )
         } else {
             this.setState({
-                [`${mode}Error`]: formatted.error
+                [`${mode}Error`]: formatted.error.toString()
             })
         }
     }

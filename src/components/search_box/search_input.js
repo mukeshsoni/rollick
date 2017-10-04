@@ -22,10 +22,14 @@ SearchInput.propTypes = {
     className: PropTypes.string,
     value: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func
+}
+
+SearchInput.defaultProps = {
+    value: ''
 }
 
 export default SearchInput
