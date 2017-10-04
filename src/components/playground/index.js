@@ -192,6 +192,11 @@ export default class Playground extends React.Component {
         const code = this.state[`${mode}Code`]
         const codeMirrorRef = this[`${mode}EditorRef`].codeMirrorRef
 
+        // nothing for format
+        if(code.trim() === '') {
+            return
+        }
+
         const formatted = formatCode(
             code,
             codeMirrorRef.getCodeMirror().getCursor()
