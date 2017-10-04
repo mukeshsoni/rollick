@@ -1,4 +1,4 @@
-* P1 [88/176]
+* P1 [89/176]
 - [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
 Sharing through url? Store the code in database against the unique url.
 Saving configuration for the tool? Store in the database.
@@ -35,26 +35,29 @@ Users will be also then able to modify the prop values from the jsx usage sectio
   - [ ] Save
   - [ ] Create New
   - [ ] Open
-- [ ] Render components in iframe for isolation of css/javascript
+- [-] Render components in iframe for isolation of css/javascript
   scope. Problem with getting iframe to work is that the styles for a
   component are added by creating link tags in the head. They are not
   available in the iframe. One way can be to intercept network
   requests, filter css ones and add those link tags in iframe head. Can
   use service worker for that.
-  - [ ] See how we can inject the css required in a component into the iframe
-    - [ ] Rithwik has another solution. What if the fetching of components is done inside the preview component. 
+  - [-] See how we can inject the css required in a component into the iframe
+    - [X] Finally got the css thing working by listening to style tag additions to head tag. 
+          No need for service worker hack. Using MutationObserver, listen to addition of style tag in head and inject that css into iframe head.
+    - [X] Rithwik has another solution. What if the fetching of components is done inside the preview component. 
           The preview component is loaded inside the iframe. So that css will automatically be loaded inside the iframe.
-    - [ ] The iframe is a problem because while loading a component the css required by that file is inlined.
+      - this did not work since the preview component was loaded in the context of parent frame.
+    - [X] The iframe is a problem because while loading a component the css required by that file is inlined.
 But that need not be. Systemjs css plugin had an option whereby the css can be loaded as a separate file.
 https://github.com/systemjs/plugin-css/blob/master/README.md
-    - [ ] Use serviceworker to intercept less/css calls and supply the raw contents of the file
-      - [ ] css
-      - [ ] less file
-        - [ ] How to handle further resolution of less dependencies? Should less be transpiled in the frontend?
+    - [X] Use serviceworker to intercept less/css calls and supply the raw contents of the file
+      - [X] css
+      - [X] less file
+        - [X] How to handle further resolution of less dependencies? Should less be transpiled in the frontend?
     - [ ] Checkout react-storybook code. They also render the stories inside an iframe
-    - [ ] Preview panel styling
-    - [ ] Don't need to copy meta data generator. In fact, should run it
-  from project root and just copy the output files to .kodai folder
+- [ ] Preview panel styling
+- [ ] Don't need to copy meta data generator. In fact, should run it
+from project root and just copy the output files to .kodai folder
   - [ ] More difficult to do than it looks like. Because of the way that
     script is setup
 - [ ] Clean up dependencies
