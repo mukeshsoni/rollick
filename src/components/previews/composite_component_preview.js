@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Frame from 'react-frame-component'
+import iframeWrapper from './iframe_wrapper.js'
 window.React = React
 
 function myEval(thisObject, code) {
@@ -18,7 +18,7 @@ function validJs(jsToInsert) {
     }
 }
 
-export default class PlaygroundPreview extends React.Component {
+class CompositeComponentPreview extends React.Component {
     getJsxToInsert = () => {
         try {
             return eval(this.props.jsxToInsert)
@@ -32,27 +32,6 @@ export default class PlaygroundPreview extends React.Component {
                 </div>
             )
         }
-    }
-
-    getIframeHead = () => {
-        return (
-            <div>
-                <style>
-                    {this.props.cssToInsertInIframe.join('\n')}
-                    {this.props.cssToInsert}
-                </style>
-                {this.props.cssFilesToInject.map(cssFilePath => {
-                    return (
-                        <link
-                            key={'link_tag_' + cssFilePath}
-                            type="text/css"
-                            rel="stylesheet"
-                            href={cssFilePath}
-                        />
-                    )
-                })}
-            </div>
-        )
     }
 
     constructor(props) {
@@ -85,36 +64,23 @@ export default class PlaygroundPreview extends React.Component {
         }
 
         return (
-            <Frame
-                style={{
-                    width: '100%',
-                    height: 600
-                }}
-                frameBorder={'0'}
-                head={this.getIframeHead()}
-            >
-                <div>
-                    {this.getJsxToInsert()}
-                </div>
-            </Frame>
+            <div>
+                {this.getJsxToInsert()}
+            </div>
         )
     }
 }
 
-PlaygroundPreview.propTypes = {
+CompositeComponentPreview.propTypes = {
     loading: PropTypes.bool,
     jsxToInsert: PropTypes.string.isRequired,
-    jsToInsert: PropTypes.string,
-    cssToInsert: PropTypes.string,
-    cssToInsertInIframe: PropTypes.arrayOf(PropTypes.string),
-    cssFilesToInject: PropTypes.arrayOf(PropTypes.string)
+    jsToInsert: PropTypes.string
 }
 
-PlaygroundPreview.defaultProps = {
+CompositeComponentPreview.defaultProps = {
     loading: false,
     jsxToInsert: '',
-    jsToInsert: '',
-    cssToInsert: '',
-    cssToInsertInIframe: [],
-    cssFilesToInject: []
+    jsToInsert: ''
 }
+
+export default iframeWrapper(CompositeComponentPreview)

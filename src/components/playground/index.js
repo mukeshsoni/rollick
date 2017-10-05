@@ -10,7 +10,7 @@ import SplitPane from 'react-split-pane'
 import cssbeautify from 'cssbeautify'
 import './app.css'
 import './split_pane.css'
-import Preview from './playground_preview/index.js'
+import Preview from '../previews/composite_component_preview.js'
 import Editor from './editor/index.js'
 import FileSaver from 'file-saver'
 import belt from '../../../belt.js'
@@ -86,58 +86,58 @@ export default class Playground extends React.Component {
     }
 
     registerServiceWorker = () => {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker
-                .register('sw_rollick.js')
-                .then(
-                    registration => {
-                        // Registration was successful
-                        console.log(
-                            'ServiceWorker registration successful with scope: ',
-                            registration.scope
-                        )
-                        navigator.serviceWorker.addEventListener(
-                            'message',
-                            event => {
-                                if (fileExtension(event.data) === 'less') {
-                                    SystemJS.import(event.data + '!')
-                                        .then(lessContent => {
-                                            console.log(
-                                                'less file content',
-                                                event.data,
-                                                lessContent
-                                            )
-                                        })
-                                        .catch(err => {
-                                            console.error(
-                                                'error loading less file',
-                                                event.data
-                                            )
-                                        })
-                                } else {
-                                    this.setState({
-                                        cssFilesToInject: dedupe(
-                                            this.state.cssFilesToInject.concat(
-                                                event.data
-                                            )
-                                        )
-                                    })
-                                }
-                            }
-                        )
-                    },
-                    function(err) {
-                        // registration failed :(
-                        console.error(
-                            'ServiceWorker registration failed: ',
-                            err
-                        )
-                    }
-                )
-                .catch(e => {
-                    console.error('error loading service worker file', e)
-                })
-        }
+        // if ('serviceWorker' in navigator) {
+        //     navigator.serviceWorker
+        //         .register('sw_rollick.js')
+        //         .then(
+        //             registration => {
+        //                 // Registration was successful
+        //                 console.log(
+        //                     'ServiceWorker registration successful with scope: ',
+        //                     registration.scope
+        //                 )
+        //                 navigator.serviceWorker.addEventListener(
+        //                     'message',
+        //                     event => {
+        //                         if (fileExtension(event.data) === 'less') {
+        //                             SystemJS.import(event.data + '!')
+        //                                 .then(lessContent => {
+        //                                     console.log(
+        //                                         'less file content',
+        //                                         event.data,
+        //                                         lessContent
+        //                                     )
+        //                                 })
+        //                                 .catch(err => {
+        //                                     console.error(
+        //                                         'error loading less file',
+        //                                         event.data
+        //                                     )
+        //                                 })
+        //                         } else {
+        //                             this.setState({
+        //                                 cssFilesToInject: dedupe(
+        //                                     this.state.cssFilesToInject.concat(
+        //                                         event.data
+        //                                     )
+        //                                 )
+        //                             })
+        //                         }
+        //                     }
+        //                 )
+        //             },
+        //             function(err) {
+        //                 // registration failed :(
+        //                 console.error(
+        //                     'ServiceWorker registration failed: ',
+        //                     err
+        //                 )
+        //             }
+        //         )
+        //         .catch(e => {
+        //             console.error('error loading service worker file', e)
+        //         })
+        // }
     }
 
     handleSearchSelection = selectedItem => {
@@ -193,7 +193,7 @@ export default class Playground extends React.Component {
         const codeMirrorRef = this[`${mode}EditorRef`].codeMirrorRef
 
         // nothing for format
-        if(code.trim() === '') {
+        if (code.trim() === '') {
             return
         }
 
@@ -476,10 +476,8 @@ export default class Playground extends React.Component {
             showSearchModal: false,
             searchText: '',
             componentsMetaList: [],
-            cssFilesToInject: [],
             editorLayout: 'left',
-            loading: true,
-            cssToInsertInIframe: []
+            loading: true
         }
         this.jsxEditorRef = null
         this.cssEditorRef = null
@@ -491,21 +489,6 @@ export default class Playground extends React.Component {
         // this.registerServiceWorker()
 
         this.loadCustomComponents()
-
-        // get global css which user wants to inject to all preview panes. In our case, the iframes
-        SystemJS.import('/rollick.config.js').then(config => {
-            if (
-                config.globals &&
-                config.globals.css &&
-                config.globals.css.urls
-            ) {
-                this.setState({
-                    cssFilesToInject: this.state.cssFilesToInject.concat(
-                        config.globals.css.urls
-                    )
-                })
-            }
-        })
         // if we set initial cssCode in state from localstorage
         // we can't get the compiled version (wrap with 'right-container' tag and compile with sass compiler)
         // because sass compiler is async
@@ -518,42 +501,6 @@ export default class Playground extends React.Component {
                 })
             })
         }
-
-        var mo = new MutationObserver(mutations => {
-            if (
-                mutations &&
-                mutations.length > 0 &&
-                mutations[0].addedNodes &&
-                mutations[0].addedNodes.length > 0
-            ) {
-                const addedNodes = mutations[0].addedNodes
-                if (addedNodes[0].nodeName === 'STYLE') {
-                    if (
-                        addedNodes[0].innerText.includes(
-                            'display: none !important'
-                        )
-                    ) {
-                        console.log('problem styles', addedNodes[0].innerText)
-                    } else {
-                        this.setState(
-                            {
-                                cssToInsertInIframe: dedupe(
-                                    this.state.cssToInsertInIframe.concat(
-                                        addedNodes[0].innerText
-                                    )
-                                )
-                            },
-                            () => {
-                                addedNodes[0].remove()
-                            }
-                        )
-                    }
-                }
-            }
-            console.log('new node added to head')
-        })
-        var config = { attributes: true, childList: true, characterData: true }
-        mo.observe(document.head, config)
     }
 
     componentDidMount() {
@@ -781,10 +728,6 @@ export default class Playground extends React.Component {
                                 jsxToInsert={jsxToInsert}
                                 jsToInsert={jsToInsert}
                                 cssToInsert={this.state.cssToInsert}
-                                cssToInsertInIframe={
-                                    this.state.cssToInsertInIframe
-                                }
-                                cssFilesToInject={this.state.cssFilesToInject}
                             />
                         </div>
                     </SplitPane>

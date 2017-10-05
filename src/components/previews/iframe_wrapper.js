@@ -11,7 +11,8 @@ export default function iframeWrapper(WrappedComponent) {
             return (
                 <div>
                     <style>
-                        {this.state.cssToInsertInIframe}
+                        {this.state.cssToInsertInIframe.join('\n')}
+                        {this.props.cssToInsert || ''}
                     </style>
                     {this.state.cssFilesToInject.map(cssFilePath => {
                         return (
@@ -48,7 +49,7 @@ export default function iframeWrapper(WrappedComponent) {
             super(props)
 
             this.state = {
-                cssToInsertInIframe: '',
+                cssToInsertInIframe: [],
                 cssFilesToInject: []
             }
         }
