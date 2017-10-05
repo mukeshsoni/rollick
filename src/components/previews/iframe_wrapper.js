@@ -4,14 +4,15 @@
   */
 import React from 'react'
 import Frame from 'react-frame-component'
+import cssObserver from './css_observer.js'
 
 export default function iframeWrapper(WrappedComponent) {
-    return class extends React.Component {
+    class IframeWrapperComponent extends React.Component {
         getIframeHead() {
             return (
                 <div>
                     <style>
-                        {this.state.cssToInsertInIframe.join('\n')}
+                        {this.props.cssToInsertInIframe.join('\n')}
                         {this.props.cssToInsert || ''}
                     </style>
                     {this.state.cssFilesToInject.map(cssFilePath => {
@@ -56,45 +57,6 @@ export default function iframeWrapper(WrappedComponent) {
 
         componentWillMount() {
             this.globalCssLinks()
-
-            var mo = new MutationObserver(mutations => {
-                if (
-                    mutations &&
-                    mutations.length > 0 &&
-                    mutations[0].addedNodes &&
-                    mutations[0].addedNodes.length > 0
-                ) {
-                    const addedNodes = mutations[0].addedNodes
-                    if (addedNodes[0].nodeName === 'STYLE') {
-                        if (
-                            addedNodes[0].innerText.includes(
-                                'display: none !important'
-                            )
-                        ) {
-                            console.log(
-                                'problem styles',
-                                addedNodes[0].innerText
-                            )
-                        } else {
-                            this.setState(
-                                {
-                                    cssToInsertInIframe: addedNodes[0].innerText
-                                },
-                                () => {
-                                    addedNodes[0].remove()
-                                }
-                            )
-                        }
-                    }
-                }
-                console.log('new node added to head')
-            })
-            var config = {
-                attributes: true,
-                childList: true,
-                characterData: true
-            }
-            mo.observe(document.head, config)
         }
 
         render() {
@@ -116,4 +78,6 @@ export default function iframeWrapper(WrappedComponent) {
             )
         }
     }
+
+    return cssObserver(IframeWrapperComponent)
 }
