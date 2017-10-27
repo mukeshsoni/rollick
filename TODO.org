@@ -1,4 +1,9 @@
-* P1 [89/176]
+* P1 [89/178]
+- [ ] Add "save", "create new" and "open" feature. Both will work using
+  local storage for now. Save will also add a query Param to the URL
+  - [ ] Save
+  - [ ] Create New
+  - [ ] Open
 - [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
 Sharing through url? Store the code in database against the unique url.
 Saving configuration for the tool? Store in the database.
@@ -30,18 +35,13 @@ We don’t want them to clutter the list. They also cause confusion because they
 Users will be also then able to modify the prop values from the jsx usage section.
 - [ ] Save in local. Allow create new pen. Show list of saved pens and
   allow loading any of the saved ones.
-- [ ] Add "save", "create new" and "open" feature. Both will work using
-  local storage for now. Save will also add a query Param to the URL
-  - [ ] Save
-  - [ ] Create New
-  - [ ] Open
-- [-] Render components in iframe for isolation of css/javascript
+- [X] [1/1] Render components in iframe for isolation of css/javascript
   scope. Problem with getting iframe to work is that the styles for a
   component are added by creating link tags in the head. They are not
   available in the iframe. One way can be to intercept network
   requests, filter css ones and add those link tags in iframe head. Can
   use service worker for that.
-  - [-] See how we can inject the css required in a component into the iframe
+  - [X] [3/3] See how we can inject the css required in a component into the iframe
     - [X] Finally got the css thing working by listening to style tag additions to head tag. 
           No need for service worker hack. Using MutationObserver, listen to addition of style tag in head and inject that css into iframe head.
     - [X] Rithwik has another solution. What if the fetching of components is done inside the preview component. 
@@ -54,7 +54,7 @@ https://github.com/systemjs/plugin-css/blob/master/README.md
       - [X] css
       - [X] less file
         - [X] How to handle further resolution of less dependencies? Should less be transpiled in the frontend?
-    - [ ] Checkout react-storybook code. They also render the stories inside an iframe
+    - [X] Checkout react-storybook code. They also render the stories inside an iframe
 - [ ] Preview panel styling
 - [ ] Don't need to copy meta data generator. In fact, should run it
 from project root and just copy the output files to .kodai folder

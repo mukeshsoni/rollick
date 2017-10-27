@@ -81,7 +81,7 @@ export default class App extends React.Component {
                 <Modal
                     isOpen={this.state.showStyleguide}
                     onRequestClose={this.hideStyleguide}
-                    closeTimeoutMS={1000}
+                    closeTimeoutMS={200}
                     style={styleguideModalStyle}
                     contentLabel="Styleguide"
                 >

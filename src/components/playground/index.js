@@ -12,8 +12,10 @@ import './app.css'
 import './split_pane.css'
 import Preview from '../previews/composite_component_preview.js'
 import Editor from './editor/index.js'
+import LoadPenModal from './load_pen_modal.js'
 import FileSaver from 'file-saver'
 import belt from '../../../belt.js'
+import { savePenToDisk, getSavedPen } from '../../persist.js'
 const { any, isCapitalized, last, dedupe, fileExtension } = belt
 import { formatCode } from './code_formatter.js'
 import {
@@ -34,6 +36,36 @@ function wrapCss(css) {
 export default class Playground extends React.Component {
     addComponentFromStyleguide = component => {
         this.handleSearchSelection(component)
+    }
+
+    penSaved = () => {
+        return this.state.penId
+    }
+
+    savePen = () => {
+        let penId
+
+        if (this.penSaved()) {
+            penId = this.state.penId
+        } else {
+            penId = Math.floor(Math.random() * 10000)
+            this.setState({ penId })
+        }
+
+        let { jsxCode, jsCode, cssCode } = this.state
+        savePenToDisk({ jsxCode, jsCode, cssCode }, penId)
+    }
+
+    handleLoadPenClick = () => {
+        this.setState({ showSavedPensModal: true })
+    }
+
+    loadPen = id => {
+        if (getSavedPen(id)) {
+            this.setState({ ...getSavedPen(id), showSavedPensModal: false })
+        } else {
+            this.setState({ showSavedPensModal: false })
+        }
     }
 
     exportPen = () => {
@@ -534,6 +566,7 @@ export default class Playground extends React.Component {
             jsToInsert,
             jsError,
             showSearchModal,
+            showSavedPensModal,
             componentsMetaList,
             editorLayout,
             loading
@@ -614,6 +647,23 @@ export default class Playground extends React.Component {
                             }}
                         />
                     </div>
+                    {showSavedPensModal
+                        ? <LoadPenModal
+                              onClose={() =>
+                                  this.setState({ showSavedPensModal: false })}
+                              onSelect={this.loadPen}
+                          />
+                        : null}
+                    <Button
+                        onClick={this.handleLoadPenClick}
+                        label="Open"
+                        style={{ marginRight: '1em' }}
+                    />
+                    <Button
+                        onClick={this.savePen}
+                        label="Save"
+                        style={{ marginRight: '1em' }}
+                    />
                     <Button
                         onClick={this.exportPen}
                         label="Export"
