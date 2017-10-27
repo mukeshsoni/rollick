@@ -10,6 +10,7 @@ export function transpile(code, oldVal = '') {
         })
 
         return {
+            code,
             transpiledCode: babelOutput.code,
             error: '',
             ast: babelOutput.ast
@@ -17,6 +18,7 @@ export function transpile(code, oldVal = '') {
     } catch (e) {
         console.error('error compiling javascript', e.toString())
         return {
+            code,
             transpiledCode: oldVal,
             error: e.toString()
         }

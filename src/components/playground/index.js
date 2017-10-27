@@ -205,13 +205,14 @@ export default class Playground extends React.Component {
                         code:
                             mode === 'jsx'
                                 ? formatted.formattedCode.slice(1)
-                                : formatted.formattedCode
+                                : formatted.formattedCode,
+                        toInsert: this.state[mode].toInsert
                     }
                 },
                 () => {
                     codeMirrorRef
                         .getCodeMirror()
-                        .setValue(this.state[`${mode}Code`])
+                        .setValue(this.state[mode].code)
                     codeMirrorRef.getCodeMirror().setCursor(formatted.cursor)
                 }
             )
@@ -448,11 +449,9 @@ export default class Playground extends React.Component {
 
         let savedPen = lastSavedPen()
         let penId = savedPen.id
-        const startingJsx =
-            (savedPen && savedPen.jsx && savedPen.jsx.code) || ''
-        const startingCss =
-            (savedPen && savedPen.css && savedPen.css.code) || ''
-        const startingJs = (savedPen && savedPen.js && savedPen.js.code) || ''
+        const startingJsx = (savedPen && savedPen.jsxCode) || ''
+        const startingCss = (savedPen && savedPen.cssCode) || ''
+        const startingJs = (savedPen && savedPen.jsCode) || ''
 
         this.state = {
             penId,
@@ -469,8 +468,8 @@ export default class Playground extends React.Component {
             },
             js: {
                 code: startingJs,
-                toInsert: transpile(startingJsx).transpiledCode,
-                error: transpile(startingJsx).error
+                toInsert: transpile(startingJs).transpiledCode,
+                error: transpile(startingJs).error
             },
             showSearchModal: false,
             searchText: '',
@@ -495,7 +494,9 @@ export default class Playground extends React.Component {
         if (this.state.css.code && this.state.css.code.trim() !== '') {
             compileCss(this.state.css.code).then(css => {
                 this.setState({
-                    cssToInsert: css.transpiledCode,
+                    css: {
+                        toInsert: css.transpiledCode
+                    },
                     error: css.error
                 })
             })
