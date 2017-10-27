@@ -6,7 +6,7 @@ export function cmToPrettierCursorOffset(code, cursor) {
     const allLines = code.split('\n')
     const charsInLineBeforeCursor =
         cursor.line > 0 ? allLines.slice(0, cursor.line).join('\n').length : 0
-    return charsInLineBeforeCursor + cursor.ch
+    return charsInLineBeforeCursor + cursor.ch - 1
 }
 
 function prettierToCodeMirrorCursor(code, cursorOffset) {

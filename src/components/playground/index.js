@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import jsx from 'jsx-transpiler'
-import sass from 'sass.js'
 import SearchBox from '../search_box/index.js'
 import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
@@ -21,17 +20,13 @@ import { formatCode } from './code_formatter.js'
 import {
     transpile,
     jsxToJs,
+    compileCss,
+    wrapCss,
     addComponentToExistingJsx
 } from './transpile_helpers.js'
 import loadComponentFromPath from './load_component_from_path.js'
 
 const rightPaneId = 'reactpen-right-pane'
-
-// TODO - returning the same css for now while trying to load preview in iframe
-function wrapCss(css) {
-    return css
-    // return '#' + rightPaneId + ' { ' + css + ' }'
-}
 
 export default class Playground extends React.Component {
     addComponentFromStyleguide = component => {
@@ -52,8 +47,27 @@ export default class Playground extends React.Component {
             this.setState({ penId })
         }
 
-        let { jsxCode, jsCode, cssCode } = this.state
-        savePenToDisk({ jsxCode, jsCode, cssCode }, penId)
+        let { jsx, js, css } = this.state
+        savePenToDisk(
+            { jsxCode: jsx.code, jsCode: js.code, cssCode: css.code },
+            penId
+        )
+    }
+
+    clearAll = () => {
+        this._updateJsx('')
+        this._updateJs('')
+        this._updateCss('')
+        this.reloadPreview()
+    }
+
+    handleNewPenClick = () => {
+        this.setState(
+            {
+                penId: null
+            },
+            this.clearAll
+        )
     }
 
     handleLoadPenClick = () => {
@@ -68,21 +82,22 @@ export default class Playground extends React.Component {
     }
 
     loadPen = id => {
-        if (getSavedPen(id)) {
-            this.setState(
-                { penId: id, ...getSavedPen(id), showSavedPensModal: false },
-                () => {
-                    this.reloadPreview()
-                }
-            )
+        let savedPen = getSavedPen(id)
+        if (savedPen) {
+            this.setState({ penId: id, showSavedPensModal: false }, () => {
+                this._updateJsx(savedPen.jsxCode)
+                this._updateJs(savedPen.jsCode)
+                this._updateCss(savedPen.css.code)
+                this.reloadPreview()
+            })
         } else {
             this.setState({ showSavedPensModal: false })
         }
     }
 
     exportPen = () => {
-        const { jsCode, jsxCode, cssCode } = this.state
-        const json = { jsCode, jsxCode, cssCode }
+        const { js, jsx, css } = this.state
+        const json = { jsCode: js.code, jsxCode: jsx.code, cssCode: css.code }
 
         var blob = new Blob([JSON.stringify(json, null, 2)], {
             type: 'text/plain;charset=utf-8'
@@ -106,9 +121,9 @@ export default class Playground extends React.Component {
                 if (!jsCode && !jsxCode && !cssCode) {
                     return
                 } else {
-                    this._updateJsxCode(jsxCode)
-                    this._updateJsCode(jsCode)
-                    this._updateCssCode(cssCode)
+                    this._updateJsx(jsxCode)
+                    this._updateJs(jsCode)
+                    this._updateCss(cssCode)
 
                     this.setState({ loading: true }, this.reloadPreview)
                 }
@@ -124,61 +139,6 @@ export default class Playground extends React.Component {
         document.getElementById('import-file').click()
     }
 
-    registerServiceWorker = () => {
-        // if ('serviceWorker' in navigator) {
-        //     navigator.serviceWorker
-        //         .register('sw_rollick.js')
-        //         .then(
-        //             registration => {
-        //                 // Registration was successful
-        //                 console.log(
-        //                     'ServiceWorker registration successful with scope: ',
-        //                     registration.scope
-        //                 )
-        //                 navigator.serviceWorker.addEventListener(
-        //                     'message',
-        //                     event => {
-        //                         if (fileExtension(event.data) === 'less') {
-        //                             SystemJS.import(event.data + '!')
-        //                                 .then(lessContent => {
-        //                                     console.log(
-        //                                         'less file content',
-        //                                         event.data,
-        //                                         lessContent
-        //                                     )
-        //                                 })
-        //                                 .catch(err => {
-        //                                     console.error(
-        //                                         'error loading less file',
-        //                                         event.data
-        //                                     )
-        //                                 })
-        //                         } else {
-        //                             this.setState({
-        //                                 cssFilesToInject: dedupe(
-        //                                     this.state.cssFilesToInject.concat(
-        //                                         event.data
-        //                                     )
-        //                                 )
-        //                             })
-        //                         }
-        //                     }
-        //                 )
-        //             },
-        //             function(err) {
-        //                 // registration failed :(
-        //                 console.error(
-        //                     'ServiceWorker registration failed: ',
-        //                     err
-        //                 )
-        //             }
-        //         )
-        //         .catch(e => {
-        //             console.error('error loading service worker file', e)
-        //         })
-        // }
-    }
-
     handleSearchSelection = selectedItem => {
         // handleSearchSelection is called even if enter is pressed when there are zero search results
         if (selectedItem && selectedItem.path) {
@@ -188,7 +148,7 @@ export default class Playground extends React.Component {
                     window[selectedItem.name] =
                         com.component.default || com.component
                     let jsxWithNewComponent = addComponentToExistingJsx(
-                        this.state.jsxCode,
+                        this.state.jsx.code,
                         this.jsxEditorRef.codeMirrorRef
                             .getCodeMirror()
                             .getCursor(),
@@ -201,7 +161,7 @@ export default class Playground extends React.Component {
 
                     // TODO - no idea why i am doing so much stuff here. Need to refactor
                     // TODO - need to probably format code after adding component
-                    this.updateJsxCode(jsxWithNewComponent)
+                    this.updateJsx(jsxWithNewComponent)
                 })
                 .catch(e =>
                     console.error(
@@ -215,12 +175,14 @@ export default class Playground extends React.Component {
     formatCss = () => {
         this.setState(
             {
-                cssCode: cssbeautify(this.state.cssCode)
+                css: {
+                    code: cssbeautify(this.state.css.code)
+                }
             },
             () => {
                 this.cssEditorRef.codeMirrorRef
                     .getCodeMirror()
-                    .setValue(this.state.cssCode)
+                    .setValue(this.state.css.code)
             }
         )
     }
@@ -228,13 +190,8 @@ export default class Playground extends React.Component {
     // formats both js and jsx code
     // mode can be oneOf(['js', 'jsx'])
     formatJsLikeCode = mode => {
-        const code = this.state[`${mode}Code`]
+        const code = this.state[mode].code
         const codeMirrorRef = this[`${mode}EditorRef`].codeMirrorRef
-
-        // nothing for format
-        if (code.trim() === '') {
-            return
-        }
 
         const formatted = formatCode(
             code,
@@ -244,10 +201,12 @@ export default class Playground extends React.Component {
         if (!formatted.error) {
             this.setState(
                 {
-                    [`${mode}Code`]:
-                        mode === 'jsx'
-                            ? formatted.formattedCode.slice(1)
-                            : formatted.formattedCode
+                    [mode]: {
+                        code:
+                            mode === 'jsx'
+                                ? formatted.formattedCode.slice(1)
+                                : formatted.formattedCode
+                    }
                 },
                 () => {
                     codeMirrorRef
@@ -258,7 +217,7 @@ export default class Playground extends React.Component {
             )
         } else {
             this.setState({
-                [`${mode}Error`]: formatted.error.toString()
+                [mode]: { error: formatted.error.toString() }
             })
         }
     }
@@ -277,85 +236,75 @@ export default class Playground extends React.Component {
     }, 1000)
 
     saveJsxCode = () => {
-        return this.saveCode('jsxCode', this.state.jsxCode)
+        return this.saveCode('jsxCode', this.state.jsx.code)
     }
 
     saveJsCode = () => {
-        return this.saveCode('jsCode', this.state.jsCode)
+        return this.saveCode('jsCode', this.state.js.code)
     }
 
     saveCssCode = () => {
-        return this.saveCode('cssCode', this.state.cssCode)
+        return this.saveCode('cssCode', this.state.css.code)
     }
 
-    _updateJsxCode = newCode => {
-        const js = jsxToJs(newCode, this.state.jsxToInsert)
+    _updateJsx = newCode => {
+        const js = jsxToJs(newCode, this.state.jsx.toInsert)
 
         this.setState(
             {
-                jsxCode: newCode,
-                jsxToInsert: js.transpiledCode,
-                jsxError: js.error
+                jsx: {
+                    code: newCode,
+                    toInsert: js.transpiledCode,
+                    error: js.error
+                }
             },
             this.saveJsxCode
         )
     }
 
-    updateJsxCode = debounce(newCode => {
-        this._updateJsxCode(newCode)
+    updateJsx = debounce(newCode => {
+        this._updateJsx(newCode)
     }, 300)
 
-    compileCss = code => {
-        return new Promise((resolve, reject) => {
-            sass.compile(wrapCss(code), result => {
-                if (result.status === 0) {
-                    resolve({
-                        compiledCode: result.text,
-                        error: ''
-                    })
-                } else {
-                    /* console.error('error converting sass to css', result.message)*/
-                    reject({ error: result.message })
-                }
-            })
-        })
-    }
-
-    _updateCssCode = newCode => {
-        this.compileCss(newCode)
+    _updateCss = newCode => {
+        compileCss(newCode)
             .then(css => {
                 this.setState(
                     {
-                        cssCode: newCode,
-                        cssToInsert: css.compiledCode,
-                        cssError: ''
+                        css: {
+                            code: newCode,
+                            toInsert: css.transpiledCode,
+                            error: ''
+                        }
                     },
                     this.saveCssCode
                 )
             })
             .catch(css => {
-                this.setState({ cssError: css.error })
+                this.setState({ css: { error: css.error } })
             })
     }
 
-    updateCssCode = debounce(newCode => {
-        this._updateCssCode(newCode)
+    updateCss = debounce(newCode => {
+        this._updateCss(newCode)
     }, 300)
 
-    _updateJsCode = newCode => {
-        const js = transpile(newCode, this.state.jsToInsert)
+    _updateJs = newCode => {
+        const js = transpile(newCode, this.state.js.toInsert)
         this.setState(
             {
-                jsCode: newCode,
-                jsToInsert: js.transpiledCode,
-                jsError: js.error
+                js: {
+                    code: newCode,
+                    toInsert: js.transpiledCode,
+                    error: js.error
+                }
             },
             this.saveJsCode
         )
     }
 
-    updateJsCode = debounce(newCode => {
-        this._updateJsCode(newCode)
+    updateJs = debounce(newCode => {
+        this._updateJs(newCode)
     }, 300)
 
     hideSearchModal = () => {
@@ -449,7 +398,7 @@ export default class Playground extends React.Component {
         SystemJS.import('components.meta.json!json')
             .then(meta => {
                 this.setState({ componentsMetaList: meta }, () => {
-                    const js = transpile(`<div>${this.state.jsxCode}</div>`)
+                    const js = transpile(`<div>${this.state.jsx.code}</div>`)
 
                     if (!js.error) {
                         const customComponentTokens = js.ast.tokens.filter(
@@ -499,22 +448,30 @@ export default class Playground extends React.Component {
 
         let savedPen = lastSavedPen()
         let penId = savedPen.id
-        const startingJsx = savedPen.jsxCode || ''
-        const startingCss = savedPen.cssCode || ''
-        const startingJs = savedPen.jsCode || ''
+        const startingJsx =
+            (savedPen && savedPen.jsx && savedPen.jsx.code) || ''
+        const startingCss =
+            (savedPen && savedPen.css && savedPen.css.code) || ''
+        const startingJs = (savedPen && savedPen.js && savedPen.js.code) || ''
 
         this.state = {
             penId,
             com: null,
-            jsxCode: startingJsx,
-            jsxToInsert: jsxToJs(startingJsx).transpiledCode,
-            jsxError: jsxToJs(startingJsx).error,
-            cssCode: startingCss,
-            cssToInsert: wrapCss(startingCss),
-            cssError: '',
-            jsCode: localStorage.getItem('jsCode') || '',
-            jsToInsert: transpile(startingJsx).transpiledCode,
-            jsError: transpile(startingJsx).error,
+            jsx: {
+                code: startingJsx,
+                toInsert: jsxToJs(startingJsx).transpiledCode,
+                error: jsxToJs(startingJsx).error
+            },
+            css: {
+                code: startingCss,
+                toInsert: wrapCss(startingCss),
+                error: ''
+            },
+            js: {
+                code: startingJs,
+                toInsert: transpile(startingJsx).transpiledCode,
+                error: transpile(startingJsx).error
+            },
             showSearchModal: false,
             searchText: '',
             componentsMetaList: [],
@@ -535,10 +492,10 @@ export default class Playground extends React.Component {
         // we can't get the compiled version (wrap with 'right-container' tag and compile with sass compiler)
         // because sass compiler is async
         // triggering css code update so that the load time css code get's compiled
-        if (this.state.cssCode && this.state.cssCode.trim() !== '') {
-            this.compileCss(this.state.cssCode).then(css => {
+        if (this.state.css.code && this.state.css.code.trim() !== '') {
+            compileCss(this.state.css.code).then(css => {
                 this.setState({
-                    cssToInsert: css.compiledCode,
+                    cssToInsert: css.transpiledCode,
                     error: css.error
                 })
             })
@@ -566,15 +523,9 @@ export default class Playground extends React.Component {
         const {
             com,
             avatar,
-            jsxCode,
-            jsxToInsert,
-            jsxError,
-            cssCode,
-            cssToInsert,
-            cssError,
-            jsCode,
-            jsToInsert,
-            jsError,
+            jsx,
+            css,
+            js,
             showSearchModal,
             showSavedPensModal,
             componentsMetaList,
@@ -602,7 +553,7 @@ export default class Playground extends React.Component {
         const inputClassnames = 'search-modal-input'
 
         //       <style>
-        //       {cssToInsert}
+        //       {css.toInsert}
         // </style>
         return (
             <div className="page-container">
@@ -664,6 +615,11 @@ export default class Playground extends React.Component {
                               onSelect={this.loadPen}
                           />
                         : null}
+                    <Button
+                        onClick={this.handleNewPenClick}
+                        label="New"
+                        style={{ marginRight: '1em' }}
+                    />
                     <Button
                         onClick={this.handleLoadPenClick}
                         label="Open"
@@ -741,14 +697,14 @@ export default class Playground extends React.Component {
                         >
                             <Editor
                                 ref={instance => (this.jsxEditorRef = instance)}
-                                code={jsxCode}
-                                onCodeChange={this.updateJsxCode}
+                                code={jsx.code}
+                                onCodeChange={this.updateJsx}
                                 mode="jsx"
                                 editorName="JSX"
                                 autoFocus={true}
                                 extraKeys={jsxEditorExtraKeys}
                                 onFormatClick={this.formatJsx}
-                                errors={jsxError}
+                                errors={jsx.error}
                             />
                             <SplitPane
                                 split={
@@ -763,31 +719,31 @@ export default class Playground extends React.Component {
                                 <Editor
                                     ref={instance =>
                                         (this.cssEditorRef = instance)}
-                                    code={cssCode}
-                                    onCodeChange={this.updateCssCode}
+                                    code={css.code}
+                                    onCodeChange={this.updateCss}
                                     mode="css"
                                     editorName="CSS"
                                     onFormatClick={this.formatCss}
-                                    errors={cssError}
+                                    errors={css.error}
                                 />
                                 <Editor
                                     ref={instance =>
                                         (this.jsEditorRef = instance)}
-                                    code={jsCode}
-                                    onCodeChange={this.updateJsCode}
+                                    code={js.code}
+                                    onCodeChange={this.updateJs}
                                     mode="jsx"
                                     editorName="JS"
                                     onFormatClick={this.formatJs}
-                                    errors={jsError}
+                                    errors={js.error}
                                 />
                             </SplitPane>
                         </SplitPane>
                         <div className="editor-right-pane" id={rightPaneId}>
                             <Preview
                                 loading={loading}
-                                jsxToInsert={jsxToInsert}
-                                jsToInsert={jsToInsert}
-                                cssToInsert={this.state.cssToInsert}
+                                jsxToInsert={jsx.toInsert}
+                                jsToInsert={js.toInsert}
+                                cssToInsert={css.toInsert}
                             />
                         </div>
                     </SplitPane>

@@ -1,5 +1,6 @@
 import React from 'react'
 import Babel from 'jspm_packages/npm/babel-standalone@6.26.0/babel.min.js'
+import sass from 'sass.js'
 import { formatCode, cmToPrettierCursorOffset } from './code_formatter.js'
 
 export function transpile(code, oldVal = '') {
@@ -37,13 +38,10 @@ function getFakePropValue(fakeProp) {
 function propsAsJsxKeyValue(component) {
     const { fakeProps } = component
 
-    return Object.keys(
-        component.props
-    ).reduce((acc, propName) => {
+    return Object.keys(component.props).reduce((acc, propName) => {
         if (fakeProps && fakeProps[propName]) {
             return (
-                acc +
-                    ` ${propName}={${getFakePropValue(fakeProps[propName])}}`
+                acc + ` ${propName}={${getFakePropValue(fakeProps[propName])}}`
             )
         } else if (component.props[propName].required !== false) {
             return acc + ` ${propName}={''}`
@@ -53,11 +51,7 @@ function propsAsJsxKeyValue(component) {
     }, '')
 }
 
-export function addComponentToExistingJsx(
-    oldCode='',
-    cursor,
-    component,
-) {
+export function addComponentToExistingJsx(oldCode = '', cursor, component) {
     const propValuePairs = component.props ? propsAsJsxKeyValue(component) : ''
     const codeToInsert = `<${component.name} ${propValuePairs}></${component.name}>`
 
@@ -77,4 +71,26 @@ export function addComponentToExistingJsx(
     }
 
     return codeAfterInsertion
+}
+
+// TODO - returning the same css for now while trying to load preview in iframe
+export function wrapCss(css) {
+    return css
+    // return '#' + rightPaneId + ' { ' + css + ' }'
+}
+
+export function compileCss(code) {
+    return new Promise((resolve, reject) => {
+        sass.compile(wrapCss(code), result => {
+            if (result.status === 0) {
+                resolve({
+                    transpiledCode: result.text,
+                    error: ''
+                })
+            } else {
+                /* console.error('error converting sass to css', result.message)*/
+                reject({ error: result.message })
+            }
+        })
+    })
 }
