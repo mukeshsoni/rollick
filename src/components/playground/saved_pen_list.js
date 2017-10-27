@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { getSavedPens } from '../../persist.js'
+import { getSavedPensSorted } from '../../persist.js'
 
 export default class SavedPenList extends React.Component {
     defaultProps = {
@@ -8,7 +8,6 @@ export default class SavedPenList extends React.Component {
     }
 
     render() {
-        let savedPens = getSavedPens()
         let savedPenItemStyle = {
             padding: '1em',
             cursor: 'pointer'
@@ -16,13 +15,18 @@ export default class SavedPenList extends React.Component {
 
         return (
             <div>
-                {Object.keys(getSavedPens()).map(penId =>
+                {getSavedPensSorted().map(pen =>
                     <div
-                        key={'saved_pen_' + penId}
+                        key={'saved_pen_' + pen.id}
                         style={savedPenItemStyle}
-                        onClick={this.props.onSelect.bind(this, penId)}
+                        onClick={this.props.onSelect.bind(this, pen.id)}
                     >
-                        {penId}
+                        <div>
+                            {pen.id}
+                        </div>
+                        <div>
+                            {new Date(pen.modifiedDate).toString()}
+                        </div>
                     </div>
                 )}
             </div>

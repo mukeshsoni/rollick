@@ -15,7 +15,7 @@ import Editor from './editor/index.js'
 import LoadPenModal from './load_pen_modal.js'
 import FileSaver from 'file-saver'
 import belt from '../../../belt.js'
-import { savePenToDisk, getSavedPen } from '../../persist.js'
+import { savePenToDisk, getSavedPen, lastSavedPen } from '../../persist.js'
 const { any, isCapitalized, last, dedupe, fileExtension } = belt
 import { formatCode } from './code_formatter.js'
 import {
@@ -60,9 +60,21 @@ export default class Playground extends React.Component {
         this.setState({ showSavedPensModal: true })
     }
 
+    reloadPreview = () => {
+        this.loadCustomComponents()
+        this.formatJsx() // putting formatting stuff after loading, since they might blow up and not lead to loading of custom components at all
+        this.formatJs()
+        this.formatCss()
+    }
+
     loadPen = id => {
         if (getSavedPen(id)) {
-            this.setState({ ...getSavedPen(id), showSavedPensModal: false })
+            this.setState(
+                { penId: id, ...getSavedPen(id), showSavedPensModal: false },
+                () => {
+                    this.reloadPreview()
+                }
+            )
         } else {
             this.setState({ showSavedPensModal: false })
         }
@@ -98,12 +110,7 @@ export default class Playground extends React.Component {
                     this._updateJsCode(jsCode)
                     this._updateCssCode(cssCode)
 
-                    this.setState({ loading: true }, () => {
-                        this.loadCustomComponents()
-                        this.formatJsx() // putting formatting stuff after loading, since they might blow up and not lead to loading of custom components at all
-                        this.formatJs()
-                        this.formatCss()
-                    })
+                    this.setState({ loading: true }, this.reloadPreview)
                 }
             } catch (e) {
                 console.error('could not parse json', e)
@@ -490,11 +497,14 @@ export default class Playground extends React.Component {
     constructor(props) {
         super(props)
 
-        const startingJsx = localStorage.getItem('jsxCode') || ''
-        const startingCss = localStorage.getItem('cssCode') || ''
-        const startingJs = localStorage.getItem('jsCode') || ''
+        let savedPen = lastSavedPen()
+        let penId = savedPen.id
+        const startingJsx = savedPen.jsxCode || ''
+        const startingCss = savedPen.cssCode || ''
+        const startingJs = savedPen.jsCode || ''
 
         this.state = {
+            penId,
             com: null,
             jsxCode: startingJsx,
             jsxToInsert: jsxToJs(startingJsx).transpiledCode,

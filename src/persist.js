@@ -11,8 +11,23 @@ export function savePenToDisk(code, penId) {
 
     localStorage.setItem(
         'saved_pens',
-        JSON.stringify(assoc(penId, code, savedPens))
+        JSON.stringify(
+            assoc(
+                penId,
+                { id: penId, ...code, modifiedDate: new Date().toISOString() },
+                savedPens
+            )
+        )
     )
+    localStorage.setItem('last_saved_pen', penId)
+}
+
+export function lastSavedPen() {
+    if (localStorage.getItem('last_saved_pen')) {
+        return getSavedPen(localStorage.getItem('last_saved_pen'))
+    } else {
+        return {}
+    }
 }
 
 export function getSavedPens() {
@@ -24,6 +39,24 @@ export function getSavedPens() {
     } finally {
         return savedPens
     }
+}
+
+export function getSavedPensSorted() {
+    let savedPens = getSavedPens()
+
+    return Object.keys(savedPens)
+        .map(id => {
+            return {
+                id,
+                ...savedPens[id]
+            }
+        })
+        .sort((a, b) => {
+            return (
+                new Date(a.modifiedDate).getTime() -
+                new Date(b.modifiedDate).getTime()
+            )
+        })
 }
 
 export function getSavedPen(id) {
