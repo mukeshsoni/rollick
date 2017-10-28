@@ -13,6 +13,12 @@ export default class SavedPenList extends React.Component {
             padding: '1em',
             cursor: 'pointer'
         }
+        let className = 'styleguide-list-item'
+        let mutedStyle = {
+            color: '#9199a1',
+            marginTop: '0.2rem',
+            fontSize: '0.8em'
+        }
 
         return (
             <div>
@@ -22,6 +28,7 @@ export default class SavedPenList extends React.Component {
                     this.props.filter
                 ).map(pen =>
                     <div
+                        className={className}
                         key={'saved_pen_' + pen.id}
                         style={savedPenItemStyle}
                         onClick={this.props.onSelect.bind(this, pen.id)}
@@ -29,8 +36,8 @@ export default class SavedPenList extends React.Component {
                         <div>
                             {pen.name || pen.id}
                         </div>
-                        <div>
-                            {new Date(pen.modifiedDate).toString()}
+                        <div style={mutedStyle}>
+                            Modified - {new Date(pen.modifiedDate).toString()}
                         </div>
                     </div>
                 )}

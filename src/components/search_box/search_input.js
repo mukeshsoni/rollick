@@ -13,6 +13,12 @@ class SearchInput extends React.Component {
         this.inputRef = null
     }
 
+    componentDidMount() {
+        if (this.props.autoFocus) {
+            this.inputRef && this.inputRef.focus()
+        }
+    }
+
     render() {
         return <input ref={node => (this.inputRef = node)} {...this.props} />
     }
@@ -25,7 +31,8 @@ SearchInput.propTypes = {
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
     onFocus: PropTypes.func,
-    onBlur: PropTypes.func
+    onBlur: PropTypes.func,
+    autoFocus: PropTypes.bool
 }
 
 SearchInput.defaultProps = {

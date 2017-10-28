@@ -29,6 +29,10 @@ export default class LoadPenModal extends React.Component {
                 bottom: 0,
                 background: 'rgba(255, 255, 255, 0.9)',
                 zIndex: 25
+            },
+            content: {
+                left: '30%',
+                right: '30%'
             }
         }
 
@@ -46,6 +50,7 @@ export default class LoadPenModal extends React.Component {
                     value={searchText}
                     onChange={this.handleInputChange}
                     placeholder="Search saved pen"
+                    autoFocus={true}
                 />
                 <SavedPenList
                     filter={searchText}
