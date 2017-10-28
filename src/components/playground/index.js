@@ -9,12 +9,18 @@ import SplitPane from 'react-split-pane'
 import cssbeautify from 'cssbeautify'
 import './app.css'
 import './split_pane.css'
+import EditInline from '../../components/inputs/edit_inline.js'
 import Preview from '../previews/composite_component_preview.js'
 import Editor from './editor/index.js'
 import LoadPenModal from './load_pen_modal.js'
 import FileSaver from 'file-saver'
 import belt from '../../../belt.js'
-import { savePenToDisk, getSavedPen, lastSavedPen } from '../../persist.js'
+import {
+    savePenToDisk,
+    getSavedPen,
+    lastSavedPen,
+    updatePenName
+} from '../../persist.js'
 const { any, isCapitalized, last, dedupe, fileExtension } = belt
 import { formatCode } from './code_formatter.js'
 import {
@@ -38,20 +44,28 @@ export default class Playground extends React.Component {
     }
 
     savePen = () => {
-        let penId
+        let penId, penName
 
         if (this.penSaved()) {
             penId = this.state.penId
         } else {
             penId = Math.floor(Math.random() * 10000)
-            this.setState({ penId })
+            penName = 'Untitled-' + Math.floor(Math.random() * 1000)
+            this.setState({ penId, penName })
         }
 
         let { jsx, js, css } = this.state
         savePenToDisk(
             { jsxCode: jsx.code, jsCode: js.code, cssCode: css.code },
-            penId
+            penId,
+            penName
         )
+    }
+
+    handlePenNameChange = newName => {
+        this.setState({ penName: newName }, () => {
+            updatePenName(this.state.penId, this.state.penName)
+        })
     }
 
     clearAll = () => {
@@ -435,12 +449,14 @@ export default class Playground extends React.Component {
 
         let savedPen = lastSavedPen()
         let penId = savedPen.id
+        let penName = savedPen.name
         const startingJsx = (savedPen && savedPen.jsxCode) || ''
         const startingCss = (savedPen && savedPen.cssCode) || ''
         const startingJs = (savedPen && savedPen.jsCode) || ''
 
         this.state = {
             penId,
+            penName,
             com: null,
             jsx: {
                 code: startingJsx,
@@ -517,7 +533,8 @@ export default class Playground extends React.Component {
             showSavedPensModal,
             componentsMetaList,
             editorLayout,
-            loading
+            loading,
+            penName
         } = this.state
 
         const modalStyle = {
@@ -602,6 +619,13 @@ export default class Playground extends React.Component {
                               onSelect={this.loadPen}
                           />
                         : null}
+                    {penName &&
+                        <div style={{ marginRight: '1em' }}>
+                            <EditInline
+                                value={penName}
+                                onChange={this.handlePenNameChange}
+                            />
+                        </div>}
                     <Button
                         onClick={this.handleNewPenClick}
                         label="New"

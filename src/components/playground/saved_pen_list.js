@@ -22,7 +22,7 @@ export default class SavedPenList extends React.Component {
                         onClick={this.props.onSelect.bind(this, pen.id)}
                     >
                         <div>
-                            {pen.id}
+                            {pen.name || pen.id}
                         </div>
                         <div>
                             {new Date(pen.modifiedDate).toString()}

@@ -1,6 +1,9 @@
 import assoc from './tools/assoc.js'
 
-export function savePenToDisk(code, penId) {
+// TODO - what if the save failed? How will the called of this function know that?
+// Maybe return the saved object on successful save and return error otherwise
+// This function can return a Maybe or Either
+export function savePenToDisk(code, id, name) {
     let savedPens = {}
 
     try {
@@ -13,13 +16,22 @@ export function savePenToDisk(code, penId) {
         'saved_pens',
         JSON.stringify(
             assoc(
-                penId,
-                { id: penId, ...code, modifiedDate: new Date().toISOString() },
+                id,
+                { id, name, ...code, modifiedDate: new Date().toISOString() },
                 savedPens
             )
         )
     )
-    localStorage.setItem('last_saved_pen', penId)
+    localStorage.setItem('last_saved_pen', id)
+}
+
+export function updatePenName(id, name) {
+    let savedPen = getSavedPen(id)
+
+    localStorage.setItem(
+        'saved_pens',
+        JSON.stringify(assoc(id, { ...savedPen, name }, getSavedPens()))
+    )
 }
 
 export function lastSavedPen() {

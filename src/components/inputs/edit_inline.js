@@ -1,0 +1,80 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import onClickOutside from 'react-onclickoutside'
+
+class EditInline extends React.Component {
+    handleClickOutside = e => {
+        this.setState(
+            {
+                editing: false
+            },
+            () => {
+                this.props.onChange(this.state.value)
+            }
+        )
+    }
+
+    handleKeyDown = e => {
+        var key = e.keyCode || e.which
+
+        switch (key) {
+            case 13: // enter is pressed or escape is pressed
+                e.preventDefault()
+                this.setState(
+                    {
+                        editing: false
+                    },
+                    () => {
+                        this.props.onChange(this.state.value)
+                    }
+                )
+                break
+            case 27: // escape key
+                e.preventDefault()
+                this.setState({
+                    editing: false,
+                    value: this.props.value
+                })
+                break
+        }
+    }
+
+    handleChange = e => {
+        this.setState({
+            value: e.target.value
+        })
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            editing: false,
+            value: this.props.value
+        }
+    }
+
+    render() {
+        return (
+            <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => this.setState({ editing: true })}
+            >
+                {this.state.editing
+                    ? <input
+                          value={this.state.value}
+                          onChange={this.handleChange}
+                          onKeyDown={this.handleKeyDown}
+                      />
+                    : this.props.value}
+            </div>
+        )
+    }
+}
+
+EditInline.propTypes = {
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+}
+
+export default onClickOutside(EditInline)
