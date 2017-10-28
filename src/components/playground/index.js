@@ -48,6 +48,7 @@ export default class Playground extends React.Component {
 
         if (this.penSaved()) {
             penId = this.state.penId
+            penName = this.state.penName
         } else {
             penId = Math.floor(Math.random() * 10000)
             penName = 'Untitled-' + Math.floor(Math.random() * 1000)
@@ -108,12 +109,19 @@ export default class Playground extends React.Component {
         let savedPen = getSavedPen(id)
         if (savedPen) {
             this.saveUnsavedWork()
-            this.setState({ penId: id, showSavedPensModal: false }, () => {
-                this._updateJsx(savedPen.jsxCode)
-                this._updateJs(savedPen.jsCode)
-                this._updateCss(savedPen.cssCode)
-                setTimeout(this.reloadPreview, 20)
-            })
+            this.setState(
+                {
+                    penId: id,
+                    penName: savedPen.name,
+                    showSavedPensModal: false
+                },
+                () => {
+                    this._updateJsx(savedPen.jsxCode)
+                    this._updateJs(savedPen.jsCode)
+                    this._updateCss(savedPen.cssCode)
+                    setTimeout(this.reloadPreview, 20)
+                }
+            )
         } else {
             this.setState({ showSavedPensModal: false })
         }
@@ -544,6 +552,7 @@ export default class Playground extends React.Component {
             componentsMetaList,
             editorLayout,
             loading,
+            penId,
             penName
         } = this.state
 
@@ -629,7 +638,7 @@ export default class Playground extends React.Component {
                               onSelect={this.loadPen}
                           />
                         : null}
-                    {penName &&
+                    {penId &&
                         <div style={{ marginRight: '1em' }}>
                             <EditInline
                                 value={penName}

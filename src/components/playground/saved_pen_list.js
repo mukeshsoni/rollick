@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { getSavedPensSorted } from '../../persist.js'
+import looseFilter from '../../tools/loose_filter.js'
 
 export default class SavedPenList extends React.Component {
     defaultProps = {
@@ -15,7 +16,11 @@ export default class SavedPenList extends React.Component {
 
         return (
             <div>
-                {getSavedPensSorted().map(pen =>
+                {looseFilter(
+                    getSavedPensSorted(),
+                    'name',
+                    this.props.filter
+                ).map(pen =>
                     <div
                         key={'saved_pen_' + pen.id}
                         style={savedPenItemStyle}

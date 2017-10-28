@@ -54,6 +54,12 @@ class EditInline extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== this.props.value) {
+            this.setState({ value: nextProps.value })
+        }
+    }
+
     render() {
         return (
             <div
@@ -66,7 +72,9 @@ class EditInline extends React.Component {
                           onChange={this.handleChange}
                           onKeyDown={this.handleKeyDown}
                       />
-                    : this.props.value}
+                    : this.props.value === ''
+                      ? 'Click to edit'
+                      : this.props.value}
             </div>
         )
     }

@@ -65,8 +65,8 @@ export function getSavedPensSorted() {
         })
         .sort((a, b) => {
             return (
-                new Date(a.modifiedDate).getTime() -
-                new Date(b.modifiedDate).getTime()
+                new Date(b.modifiedDate).getTime() -
+                new Date(a.modifiedDate).getTime()
             )
         })
 }
