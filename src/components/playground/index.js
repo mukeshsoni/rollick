@@ -58,7 +58,7 @@ export default class Playground extends React.Component {
         this._updateJsx('')
         this._updateJs('')
         this._updateCss('')
-        this.reloadPreview()
+        setTimeout(this.reloadPreview, 1000)
     }
 
     handleNewPenClick = () => {
@@ -87,8 +87,8 @@ export default class Playground extends React.Component {
             this.setState({ penId: id, showSavedPensModal: false }, () => {
                 this._updateJsx(savedPen.jsxCode)
                 this._updateJs(savedPen.jsCode)
-                this._updateCss(savedPen.css.code)
-                this.reloadPreview()
+                this._updateCss(savedPen.cssCode)
+                setTimeout(this.reloadPreview, 1000)
             })
         } else {
             this.setState({ showSavedPensModal: false })
@@ -155,10 +155,6 @@ export default class Playground extends React.Component {
                         { ...selectedItem, fakeProps: com.fakeProps }
                     )
 
-                    this.jsxEditorRef.codeMirrorRef
-                        .getCodeMirror()
-                        .setValue(jsxWithNewComponent)
-
                     // TODO - no idea why i am doing so much stuff here. Need to refactor
                     // TODO - need to probably format code after adding component
                     this.updateJsx(jsxWithNewComponent)
@@ -173,18 +169,11 @@ export default class Playground extends React.Component {
         }
     }
     formatCss = () => {
-        this.setState(
-            {
-                css: {
-                    code: cssbeautify(this.state.css.code)
-                }
-            },
-            () => {
-                this.cssEditorRef.codeMirrorRef
-                    .getCodeMirror()
-                    .setValue(this.state.css.code)
+        this.setState({
+            css: {
+                code: cssbeautify(this.state.css.code)
             }
-        )
+        })
     }
 
     // formats both js and jsx code
@@ -210,15 +199,15 @@ export default class Playground extends React.Component {
                     }
                 },
                 () => {
-                    codeMirrorRef
-                        .getCodeMirror()
-                        .setValue(this.state[mode].code)
                     codeMirrorRef.getCodeMirror().setCursor(formatted.cursor)
                 }
             )
         } else {
             this.setState({
-                [mode]: { error: formatted.error.toString() }
+                [mode]: {
+                    ...this.state[mode],
+                    error: formatted.error.toString()
+                }
             })
         }
     }
@@ -251,16 +240,13 @@ export default class Playground extends React.Component {
     _updateJsx = newCode => {
         const js = jsxToJs(newCode, this.state.jsx.toInsert)
 
-        this.setState(
-            {
-                jsx: {
-                    code: newCode,
-                    toInsert: js.transpiledCode,
-                    error: js.error
-                }
-            },
-            this.saveJsxCode
-        )
+        this.setState({
+            jsx: {
+                code: newCode,
+                toInsert: js.transpiledCode,
+                error: js.error
+            }
+        })
     }
 
     updateJsx = debounce(newCode => {
@@ -270,19 +256,22 @@ export default class Playground extends React.Component {
     _updateCss = newCode => {
         compileCss(newCode)
             .then(css => {
-                this.setState(
-                    {
-                        css: {
-                            code: newCode,
-                            toInsert: css.transpiledCode,
-                            error: ''
-                        }
-                    },
-                    this.saveCssCode
-                )
+                this.setState({
+                    css: {
+                        code: newCode,
+                        toInsert: css.transpiledCode,
+                        error: ''
+                    }
+                })
             })
             .catch(css => {
-                this.setState({ css: { error: css.error } })
+                this.setState({
+                    css: {
+                        code: newCode,
+                        toInsert: this.state.css.toInsert,
+                        error: css.error
+                    }
+                })
             })
     }
 
@@ -292,16 +281,13 @@ export default class Playground extends React.Component {
 
     _updateJs = newCode => {
         const js = transpile(newCode, this.state.js.toInsert)
-        this.setState(
-            {
-                js: {
-                    code: newCode,
-                    toInsert: js.transpiledCode,
-                    error: js.error
-                }
-            },
-            this.saveJsCode
-        )
+        this.setState({
+            js: {
+                code: newCode,
+                toInsert: js.transpiledCode,
+                error: js.error
+            }
+        })
     }
 
     updateJs = debounce(newCode => {

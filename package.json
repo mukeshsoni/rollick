@@ -25,6 +25,7 @@
         "main": "rollick.js",
         "dependencies": {
             "@emmetio/codemirror-plugin": "npm:@emmetio/codemirror-plugin@^0.3.5",
+            "@skidding/react-codemirror": "npm:@skidding/react-codemirror@^1.0.2",
             "acorn-jsx": "npm:acorn-jsx@^4.0.1",
             "babel-core": "npm:babel-core@^6.26.0",
             "babel-plugin-transform-flow-strip-types": "npm:babel-plugin-transform-flow-strip-types@^6.22.0",
@@ -97,7 +98,7 @@
             "promise": "npm:promise@^7.1.1",
             "prop-types": "npm:prop-types@^15.5.10",
             "querystring": "npm:jspm-nodelibs-querystring@^0.2.0",
-            "react": "npm:react@^15.4.2",
+            "react": "npm:react@^15.6.2",
             "react-dom": "npm:react-dom@^15.4.2",
             "request": "npm:request@^2.72.0",
             "source-map": "npm:source-map@^0.5.3",

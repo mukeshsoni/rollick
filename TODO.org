@@ -1,4 +1,7 @@
 * P1 [89/178]
+- [ ] Change react-codemirror lib - https://github.com/scniro/react-codemirror2.
+The one we use has a nasty bug where changing `value` prop does not change the editor value.
+Wasted so many days without realising that it was a bug in react-codemirror.
 - [ ] Add "save", "create new" and "open" feature. Both will work using
   local storage for now. Save will also add a query Param to the URL
   - [ ] Save

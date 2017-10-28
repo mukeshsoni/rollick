@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CodeMirror from 'react-codemirror'
-import 'jspm_packages/npm/codemirror@5.29.0/mode/jsx/jsx.js'
-import 'jspm_packages/npm/codemirror@5.29.0/mode/css/css.js'
-/* import 'jspm_packages/npm/codemirror@5.29.0/mode/javascript/javascript.js'*/
+import CodeMirror from '@skidding/react-codemirror'
+import 'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
+import 'jspm_packages/npm/codemirror@5.31.0/mode/css/css.js'
+/* import 'jspm_packages/npm/codemirror@5.31.0/mode/javascript/javascript.js'*/
 import 'node_modules/codemirror/lib/codemirror.css!css'
 import 'node_modules/codemirror/theme/twilight.css!css'
 import emmetCodemirror from '@emmetio/codemirror-plugin'
-import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.29.0/lib/codemirror.js'
+import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirror.js'
 emmetCodemirror(codeMirrorInstance)
 import EditorHeader from './header.js'
 import EditorFooter from './footer.js'
@@ -54,7 +54,11 @@ export default class Editor extends React.Component {
 
         return (
             <div ref={instance => (this.containerRef = instance)} style={style}>
-                <EditorHeader name={editorName} formatButtonLabel={'Format ' + editorName} onFormatClick={onFormatClick}/>
+                <EditorHeader
+                    name={editorName}
+                    formatButtonLabel={'Format ' + editorName}
+                    onFormatClick={onFormatClick}
+                />
                 <CodeMirror
                     ref={instance => (this.codeMirrorRef = instance)}
                     autoFocus={autoFocus}
@@ -78,7 +82,7 @@ Editor.propTypes = {
     containerStyle: PropTypes.object,
     extraKeys: PropTypes.object,
     errors: PropTypes.string,
-    onFormatClick: PropTypes.func,
+    onFormatClick: PropTypes.func
 }
 
 Editor.defaultProps = {
