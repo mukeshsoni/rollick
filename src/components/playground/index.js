@@ -72,10 +72,19 @@ export default class Playground extends React.Component {
         this._updateJsx('')
         this._updateJs('')
         this._updateCss('')
-        setTimeout(this.reloadPreview, 1000)
+        setTimeout(this.reloadPreview, 20)
+    }
+
+    saveUnsavedWork = () => {
+        // save unsaved work for a saved pen
+        if (this.state.penId) {
+            this.savePen()
+        }
     }
 
     handleNewPenClick = () => {
+        this.saveUnsavedWork()
+
         this.setState(
             {
                 penId: null
@@ -98,11 +107,12 @@ export default class Playground extends React.Component {
     loadPen = id => {
         let savedPen = getSavedPen(id)
         if (savedPen) {
+            this.saveUnsavedWork()
             this.setState({ penId: id, showSavedPensModal: false }, () => {
                 this._updateJsx(savedPen.jsxCode)
                 this._updateJs(savedPen.jsCode)
                 this._updateCss(savedPen.cssCode)
-                setTimeout(this.reloadPreview, 1000)
+                setTimeout(this.reloadPreview, 20)
             })
         } else {
             this.setState({ showSavedPensModal: false })
