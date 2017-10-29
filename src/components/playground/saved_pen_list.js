@@ -17,7 +17,7 @@ export default class SavedPenList extends React.Component {
         let mutedStyle = {
             color: '#9199a1',
             marginTop: '0.2rem',
-            fontSize: '0.8em'
+            fontSize: '0.7em'
         }
 
         return (
@@ -37,7 +37,8 @@ export default class SavedPenList extends React.Component {
                             {pen.name || pen.id}
                         </div>
                         <div style={mutedStyle}>
-                            Modified - {new Date(pen.modifiedDate).toString()}
+                            Modified -{' '}
+                            {new Date(pen.modifiedDate).toLocaleString()}
                         </div>
                     </div>
                 )}

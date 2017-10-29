@@ -170,6 +170,7 @@ class SearchBox extends React.Component {
             <SearchInput
                 style={{ width: 300 }}
                 ref={node => (this.searchInputRef = node)}
+                autoFocus={true}
                 onKeyDown={this.handleKeyDown}
                 className={inputClassnames}
                 value={searchText}
@@ -198,8 +199,6 @@ class SearchBox extends React.Component {
         key('down', this.handleDownKey)
         key('up', this.handleUpKey)
         key('enter', this.handleEnterKey)
-
-        this.searchInputRef && this.searchInputRef.getInputRef().focus()
     }
 
     render() {

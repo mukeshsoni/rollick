@@ -15,6 +15,7 @@ import Editor from './editor/index.js'
 import LoadPenModal from './load_pen_modal.js'
 import FileSaver from 'file-saver'
 import belt from '../../../belt.js'
+import assoc from '../../tools/assoc.js'
 import {
     savePenToDisk,
     getSavedPen,
@@ -236,10 +237,11 @@ export default class Playground extends React.Component {
             )
         } else {
             this.setState({
-                [mode]: {
-                    ...this.state[mode],
-                    error: formatted.error.toString()
-                }
+                [mode]: assoc(
+                    error,
+                    formatted.error.toString(),
+                    this.state[mode]
+                )
             })
         }
     }
