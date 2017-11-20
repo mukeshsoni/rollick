@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import loadComponentFromPath from '../playground/load_component_from_path.js'
 import faker from '../../faker.js'
 import iframeWrapper from './iframe_wrapper.js'
+import PropsAndMethods from './props_and_methods.js'
+import PreviewCodeSection from './preview_code_section.js'
 import '../styleguide/loader.css'
 
 class SingleComponentPreview extends React.Component {
@@ -123,6 +125,8 @@ class SingleComponentPreview extends React.Component {
                             item.fakeProps ? item.fakeProps : fakeProps
                         )}
                     </div>
+                    <PreviewCodeSection item={item} />
+                    <PropsAndMethods item={item} />
                 </div>
             )
         }
