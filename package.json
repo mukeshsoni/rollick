@@ -214,7 +214,7 @@
         "codemirror": "^5.29.0",
         "commander": "^2.11.0",
         "fs-extra": "4.0.1",
-        "jspm": "^0.17.0-beta.44",
+        "jspm": "^0.17.0-beta.47",
         "mime-types": "^2.1.17",
         "minimist": "^1.2.0",
         "ncp": "2.0.0",
