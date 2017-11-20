@@ -20,6 +20,7 @@ Saving configuration for the tool? Store in the database.
     1. Description of the component - picked from comment above the component. Check if the description is in jsdoc format. use jsdoc-parse.
     2. Usage - which is the jsx we anyways generate for use in playground
     3. Props description - picked from comments above each prop
+  - [ ] Allow copying of file path like react-styleguidist does
 Users will be also then able to modify the prop values from the jsx usage section.
 - [ ] Start using these concepts/technologies going forward
   - [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier
