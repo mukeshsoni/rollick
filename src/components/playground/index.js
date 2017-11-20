@@ -185,7 +185,7 @@ export default class Playground extends React.Component {
                         this.jsxEditorRef.codeMirrorRef
                             .getCodeMirror()
                             .getCursor(),
-                        { ...selectedItem, fakeProps: com.fakeProps }
+                        { ...selectedItem, fakeProps: selectedItem.fakeProps }
                     )
 
                     // TODO - no idea why i am doing so much stuff here. Need to refactor
