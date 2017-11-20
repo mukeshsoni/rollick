@@ -101,13 +101,25 @@ function applyLoaders(toolConfig, filePath, fileContent) {
 }
 
 function tryResolvingFilePath(filePath, req) {
-    if (fs.existsSync(filePath)) {
-        return filePath
-    }
+    // does not work for cases where someone does `require('path/to/module')` but wants `path/to/module/index.js`
+    // if(fs.lstatSync(filePath) && fs.lstatSync(filePath).isFile()) {
+    // // if (fs.existsSync(filePath)) {
+    //     return filePath
+    // }
 
     // give it to resolveFile to try and resolve it as such
     if (resolveFile(filePath)) {
-        return resolveFile(filePath)
+        if(fs.lstatSync(resolveFile(filePath)) && fs.lstatSync(resolveFile(filePath)).isDirectory()) {
+            console.log('file is a directory. trying to resolve', filePath)
+            if(fs.lstatSync(resolveFile(filePath) + '/index.js') && fs.lstatSync(resolveFile(filePath) + '/index.js').isFile()) {
+                return resolveFile(filePath) + '/index.js'
+            } else {
+                console.log('file path is a directory path', filePath, resolveFile(filePath))
+                return resolveFile(filePath)
+            }
+        } else {
+            return resolveFile(filePath)
+        }
     } else if (filePath.startsWith('.rollick')) {
         // let's try stripping off .rollick from the url and try resolving what remains
         const withoutDotRollick = filePath.replace('.rollick/', '')
@@ -143,11 +155,13 @@ var request = http
         var filePath = req.url.slice(1).split('?')[0]
         filePath = tryResolvingFilePath(adjustPaths(toolConfig, filePath), req)
 
+
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
             response.writeHead(200, {'Content-Type': mime.lookup(filePath)})
             // font files should not be loaded with 'utf8' encoding. They are binary files. Loading them with 'utf8' encoding and sending them across to browser breaks/corrupts them.
             // send buffered content to loaders. Let them convert to 'utf8' string manually (using .toString('utf'))
+            // console.log('filePath to read', filePath)
             response.end(
                 applyLoaders(toolConfig, filePath, fs.readFileSync(filePath))
             )

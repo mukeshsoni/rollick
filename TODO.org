@@ -1,4 +1,4 @@
-* P1 [89/178]
+* P1 [94/182]
 - [X] Change react-codemirror lib - https://github.com/scniro/react-codemirror2.
 The one we use has a nasty bug where changing `value` prop does not change the editor value.
 Wasted so many days without realising that it was a bug in react-codemirror.
@@ -6,16 +6,27 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   local storage for now. Save will also add a query Param to the URL
   - [X] Save
   - [X] Create New
-  - [ ] Open
+  - [X] Open
 - [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
 Sharing through url? Store the code in database against the unique url.
 Saving configuration for the tool? Store in the database.
-Storing particular values for props and state? Store in the database.
-Enhancing documentation of components through a rich text editor or however way? Store it in the database.
+- [ ] Storing particular values for props and state? Store in the database.
+- [ ] Copy/pasting some code should work. If that copy/pasted code has custom components, they should be parsed and loaded.
+- [ ] Enhancing documentation of components through a rich text editor or however way? Store it in the database.
+- [ ] Show a =How to use= section in the styleguide preview section. Like victory.js does.
+  - [ ] react-docgen picks up comments above component and props and instance methods and adds them to component meta data
+  - [ ] Can check if the description is in jsdoc format and further format for documentation
+  - [ ] The documentation for each component will consist of three main sections
+    1. Description of the component - picked from comment above the component. Check if the description is in jsdoc format. use jsdoc-parse.
+    2. Usage - which is the jsx we anyways generate for use in playground
+    3. Props description - picked from comments above each prop
+Users will be also then able to modify the prop values from the jsx usage section.
 - [ ] Start using these concepts/technologies going forward
   - [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier
     while dealing with exception (which is a lot in this tool)
   - [ ] Write parts of the system in purescript
+    - Tried it. Proved to be harder than it looked. `pulp build` should have done the work. Problem is, purescript modules are written as `Folder/index.js`, but
+      required as `require('../Module')` and systemjs does not understand module requires which assume `index.js` file inside a folder :(
 - [ ] [0/1] If the cursor is inside the definition of some component in the
   editor, show all possible props for the component somewhere along
   with the prop types. A detailspane for each component? Each prop can
@@ -34,9 +45,7 @@ The search list will then filter those components.
 There would be an option to ‘Show all components’ and then toggle the filter option back.
 Why is it needed? The automatic sweep of the components folder also finds many components which are not necessarily part of the UI kit.
 We don’t want them to clutter the list. They also cause confusion because they might have names similar to some proper component.
-- [ ] Show a =How to use= section in the styleguide preview section. Like victory.js does.
-Users will be also then able to modify the prop values from the jsx usage section.
-- [ ] Save in local. Allow create new pen. Show list of saved pens and
+- [X] Save in local. Allow create new pen. Show list of saved pens and
   allow loading any of the saved ones.
 - [X] [1/1] Render components in iframe for isolation of css/javascript
   scope. Problem with getting iframe to work is that the styles for a

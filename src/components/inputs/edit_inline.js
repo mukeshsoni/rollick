@@ -14,6 +14,9 @@ class EditInline extends React.Component {
         )
     }
 
+    /**
+      * handle keydown documentation
+      **/
     handleKeyDown = e => {
         var key = e.keyCode || e.which
 
