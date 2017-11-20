@@ -45,8 +45,8 @@ export default function cssObserver(WrappedComponent) {
                         }
                     }
                 }
-                console.log('new node added to head')
             })
+
             var config = {
                 attributes: true,
                 childList: true,
