@@ -13,7 +13,9 @@ function getPropRow(prop) {
                 {prop[1].type.name}
             </td>
             <td>
-                {prop[1].default}
+                {prop[1].default ||
+                    (prop[1].required &&
+                        <span style={{ color: '#999' }}>required</span>)}
             </td>
             <td>
                 {prop[1].description}

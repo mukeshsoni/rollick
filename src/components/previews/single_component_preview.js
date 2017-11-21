@@ -113,6 +113,10 @@ class SingleComponentPreview extends React.Component {
                             </button>
                         </div>
                     </header>
+                    {item.description &&
+                        <div style={{ marginBottom: 8 }}>
+                            {item.description}
+                        </div>}
                     <div
                         style={{
                             padding: 16,
