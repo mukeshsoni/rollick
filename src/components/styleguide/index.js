@@ -15,10 +15,41 @@ import looseFilter from '../../tools/loose_filter.js'
 import StyleguidePlayground from './styleguide_playground.js'
 import { formatCode } from '../playground/code_formatter.js'
 import { componentJsx } from '../playground/transpile_helpers.js'
+import { jsxToJs, transpile } from '../playground/transpile_helpers.js'
+
+function getPropsFromJsxCode(oldFakeProps, jsxCode) {
+    let newFakeProps = oldFakeProps
+    let transpiledCode = transpile(jsxCode)
+
+    if (transpiledCode.error) {
+        return oldFakeProps
+    } else {
+        let ast = transpiledCode.ast
+        let propsInAst = ast.program.body[0].expression.arguments[1].properties
+
+        propsInAst.forEach(propInAst => {
+            if (propInAst && propInAst.value && propInAst.value.value) {
+                newFakeProps[propInAst.key.name] = propInAst.value.value
+            }
+        })
+
+        return newFakeProps
+    }
+}
 
 export default class Styleguide extends React.Component {
     handleJsxCodeChange = newCode => {
         this.setState({
+            selectedComponent: {
+                ...this.state.selectedComponent,
+                fakeProps: {
+                    ...this.state.selectedComponent.fakeProps,
+                    ...getPropsFromJsxCode(
+                        this.state.selectedComponent.fakeProps,
+                        newCode
+                    )
+                }
+            },
             jsxCode: newCode
         })
     }

@@ -160,7 +160,9 @@ export default class AttributePane extends React.Component {
         if (
             nextProps.component &&
             this.props.component &&
-            nextProps.component.path !== this.props.component.path
+            (nextProps.component.path !== this.props.component.path ||
+                nextProps.component.fakeProps !==
+                    this.props.component.fakeProps)
         ) {
             this.setState({
                 props: nextProps.component
@@ -190,7 +192,7 @@ export default class AttributePane extends React.Component {
                             borderBottom: '1px solid rgba(200,200,200,0.9)'
                         }}
                     >
-                        Attributes
+                        {this.props.component.name + ' properties'}
                     </h3>
                 </div>
                 <div>
