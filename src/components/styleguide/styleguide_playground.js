@@ -5,9 +5,33 @@ import PropsAndMethods from '../previews/props_and_methods.js'
 import PreviewCodeSection from '../previews/preview_code_section.js'
 import SingleComponentPreview from '../previews/single_component_preview.js'
 
+class EmptyStyleguidePlayground extends React.PureComponent {
+    render() {
+        let emptyStyleguidePlaygroundStyles = {
+            flex: 4,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '4em',
+            color: '#999'
+        }
+
+        return (
+            <div style={emptyStyleguidePlaygroundStyles}>
+                <span>Preview Here</span>
+            </div>
+        )
+    }
+}
+
 class StyleguidePlayground extends React.PureComponent {
     render() {
         let { item, onAddComponent, onCodeChange, jsxCode } = this.props
+
+        if (!item) {
+            return <EmptyStyleguidePlayground />
+        }
+
         let jsUrlsToInsert = [
             'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
         ]
@@ -23,30 +47,25 @@ class StyleguidePlayground extends React.PureComponent {
             padding: '1em'
         }
 
+        let addButtonStyle = {
+            backgroundImage: 'url(/images/plus_image.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            paddingLeft: 21,
+            outline: 'none',
+            cursor: 'pointer'
+        }
+
         return (
             <div className="styleguide-body" style={bodyStyle}>
                 <div
                     style={{
                         display: 'flex',
-                        justifyContent: 'space-between'
+                        justifyContent: 'flex-end'
                     }}
                 >
-                    <h3
-                        style={{
-                            paddingBottom: '0.5em'
-                        }}
-                    >
-                        Preview
-                    </h3>
-                    <a
-                        style={{
-                            cursor: 'pointer',
-                            fontWeight: 'bold',
-                            color: 'blue'
-                        }}
-                        onClick={onAddComponent}
-                    >
-                        Add this
+                    <a style={addButtonStyle} onClick={onAddComponent}>
+                        AddThis
                     </a>
                 </div>
                 <header style={{ marginBottom: 24 }}>

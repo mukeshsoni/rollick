@@ -158,13 +158,12 @@ export default class Styleguide extends React.Component {
                         {this.getComponentList()}
                     </div>
                 </div>
-                {selectedComponent &&
-                    <StyleguidePlayground
-                        onAddComponent={this.handleAddComponent}
-                        item={selectedComponent}
-                        jsxCode={this.state.jsxCode}
-                        onCodeChange={this.handleJsxCodeChange}
-                    />}
+                <StyleguidePlayground
+                    onAddComponent={this.handleAddComponent}
+                    item={selectedComponent}
+                    jsxCode={this.state.jsxCode}
+                    onCodeChange={this.handleJsxCodeChange}
+                />
                 {this.state.selectedComponent &&
                     <AttributePane
                         component={this.state.selectedComponent}
