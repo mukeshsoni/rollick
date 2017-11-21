@@ -13,6 +13,7 @@ Saving configuration for the tool? Store in the database.
 - [ ] Storing particular values for props and state? Store in the database.
 - [ ] Copy/pasting some code should work. If that copy/pasted code has custom components, they should be parsed and loaded.
 - [ ] Enhancing documentation of components through a rich text editor or however way? Store it in the database.
+- [ ] Feature - import styleguide as an html/pdf document
 - [ ] Show a =How to use= section in the styleguide preview section. Like victory.js does.
   - [ ] react-docgen picks up comments above component and props and instance methods and adds them to component meta data
   - [ ] Can check if the description is in jsdoc format and further format for documentation
@@ -21,6 +22,7 @@ Saving configuration for the tool? Store in the database.
     2. Usage - which is the jsx we anyways generate for use in playground
     3. Props description - picked from comments above each prop
   - [ ] Allow copying of file path like react-styleguidist does
+  - [ ] Allow changing of properties by changing code in the *code* section. The changes will reflect in the properties panel also.
 Users will be also then able to modify the prop values from the jsx usage section.
 - [ ] Start using these concepts/technologies going forward
   - [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier
