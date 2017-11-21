@@ -53,9 +53,13 @@ function propsAsJsxKeyValue(component) {
     }, '')
 }
 
-export function addComponentToExistingJsx(oldCode = '', cursor, component) {
+export function componentJsx(component) {
     const propValuePairs = component.props ? propsAsJsxKeyValue(component) : ''
-    const codeToInsert = `<${component.name} ${propValuePairs}></${component.name}>`
+    return `<${component.name} ${propValuePairs}></${component.name}>`
+}
+
+export function addComponentToExistingJsx(oldCode = '', cursor, component) {
+    const codeToInsert = componentJsx(component)
 
     // need to insert new jsx into the existing jsx code at the right place
     // 1. Right place can be where the cursor is

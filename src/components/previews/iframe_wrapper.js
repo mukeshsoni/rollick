@@ -3,6 +3,7 @@
   * And injects newly added css (to head tag in main frame) to the iframe
   */
 import React from 'react'
+import PropTypes from 'prop-types'
 import Frame from 'react-frame-component'
 import cssObserver from './css_observer.js'
 
@@ -15,13 +16,24 @@ export default function iframeWrapper(WrappedComponent) {
                         {this.props.cssToInsertInIframe.join('\n')}
                         {this.props.cssToInsert || ''}
                     </style>
-                    {this.state.cssFilesToInject.map(cssFilePath => {
+                    {this.state.cssFilesToInject
+                        .concat(this.props.cssUrlsToInsert)
+                        .map(cssFilePath => {
+                            return (
+                                <link
+                                    key={'link_tag_' + cssFilePath}
+                                    type="text/css"
+                                    rel="stylesheet"
+                                    href={cssFilePath}
+                                />
+                            )
+                        })}
+                    {this.props.jsUrlsToInsert.map(scriptPath => {
                         return (
-                            <link
-                                key={'link_tag_' + cssFilePath}
-                                type="text/css"
-                                rel="stylesheet"
-                                href={cssFilePath}
+                            <script
+                                key={'iframe_head_script_' + scriptPath}
+                                type="text/javascript"
+                                src={scriptPath}
                             />
                         )
                     })}
@@ -63,7 +75,8 @@ export default function iframeWrapper(WrappedComponent) {
             const { style } = this.props
             const containerStyle = {
                 width: '100%',
-                height: 600,
+                // height: 600,
+                height: '100%',
                 ...style
             }
 
@@ -77,6 +90,18 @@ export default function iframeWrapper(WrappedComponent) {
                 </Frame>
             )
         }
+    }
+
+    IframeWrapperComponent.propTypes = {
+        cssToInsertInIframe: PropTypes.arrayOf(PropTypes.string),
+        cssToInsert: PropTypes.string,
+        cssUrlsToInsert: PropTypes.arrayOf(PropTypes.string),
+        jsUrlsToInsert: PropTypes.arrayOf(PropTypes.string)
+    }
+
+    IframeWrapperComponent.defaultProps = {
+        cssUrlsToInsert: [],
+        jsUrlsToInsert: []
     }
 
     return cssObserver(IframeWrapperComponent)

@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CodeMirror from '@skidding/react-codemirror'
 import 'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
 import 'jspm_packages/npm/codemirror@5.31.0/mode/css/css.js'
-/* import 'jspm_packages/npm/codemirror@5.31.0/mode/javascript/javascript.js'*/
 import 'node_modules/codemirror/lib/codemirror.css!css'
 import 'node_modules/codemirror/theme/twilight.css!css'
+import CodeMirror from '@skidding/react-codemirror'
 import emmetCodemirror from '@emmetio/codemirror-plugin'
 import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirror.js'
 emmetCodemirror(codeMirrorInstance)

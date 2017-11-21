@@ -121,7 +121,8 @@ class SingleComponentPreview extends React.Component {
                         style={{
                             padding: 16,
                             border: '1px solid #e8e8e8',
-                            borderRadius: 3
+                            borderRadius: 3,
+                            marginBottom: 32
                         }}
                     >
                         {React.createElement(
@@ -129,8 +130,12 @@ class SingleComponentPreview extends React.Component {
                             item.fakeProps ? item.fakeProps : fakeProps
                         )}
                     </div>
-                    <PreviewCodeSection item={item} />
-                    <PropsAndMethods item={item} />
+                    <div style={{ marginBottom: 32 }}>
+                        <PreviewCodeSection item={item} />
+                    </div>
+                    <div style={{ marginBottom: 32 }}>
+                        <PropsAndMethods item={item} />
+                    </div>
                 </div>
             )
         }
@@ -139,11 +144,15 @@ class SingleComponentPreview extends React.Component {
 
 SingleComponentPreview.propTypes = {
     item: PropTypes.object.isRequired,
-    style: PropTypes.object
+    style: PropTypes.object,
+    cssUrlsToInsert: PropTypes.arrayOf(PropTypes.string),
+    jsUrlsToInsert: PropTypes.arrayOf(PropTypes.string)
 }
 
 SingleComponentPreview.defaultProps = {
-    style: {}
+    style: {},
+    cssUrlsToInsert: [],
+    jsUrlsToInsert: []
 }
 
 export default iframeWrapper(SingleComponentPreview)

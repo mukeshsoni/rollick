@@ -12,7 +12,7 @@ import {
     populateDefaultValues
 } from '../../component_maker_helpers/prop_value_from_string.js'
 import looseFilter from '../../tools/loose_filter.js'
-import SingleComponentPreview from '../previews/single_component_preview.js'
+import StyleguidePlayground from './styleguide_playground.js'
 
 export default class Styleguide extends React.Component {
     handleInputChange = e => {
@@ -130,11 +130,6 @@ export default class Styleguide extends React.Component {
             borderRight: '1px solid rgba(200, 200, 200, 0.9)'
         }
 
-        const bodyStyle = {
-            flex: 4,
-            padding: '1em'
-        }
-
         return (
             <div className="styleguide-container">
                 <div className="styleguide-list" style={leftPaneStyle}>
@@ -149,38 +144,10 @@ export default class Styleguide extends React.Component {
                         {this.getComponentList()}
                     </div>
                 </div>
-                <div className="styleguide-body" style={bodyStyle}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between'
-                        }}
-                    >
-                        <h3
-                            style={{
-                                paddingBottom: '0.5em'
-                            }}
-                        >
-                            Preview
-                        </h3>
-                        {this.state.selectedComponent
-                            ? <a
-                                  style={{
-                                      cursor: 'pointer',
-                                      fontWeight: 'bold',
-                                      color: 'blue'
-                                  }}
-                                  onClick={this.handleAddComponent}
-                              >
-                                  Add this
-                              </a>
-                            : null}
-                    </div>
-                    {this.state.selectedComponent &&
-                        <div style={{ padding: '2em' }}>
-                            <SingleComponentPreview item={selectedComponent} />
-                        </div>}
-                </div>
+                <StyleguidePlayground
+                    onAddComponent={this.handleAddComponent}
+                    selectedComponent={selectedComponent}
+                />
                 {this.state.selectedComponent &&
                     <AttributePane
                         component={this.state.selectedComponent}
