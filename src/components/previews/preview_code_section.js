@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import 'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
+import 'jspm_packages/npm/codemirror@5.31.0/mode/css/css.js'
+import 'node_modules/codemirror/lib/codemirror.css!css'
+import 'node_modules/codemirror/theme/base16-light.css!css'
 import CodeMirror from '@skidding/react-codemirror'
 // import emmetCodemirror from '@emmetio/codemirror-plugin'
 import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirror.js'
@@ -11,14 +15,7 @@ import { formatCode } from '../playground/code_formatter.js'
 
 class PreviewCodeSection extends React.PureComponent {
     render() {
-        let { item, onCodeChange } = this.props
-        const style = {
-            // display: 'flex',
-            // flexDirection: 'column'
-            // width: '100%',
-            // height: '100%'
-        }
-
+        let { item, onCodeChange, jsxCode } = this.props
         const codeMirrorOptions = {
             lineNumbers: false,
             lineWrapping: true,
@@ -30,13 +27,20 @@ class PreviewCodeSection extends React.PureComponent {
             viewportMargin: Infinity
         }
 
-        let formattedCode = formatCode(componentJsx(item), {
-            line: 0,
-            ch: 0
-        }).formattedCode.slice(1)
+        let formattedCode =
+            jsxCode ||
+            formatCode(componentJsx(item), {
+                line: 0,
+                ch: 0
+            }).formattedCode.slice(1)
+
+        let cssToInsert = '.ReactCodeMirror .CodeMirror { height: 100% }'
 
         return (
-            <div style={style}>
+            <div>
+                <style>
+                    {cssToInsert}
+                </style>
                 <PreviewSectionHeader text="Code" />
                 <div>
                     <CodeMirror
