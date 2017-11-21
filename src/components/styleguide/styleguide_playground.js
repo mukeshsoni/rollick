@@ -4,50 +4,10 @@ import PropTypes from 'prop-types'
 import PropsAndMethods from '../previews/props_and_methods.js'
 import PreviewCodeSection from '../previews/preview_code_section.js'
 import SingleComponentPreview from '../previews/single_component_preview.js'
-import { componentJsx } from '../playground/transpile_helpers.js'
-import { formatCode } from '../playground/code_formatter.js'
 
-class StyleguidePlayground extends React.Component {
-    handleJsxCodeChange = newCode => {
-        this.setState({
-            jsxCode: newCode
-        })
-    }
-
-    constructor(props) {
-        super(props)
-
-        let { item } = this.props
-        let formattedCode = item
-            ? formatCode(componentJsx(item), {
-                  line: 0,
-                  ch: 0
-              }).formattedCode.slice(1)
-            : ''
-
-        this.state = {
-            jsxCode: formattedCode
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.item !== nextProps.item) {
-            let { item } = nextProps
-            let formattedCode = item
-                ? formatCode(componentJsx(item), {
-                      line: 0,
-                      ch: 0
-                  }).formattedCode.slice(1)
-                : ''
-
-            this.state = {
-                jsxCode: formattedCode
-            }
-        }
-    }
-
+class StyleguidePlayground extends React.PureComponent {
     render() {
-        let { item, onAddComponent } = this.props
+        let { item, onAddComponent, onCodeChange, jsxCode } = this.props
         let jsUrlsToInsert = [
             'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
         ]
@@ -62,11 +22,6 @@ class StyleguidePlayground extends React.Component {
             flex: 4,
             padding: '1em'
         }
-        let { jsxCode } = this.state
-        // let formattedCode = formatCode(componentJsx(item), {
-        //     line: 0,
-        //     ch: 0
-        // }).formattedCode.slice(1)
 
         return (
             <div className="styleguide-body" style={bodyStyle}>
@@ -147,7 +102,7 @@ class StyleguidePlayground extends React.Component {
                 </div>
                 <div style={{ marginBottom: 32 }}>
                     <PreviewCodeSection
-                        onCodeChange={this.handleJsxCodeChange}
+                        onCodeChange={onCodeChange}
                         item={item}
                         jsxCode={jsxCode}
                     />
@@ -161,8 +116,22 @@ class StyleguidePlayground extends React.Component {
 }
 
 StyleguidePlayground.propTypes = {
+    /**
+    * UI component object which is output by react-docgen, and enhanced with fakeProps
+    **/
     item: PropTypes.object.isRequired,
-    onAddComponent: PropTypes.func.isRequired
+    /**
+      * jsx Code string for the component
+    **/
+    jsxCode: PropTypes.string,
+    /**
+    * function to call when user wants to add the component to the playground
+    **/
+    onAddComponent: PropTypes.func.isRequired,
+    /**
+    * function to callback when jsx code is changed in the code panel
+    **/
+    onCodeChange: PropTypes.func.isRequired
 }
 
 export default StyleguidePlayground

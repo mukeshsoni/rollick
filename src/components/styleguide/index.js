@@ -13,8 +13,16 @@ import {
 } from '../../component_maker_helpers/prop_value_from_string.js'
 import looseFilter from '../../tools/loose_filter.js'
 import StyleguidePlayground from './styleguide_playground.js'
+import { formatCode } from '../playground/code_formatter.js'
+import { componentJsx } from '../playground/transpile_helpers.js'
 
 export default class Styleguide extends React.Component {
+    handleJsxCodeChange = newCode => {
+        this.setState({
+            jsxCode: newCode
+        })
+    }
+
     handleInputChange = e => {
         this.setState({ searchText: e.target.value })
     }
@@ -25,19 +33,25 @@ export default class Styleguide extends React.Component {
 
     handleAttributeValueChange = (propName, value) => {
         const { selectedComponent } = this.state
+        const newSelectedComponent = {
+            ...selectedComponent,
+            fakeProps: {
+                ...selectedComponent.fakeProps,
+                [propName]: getPropValue(
+                    selectedComponent.props[propName],
+                    value
+                )
+            }
+        }
+        let formattedCode = formatCode(componentJsx(newSelectedComponent), {
+            line: 0,
+            ch: 0
+        }).formattedCode.slice(1)
 
         if (selectedComponent) {
             this.setState({
-                selectedComponent: {
-                    ...selectedComponent,
-                    fakeProps: {
-                        ...selectedComponent.fakeProps,
-                        [propName]: getPropValue(
-                            selectedComponent.props[propName],
-                            value
-                        )
-                    }
-                }
+                selectedComponent: newSelectedComponent,
+                jsxCode: formattedCode
             })
         }
     }
@@ -148,6 +162,8 @@ export default class Styleguide extends React.Component {
                     <StyleguidePlayground
                         onAddComponent={this.handleAddComponent}
                         item={selectedComponent}
+                        jsxCode={this.state.jsxCode}
+                        onCodeChange={this.handleJsxCodeChange}
                     />}
                 {this.state.selectedComponent &&
                     <AttributePane

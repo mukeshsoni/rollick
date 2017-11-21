@@ -10,6 +10,7 @@ class SingleComponentPreview extends React.Component {
     getComponent = item => {
         loadComponentFromPath(item)
             .then(com => {
+                window[item.name] = com.component.default || com.component
                 this.setState({
                     loading: false,
                     error: null,
