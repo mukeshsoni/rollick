@@ -45,7 +45,7 @@ class PreviewCodeSection extends React.PureComponent {
                 <div>
                     <CodeMirror
                         autoFocus={false}
-                        value={formattedCode}
+                        value={formattedCode.trim('\n')}
                         onChange={onCodeChange}
                         options={codeMirrorOptions}
                         codeMirrorInstance={codeMirrorInstance}
