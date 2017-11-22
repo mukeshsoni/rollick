@@ -1,0 +1,15 @@
+.close-button-modal {
+    font-size: 1.6em;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    cursor: pointer;
+    color: #b93d24;
+    transform: rotate(45deg);
+    fontWeight: bold;
+    transition: transform 0.4s;
+}
+
+.close-button-modal:hover {
+    transform: rotate(135deg);
+}

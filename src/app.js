@@ -5,6 +5,8 @@ import Playground from './components/playground/index.js'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import Styleguide from './components/styleguide/index.js'
 
+import './app.css!css'
+
 export default class App extends React.Component {
     handleShowStyleguideClick = () => {
         this.setState({
@@ -81,16 +83,10 @@ export default class App extends React.Component {
                     contentLabel="Styleguide"
                 >
                     <a
-                        style={{
-                            position: 'absolute',
-                            top: '1em',
-                            right: '1em',
-                            cursor: 'pointer',
-                            fontWeight: 'bold'
-                        }}
+                        className="close-button-modal"
                         onClick={this.hideStyleguide}
                     >
-                        X
+                        +
                     </a>
                     <Styleguide onAddComponent={this.handleAddComponent} />
                 </Modal>

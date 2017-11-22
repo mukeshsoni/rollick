@@ -65,8 +65,7 @@ class StyleguidePlayground extends React.PureComponent {
                         <h2
                             style={{
                                 marginBottom: 8,
-                                fontWeight: 'normal',
-                                color: '#b96224'
+                                fontWeight: 'normal'
                             }}
                         >
                             {item.name}
@@ -108,16 +107,29 @@ class StyleguidePlayground extends React.PureComponent {
                     <div
                         style={{
                             display: 'flex',
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            cursor: 'pointer'
                         }}
+                        onClick={onAddComponent}
                     >
-                        <img
-                            src="/images/plus_image.png"
-                            style={{ width: 36, marginRight: 10 }}
-                        />
-                        <a style={addButtonStyle} onClick={onAddComponent}>
-                            AddThis
-                        </a>
+                        <div
+                            style={{
+                                background: '#24b987',
+                                color: 'white',
+                                display: 'inline-block',
+                                borderRadius: '50%',
+                                width: 42,
+                                height: 42,
+                                textAlign: 'center',
+                                verticalAlign: 'center',
+                                fontSize: 36,
+                                marginRight: 10,
+                                padding: 5
+                            }}
+                        >
+                            +
+                        </div>
+                        <a style={addButtonStyle}>AddThis</a>
                     </div>
                 </header>
                 {item.description &&

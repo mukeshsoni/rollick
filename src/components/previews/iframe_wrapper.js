@@ -16,6 +16,9 @@ export default function iframeWrapper(WrappedComponent) {
                         {this.props.cssToInsertInIframe.join('\n')}
                         {this.props.cssToInsert || ''}
                         {'* {margin: 0;}'}
+                        {
+                            '.CodeMirror-code: {font-family: Fira Code Light; line-height: 1.2}'
+                        }
                     </style>
                     {this.state.cssFilesToInject
                         .concat(this.props.cssUrlsToInsert)
