@@ -54,18 +54,27 @@ function getTextArea(value, onChangeHandler) {
     // The onChange handler should send back data based the type of the prop and not just strings. It's very difficult for consumer of attribute pane
     // to guess what might come out as a result of onChange
     return (
-        <Textarea
-            onChange={e => onChangeHandler(e.target.value)}
-            value={value}
-            maxRows={10}
+        <div
             style={{
-                fontSize: 'inherit',
-                border: '1px solid gray',
-                padding: '0.1em',
-                width: '100%',
-                resize: 'none'
+                padding: '0.4em',
+                border: '2px solid #b93d24',
+                borderRadius: 3
             }}
-        />
+        >
+            <Textarea
+                onChange={e => onChangeHandler(e.target.value)}
+                value={value}
+                maxRows={10}
+                style={{
+                    fontSize: 'inherit',
+                    padding: '0.2em',
+                    width: '100%',
+                    resize: 'none',
+                    color: '#b93d24',
+                    height: 16
+                }}
+            />
+        </div>
     )
 }
 
@@ -116,7 +125,7 @@ export default class AttributePane extends React.Component {
             return Object.keys(component.props).map(propName => {
                 return (
                     <div className="form-row" key={`attribute_${propName}`}>
-                        <div style={{ flex: 1 }}>
+                        <div style={{ flex: 1, alignSelf: 'center' }}>
                             <span style={{ flex: 1 }}>
                                 {propName}
                             </span>
@@ -184,9 +193,9 @@ export default class AttributePane extends React.Component {
     render() {
         const detailsPaneStyle = {
             flex: 2,
-            borderLeft: '1px solid rgba(200,200,200, 0.9)',
             maxHeight: '100%',
-            background: '#f7f7f7'
+            color: '#b93d24',
+            marginTop: 17
         }
 
         return (
@@ -194,10 +203,8 @@ export default class AttributePane extends React.Component {
                 <div
                     style={{
                         marginBottom: '0.5em',
-                        borderBottom: '1px solid rgba(200,200,200,0.9)',
                         fontSize: '1.1em',
                         fontFamily: 'Proxima Nova',
-                        background: '#efefef',
                         padding: '0.5em'
                     }}
                 >

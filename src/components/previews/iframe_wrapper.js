@@ -15,6 +15,7 @@ export default function iframeWrapper(WrappedComponent) {
                     <style>
                         {this.props.cssToInsertInIframe.join('\n')}
                         {this.props.cssToInsert || ''}
+                        {'* {margin: 0;}'}
                     </style>
                     {this.state.cssFilesToInject
                         .concat(this.props.cssUrlsToInsert)
@@ -75,8 +76,8 @@ export default function iframeWrapper(WrappedComponent) {
             const { style } = this.props
             const containerStyle = {
                 width: '100%',
-                // height: 600,
                 height: '100%',
+                margin: 0,
                 ...style
             }
 

@@ -217,8 +217,8 @@ export default class Styleguide extends React.Component {
 
         const leftPaneStyle = {
             flex: 1,
-            padding: '1em',
-            borderRight: '1px solid rgba(200, 200, 200, 0.9)'
+            padding: '1em'
+            // borderRight: '1px solid rgba(200, 200, 200, 0.9)'
         }
 
         return (

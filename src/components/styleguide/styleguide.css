@@ -31,11 +31,11 @@
 
 .styleguide-list-item {
     padding: 1em;
-    color: #000;
+    color: #23b987;
 }
 
 .styleguide-list-item.selected {
-    background-color: #000;
+    background-color: #24b987;
     color: #FFF;
 }
 

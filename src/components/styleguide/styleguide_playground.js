@@ -44,70 +44,78 @@ class StyleguidePlayground extends React.PureComponent {
 
         const bodyStyle = {
             flex: 4,
-            padding: '1em'
+            padding: '6em'
         }
 
         let addButtonStyle = {
-            backgroundImage: 'url(/images/plus_image.png)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            paddingLeft: 21,
             outline: 'none',
             cursor: 'pointer'
         }
 
         return (
             <div className="styleguide-body" style={bodyStyle}>
-                <div
+                <header
                     style={{
                         display: 'flex',
-                        justifyContent: 'flex-end'
+                        justifyContent: 'space-between',
+                        marginBottom: 42
                     }}
                 >
-                    <a style={addButtonStyle} onClick={onAddComponent}>
-                        AddThis
-                    </a>
-                </div>
-                <header style={{ marginBottom: 24 }}>
-                    <h2 style={{ marginBottom: 8 }}>
-                        {item.name}
-                    </h2>
-                    <div
-                        style={{
-                            fontSize: '0.9em',
-                            color: '#999'
-                        }}
-                    >
-                        {item.path}
-                        <button
-                            type="button"
-                            title="Copy to clipboard"
+                    <div>
+                        <h2 style={{ marginBottom: 8 }}>
+                            {item.name}
+                        </h2>
+                        <div
                             style={{
-                                background: 'transparent',
-                                transition: 'color 750ms ease-out',
-                                color: '#999',
-                                padding: 2,
-                                marginLeft: 4,
-                                cursor: 'pointer'
+                                fontSize: '0.9em',
+                                color: '#999'
                             }}
                         >
-                            <svg
-                                fill="currentColor"
-                                preserveAspectRatio="xMidYMid meet"
-                                height="1em"
-                                width="1em"
-                                viewBox="0 0 40 40"
-                                style={{ verticalAlign: 'middle' }}
+                            {item.path}
+                            <button
+                                type="button"
+                                title="Copy to clipboard"
+                                style={{
+                                    background: 'transparent',
+                                    transition: 'color 750ms ease-out',
+                                    color: '#999',
+                                    padding: 2,
+                                    marginLeft: 4,
+                                    cursor: 'pointer'
+                                }}
                             >
-                                <g>
-                                    <path d="m31.6 35v-23.4h-18.2v23.4h18.2z m0-26.6c1.8 0 3.4 1.4 3.4 3.2v23.4c0 1.8-1.6 3.4-3.4 3.4h-18.2c-1.8 0-3.4-1.6-3.4-3.4v-23.4c0-1.8 1.6-3.2 3.4-3.2h18.2z m-5-6.8v3.4h-20v23.4h-3.2v-23.4c0-1.8 1.4-3.4 3.2-3.4h20z" />
-                                </g>
-                            </svg>
-                        </button>
+                                <svg
+                                    fill="currentColor"
+                                    preserveAspectRatio="xMidYMid meet"
+                                    height="1em"
+                                    width="1em"
+                                    viewBox="0 0 40 40"
+                                    style={{ verticalAlign: 'middle' }}
+                                >
+                                    <g>
+                                        <path d="m31.6 35v-23.4h-18.2v23.4h18.2z m0-26.6c1.8 0 3.4 1.4 3.4 3.2v23.4c0 1.8-1.6 3.4-3.4 3.4h-18.2c-1.8 0-3.4-1.6-3.4-3.4v-23.4c0-1.8 1.6-3.2 3.4-3.2h18.2z m-5-6.8v3.4h-20v23.4h-3.2v-23.4c0-1.8 1.4-3.4 3.2-3.4h20z" />
+                                    </g>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <img
+                            src="/images/plus_image.png"
+                            style={{ width: 36, marginRight: 10 }}
+                        />
+                        <a style={addButtonStyle} onClick={onAddComponent}>
+                            AddThis
+                        </a>
                     </div>
                 </header>
                 {item.description &&
-                    <div style={{ marginBottom: 8 }}>
+                    <div style={{ marginBottom: 16 }}>
                         {item.description}
                     </div>}
                 <div style={{ height: 'auto' }}>
