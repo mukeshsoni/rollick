@@ -56,7 +56,7 @@ const code = `<div width={100}>abc</div>`
 // })
 
 function getPropsFromJsxCode(oldFakeProps, jsxCode) {
-    let newFakeProps = oldFakeProps
+    let newFakeProps = { ...oldFakeProps }
     let transpiledCode = transpile(jsxCode)
 
     if (transpiledCode.error) {
@@ -114,10 +114,7 @@ export default class Styleguide extends React.Component {
             ...selectedComponent,
             fakeProps: {
                 ...selectedComponent.fakeProps,
-                [propName]: getPropValue(
-                    selectedComponent.props[propName],
-                    value
-                )
+                [propName]: value
             }
         }
         let formattedCode = formatCode(componentJsx(newSelectedComponent), {
@@ -195,12 +192,21 @@ export default class Styleguide extends React.Component {
 
     componentWillMount() {
         SystemJS.import('components.meta.json!json').then(meta => {
-            this.setState({
-                componentsMetaList: meta,
-                componentsMetaListSorted: meta.sort((a, b) =>
-                    a.name.localeCompare(b.name)
-                )
-            })
+            this.setState(
+                {
+                    componentsMetaList: meta,
+                    componentsMetaListSorted: meta.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    )
+                },
+                // TODO - remove this section. It's a hack while testing styleguide with some component selected,
+                // so that i don't have to click on the button component 1 billion times
+                () => {
+                    this.handleComponentItemClick(
+                        this.state.componentsMetaListSorted[2]
+                    )
+                }
+            )
         })
     }
 

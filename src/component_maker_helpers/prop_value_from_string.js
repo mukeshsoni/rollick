@@ -30,7 +30,7 @@ function getObjectFromString(str) {
         return obj
     } catch (e) {
         console.error('error converting object', e)
-        return str
+        return {}
     }
 }
 

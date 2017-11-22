@@ -175,9 +175,9 @@ export default class AttributePane extends React.Component {
         if (
             nextProps.component &&
             this.props.component &&
-            (nextProps.component.path !== this.props.component.path ||
-                nextProps.component.fakeProps !==
-                    this.props.component.fakeProps)
+            (nextProps.component.path !== this.props.component.path || false)
+            // nextProps.component.fakeProps !==
+            //     this.props.component.fakeProps)
         ) {
             this.setState({
                 props: nextProps.component
