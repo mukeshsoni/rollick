@@ -36,7 +36,10 @@ export default function cssObserver(WrappedComponent) {
                         } else {
                             this.setState(
                                 {
-                                    cssToInsertInIframe: addedNodes[0].innerText
+                                    // TODO - need to dedup the cssToInsertInIframe array
+                                    cssToInsertInIframe: this.state.cssToInsertInIframe.concat(
+                                        addedNodes[0].innerText
+                                    )
                                 },
                                 () => {
                                     addedNodes[0].remove()

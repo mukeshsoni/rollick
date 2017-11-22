@@ -13,7 +13,9 @@ export default function iframeWrapper(WrappedComponent) {
             return (
                 <div>
                     <style>
-                        {this.props.cssToInsertInIframe.join('\n')}
+                        {this.props.cssToInsertInIframe &&
+                            this.props.cssToInsertInIframe.length &&
+                            this.props.cssToInsertInIframe.join('\n')}
                         {this.props.cssToInsert || ''}
                         {'* {margin: 0;}'}
                         {

@@ -34,7 +34,7 @@ function getPropRow(prop) {
                                 'Consolas, "Liberation Mono", Menlo, monospace'
                         }}
                     >
-                        {prop[1].type.name}
+                        {prop[1] && prop[1].type && prop[1].type.name}
                     </code>
                 </span>
             </td>
