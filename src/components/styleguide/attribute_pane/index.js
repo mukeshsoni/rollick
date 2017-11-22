@@ -126,7 +126,9 @@ export default class AttributePane extends React.Component {
                 return (
                     <div className="form-row" key={`attribute_${propName}`}>
                         <div style={{ flex: 1, alignSelf: 'center' }}>
-                            <span style={{ flex: 1 }}>{propName}</span>
+                            <span style={{ flex: 1 }}>
+                                {propName}
+                            </span>
                         </div>
                         <div style={{ flex: 3, width: '100%' }}>
                             {getInputField(
@@ -193,7 +195,7 @@ export default class AttributePane extends React.Component {
             flex: 2,
             maxHeight: '100%',
             color: '#b93d24',
-            marginTop: 17
+            marginTop: 28
         }
 
         return (
@@ -208,7 +210,9 @@ export default class AttributePane extends React.Component {
                 >
                     {this.props.component.name + ' properties'}
                 </div>
-                <div style={{ padding: '1em' }}>{this.getAttributes()}</div>
+                <div style={{ padding: '1em' }}>
+                    {this.getAttributes()}
+                </div>
             </div>
         )
     }
