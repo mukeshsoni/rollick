@@ -62,7 +62,13 @@ class StyleguidePlayground extends React.PureComponent {
                     }}
                 >
                     <div>
-                        <h2 style={{ marginBottom: 8 }}>
+                        <h2
+                            style={{
+                                marginBottom: 8,
+                                fontWeight: 'normal',
+                                color: '#b96224'
+                            }}
+                        >
                             {item.name}
                         </h2>
                         <div
