@@ -7,6 +7,13 @@ import { getComponent, getComponentElement } from './component_maker.js'
 import faker from '../../faker.js'
 import AttributePane from './attribute_pane/index.js'
 import debounce from 'debounce'
+// import { getProp } from 'jsx-ast-utils'
+import * as babylon from 'babylon'
+import traverse from 'babel-traverse'
+import jsxUtils, { hasProp } from 'jsx-ast-utils'
+import * as t from 'babel-types'
+window.t = t
+
 import {
     getPropValue,
     populateDefaultValues
@@ -17,6 +24,37 @@ import { formatCode } from '../playground/code_formatter.js'
 import { componentJsx } from '../playground/transpile_helpers.js'
 import { jsxToJs, transpile } from '../playground/transpile_helpers.js'
 
+const code = `<div width={100}>abc</div>`
+
+// const ast = transpile(code).ast
+// const ast = babylon.parse(code, { plugins: ['jsx'] })
+// const jsxCode =
+//     '<Button \
+//   label={"labellkkjasdfdsaf"} \
+//   onClick={function fakeFunction() {}} \
+//   style={{}} \
+//   enabled={true} \
+// />'
+
+// traverse(babylon.parse(jsxCode, { plugins: ['jsx'] }), {
+//     JSXOpeningElement(path) {
+//         console.log('got a jsx element', path)
+//     }
+// })
+
+// traverse(ast, {
+//     JSXOpeningElement: node => {
+//         // debugger
+//         console.log(
+//             'got jsx element',
+//             node,
+//             hasProp,
+//             jsxUtils,
+//             jsxUtils.hasProp(node.node.attributes, 'width')
+//         )
+//     }
+// })
+
 function getPropsFromJsxCode(oldFakeProps, jsxCode) {
     let newFakeProps = oldFakeProps
     let transpiledCode = transpile(jsxCode)
@@ -24,7 +62,15 @@ function getPropsFromJsxCode(oldFakeProps, jsxCode) {
     if (transpiledCode.error) {
         return oldFakeProps
     } else {
+        // let ast = babylon.parse(jsxCode, { plugins: ['jsx'] })
         let ast = transpiledCode.ast
+
+        // traverse(babylon.parse(jsxCode, { plugins: ['jsx'] }), {
+        //     JSXOpeningElement(node) {
+        //         console.log('got a jsx element', node)
+        //     }
+        // })
+
         let propsInAst = ast.program.body[0].expression.arguments[1].properties
 
         propsInAst.forEach(propInAst => {

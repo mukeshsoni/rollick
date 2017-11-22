@@ -12,3 +12,11 @@
 .form-row > span,div:first-child() {
     flex: 1;
 }
+
+.attribute-help--container .attribute-help {
+    visibility: hidden;
+}
+
+.attribute-help--container:hover .attribute-help {
+    visibility: visible;
+}

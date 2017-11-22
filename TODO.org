@@ -1,4 +1,4 @@
-* P1 [94/182]
+* P1 [94/183]
 - [X] Change react-codemirror lib - https://github.com/scniro/react-codemirror2.
 The one we use has a nasty bug where changing `value` prop does not change the editor value.
 Wasted so many days without realising that it was a bug in react-codemirror.
@@ -23,6 +23,7 @@ Saving configuration for the tool? Store in the database.
     3. Props description - picked from comments above each prop
   - [ ] Allow copying of file path like react-styleguidist does
   - [ ] Allow changing of properties by changing code in the *code* section. The changes will reflect in the properties panel also.
+- [ ] Allow adding variations of a component to the styleguide preview. E.g. 'Normal Button', 'Disabled Button', 'Button as a link'. So all combinations of component props which makes sense.
 Users will be also then able to modify the prop values from the jsx usage section.
 - [ ] Start using these concepts/technologies going forward
   - [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier

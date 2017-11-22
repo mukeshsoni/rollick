@@ -61,9 +61,9 @@ function getTextArea(value, onChangeHandler) {
             style={{
                 fontSize: 'inherit',
                 border: '1px solid gray',
-                borderRadius: 5,
                 padding: '0.1em',
-                width: '100%'
+                width: '100%',
+                resize: 'none'
             }}
         />
     )
@@ -116,9 +116,11 @@ export default class AttributePane extends React.Component {
             return Object.keys(component.props).map(propName => {
                 return (
                     <div className="form-row" key={`attribute_${propName}`}>
-                        <span style={{ flex: 1 }}>
-                            {propName}
-                        </span>
+                        <div style={{ flex: 1 }}>
+                            <span style={{ flex: 1 }}>
+                                {propName}
+                            </span>
+                        </div>
                         <div style={{ flex: 3, width: '100%' }}>
                             {getInputField(
                                 component.props[propName],
@@ -126,16 +128,20 @@ export default class AttributePane extends React.Component {
                                 this.handlePropChange.bind(this, propName)
                             )}
                         </div>
-                        <Tooltip content={component.props[propName]}>
-                            <span
-                                style={{
-                                    marginLeft: '0.3em',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                ?
-                            </span>
-                        </Tooltip>
+                        <div className="attribute-help--container">
+                            <div className="attribute-help">
+                                <Tooltip content={component.props[propName]}>
+                                    <span
+                                        style={{
+                                            marginLeft: '0.3em',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        ?
+                                    </span>
+                                </Tooltip>
+                            </div>
+                        </div>
                     </div>
                 )
             })
@@ -178,24 +184,26 @@ export default class AttributePane extends React.Component {
     render() {
         const detailsPaneStyle = {
             flex: 2,
-            padding: '1em',
             borderLeft: '1px solid rgba(200,200,200, 0.9)',
-            maxHeight: '100%'
+            maxHeight: '100%',
+            background: '#f7f7f7'
         }
 
         return (
-            <div className="styleguide-details-pane" style={detailsPaneStyle}>
-                <div style={{ marginBottom: '1em' }}>
-                    <h3
-                        style={{
-                            paddingBottom: '0.5em',
-                            borderBottom: '1px solid rgba(200,200,200,0.9)'
-                        }}
-                    >
-                        {this.props.component.name + ' properties'}
-                    </h3>
+            <div style={detailsPaneStyle}>
+                <div
+                    style={{
+                        marginBottom: '0.5em',
+                        borderBottom: '1px solid rgba(200,200,200,0.9)',
+                        fontSize: '1.1em',
+                        fontFamily: 'Proxima Nova',
+                        background: '#efefef',
+                        padding: '0.5em'
+                    }}
+                >
+                    {this.props.component.name + ' properties'}
                 </div>
-                <div>
+                <div style={{ padding: '1em' }}>
                     {this.getAttributes()}
                 </div>
             </div>

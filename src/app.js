@@ -5,8 +5,6 @@ import Playground from './components/playground/index.js'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import Styleguide from './components/styleguide/index.js'
 
-/* import Modal from 'react-modal'
- * */
 export default class App extends React.Component {
     handleShowStyleguideClick = () => {
         this.setState({
@@ -59,12 +57,6 @@ export default class App extends React.Component {
     }
 
     render() {
-        const headerStyle = {
-            display: 'flex',
-            flexDirection: 'row-reverse',
-            padding: '0.5em'
-        }
-
         const styleguideModalStyle = {
             overlay: {
                 left: 0,
@@ -73,6 +65,9 @@ export default class App extends React.Component {
                 bottom: 0,
                 background: 'rgba(255, 255, 255, 0.9)',
                 zIndex: 25
+            },
+            content: {
+                padding: 0
             }
         }
 
@@ -95,7 +90,7 @@ export default class App extends React.Component {
                         }}
                         onClick={this.hideStyleguide}
                     >
-                        Close
+                        X
                     </a>
                     <Styleguide onAddComponent={this.handleAddComponent} />
                 </Modal>
