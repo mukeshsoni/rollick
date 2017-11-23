@@ -47,4 +47,5 @@
 
 .styleguide-body {
     flex: 4;
+    overflow-y: auto;
 }
