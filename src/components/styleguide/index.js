@@ -84,6 +84,14 @@ function getPropsFromJsxCode(oldFakeProps, jsxCode) {
 }
 
 export default class Styleguide extends React.Component {
+    handleEditorFocusChange = focus => {
+        setTimeout(() => {
+            this.setState({
+                showPropertiesPane: focus || this.state.showPropertiesPane
+            })
+        }, 500)
+    }
+
     handleJsxCodeChange = newCode => {
         this.setState({
             selectedComponent: {
@@ -135,9 +143,12 @@ export default class Styleguide extends React.Component {
             selectedComponent: {
                 ...com,
                 fakeProps: faker(com.props, { optional: true })
-            }
+            },
+            showPropertiesPane:
+                this.state.selectedComponent &&
+                com.path === this.state.selectedComponent.path
         })
-    }, 500)
+    }, 300)
 
     getFiltedredComponentList = () => {
         const { searchText } = this.state
@@ -186,7 +197,8 @@ export default class Styleguide extends React.Component {
             searchText: '',
             selectedComponent: null,
             selectedComponentInstance: null,
-            componentsMetaListSorted: []
+            componentsMetaListSorted: [],
+            showPropertiesPane: false
         }
     }
 
@@ -218,7 +230,8 @@ export default class Styleguide extends React.Component {
         const {
             searchText,
             selectedComponent,
-            selectedComponentInstance
+            selectedComponentInstance,
+            showPropertiesPane
         } = this.state
 
         const leftPaneStyle = {
@@ -246,8 +259,10 @@ export default class Styleguide extends React.Component {
                     item={selectedComponent}
                     jsxCode={this.state.jsxCode}
                     onCodeChange={this.handleJsxCodeChange}
+                    onEditorFocusChange={this.handleEditorFocusChange}
                 />
-                {this.state.selectedComponent &&
+                {selectedComponent &&
+                    showPropertiesPane &&
                     <AttributePane
                         component={this.state.selectedComponent}
                         onChange={this.handleAttributeValueChange}

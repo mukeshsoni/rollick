@@ -2,20 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import 'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
-import 'jspm_packages/npm/codemirror@5.31.0/mode/css/css.js'
 import 'node_modules/codemirror/lib/codemirror.css!css'
 import 'node_modules/codemirror/theme/base16-light.css!css'
 import CodeMirror from '@skidding/react-codemirror'
-// import emmetCodemirror from '@emmetio/codemirror-plugin'
 import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirror.js'
-// emmetCodemirror(codeMirrorInstance)
 import PreviewSectionHeader from './preview_section_header.js'
 import { componentJsx } from '../playground/transpile_helpers.js'
 import { formatCode } from '../playground/code_formatter.js'
 
 class PreviewCodeSection extends React.PureComponent {
     render() {
-        let { item, onCodeChange, jsxCode } = this.props
+        let { item, onCodeChange, jsxCode, onEditorFocusChange } = this.props
         const codeMirrorOptions = {
             lineNumbers: false,
             lineWrapping: true,
@@ -49,6 +46,7 @@ class PreviewCodeSection extends React.PureComponent {
                         onChange={onCodeChange}
                         options={codeMirrorOptions}
                         codeMirrorInstance={codeMirrorInstance}
+                        onFocusChange={onEditorFocusChange}
                     />
                 </div>
             </div>
@@ -58,7 +56,11 @@ class PreviewCodeSection extends React.PureComponent {
 
 PreviewCodeSection.propTypes = {
     item: PropTypes.object.isRequired,
-    onCodeChange: PropTypes.func.isRequired
+    onCodeChange: PropTypes.func.isRequired,
+    /**
+     * When the editor is in focus or goes out of focus
+     **/
+    onEditorFocusChange: PropTypes.func.isRequired
 }
 
 PreviewCodeSection.defaultProps = {

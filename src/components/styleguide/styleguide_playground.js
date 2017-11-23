@@ -26,7 +26,13 @@ class EmptyStyleguidePlayground extends React.PureComponent {
 
 class StyleguidePlayground extends React.PureComponent {
     render() {
-        let { item, onAddComponent, onCodeChange, jsxCode } = this.props
+        let {
+            item,
+            onAddComponent,
+            onCodeChange,
+            jsxCode,
+            onEditorFocusChange
+        } = this.props
 
         if (!item) {
             return <EmptyStyleguidePlayground />
@@ -147,9 +153,10 @@ class StyleguidePlayground extends React.PureComponent {
                 </div>
                 <div style={{ marginBottom: 32 }}>
                     <PreviewCodeSection
-                        onCodeChange={onCodeChange}
                         item={item}
                         jsxCode={jsxCode}
+                        onCodeChange={onCodeChange}
+                        onEditorFocusChange={onEditorFocusChange}
                     />
                 </div>
                 <div style={{ marginBottom: 32 }}>
@@ -176,7 +183,11 @@ StyleguidePlayground.propTypes = {
     /**
     * function to callback when jsx code is changed in the code panel
     **/
-    onCodeChange: PropTypes.func.isRequired
+    onCodeChange: PropTypes.func.isRequired,
+    /**
+      * When the editor is in focus or goes out of focus
+      **/
+    onEditorFocusChange: PropTypes.func.isRequired
 }
 
 export default StyleguidePlayground
