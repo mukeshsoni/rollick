@@ -3,8 +3,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './component.css'
 
+type Person = {
+    name: string,
+    age: number
+}
+
 type Props = {
-    name: string
+    name: string,
+    address: {
+        city: string,
+        street: string,
+        pincode: number
+    },
+    age: number,
+    /**
+      * Your brothers and sisters but not from the same parents
+      **/
+    siblings: Array<Person>
 }
 
 export default class HelloWorld extends React.Component {
@@ -12,9 +27,14 @@ export default class HelloWorld extends React.Component {
 
     render() {
         return (
-            <span className="com">
+            <div className="com">
                 Hello! {this.props.name}
-            </span>
+                <div>
+                    You live in{' '}
+                    {this.props.address && this.props.address.street}
+                </div>
+                <div>Your age is {this.props.age}</div>
+            </div>
         )
     }
 }

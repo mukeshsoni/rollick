@@ -34,10 +34,15 @@ function getObjectFromString(str) {
     }
 }
 
+// TODO - complete the functionality for all types and complex combinations of types
 function getFlowPropValue(prop, val) {
     switch (prop.flowType.name) {
         case 'function':
             return getFunctionFromString(val)
+        case 'signature':
+            return getObjectFromString(str)
+        case 'Array':
+            return getObjectFromString(val)
         default:
             return val
     }

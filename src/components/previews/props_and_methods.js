@@ -4,9 +4,15 @@ import { isFlowType } from '../../component_maker_helpers/prop_value_from_string
 
 import PreviewSectionHeader from './preview_section_header.js'
 
-function getPropName(prop) {
+function getPropType(prop) {
     if (isFlowType(prop)) {
-        return prop.flowType.raw || prop.flowType.name || 'Type unknown'
+        if (prop.flowType.raw) {
+            return prop.flowType.name + ' - ' + prop.flowType.raw
+        } else if (prop.flowType.name) {
+            return prop.flowType.name
+        } else {
+            return 'Unknown type'
+        }
     } else {
         return prop && prop.type ? prop.type.name : 'Type unknown'
     }
@@ -63,7 +69,7 @@ function getPropRow(prop) {
                                 'Consolas, "Liberation Mono", Menlo, monospace'
                         }}
                     >
-                        {getPropName(prop[1])}
+                        {getPropType(prop[1])}
                     </code>
                 </span>
             </td>
