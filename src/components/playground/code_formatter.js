@@ -29,6 +29,7 @@ export function formatCode(code, codeMirrorCursor) {
     try {
         var prettified = prettier.formatWithCursor(code, {
             semi: false,
+            tabWidth: 4,
             cursorOffset: prettierCursorOffset
         })
         const cmCursor = prettierToCodeMirrorCursor(

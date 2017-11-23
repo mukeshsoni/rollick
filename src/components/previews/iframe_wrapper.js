@@ -21,6 +21,9 @@ export default function iframeWrapper(WrappedComponent) {
                         {
                             '.CodeMirror-code: {font-family: Fira Code Light; line-height: 1.2}'
                         }
+                        {
+                            '.cm-s-base16-light span.cm-property, .cm-s-base16-light span.cm-attribute { font-family: Consolas, "Liberation Mono", Menlo, monospace; line-height: 1.5}'
+                        }
                     </style>
                     {this.state.cssFilesToInject
                         .concat(this.props.cssUrlsToInsert)

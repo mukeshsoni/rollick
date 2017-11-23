@@ -14,6 +14,7 @@ const Avatar = ({ src }) => {
 Avatar.propTypes = {
     /** Does things that only a foo cannn */
     src: PropTypes.string.isRequired,
+    /** width of the image. Also determines it height. */
     width: PropTypes.number
 }
 

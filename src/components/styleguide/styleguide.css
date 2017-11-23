@@ -44,3 +44,7 @@
     color: #000;
     cursor: pointer;
 }
+
+.styleguide-body {
+    flex: 4;
+}

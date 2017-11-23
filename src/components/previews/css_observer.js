@@ -1,4 +1,5 @@
 import React from 'react'
+import { dedupe } from '../../../belt.js'
 
 /*
   * HOC which listens on style tag additions to head tag
@@ -37,8 +38,10 @@ export default function cssObserver(WrappedComponent) {
                             this.setState(
                                 {
                                     // TODO - need to dedup the cssToInsertInIframe array
-                                    cssToInsertInIframe: this.state.cssToInsertInIframe.concat(
-                                        addedNodes[0].innerText
+                                    cssToInsertInIframe: dedupe(
+                                        this.state.cssToInsertInIframe.concat(
+                                            addedNodes[0].innerText
+                                        )
                                     )
                                 },
                                 () => {

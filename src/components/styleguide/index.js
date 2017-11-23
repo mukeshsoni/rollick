@@ -139,11 +139,18 @@ export default class Styleguide extends React.Component {
     }
 
     handleComponentItemClick = debounce(com => {
+        const newSelectedComponent = {
+            ...com,
+            fakeProps: faker(com.props, { optional: true })
+        }
+        let formattedCode = formatCode(componentJsx(newSelectedComponent), {
+            line: 0,
+            ch: 0
+        }).formattedCode.slice(1)
+
         this.setState({
-            selectedComponent: {
-                ...com,
-                fakeProps: faker(com.props, { optional: true })
-            },
+            selectedComponent: newSelectedComponent,
+            jsxCode: formattedCode,
             showPropertiesPane:
                 this.state.selectedComponent &&
                 com.path === this.state.selectedComponent.path
@@ -254,13 +261,15 @@ export default class Styleguide extends React.Component {
                         {this.getComponentList()}
                     </div>
                 </div>
-                <StyleguidePlayground
-                    onAddComponent={this.handleAddComponent}
-                    item={selectedComponent}
-                    jsxCode={this.state.jsxCode}
-                    onCodeChange={this.handleJsxCodeChange}
-                    onEditorFocusChange={this.handleEditorFocusChange}
-                />
+                <div className="styleguide-body">
+                    <StyleguidePlayground
+                        onAddComponent={this.handleAddComponent}
+                        item={selectedComponent}
+                        jsxCode={this.state.jsxCode}
+                        onCodeChange={this.handleJsxCodeChange}
+                        onEditorFocusChange={this.handleEditorFocusChange}
+                    />
+                </div>
                 {selectedComponent &&
                     showPropertiesPane &&
                     <AttributePane

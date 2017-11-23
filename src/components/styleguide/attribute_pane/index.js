@@ -70,7 +70,7 @@ function getTextArea(value, onChangeHandler) {
                     padding: '0.2em',
                     width: '100%',
                     resize: 'none',
-                    color: '#b93d24',
+                    color: 'black',
                     height: 16
                 }}
             />
@@ -125,7 +125,15 @@ export default class AttributePane extends React.Component {
             return Object.keys(component.props).map(propName => {
                 return (
                     <div className="form-row" key={`attribute_${propName}`}>
-                        <div style={{ flex: 1, alignSelf: 'center' }}>
+                        <div
+                            style={{
+                                flex: 1,
+                                alignSelf: 'center',
+                                maxWidth: '5.94rem',
+                                marginRight: '1rem',
+                                wordWrap: 'break-word'
+                            }}
+                        >
                             <span style={{ flex: 1 }}>
                                 {propName}
                             </span>

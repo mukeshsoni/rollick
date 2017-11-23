@@ -48,6 +48,7 @@
             "prettier": "npm:prettier@^1.7.4",
             "react-click-outside": "npm:react-click-outside@^2.3.1",
             "react-codemirror": "npm:react-codemirror@^1.0.0",
+            "react-docgen": "npm:react-docgen@3.0.0-beta9",
             "react-frame-component": "npm:react-frame-component@^1.1.1",
             "react-jsx": "npm:react-jsx@^1.0.0",
             "react-modal": "npm:react-modal@^2.3.2",
@@ -87,7 +88,7 @@
             "estraverse": "npm:estraverse",
             "events": "npm:jspm-nodelibs-events@^0.2.0",
             "fs": "npm:jspm-nodelibs-fs@^0.2.0",
-            "graceful-fs": "npm:graceful-fs@^4.1.2",
+            "graceful-fs": "npm:graceful-fs@^4.1.9",
             "http": "npm:jspm-nodelibs-http@^0.2.0",
             "https": "npm:jspm-nodelibs-https@^0.2.0",
             "image-size": "npm:image-size@0.5",
@@ -112,13 +113,14 @@
             "tls": "npm:jspm-nodelibs-tls@^0.2.0",
             "tty": "npm:jspm-nodelibs-tty@^0.2.0",
             "tweetnacl": "npm:tweetnacl@0.14",
+            "uglify-js": "npm:uglify-js@~2.3",
             "url": "npm:jspm-nodelibs-url@^0.2.0",
             "util": "npm:jspm-nodelibs-util@^0.2.0",
             "vm": "npm:jspm-nodelibs-vm@^0.2.0",
             "zlib": "npm:jspm-nodelibs-zlib@^0.2.0"
         },
         "overrides": {
-            "npm:bluebird@3.5.0": {
+            "npm:bluebird@3.4.7": {
                 "meta": {
                     "js/browser/bluebird.js": {
                         "format": "global"

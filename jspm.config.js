@@ -60,6 +60,7 @@ SystemJS.config({
         'github:*/*.json'
     ],
     map: {
+        'jsdoc-to-markdown': 'npm:jsdoc-to-markdown@3.0.2',
         'babel-types': 'npm:babel-types@6.26.0',
         'babel-traverse': 'npm:babel-traverse@6.26.0',
         'babylon': 'npm:babylon@6.18.0',
@@ -115,6 +116,7 @@ SystemJS.config({
         'react': 'npm:react@15.6.2',
         'react-click-outside': 'npm:react-click-outside@2.3.1',
         'react-codemirror': 'npm:react-codemirror@1.0.0',
+        'react-docgen': 'npm:react-docgen@3.0.0-beta9',
         'react-dom': 'npm:react-dom@15.6.2',
         'react-frame-component': 'npm:react-frame-component@1.1.1',
         'react-jsx': 'npm:react-jsx@1.0.0',
@@ -133,6 +135,7 @@ SystemJS.config({
         'tls': 'npm:jspm-nodelibs-tls@0.2.1',
         'tty': 'npm:jspm-nodelibs-tty@0.2.1',
         'tweetnacl': 'npm:tweetnacl@0.14.5',
+        'uglify-js': 'npm:uglify-js@2.3.6',
         'url': 'npm:jspm-nodelibs-url@0.2.1',
         'util': 'npm:jspm-nodelibs-util@0.2.2',
         'vm': 'npm:jspm-nodelibs-vm@0.2.1',
@@ -417,7 +420,7 @@ SystemJS.config({
         },
         'npm:ast-types@0.3.38': {
             'map': {
-                'private': 'npm:private@0.1.7'
+                'private': 'npm:private@0.1.8'
             }
         },
         'npm:optionator@0.8.2': {
@@ -522,7 +525,7 @@ SystemJS.config({
         },
         'npm:babel-core@6.26.0': {
             'map': {
-                'private': 'npm:private@0.1.7',
+                'private': 'npm:private@0.1.8',
                 'babel-types': 'npm:babel-types@6.26.0',
                 'babel-messages': 'npm:babel-messages@6.23.0',
                 'babel-generator': 'npm:babel-generator@6.26.0',
@@ -1233,9 +1236,9 @@ SystemJS.config({
             'map': {
                 'semver': 'npm:semver@5.3.0',
                 'lru-cache': 'npm:lru-cache@3.2.0',
-                'commander': 'npm:commander@2.11.0',
+                'commander': 'npm:commander@2.12.0',
                 'sigmund': 'npm:sigmund@1.0.1',
-                'bluebird': 'npm:bluebird@3.5.0'
+                'bluebird': 'npm:bluebird@3.4.7'
             }
         },
         'npm:lru-cache@3.2.0': {
@@ -1627,6 +1630,291 @@ SystemJS.config({
         'npm:jspm-nodelibs-string_decoder@0.2.2': {
             'map': {
                 'string_decoder': 'npm:string_decoder@0.10.31'
+            }
+        },
+        'npm:react-docgen@3.0.0-beta9': {
+            'map': {
+                'babylon': 'npm:babylon@7.0.0-beta.31',
+                'commander': 'npm:commander@2.12.0',
+                'babel-runtime': 'npm:babel-runtime@6.26.0',
+                'node-dir': 'npm:node-dir@0.1.17',
+                'doctrine': 'npm:doctrine@2.0.0',
+                'async': 'npm:async@2.6.0',
+                'recast': 'npm:recast@0.12.9'
+            }
+        },
+        'npm:recast@0.12.9': {
+            'map': {
+                'core-js': 'npm:core-js@2.5.1',
+                'ast-types': 'npm:ast-types@0.10.1',
+                'private': 'npm:private@0.1.8',
+                'esprima': 'npm:esprima@4.0.0',
+                'source-map': 'npm:source-map@0.6.1'
+            }
+        },
+        'npm:doctrine@2.0.0': {
+            'map': {
+                'isarray': 'npm:isarray@1.0.0',
+                'esutils': 'npm:esutils@2.0.2'
+            }
+        },
+        'npm:node-dir@0.1.17': {
+            'map': {
+                'minimatch': 'npm:minimatch@3.0.4'
+            }
+        },
+        'npm:async@2.6.0': {
+            'map': {
+                'lodash': 'npm:lodash@4.17.4'
+            }
+        },
+        'npm:commander@2.12.0': {
+            'map': {
+                '@types/node': 'npm:@types/node@7.0.48'
+            }
+        },
+        'npm:jsdoc-to-markdown@3.0.2': {
+            'map': {
+                'array-back': 'npm:array-back@2.0.0',
+                'jsdoc-api': 'npm:jsdoc-api@3.0.0',
+                'walk-back': 'npm:walk-back@3.0.0',
+                'command-line-tool': 'npm:command-line-tool@0.7.0',
+                'config-master': 'npm:config-master@3.1.0',
+                'dmd': 'npm:dmd@3.0.6',
+                'jsdoc-parse': 'npm:jsdoc-parse@3.0.0'
+            }
+        },
+        'npm:jsdoc-api@3.0.0': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'walk-back': 'npm:walk-back@2.0.1',
+                'temp-path': 'npm:temp-path@1.0.0',
+                'cache-point': 'npm:cache-point@0.4.1',
+                'collect-all': 'npm:collect-all@1.0.3',
+                'fs-then-native': 'npm:fs-then-native@2.0.0',
+                'object-to-spawn-args': 'npm:object-to-spawn-args@1.1.1',
+                'jsdoc-75lb': 'npm:jsdoc-75lb@3.6.0',
+                'file-set': 'npm:file-set@1.1.1'
+            }
+        },
+        'npm:command-line-tool@0.7.0': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'command-line-usage': 'npm:command-line-usage@4.0.1',
+                'ansi-escape-sequences': 'npm:ansi-escape-sequences@3.0.0',
+                'typical': 'npm:typical@2.6.1',
+                'command-line-args': 'npm:command-line-args@4.0.7'
+            }
+        },
+        'npm:config-master@3.1.0': {
+            'map': {
+                'walk-back': 'npm:walk-back@2.0.1'
+            }
+        },
+        'npm:dmd@3.0.6': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'walk-back': 'npm:walk-back@3.0.0',
+                'test-value': 'npm:test-value@2.1.0',
+                'common-sequence': 'npm:common-sequence@1.0.2',
+                'cache-point': 'npm:cache-point@0.4.1',
+                'reduce-without': 'npm:reduce-without@1.0.1',
+                'marked': 'npm:marked@0.3.6',
+                'handlebars': 'npm:handlebars@3.0.3',
+                'reduce-flatten': 'npm:reduce-flatten@1.0.1',
+                'file-set': 'npm:file-set@1.1.1',
+                'reduce-unique': 'npm:reduce-unique@1.0.0',
+                'object-get': 'npm:object-get@2.1.0'
+            }
+        },
+        'npm:jsdoc-parse@3.0.0': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'lodash.omit': 'npm:lodash.omit@4.5.0',
+                'test-value': 'npm:test-value@2.1.0',
+                'reduce-extract': 'npm:reduce-extract@1.0.0',
+                'sort-array': 'npm:sort-array@1.1.2',
+                'lodash.pick': 'npm:lodash.pick@4.4.0'
+            }
+        },
+        'npm:command-line-usage@4.0.1': {
+            'map': {
+                'array-back': 'npm:array-back@2.0.0',
+                'ansi-escape-sequences': 'npm:ansi-escape-sequences@4.0.0',
+                'typical': 'npm:typical@2.6.1',
+                'table-layout': 'npm:table-layout@0.4.2'
+            }
+        },
+        'npm:ansi-escape-sequences@3.0.0': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4'
+            }
+        },
+        'npm:ansi-escape-sequences@4.0.0': {
+            'map': {
+                'array-back': 'npm:array-back@2.0.0'
+            }
+        },
+        'npm:array-back@2.0.0': {
+            'map': {
+                'typical': 'npm:typical@2.6.1'
+            }
+        },
+        'npm:array-back@1.0.4': {
+            'map': {
+                'typical': 'npm:typical@2.6.1'
+            }
+        },
+        'npm:test-value@2.1.0': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'typical': 'npm:typical@2.6.1'
+            }
+        },
+        'npm:reduce-extract@1.0.0': {
+            'map': {
+                'test-value': 'npm:test-value@1.1.0'
+            }
+        },
+        'npm:test-value@1.1.0': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'typical': 'npm:typical@2.6.1'
+            }
+        },
+        'npm:sort-array@1.1.2': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'typical': 'npm:typical@2.6.1',
+                'object-get': 'npm:object-get@2.1.0'
+            }
+        },
+        'npm:cache-point@0.4.1': {
+            'map': {
+                'array-back': 'npm:array-back@2.0.0',
+                'fs-then-native': 'npm:fs-then-native@2.0.0',
+                'mkdirp2': 'npm:mkdirp2@1.0.3'
+            }
+        },
+        'npm:reduce-without@1.0.1': {
+            'map': {
+                'test-value': 'npm:test-value@2.1.0'
+            }
+        },
+        'npm:jsdoc-75lb@3.6.0': {
+            'map': {
+                'marked': 'npm:marked@0.3.6',
+                'escape-string-regexp': 'npm:escape-string-regexp@1.0.5',
+                'mkdirp': 'npm:mkdirp@0.5.1',
+                'klaw': 'npm:klaw@1.3.1',
+                'bluebird': 'npm:bluebird@3.4.7',
+                'strip-json-comments': 'npm:strip-json-comments@2.0.1',
+                'js2xmlparser': 'npm:js2xmlparser@1.0.0',
+                'requizzle': 'npm:requizzle@0.2.1',
+                'catharsis': 'npm:catharsis@0.8.9',
+                'espree': 'npm:espree@3.1.7',
+                'taffydb': 'npm:taffydb@2.6.2',
+                'underscore': 'npm:underscore@1.8.3'
+            }
+        },
+        'npm:command-line-args@4.0.7': {
+            'map': {
+                'array-back': 'npm:array-back@2.0.0',
+                'typical': 'npm:typical@2.6.1',
+                'find-replace': 'npm:find-replace@1.0.3'
+            }
+        },
+        'npm:table-layout@0.4.2': {
+            'map': {
+                'array-back': 'npm:array-back@2.0.0',
+                'typical': 'npm:typical@2.6.1',
+                'wordwrapjs': 'npm:wordwrapjs@3.0.0',
+                'deep-extend': 'npm:deep-extend@0.5.0',
+                'lodash.padend': 'npm:lodash.padend@4.6.1'
+            }
+        },
+        'npm:collect-all@1.0.3': {
+            'map': {
+                'stream-connect': 'npm:stream-connect@1.0.2',
+                'stream-via': 'npm:stream-via@1.0.4'
+            }
+        },
+        'npm:stream-connect@1.0.2': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4'
+            }
+        },
+        'npm:file-set@1.1.1': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'glob': 'npm:glob@7.1.2'
+            }
+        },
+        'npm:handlebars@3.0.3': {
+            'map': {
+                'source-map': 'npm:source-map@0.1.43',
+                'optimist': 'npm:optimist@0.6.1'
+            }
+        },
+        'npm:uglify-js@2.3.6': {
+            'map': {
+                'optimist': 'npm:optimist@0.3.7',
+                'source-map': 'npm:source-map@0.1.43',
+                'async': 'npm:async@0.2.10'
+            }
+        },
+        'npm:find-replace@1.0.3': {
+            'map': {
+                'array-back': 'npm:array-back@1.0.4',
+                'test-value': 'npm:test-value@2.1.0'
+            }
+        },
+        'npm:wordwrapjs@3.0.0': {
+            'map': {
+                'typical': 'npm:typical@2.6.1',
+                'reduce-flatten': 'npm:reduce-flatten@1.0.1'
+            }
+        },
+        'npm:source-map@0.1.43': {
+            'map': {
+                'amdefine': 'npm:amdefine@1.0.1'
+            }
+        },
+        'npm:optimist@0.6.1': {
+            'map': {
+                'wordwrap': 'npm:wordwrap@0.0.3',
+                'minimist': 'npm:minimist@0.0.8'
+            }
+        },
+        'npm:optimist@0.3.7': {
+            'map': {
+                'wordwrap': 'npm:wordwrap@0.0.3'
+            }
+        },
+        'npm:espree@3.1.7': {
+            'map': {
+                'acorn': 'npm:acorn@3.3.0',
+                'acorn-jsx': 'npm:acorn-jsx@3.0.1'
+            }
+        },
+        'npm:acorn-jsx@3.0.1': {
+            'map': {
+                'acorn': 'npm:acorn@3.3.0'
+            }
+        },
+        'npm:catharsis@0.8.9': {
+            'map': {
+                'underscore-contrib': 'npm:underscore-contrib@0.3.0'
+            }
+        },
+        'npm:requizzle@0.2.1': {
+            'map': {
+                'underscore': 'npm:underscore@1.6.0'
+            }
+        },
+        'npm:underscore-contrib@0.3.0': {
+            'map': {
+                'underscore': 'npm:underscore@1.6.0'
             }
         }
     }

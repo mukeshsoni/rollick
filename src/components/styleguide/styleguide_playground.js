@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import docgen from 'react-docgen'
 
 import PropsAndMethods from '../previews/props_and_methods.js'
 import PreviewCodeSection from '../previews/preview_code_section.js'
@@ -49,7 +50,6 @@ class StyleguidePlayground extends React.PureComponent {
         let cssToInsertInIframe = '.ReactCodeMirror .CodeMirror {height: 100%}'
 
         const bodyStyle = {
-            flex: 4,
             padding: '6em'
         }
 
@@ -58,8 +58,13 @@ class StyleguidePlayground extends React.PureComponent {
             cursor: 'pointer'
         }
 
+        console.log(
+            'jsdoc ',
+            docgen.utils.docblock.getDoclets(item.description)
+        )
+
         return (
-            <div className="styleguide-body" style={bodyStyle}>
+            <div style={bodyStyle}>
                 <header
                     style={{
                         display: 'flex',

@@ -79,9 +79,13 @@ function getElementFromString(str) {
     }
 }
 
+export function isFlowType(prop) {
+    return prop.flowType
+}
+
 // TODO - all these value from prop and vice versa need to be standardized and be at a single place
 export function getPropValue(prop, val) {
-    if (prop.flowType) {
+    if (isFlowType(prop)) {
         return getFlowPropValue(prop, val)
     } else {
         if (isFunctionProp(prop)) {

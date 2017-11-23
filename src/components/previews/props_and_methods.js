@@ -1,7 +1,36 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { isFlowType } from '../../component_maker_helpers/prop_value_from_string.js'
 
 import PreviewSectionHeader from './preview_section_header.js'
+
+function getPropName(prop) {
+    if (isFlowType(prop)) {
+        return prop.flowType.raw || prop.flowType.name || 'Type unknown'
+    } else {
+        return prop && prop.type ? prop.type.name : 'Type unknown'
+    }
+}
+
+function getRequiredStatus(prop) {
+    if (isFlowType(prop)) {
+        return prop.flowType.required
+            ? <span style={{ color: '#999' }}>required</span>
+            : ''
+    } else {
+        return prop.required
+            ? <span style={{ color: '#999' }}>required</span>
+            : ''
+    }
+}
+
+function getDefaultValue(prop) {
+    if (isFlowType(prop)) {
+        return prop.defaultValue && prop.defaultValue.value
+    } else {
+        return prop.default
+    }
+}
 
 function getPropRow(prop) {
     let columnStyle = {
@@ -34,14 +63,12 @@ function getPropRow(prop) {
                                 'Consolas, "Liberation Mono", Menlo, monospace'
                         }}
                     >
-                        {prop[1] && prop[1].type && prop[1].type.name}
+                        {getPropName(prop[1])}
                     </code>
                 </span>
             </td>
             <td style={columnStyle}>
-                {prop[1].default ||
-                    (prop[1].required &&
-                        <span style={{ color: '#999' }}>required</span>)}
+                {getDefaultValue(prop[1]) || getRequiredStatus(prop[1])}
             </td>
             <td style={columnStyle}>
                 <p style={{ color: '#333', margin: 0 }}>
