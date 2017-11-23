@@ -10,7 +10,6 @@ import debounce from 'debounce'
 // import { getProp } from 'jsx-ast-utils'
 import * as babylon from 'babylon'
 import traverse from 'babel-traverse'
-import jsxUtils, { hasProp } from 'jsx-ast-utils'
 import * as t from 'babel-types'
 window.t = t
 
@@ -48,9 +47,6 @@ const code = `<div width={100}>abc</div>`
 //         console.log(
 //             'got jsx element',
 //             node,
-//             hasProp,
-//             jsxUtils,
-//             jsxUtils.hasProp(node.node.attributes, 'width')
 //         )
 //     }
 // })
@@ -222,7 +218,7 @@ export default class Styleguide extends React.Component {
                 // so that i don't have to click on the button component 1 billion times
                 () => {
                     this.handleComponentItemClick(
-                        this.state.componentsMetaListSorted[2]
+                        this.state.componentsMetaListSorted[3]
                     )
                 }
             )

@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import jsx from 'jsx-transpiler'
 import SearchBox from '../search_box/index.js'
 import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
