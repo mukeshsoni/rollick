@@ -1,27 +1,30 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
+
+import './button.css!css'
 
 /**
   * Really good button component which can be customised somewhat
   **/
-const Button = ({ label, onClick, style = {}, enabled = true }) => {
-    const buttonStyle = {
-        background: enabled ? 'rgba(52,52,52,1.0)' : 'rgba(52,52,52,0.6)',
-        fontSize: '0.9rem',
-        textShadow: 'none',
-        padding: 10,
-        borderRadius: 3,
-        cursor: 'pointer',
-        textOverflow: 'ellipsis',
-        textAlign: 'center',
-        color: 'white'
-    }
+const Button = ({
+    label,
+    onClick,
+    size = 'large',
+    style = {},
+    enabled = true
+}) => {
+    let classes = classnames('btn', {
+        'btn-small': size === 'small',
+        disabled: !enabled
+    })
 
     return (
         <button
             onClick={onClick}
-            style={{ ...buttonStyle, ...style }}
+            style={{ ...style }}
             disabled={!enabled}
+            className={classes}
         >
             {label}
         </button>
@@ -44,7 +47,11 @@ Button.propTypes = {
     /**
       * boolean - true means enabled, false means disabled
       **/
-    enabled: PropTypes.bool
+    enabled: PropTypes.bool,
+    /**
+     * string - size of the button. allowed sizes - 'large', 'small'
+     **/
+    size: PropTypes.string
 }
 
 export default Button

@@ -17,6 +17,7 @@ Saving configuration for the tool? Store in the database.
 - [ ] Need to solve the properties/attribute pane problem in a much neater way. The three way sync between properties pane, jsx editor and the rendered component is very tricky because of all the 
 invalid states the attribute values can get into due to the user inputs. Questions like "should we flow the invalid input to the output? should we flow the invalid input to the jsx editor? How to finally sync between valid
 state and user input?" need to be answered.
+- [ ] Use *doctrine* to get jsdoc AST - https://github.com/eslint/doctrine
 - [ ] Show a =How to use= section in the styleguide preview section. Like victory.js does.
   - [ ] react-docgen picks up comments above component and props and instance methods and adds them to component meta data
   - [ ] Can check if the description is in jsdoc format and further format for documentation

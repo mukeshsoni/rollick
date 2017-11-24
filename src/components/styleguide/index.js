@@ -88,6 +88,21 @@ export default class Styleguide extends React.Component {
         // }, 500)
     }
 
+    handleSavePropsClick = () => {
+        // TODO
+    }
+
+    handleFormatCodeClick = () => {
+        let { selectedComponent } = this.state
+
+        let formattedCode = formatCode(componentJsx(selectedComponent), {
+            line: 0,
+            ch: 0
+        }).formattedCode.slice(1)
+
+        this.setState({ jsxCode: formattedCode })
+    }
+
     // TODO - probably need to state variables for selectedComponent. One will have the dirty/invalid state.
     // Another one will sync whenever the first one gets into valid state again and is sent to the preview component.
     handleJsxCodeChange = newCode => {
@@ -266,6 +281,8 @@ export default class Styleguide extends React.Component {
                         jsxCode={this.state.jsxCode}
                         onCodeChange={this.handleJsxCodeChange}
                         onEditorFocusChange={this.handleEditorFocusChange}
+                        onSavePropClick={this.handleSavePropsClick}
+                        onFormatCodeClick={this.handleFormatCodeClick}
                     />
                 </div>
                 {selectedComponent &&

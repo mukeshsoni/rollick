@@ -32,7 +32,9 @@ class StyleguidePlayground extends React.PureComponent {
             onAddComponent,
             onCodeChange,
             jsxCode,
-            onEditorFocusChange
+            onEditorFocusChange,
+            onSavePropClick,
+            onFormatCodeClick
         } = this.props
 
         if (!item) {
@@ -162,6 +164,8 @@ class StyleguidePlayground extends React.PureComponent {
                         jsxCode={jsxCode}
                         onCodeChange={onCodeChange}
                         onEditorFocusChange={onEditorFocusChange}
+                        onSavePropClick={onSavePropClick}
+                        onFormatCodeClick={onFormatCodeClick}
                     />
                 </div>
                 <div style={{ marginBottom: 32 }}>
@@ -170,6 +174,11 @@ class StyleguidePlayground extends React.PureComponent {
             </div>
         )
     }
+}
+
+StyleguidePlayground.contextTypes = {
+    window: PropTypes.object,
+    document: PropTypes.object
 }
 
 StyleguidePlayground.propTypes = {
@@ -192,7 +201,15 @@ StyleguidePlayground.propTypes = {
     /**
       * When the editor is in focus or goes out of focus
       **/
-    onEditorFocusChange: PropTypes.func.isRequired
+    onEditorFocusChange: PropTypes.func.isRequired,
+    /**
+      * callback invoked when 'Save props' button is clicked
+      **/
+    onSavePropClick: PropTypes.func.isRequired,
+    /**
+      * callback invoked when 'Format code' button is clicked
+      **/
+    onFormatCodeClick: PropTypes.func.isRequired
 }
 
 export default StyleguidePlayground

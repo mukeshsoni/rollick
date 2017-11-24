@@ -28,6 +28,8 @@ export function formatCode(code, codeMirrorCursor) {
     // need to find out if it returns a promise or not
     try {
         var prettified = prettier.formatWithCursor(code, {
+            printWidth: 50,
+            bracketSpacing: true,
             semi: false,
             tabWidth: 4,
             cursorOffset: prettierCursorOffset

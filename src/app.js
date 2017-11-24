@@ -94,6 +94,7 @@ export default class App extends React.Component {
                     ref={node => (this.playgroundRef = node)}
                     fromStyleguideClick={this.handleShowStyleguideClick}
                     showStyleguide={this.handleShowStyleguideClick}
+                    hidePreview={this.state.showStyleguide}
                 />
             </div>
         )

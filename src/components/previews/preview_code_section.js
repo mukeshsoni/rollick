@@ -7,12 +7,20 @@ import 'node_modules/codemirror/theme/base16-light.css!css'
 import CodeMirror from '@skidding/react-codemirror'
 import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirror.js'
 import PreviewSectionHeader from './preview_section_header.js'
+import Button from '../buttons/button.js'
 import { componentJsx } from '../playground/transpile_helpers.js'
 import { formatCode } from '../playground/code_formatter.js'
 
 class PreviewCodeSection extends React.PureComponent {
     render() {
-        let { item, onCodeChange, jsxCode, onEditorFocusChange } = this.props
+        let {
+            item,
+            onCodeChange,
+            jsxCode,
+            onEditorFocusChange,
+            onSavePropClick,
+            onFormatCodeClick
+        } = this.props
         const codeMirrorOptions = {
             lineNumbers: false,
             lineWrapping: true,
@@ -39,6 +47,25 @@ class PreviewCodeSection extends React.PureComponent {
                     {cssToInsert}
                 </style>
                 <PreviewSectionHeader text="Code" />
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginBottom: 8
+                    }}
+                >
+                    <Button
+                        label="Format code"
+                        size="small"
+                        onClick={onFormatCodeClick}
+                        style={{ marginRight: '1em' }}
+                    />
+                    <Button
+                        label="Save props"
+                        size="small"
+                        onClick={onSavePropClick}
+                    />
+                </div>
                 <div>
                     <CodeMirror
                         autoFocus={false}
@@ -60,7 +87,15 @@ PreviewCodeSection.propTypes = {
     /**
      * When the editor is in focus or goes out of focus
      **/
-    onEditorFocusChange: PropTypes.func.isRequired
+    onEditorFocusChange: PropTypes.func.isRequired,
+    /**
+     * callback invoked when 'Save props' button is clicked
+     **/
+    onSavePropClick: PropTypes.func.isRequired,
+    /**
+     * callback invoked when 'Format code' button is clicked
+     **/
+    onFormatCodeClick: PropTypes.func.isRequired
 }
 
 PreviewCodeSection.defaultProps = {

@@ -6,7 +6,7 @@ import { dedupe } from '../../../belt.js'
   * gets the css out of them and passing that css a prop to WrappedComponent
   */
 export default function cssObserver(WrappedComponent) {
-    return class extends React.Component {
+    return class CssObserverComponent extends React.Component {
         constructor(props) {
             super(props)
 

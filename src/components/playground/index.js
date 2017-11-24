@@ -770,12 +770,13 @@ export default class Playground extends React.Component {
                             </SplitPane>
                         </SplitPane>
                         <div className="editor-right-pane" id={rightPaneId}>
-                            <Preview
-                                loading={loading}
-                                jsxToInsert={jsx.toInsert}
-                                jsToInsert={js.toInsert}
-                                cssToInsert={css.toInsert}
-                            />
+                            {!this.props.hidePreview &&
+                                <Preview
+                                    loading={loading}
+                                    jsxToInsert={jsx.toInsert}
+                                    jsToInsert={js.toInsert}
+                                    cssToInsert={css.toInsert}
+                                />}
                         </div>
                     </SplitPane>
                 </div>
@@ -786,5 +787,6 @@ export default class Playground extends React.Component {
 
 Playground.propTypes = {
     fromStyleguideClick: PropTypes.func.isRequired,
-    showStyleguide: PropTypes.func.isRequired
+    showStyleguide: PropTypes.func.isRequired,
+    hidePreview: PropTypes.bool.isRequired
 }

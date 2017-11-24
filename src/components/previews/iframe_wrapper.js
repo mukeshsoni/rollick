@@ -3,12 +3,18 @@
   * And injects newly added css (to head tag in main frame) to the iframe
   */
 import React from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import Frame from 'react-frame-component'
 import cssObserver from './css_observer.js'
 
 export default function iframeWrapper(WrappedComponent) {
     class IframeWrapperComponent extends React.Component {
+        static contextTypes = {
+            window: PropTypes.any,
+            document: PropTypes.any
+        }
+        iframeRef: null
         getIframeHead() {
             return (
                 <div>
@@ -67,6 +73,32 @@ export default function iframeWrapper(WrappedComponent) {
             })
         }
 
+        adjustIframeHeight = () => {
+            const iframeDOMNode = ReactDOM.findDOMNode(this.iframeRef)
+
+            if (
+                iframeDOMNode &&
+                iframeDOMNode.contentWindow &&
+                iframeDOMNode.contentWindow.document &&
+                iframeDOMNode.contentWindow.document.body
+            ) {
+                iframeDOMNode.height =
+                    iframeDOMNode.contentWindow.document.body.scrollHeight ||
+                    'auto'
+            }
+        }
+
+        onMount = () => {
+            setTimeout(() => {
+                this.adjustIframeHeight()
+            }, 200)
+        }
+
+        onUpdate = () => {
+            // const iframeDOMNode = this.iframeRef._reactInternalInstance._renderedComponent._hostNode
+            this.adjustIframeHeight()
+        }
+
         constructor(props) {
             super(props)
 
@@ -84,7 +116,6 @@ export default function iframeWrapper(WrappedComponent) {
             const { style } = this.props
             const containerStyle = {
                 width: '100%',
-                height: '100%',
                 margin: 0,
                 ...style
             }
@@ -94,6 +125,9 @@ export default function iframeWrapper(WrappedComponent) {
                     style={containerStyle}
                     frameBorder={'0'}
                     head={this.getIframeHead()}
+                    ref={node => (this.iframeRef = node)}
+                    contentDidMount={this.onMount}
+                    contentDidUpdate={this.onUpdate}
                 >
                     <WrappedComponent {...this.props} />
                 </Frame>

@@ -54,7 +54,7 @@ class SingleComponentPreview extends React.Component {
                     this.lastValidRender &&
                     this.lastValidRender.componentPath === this.props.item.path
                 ) {
-                    return lastValidRender.codeToRender
+                    return this.lastValidRender.codeToRender
                 } else {
                     return errorSection(jsCode.error)
                 }
@@ -73,7 +73,7 @@ class SingleComponentPreview extends React.Component {
                         this.lastValidRender.componentPath ===
                             this.props.item.path
                     ) {
-                        return lastValidRender.codeToRender
+                        return this.lastValidRender.codeToRender
                     } else {
                         return errorSection(jsCode.error)
                     }

@@ -37,8 +37,11 @@ export default class HelloWorld extends React.Component {
                 </div>
                 <div>Your age is {this.props.age}</div>
                 <div>You have {siblings.length} sibling(s)</div>
-                {siblings.map(sibling =>
-                    <div style={{ marginLeft: '1em' }}>
+                {siblings.map((sibling, index) =>
+                    <div
+                        style={{ marginLeft: '1em' }}
+                        key={'sibling_no_' + index}
+                    >
                         {sibling.name} - {sibling.age} years old
                     </div>
                 )}
