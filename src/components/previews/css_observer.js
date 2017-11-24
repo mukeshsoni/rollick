@@ -1,5 +1,6 @@
 import React from 'react'
-import { dedupe } from '../../../belt.js'
+import belt from '../../../belt.js'
+let { dedupe } = belt
 
 /*
   * HOC which listens on style tag additions to head tag
