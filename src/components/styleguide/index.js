@@ -22,6 +22,7 @@ import StyleguidePlayground from './styleguide_playground.js'
 import { formatCode } from '../playground/code_formatter.js'
 import { componentJsx } from '../playground/transpile_helpers.js'
 import { jsxToJs, transpile } from '../playground/transpile_helpers.js'
+import { saveProps, getSavedProps } from '../../persist.js'
 
 const code = `<div width={100}>abc</div>`
 
@@ -51,6 +52,49 @@ const code = `<div width={100}>abc</div>`
 //     }
 // })
 
+function getStringValueFromAstNode(node) {
+    return node.value
+}
+
+function getObjectValueFromAstNode(node) {
+    let final = node.properties.reduce((acc, prop) => {
+        return Object.assign({}, acc, {
+            [prop.key.name]: getPropValueFromAstNode(prop)
+        })
+    }, {})
+    return final
+}
+
+function getArrayValueFromAstNode(node) {
+    return node.elements.map(prop => {
+        return getPropValueFromAstNode(prop)
+    })
+}
+
+function getPropValueFromAstNode(node) {
+    let nodeValue = node
+    // TODO - the need to check if the node should be considered or node.value means i don't understand the tree completely
+    // the final code should be simpler than this
+    if (node.value && node.value.type) {
+        nodeValue = node.value
+    }
+    switch (nodeValue.type) {
+        case 'StringLiteral':
+            return getStringValueFromAstNode(nodeValue)
+        case 'ObjectExpression':
+            return getObjectValueFromAstNode(nodeValue)
+        case 'ArrayExpression':
+            return getArrayValueFromAstNode(nodeValue)
+        case 'ObjectProperty':
+            return nodeValue.value
+        case 'NumericLiteral':
+            return nodeValue.value
+        default:
+            console.error('Oops! Not handling node type', node.type)
+            return nodeValue.value || ''
+    }
+}
+
 function getPropsFromJsxCode(oldFakeProps, jsxCode) {
     let newFakeProps = { ...oldFakeProps }
     let transpiledCode = transpile(jsxCode)
@@ -69,13 +113,12 @@ function getPropsFromJsxCode(oldFakeProps, jsxCode) {
 
         let propsInAst = ast.program.body[0].expression.arguments[1].properties
 
-        propsInAst.forEach(propInAst => {
-            if (propInAst && propInAst.value && propInAst.value.value) {
-                newFakeProps[propInAst.key.name] = propInAst.value.value
+        return propsInAst.reduce((acc, propInAst) => {
+            return {
+                ...acc,
+                [propInAst.key.name]: getPropValueFromAstNode(propInAst)
             }
-        })
-
-        return newFakeProps
+        }, {})
     }
 }
 
@@ -90,6 +133,10 @@ export default class Styleguide extends React.Component {
 
     handleSavePropsClick = () => {
         // TODO
+        saveProps(
+            this.state.selectedComponent.path,
+            this.state.selectedComponent.fakeProps
+        )
     }
 
     handleFormatCodeClick = () => {
@@ -106,15 +153,19 @@ export default class Styleguide extends React.Component {
     // TODO - probably need to state variables for selectedComponent. One will have the dirty/invalid state.
     // Another one will sync whenever the first one gets into valid state again and is sent to the preview component.
     handleJsxCodeChange = newCode => {
+        let propsFromChangedCode = getPropsFromJsxCode(
+            this.state.selectedComponent.fakeProps,
+            newCode
+        )
+
+        console.log('new props from changed code', propsFromChangedCode)
+
         this.setState({
             selectedComponent: {
                 ...this.state.selectedComponent,
                 fakeProps: {
                     ...this.state.selectedComponent.fakeProps,
-                    ...getPropsFromJsxCode(
-                        this.state.selectedComponent.fakeProps,
-                        newCode
-                    )
+                    ...propsFromChangedCode
                 }
             },
             jsxCode: newCode
@@ -152,10 +203,18 @@ export default class Styleguide extends React.Component {
     }
 
     handleComponentItemClick = debounce(com => {
+        function populateSavedProps(componentPath) {
+            return getSavedProps(componentPath)
+        }
+
         const newSelectedComponent = {
             ...com,
-            fakeProps: faker(com.props, { optional: true })
+            fakeProps: {
+                ...faker(com.props, { optional: true }),
+                ...populateSavedProps(com.path)
+            }
         }
+
         let formattedCode = formatCode(componentJsx(newSelectedComponent), {
             line: 0,
             ch: 0

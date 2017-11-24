@@ -76,3 +76,35 @@ export function getSavedPen(id) {
 
     return savedPens[id]
 }
+
+export function saveProps(componentPath, props) {
+    let componentMeta = {}
+
+    try {
+        componentMeta = JSON.parse(localStorage.getItem(componentPath))
+    } catch (e) {
+        console.error('Error load', e)
+    }
+
+    localStorage.setItem(
+        componentPath,
+        JSON.stringify({
+            ...componentMeta,
+            props
+        })
+    )
+}
+
+export function getSavedProps(componentPath) {
+    let componentMeta = {}
+    try {
+        componentMeta = JSON.parse(localStorage.getItem(componentPath))
+    } catch (e) {
+        console.error(
+            'Error loading saved component props. Probably never saved',
+            componentPath
+        )
+    } finally {
+        return (componentMeta && componentMeta.props) || {}
+    }
+}

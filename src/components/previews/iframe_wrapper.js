@@ -89,9 +89,7 @@ export default function iframeWrapper(WrappedComponent) {
         }
 
         onMount = () => {
-            setTimeout(() => {
-                this.adjustIframeHeight()
-            }, 200)
+            setTimeout(this.adjustIframeHeight, 200)
         }
 
         onUpdate = () => {
