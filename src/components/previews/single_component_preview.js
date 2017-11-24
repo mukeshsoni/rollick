@@ -5,7 +5,7 @@ import loadComponentFromPath from '../playground/load_component_from_path.js'
 import faker from '../../faker.js'
 import iframeWrapper from './iframe_wrapper.js'
 import '../styleguide/loader.css'
-import { jsxToJs } from '../playground/transpile_helpers.js'
+import { jsxToJs } from '../../tools/transpile_helpers.js'
 
 type NewStuff = 'a' | 'b'
 

@@ -60,10 +60,10 @@ class StyleguidePlayground extends React.PureComponent {
             cursor: 'pointer'
         }
 
-        console.log(
-            'jsdoc ',
-            docgen.utils.docblock.getDoclets(item.description)
-        )
+        // console.log(
+        //     'jsdoc ',
+        //     docgen.utils.docblock.getDoclets(item.description)
+        // )
 
         return (
             <div style={bodyStyle}>

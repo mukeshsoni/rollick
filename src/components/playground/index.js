@@ -22,14 +22,14 @@ import {
     updatePenName
 } from '../../persist.js'
 const { any, isCapitalized, last, dedupe, fileExtension } = belt
-import { formatCode } from './code_formatter.js'
+import { formatCode } from '../../tools/code_formatter.js'
 import {
     transpile,
     jsxToJs,
     compileCss,
     wrapCss,
     addComponentToExistingJsx
-} from './transpile_helpers.js'
+} from '../../tools/transpile_helpers.js'
 import loadComponentFromPath from './load_component_from_path.js'
 
 const rightPaneId = 'reactpen-right-pane'

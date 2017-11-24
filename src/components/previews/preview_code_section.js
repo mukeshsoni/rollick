@@ -8,8 +8,8 @@ import CodeMirror from '@skidding/react-codemirror'
 import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirror.js'
 import PreviewSectionHeader from './preview_section_header.js'
 import Button from '../buttons/button.js'
-import { componentJsx } from '../playground/transpile_helpers.js'
-import { formatCode } from '../playground/code_formatter.js'
+import { componentJsx } from '../../tools/transpile_helpers.js'
+import { formatCode } from '../../tools/code_formatter.js'
 
 class PreviewCodeSection extends React.PureComponent {
     render() {
