@@ -21,6 +21,8 @@ function errorSection(e) {
 }
 
 class SingleComponentPreview extends React.Component {
+    lastValidRender: null
+
     getComponent = item => {
         loadComponentFromPath(item)
             .then(com => {
@@ -48,19 +50,47 @@ class SingleComponentPreview extends React.Component {
             let jsCode = jsxToJs(jsxCode)
 
             if (jsCode.error) {
-                return errorSection(jsCode.error)
+                if (
+                    this.lastValidRender &&
+                    this.lastValidRender.componentPath === this.props.item.path
+                ) {
+                    return lastValidRender.codeToRender
+                } else {
+                    return errorSection(jsCode.error)
+                }
             } else {
                 try {
-                    return eval(jsxToJs(jsxCode).transpiledCode)
+                    let codeToRender = eval(jsxToJs(jsxCode).transpiledCode)
+                    this.lastValidRender = {
+                        componentPath: this.props.item.path,
+                        codeToRender
+                    }
+
+                    return codeToRender
                 } catch (e) {
-                    return errorSection(jsCode.error)
+                    if (
+                        this.lastValidRender &&
+                        this.lastValidRender.componentPath ===
+                            this.props.item.path
+                    ) {
+                        return lastValidRender.codeToRender
+                    } else {
+                        return errorSection(jsCode.error)
+                    }
                 }
             }
         } else {
-            return React.createElement(
+            let codeToRender = React.createElement(
                 component,
                 item.fakeProps ? item.fakeProps : fakeProps
             )
+
+            this.lastValidRender = {
+                componentPath: this.props.item.path,
+                codeToRender
+            }
+
+            return codeToRender
         }
     }
 
