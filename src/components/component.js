@@ -26,6 +26,8 @@ export default class HelloWorld extends React.Component {
     props: Props
 
     render() {
+        let { siblings } = this.props
+
         return (
             <div className="com">
                 Hello! {this.props.name}
@@ -34,7 +36,17 @@ export default class HelloWorld extends React.Component {
                     {this.props.address && this.props.address.street}
                 </div>
                 <div>Your age is {this.props.age}</div>
+                <div>You have {siblings.length} sibling(s)</div>
+                {siblings.map(sibling =>
+                    <div style={{ marginLeft: '1em' }}>
+                        {sibling.name} - {sibling.age} years old
+                    </div>
+                )}
             </div>
         )
     }
+}
+
+HelloWorld.defaultProps = {
+    siblings: []
 }

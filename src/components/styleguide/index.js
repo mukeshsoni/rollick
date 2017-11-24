@@ -81,13 +81,15 @@ function getPropsFromJsxCode(oldFakeProps, jsxCode) {
 
 export default class Styleguide extends React.Component {
     handleEditorFocusChange = focus => {
-        setTimeout(() => {
-            this.setState({
-                showPropertiesPane: focus || this.state.showPropertiesPane
-            })
-        }, 500)
+        // setTimeout(() => {
+        //     this.setState({
+        //         showPropertiesPane: focus || this.state.showPropertiesPane
+        //     })
+        // }, 500)
     }
 
+    // TODO - probably need to state variables for selectedComponent. One will have the dirty/invalid state.
+    // Another one will sync whenever the first one gets into valid state again and is sent to the preview component.
     handleJsxCodeChange = newCode => {
         this.setState({
             selectedComponent: {

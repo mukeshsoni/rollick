@@ -9,6 +9,17 @@ import { jsxToJs } from '../playground/transpile_helpers.js'
 
 type NewStuff = 'a' | 'b'
 
+function errorSection(e) {
+    return (
+        <div>
+            <h4>Error loading jsx</h4>
+            <div>
+                {e.toString()}
+            </div>
+        </div>
+    )
+}
+
 class SingleComponentPreview extends React.Component {
     getComponent = item => {
         loadComponentFromPath(item)
@@ -28,6 +39,29 @@ class SingleComponentPreview extends React.Component {
                     error: e
                 })
             })
+    }
+
+    getComponentToRender = () => {
+        let { jsxCode } = this.props
+
+        if (jsxCode) {
+            let jsCode = jsxToJs(jsxCode)
+
+            if (jsCode.error) {
+                return errorSection(jsCode.error)
+            } else {
+                try {
+                    return eval(jsxToJs(jsxCode).transpiledCode)
+                } catch (e) {
+                    return errorSection(jsCode.error)
+                }
+            }
+        } else {
+            return React.createElement(
+                component,
+                item.fakeProps ? item.fakeProps : fakeProps
+            )
+        }
     }
 
     constructor(props) {
@@ -89,12 +123,7 @@ class SingleComponentPreview extends React.Component {
                             paddingBottom: 36
                         }}
                     >
-                        {jsxCode
-                            ? eval(jsxToJs(jsxCode).transpiledCode)
-                            : React.createElement(
-                                  component,
-                                  item.fakeProps ? item.fakeProps : fakeProps
-                              )}
+                        {this.getComponentToRender()}
                     </div>
                 </div>
             )
