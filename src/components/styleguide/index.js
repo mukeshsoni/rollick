@@ -71,6 +71,10 @@ function getArrayValueFromAstNode(node) {
     })
 }
 
+function getFunctionValueFromAstNode(node) {
+    return 'TODO - should show the function body'
+}
+
 function getPropValueFromAstNode(node) {
     let nodeValue = node
     // TODO - the need to check if the node should be considered or node.value means i don't understand the tree completely
@@ -89,6 +93,8 @@ function getPropValueFromAstNode(node) {
             return nodeValue.value
         case 'NumericLiteral':
             return nodeValue.value
+        case 'FunctionExpression':
+            return getFunctionValueFromAstNode(nodeValue)
         default:
             console.error('Oops! Not handling node type', node.type)
             return nodeValue.value || ''

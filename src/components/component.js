@@ -19,7 +19,8 @@ type Props = {
     /**
       * Your brothers and sisters but not from the same parents
       **/
-    siblings: Array<Person>
+    siblings: Array<Person>,
+    onNameChange: (name: string) => any
 }
 
 export default class HelloWorld extends React.Component {
