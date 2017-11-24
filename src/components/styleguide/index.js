@@ -158,8 +158,6 @@ export default class Styleguide extends React.Component {
             newCode
         )
 
-        console.log('new props from changed code', propsFromChangedCode)
-
         this.setState({
             selectedComponent: {
                 ...this.state.selectedComponent,
