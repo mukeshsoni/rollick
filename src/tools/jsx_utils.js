@@ -1,4 +1,8 @@
-import { transpile } from './transpile_helpers.js'
+import * as babylon from 'babylon'
+
+function prop(propName, obj) {
+    return obj[propName]
+}
 
 function getStringValueFromAstNode(node) {
     return node.value
@@ -19,8 +23,113 @@ function getArrayValueFromAstNode(node) {
     })
 }
 
+const getFunctionParamName = prop.bind(null, 'name')
+
+function getAstNodeValueString(node) {
+    switch (node.type) {
+        case 'Identifier':
+            return node.name
+        default:
+            return JSON.stringify(getPropValueFromAstNode(node))
+    }
+}
+
+function getStringForExpressionStatement(node) {
+    return (
+        node.callee.object.name +
+        '.' +
+        node.callee.property.name +
+        '(' +
+        node.arguments.map(getAstNodeValueString).join(', ') +
+        ')'
+    )
+}
+
+export function getVariableDeclarationString(node) {
+    return (
+        node.kind +
+        ' ' +
+        node.declarations
+            .map(declaration => {
+                return (
+                    declaration.id.name +
+                    ' = ' +
+                    getAstNodeValueString(declaration.init)
+                )
+            })
+            .join(', ')
+    )
+}
+
+function getPredicate(node) {
+    return (
+        getAstNodeValueString(node.left) +
+        ' ' +
+        node.operator +
+        ' ' +
+        getAstNodeValueString(node.right)
+    )
+}
+
+function getIfStatementString(node) {
+    let s1 = 'if('
+    let s2 = getPredicate(node.test)
+    let s3 = ') { '
+    let s4 = getFunctionBlockStatementString(node.consequent)
+    let s5 = '}'
+
+    let ifPart = s1 + s2 + s3 + s4 + s5
+
+    if (node.alternate) {
+        let s6 = ' else {'
+        let s7 = getFunctionBlockStatementString(node.alternate)
+        let s8 = '}'
+        let elsePart = s6 + s7 + s8
+        return ifPart + elsePart
+    } else {
+        return ifPart
+    }
+}
+
+function getFunctionBlockStatementString(node) {
+    let bodyString = node.body
+        .map(stmt => {
+            switch (stmt.type) {
+                case 'ExpressionStatement':
+                    return getStringForExpressionStatement(stmt.expression)
+                case 'ReturnStatement':
+                    return 'return ' + getAstNodeValueString(stmt.argument)
+                case 'VariableDeclaration':
+                    return getVariableDeclarationString(stmt)
+                case 'IfStatement':
+                    return getIfStatementString(stmt)
+                case 'EmptyStatement':
+                    console.log('empty statement', stmt)
+                    return ''
+                default:
+                    console.log(
+                        'could not take care of block statement',
+                        stmt,
+                        stmt.type
+                    )
+                    return (
+                        'Could not get string for this statement type: ' +
+                        stmt.type
+                    )
+            }
+        })
+        .join(';\n')
+
+    return bodyString
+}
+
 function getFunctionValueFromAstNode(node) {
-    return 'TODO - should show the function body'
+    let start = 'function('
+
+    let params = node.params.map(getFunctionParamName)
+    let bodyString = getFunctionBlockStatementString(node.body)
+
+    return new Function(...params.concat(bodyString))
 }
 
 function getPropValueFromAstNode(node) {
@@ -30,9 +139,12 @@ function getPropValueFromAstNode(node) {
     if (node.value && node.value.type) {
         nodeValue = node.value
     }
+
     switch (nodeValue.type) {
         case 'StringLiteral':
             return getStringValueFromAstNode(nodeValue)
+        case 'BooleanLiteral':
+            return nodeValue.value
         case 'ObjectExpression':
             return getObjectValueFromAstNode(nodeValue)
         case 'ArrayExpression':
@@ -43,35 +155,29 @@ function getPropValueFromAstNode(node) {
             return nodeValue.value
         case 'FunctionExpression':
             return getFunctionValueFromAstNode(nodeValue)
+        case 'JSXExpressionContainer':
+            return getPropValueFromAstNode(nodeValue.expression)
         default:
-            console.error('Oops! Not handling node type', node.type)
+            console.error('Oops! Not handling node type', nodeValue.type)
             return nodeValue.value || ''
     }
 }
 
-export function getPropsFromJsxCode(oldFakeProps, jsxCode) {
-    let newFakeProps = { ...oldFakeProps }
-    let transpiledCode = transpile(jsxCode)
-
-    if (transpiledCode.error) {
-        return oldFakeProps
-    } else {
-        // let ast = babylon.parse(jsxCode, { plugins: ['jsx'] })
-        let ast = transpiledCode.ast
-
-        // traverse(babylon.parse(jsxCode, { plugins: ['jsx'] }), {
-        //     JSXOpeningElement(node) {
-        //         console.log('got a jsx element', node)
-        //     }
-        // })
-
-        let propsInAst = ast.program.body[0].expression.arguments[1].properties
-
-        return propsInAst.reduce((acc, propInAst) => {
-            return {
-                ...acc,
-                [propInAst.key.name]: getPropValueFromAstNode(propInAst)
-            }
-        }, {})
+export function getPropsFromJsxCode(jsxCode) {
+    var ast
+    try {
+        ast = babylon.parse(jsxCode, { plugins: ['jsx'] })
+    } catch (e) {
+        console.log('Error parsing code', e.toString())
+        return {}
     }
+
+    let propsInAst = ast.program.body[0].expression.openingElement.attributes
+
+    return propsInAst.reduce((acc, propInAst) => {
+        return {
+            ...acc,
+            [propInAst.name.name]: getPropValueFromAstNode(propInAst)
+        }
+    }, {})
 }
