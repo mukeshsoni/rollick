@@ -72,6 +72,11 @@ export default class Styleguide extends React.Component {
 
     // for now saving the whole jsx string and loading it back during mount. Easy peasy.
     // TODO - should not allow props/jsx saving if the jsx is invalid
+    // One problem with just saving the jsx might be that when user adds component from styleguide
+    // to the playground, the props will not be what's shown in the jsxCode
+    // TODO - Maybe, just get the jsx props when the user adds the component to the playground.
+    // Don't need to do it all the time
+    // 2. Another case when we want the props is when there is a properties pane
     handleSavePropsClick = () => {
         // saveProps(
         //     this.state.selectedComponent.path,

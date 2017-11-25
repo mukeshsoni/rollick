@@ -8,7 +8,7 @@ import CodeMirror from '@skidding/react-codemirror'
 import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirror.js'
 import PreviewSectionHeader from './preview_section_header.js'
 import Button from '../buttons/button.js'
-import { componentJsx } from '../../tools/transpile_helpers.js'
+import { componentJsx, transpile } from '../../tools/transpile_helpers.js'
 import { formatCode } from '../../tools/code_formatter.js'
 
 class PreviewCodeSection extends React.PureComponent {
@@ -40,6 +40,7 @@ class PreviewCodeSection extends React.PureComponent {
             }).formattedCode.slice(1)
 
         let cssToInsert = '.ReactCodeMirror .CodeMirror { height: 100% }'
+        let { error } = transpile(formattedCode)
 
         return (
             <div>
@@ -64,6 +65,7 @@ class PreviewCodeSection extends React.PureComponent {
                         label="Save props"
                         size="small"
                         onClick={onSavePropClick}
+                        enabled={!error}
                     />
                 </div>
                 <div>
@@ -76,6 +78,18 @@ class PreviewCodeSection extends React.PureComponent {
                         onFocusChange={onEditorFocusChange}
                     />
                 </div>
+                {error
+                    ? <div
+                          style={{
+                              color: 'red',
+                              marginTop: '0.5em',
+                              fontSize: '0.9em',
+                              paddingLeft: '0.1em'
+                          }}
+                      >
+                          Invalid JSX - {error.toString()}
+                      </div>
+                    : null}
             </div>
         )
     }
