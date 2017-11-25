@@ -77,66 +77,68 @@ export function getSavedPen(id) {
     return savedPens[id]
 }
 
-export function saveProps(componentPath, props) {
-    let componentMeta = {}
+export function saveComponentData(dataName, componentPath, data) {
+    let componentData = {}
 
     try {
-        componentMeta = JSON.parse(localStorage.getItem(componentPath))
+        componentData = JSON.parse(localStorage.getItem('component_data')) || {}
     } catch (e) {
-        console.error('Error load', e)
+        console.error('Error loading component data', e)
     }
 
     localStorage.setItem(
-        componentPath,
-        JSON.stringify({
-            ...componentMeta,
-            props
-        })
+        'component_data',
+        JSON.stringify(
+            assoc(
+                componentPath,
+                { ...componentData[componentPath], [dataName]: data },
+                componentData
+            )
+        )
     )
 }
 
-export function getSavedProps(componentPath) {
-    let componentMeta = {}
+export function getSavedComponentData(dataName, defaultValue, componentPath) {
+    let componentData = {}
     try {
-        componentMeta = JSON.parse(localStorage.getItem(componentPath))
+        componentData = JSON.parse(localStorage.getItem('component_data'))
     } catch (e) {
         console.error(
-            'Error loading saved component props. Probably never saved',
-            componentPath
+            'Error loading saved component data. Probably never saved',
+            componentPath,
+            e
         )
     } finally {
-        return (componentMeta && componentMeta.props) || {}
+        return (
+            (componentData &&
+                componentData[componentPath] &&
+                componentData[componentPath][dataName]) ||
+            defaultValue
+        )
     }
 }
 
-export function saveJsx(componentPath, jsxCode) {
-    let componentMeta = {}
+export const saveProps = saveComponentData.bind(null, 'props')
+export const getSavedProps = getSavedComponentData.bind(null, 'props', {})
+export const saveJsx = saveComponentData.bind(null, 'jsxCode')
+export const getSavedJsx = getSavedComponentData.bind(null, 'jsxCode', '')
 
+export function getAllSavedComponentsData() {
     try {
-        componentMeta = JSON.parse(localStorage.getItem(componentPath))
-    } catch (e) {
-        console.error('Error load', e)
-    }
-
-    localStorage.setItem(
-        componentPath,
-        JSON.stringify({
-            ...componentMeta,
-            jsxCode
-        })
-    )
-}
-
-export function getSavedJsx(componentPath) {
-    let componentMeta = {}
-    try {
-        componentMeta = JSON.parse(localStorage.getItem(componentPath))
+        let componentData = JSON.parse(localStorage.getItem('component_data'))
+        return componentData
     } catch (e) {
         console.error(
-            'Error loading saved component props. Probably never saved',
-            componentPath
+            'Error loading saved component data. Probably never saved'
         )
-    } finally {
-        return (componentMeta && componentMeta.jsxCode) || ''
+        return {}
+    }
+}
+
+export function saveAllComponentsData(data) {
+    try {
+        localStorage.setItem('component_data', JSON.stringify(data))
+    } catch (e) {
+        console.error('Error saving component data', e)
     }
 }

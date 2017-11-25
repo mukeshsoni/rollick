@@ -1,4 +1,5 @@
 import React from 'react'
+import FileSaver from 'file-saver'
 import SearchInput from '../search_box/search_input.js'
 import '../search_box/search_box.css'
 import './styleguide.css'
@@ -29,7 +30,9 @@ import {
     saveProps,
     getSavedProps,
     saveJsx,
-    getSavedJsx
+    getSavedJsx,
+    getAllSavedComponentsData,
+    saveAllComponentsData
 } from '../../persist.js'
 import { getPropsFromJsxCode } from '../../tools/jsx_utils.js'
 
@@ -62,6 +65,42 @@ const code = `<div width={100}>abc</div>`
 // })
 
 export default class Styleguide extends React.Component {
+    handleExportPropsClick = e => {
+        // TODO - the export should export saved props/jsx for all components
+        if (this.state.selectedComponent) {
+            var blob = new Blob(
+                [JSON.stringify(getAllSavedComponentsData(), null, 2)],
+                {
+                    type: 'text/plain;charset=utf-8'
+                }
+            )
+            FileSaver.saveAs(blob, 'rollick-saved-props.json')
+        }
+    }
+
+    handleImportPropsClick = e => {
+        document.getElementById('import-component-data').click()
+    }
+
+    importComponentData = () => {
+        var file = e.target.files[0]
+        if (!file) {
+            return
+        }
+
+        var reader = new FileReader()
+        reader.onload = e => {
+            try {
+                const componentsData = JSON.parse(e.target.result)
+                saveAllComponentsData(componentsData)
+            } catch (e) {
+                console.error('could not parse json', e)
+            }
+        }
+
+        reader.readAsText(file)
+    }
+
     handleEditorFocusChange = focus => {
         // setTimeout(() => {
         //     this.setState({
@@ -285,6 +324,8 @@ export default class Styleguide extends React.Component {
                         onEditorFocusChange={this.handleEditorFocusChange}
                         onSavePropClick={this.handleSavePropsClick}
                         onFormatCodeClick={this.handleFormatCodeClick}
+                        onImportPropsClick={this.handleImportPropsClick}
+                        onExportSavedPropsClick={this.handleExportPropsClick}
                     />
                 </div>
                 {selectedComponent &&
@@ -293,6 +334,12 @@ export default class Styleguide extends React.Component {
                         component={this.state.selectedComponent}
                         onChange={this.handleAttributeValueChange}
                     />}
+                <input
+                    type="file"
+                    id="import-component-data"
+                    style={{ display: 'none' }}
+                    onChange={this.importComponentData}
+                />
             </div>
         )
     }

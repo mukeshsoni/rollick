@@ -31,10 +31,50 @@ import {
     addComponentToExistingJsx
 } from '../../tools/transpile_helpers.js'
 import loadComponentFromPath from './load_component_from_path.js'
+import {
+    getAllSavedComponentsData,
+    saveAllComponentsData
+} from '../../persist.js'
 
 const rightPaneId = 'reactpen-right-pane'
 
 export default class Playground extends React.Component {
+    handleExportPropsClick = e => {
+        // TODO - the export should export saved props/jsx for all components
+        if (this.state.selectedComponent) {
+            var blob = new Blob(
+                [JSON.stringify(getAllSavedComponentsData(), null, 2)],
+                {
+                    type: 'text/plain;charset=utf-8'
+                }
+            )
+            FileSaver.saveAs(blob, 'rollick-saved-props.json')
+        }
+    }
+
+    handleImportPropsClick = e => {
+        document.getElementById('import-component-data').click()
+    }
+
+    importComponentData = e => {
+        var file = e.target.files[0]
+        if (!file) {
+            return
+        }
+
+        var reader = new FileReader()
+        reader.onload = e => {
+            try {
+                const componentsData = JSON.parse(e.target.result)
+                saveAllComponentsData(componentsData)
+            } catch (e) {
+                console.error('could not parse json', e)
+            }
+        }
+
+        reader.readAsText(file)
+    }
+
     addComponentFromStyleguide = component => {
         this.handleSearchSelection(component)
     }
@@ -676,6 +716,22 @@ export default class Playground extends React.Component {
                         id="import-file"
                         style={{ display: 'none' }}
                         onChange={this.importPen}
+                    />
+                    <Button
+                        label="Import saved props"
+                        onClick={this.handleImportPropsClick}
+                        style={{ marginRight: '1em' }}
+                    />
+                    <Button
+                        label="Export saved props"
+                        onClick={this.handleExportPropsClick}
+                        style={{ marginRight: '1em' }}
+                    />
+                    <input
+                        type="file"
+                        id="import-component-data"
+                        style={{ display: 'none' }}
+                        onChange={this.importComponentData}
                     />
                     <Button
                         onClick={() =>

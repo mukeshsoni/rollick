@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import docgen from 'react-docgen'
 
+import Button from '../buttons/button.js'
 import PropsAndMethods from '../previews/props_and_methods.js'
 import PreviewCodeSection from '../previews/preview_code_section.js'
 import SingleComponentPreview from '../previews/single_component_preview.js'
@@ -34,7 +35,9 @@ class StyleguidePlayground extends React.PureComponent {
             jsxCode,
             onEditorFocusChange,
             onSavePropClick,
-            onFormatCodeClick
+            onFormatCodeClick,
+            onExportSavedPropsClick,
+            onImportPropsClick
         } = this.props
 
         if (!item) {
@@ -209,7 +212,15 @@ StyleguidePlayground.propTypes = {
     /**
       * callback invoked when 'Format code' button is clicked
       **/
-    onFormatCodeClick: PropTypes.func.isRequired
+    onFormatCodeClick: PropTypes.func.isRequired,
+    /**
+      * callback invoked when 'Import saved props' button is clicked
+      **/
+    onImportPropsClick: PropTypes.func.isRequired,
+    /**
+      * callback invoked when 'Export saved props' button is clicked
+      **/
+    onExportSavedPropsClick: PropTypes.func.isRequired
 }
 
 export default StyleguidePlayground
