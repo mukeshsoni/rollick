@@ -25,7 +25,12 @@ import {
     jsxToJs,
     transpile
 } from '../../tools/transpile_helpers.js'
-import { saveProps, getSavedProps } from '../../persist.js'
+import {
+    saveProps,
+    getSavedProps,
+    saveJsx,
+    getSavedJsx
+} from '../../persist.js'
 import { getPropsFromJsxCode } from '../../tools/jsx_utils.js'
 
 const code = `<div width={100}>abc</div>`
@@ -65,12 +70,14 @@ export default class Styleguide extends React.Component {
         // }, 500)
     }
 
+    // for now saving the whole jsx string and loading it back during mount. Easy peasy.
+    // TODO - should not allow props/jsx saving if the jsx is invalid
     handleSavePropsClick = () => {
-        // TODO
-        saveProps(
-            this.state.selectedComponent.path,
-            this.state.selectedComponent.fakeProps
-        )
+        // saveProps(
+        //     this.state.selectedComponent.path,
+        //     this.state.selectedComponent.fakeProps
+        // )
+        saveJsx(this.state.selectedComponent.path, this.state.jsxCode)
     }
 
     handleFormatCodeClick = () => {
@@ -153,7 +160,7 @@ export default class Styleguide extends React.Component {
 
         this.setState({
             selectedComponent: newSelectedComponent,
-            jsxCode: formattedCode,
+            jsxCode: getSavedJsx(com.path) || formattedCode,
             showPropertiesPane:
                 this.state.selectedComponent &&
                 com.path === this.state.selectedComponent.path

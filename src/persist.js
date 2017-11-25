@@ -108,3 +108,35 @@ export function getSavedProps(componentPath) {
         return (componentMeta && componentMeta.props) || {}
     }
 }
+
+export function saveJsx(componentPath, jsxCode) {
+    let componentMeta = {}
+
+    try {
+        componentMeta = JSON.parse(localStorage.getItem(componentPath))
+    } catch (e) {
+        console.error('Error load', e)
+    }
+
+    localStorage.setItem(
+        componentPath,
+        JSON.stringify({
+            ...componentMeta,
+            jsxCode
+        })
+    )
+}
+
+export function getSavedJsx(componentPath) {
+    let componentMeta = {}
+    try {
+        componentMeta = JSON.parse(localStorage.getItem(componentPath))
+    } catch (e) {
+        console.error(
+            'Error loading saved component props. Probably never saved',
+            componentPath
+        )
+    } finally {
+        return (componentMeta && componentMeta.jsxCode) || ''
+    }
+}

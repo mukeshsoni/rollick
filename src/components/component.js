@@ -27,16 +27,13 @@ export default class HelloWorld extends React.Component {
     props: Props
 
     render() {
-        let { siblings } = this.props
+        let { siblings, name, address, age } = this.props
 
         return (
             <div className="com">
-                Hello! {this.props.name}
-                <div>
-                    You live in{' '}
-                    {this.props.address && this.props.address.street}
-                </div>
-                <div>Your age is {this.props.age}</div>
+                Hello! {name}
+                <div>You live in {address && address.street}</div>
+                <div>Your age is {age}</div>
                 <div>You have {siblings.length} sibling(s)</div>
                 {siblings.map((sibling, index) =>
                     <div
