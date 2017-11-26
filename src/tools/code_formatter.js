@@ -1,5 +1,5 @@
 import prettier from 'prettier'
-import belt from '../../../belt.js'
+import belt from '../../belt.js'
 const { any, isCapitalized, last } = belt
 
 export function cmToPrettierCursorOffset(code, cursor) {
