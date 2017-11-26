@@ -13,7 +13,7 @@ const COMPONENT_LOAD_ERROR = 'COMPONENT_LOAD_ERROR'
 const errorStrings = {
     [JSX_PARSE_ERROR]: 'Error trying to parse jsx',
     [JSX_EVAL_ERROR]: 'Error evaluating the transpiled jsx',
-    [COMPONENT_LOAD_ERROR]: 'Error trying to load the componentj'
+    [COMPONENT_LOAD_ERROR]: 'Error trying to load the component'
 }
 
 function errorSection(errorType, e) {
@@ -89,7 +89,7 @@ class SingleComponentPreview extends React.Component {
                     ) {
                         return this.lastValidRender.codeToRender
                     } else {
-                        return errorSection(JSX_EVAL_ERROR, jsCode.error)
+                        return errorSection(JSX_EVAL_ERROR, e)
                     }
                 }
             }

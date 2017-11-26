@@ -74,18 +74,20 @@ export default function iframeWrapper(WrappedComponent) {
         }
 
         adjustIframeHeight = () => {
-            const iframeDOMNode = ReactDOM.findDOMNode(this.iframeRef)
+            setTimeout(() => {
+                const iframeDOMNode = ReactDOM.findDOMNode(this.iframeRef)
 
-            if (
-                iframeDOMNode &&
-                iframeDOMNode.contentWindow &&
-                iframeDOMNode.contentWindow.document &&
-                iframeDOMNode.contentWindow.document.body
-            ) {
-                iframeDOMNode.height =
-                    iframeDOMNode.contentWindow.document.body.scrollHeight ||
-                    'auto'
-            }
+                if (
+                    iframeDOMNode &&
+                    iframeDOMNode.contentWindow &&
+                    iframeDOMNode.contentWindow.document &&
+                    iframeDOMNode.contentWindow.document.body
+                ) {
+                    iframeDOMNode.height =
+                        iframeDOMNode.contentWindow.document.body
+                            .scrollHeight || 'auto'
+                }
+            }, 200)
         }
 
         onMount = () => {
