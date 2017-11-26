@@ -84,43 +84,47 @@ function fakeFunction() {
 }
 
 function getFakePropType(prefix, prop, opts) {
-    switch (prop.type.name) {
-        case 'array':
-            return fakeArray()
-        case 'bool':
-            return fakeBool()
-        case 'func':
-            return fakeFunction()
-        case 'number':
-            return fakeNumber()
-        case 'object':
-            return fakeObject()
-        case 'string':
-            return fakeString(prefix)
-        case 'symbol':
-            return fakeSymbol()
-        case 'node':
-            return fakeNode(prefix)
-        case 'element':
-            return fakeElement(prefix)
-        case 'instanceOf':
-            return fakeInstanceOf(prefix)
-        case 'enum':
-            return getEnum(prop.type.value)
-        case 'union':
-            return getUnion(prefix, prop.type.value, opts)
-        case 'arrayOf':
-            return getArrayOf(prefix, prop.type.value, opts)
-        case 'objectOf':
-            return getObjectOf(prefix, prop.type.value, opts)
-        case 'shape':
-            return getShape(prefix, prop.type.value, opts)
-        case 'any':
-            return fakeAny()
-        case 'custom':
-            return fakeCustom(prefix)
-        default:
-            return 'Error, unknown type'
+    if (prop && prop.type && prop.type.name) {
+        switch (prop.type.name) {
+            case 'array':
+                return fakeArray()
+            case 'bool':
+                return fakeBool()
+            case 'func':
+                return fakeFunction()
+            case 'number':
+                return fakeNumber()
+            case 'object':
+                return fakeObject()
+            case 'string':
+                return fakeString(prefix)
+            case 'symbol':
+                return fakeSymbol()
+            case 'node':
+                return fakeNode(prefix)
+            case 'element':
+                return fakeElement(prefix)
+            case 'instanceOf':
+                return fakeInstanceOf(prefix)
+            case 'enum':
+                return getEnum(prop.type.value)
+            case 'union':
+                return getUnion(prefix, prop.type.value, opts)
+            case 'arrayOf':
+                return getArrayOf(prefix, prop.type.value, opts)
+            case 'objectOf':
+                return getObjectOf(prefix, prop.type.value, opts)
+            case 'shape':
+                return getShape(prefix, prop.type.value, opts)
+            case 'any':
+                return fakeAny()
+            case 'custom':
+                return fakeCustom(prefix)
+            default:
+                return 'Error, unknown type'
+        }
+    } else {
+        return null
     }
 }
 
@@ -245,7 +249,7 @@ function getFakeProp(prefix, prop, opts) {
 }
 
 export default function fakeDataForProps(props, { optional = false } = {}) {
-    if(!props || typeof props !== 'object') {
+    if (!props || typeof props !== 'object') {
         return {}
     }
 

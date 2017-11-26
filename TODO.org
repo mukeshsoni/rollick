@@ -1,4 +1,4 @@
-* P1 [94/183]
+* P1 [94/187]
 - [X] Change react-codemirror lib - https://github.com/scniro/react-codemirror2.
 The one we use has a nasty bug where changing `value` prop does not change the editor value.
 Wasted so many days without realising that it was a bug in react-codemirror.
@@ -7,6 +7,7 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Save
   - [X] Create New
   - [X] Open
+- [ ] Bug - changing component in styleguide does not refresh the props table
 - [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
 Sharing through url? Store the code in database against the unique url.
 Saving configuration for the tool? Store in the database.
@@ -18,6 +19,7 @@ Saving configuration for the tool? Store in the database.
 invalid states the attribute values can get into due to the user inputs. Questions like "should we flow the invalid input to the output? should we flow the invalid input to the jsx editor? How to finally sync between valid
 state and user input?" need to be answered.
 - [ ] Use *doctrine* to get jsdoc AST - https://github.com/eslint/doctrine
+- [ ] In the preview code section in styleguide playground, add a toggle to populate non-required/optional props
 - [ ] Show a =How to use= section in the styleguide preview section. Like victory.js does.
   - [ ] react-docgen picks up comments above component and props and instance methods and adds them to component meta data
   - [ ] Can check if the description is in jsdoc format and further format for documentation
