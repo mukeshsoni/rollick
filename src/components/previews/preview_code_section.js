@@ -10,8 +10,26 @@ import PreviewSectionHeader from './preview_section_header.js'
 import Button from '../buttons/button.js'
 import { componentJsx, transpile } from '../../tools/transpile_helpers.js'
 import { formatCode } from '../../tools/code_formatter.js'
+import { getSavedJsx } from '../../persist.js'
+
+function notEqual(a, b) {
+    return a !== b
+}
 
 class PreviewCodeSection extends React.PureComponent {
+    lastSavedJsx: ''
+    getSavePropsButtonLabel = () => {
+        if (this.props.savingProps) {
+            return 'Saving props'
+        } else if (
+            !notEqual(getSavedJsx(this.props.item.path), this.props.jsxCode)
+        ) {
+            return 'Props saved'
+        } else {
+            return 'Save props'
+        }
+    }
+
     render() {
         let {
             item,
@@ -19,7 +37,8 @@ class PreviewCodeSection extends React.PureComponent {
             jsxCode,
             onEditorFocusChange,
             onSavePropClick,
-            onFormatCodeClick
+            onFormatCodeClick,
+            savingProps
         } = this.props
         const codeMirrorOptions = {
             lineNumbers: false,
@@ -62,10 +81,14 @@ class PreviewCodeSection extends React.PureComponent {
                         style={{ marginRight: '1em' }}
                     />
                     <Button
-                        label="Save props"
+                        label={this.getSavePropsButtonLabel()}
                         size="small"
                         onClick={onSavePropClick}
-                        enabled={!error}
+                        enabled={
+                            !error &&
+                            notEqual(getSavedJsx(item.path), jsxCode) &&
+                            !savingProps
+                        }
                     />
                 </div>
                 <div>
@@ -109,7 +132,12 @@ PreviewCodeSection.propTypes = {
     /**
      * callback invoked when 'Format code' button is clicked
      **/
-    onFormatCodeClick: PropTypes.func.isRequired
+    onFormatCodeClick: PropTypes.func.isRequired,
+    savingProps: PropTypes.bool
+}
+
+PreviewCodeSection.defaultProps = {
+    savingProps: false
 }
 
 PreviewCodeSection.defaultProps = {

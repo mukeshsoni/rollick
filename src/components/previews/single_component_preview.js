@@ -135,7 +135,7 @@ class SingleComponentPreview extends React.Component {
                 <div>
                     <h4>Error loading component</h4>
                     <div>
-                        {error}
+                        {error.toString()}
                     </div>
                 </div>
             )

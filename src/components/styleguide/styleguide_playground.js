@@ -37,7 +37,8 @@ class StyleguidePlayground extends React.PureComponent {
             onSavePropClick,
             onFormatCodeClick,
             onExportSavedPropsClick,
-            onImportPropsClick
+            onImportPropsClick,
+            savingProps
         } = this.props
 
         if (!item) {
@@ -169,6 +170,7 @@ class StyleguidePlayground extends React.PureComponent {
                         onEditorFocusChange={onEditorFocusChange}
                         onSavePropClick={onSavePropClick}
                         onFormatCodeClick={onFormatCodeClick}
+                        savingProps={savingProps}
                     />
                 </div>
                 <div style={{ marginBottom: 32 }}>
@@ -220,7 +222,12 @@ StyleguidePlayground.propTypes = {
     /**
       * callback invoked when 'Export saved props' button is clicked
       **/
-    onExportSavedPropsClick: PropTypes.func.isRequired
+    onExportSavedPropsClick: PropTypes.func.isRequired,
+    savingProps: PropTypes.bool
+}
+
+StyleguidePlayground.defaultProps = {
+    savingProps: false
 }
 
 export default StyleguidePlayground

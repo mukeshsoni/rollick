@@ -122,6 +122,16 @@ export default class Styleguide extends React.Component {
         //     this.state.selectedComponent.fakeProps
         // )
         saveJsx(this.state.selectedComponent.path, this.state.jsxCode)
+        this.setState(
+            {
+                savingProps: true
+            },
+            () => {
+                setTimeout(() => {
+                    this.setState({ savingProps: false })
+                }, 1000)
+            }
+        )
     }
 
     handleFormatCodeClick = () => {
@@ -204,10 +214,10 @@ export default class Styleguide extends React.Component {
 
         this.setState({
             selectedComponent: newSelectedComponent,
-            jsxCode: getSavedJsx(com.path) || formattedCode,
-            showPropertiesPane:
-                this.state.selectedComponent &&
-                com.path === this.state.selectedComponent.path
+            jsxCode: getSavedJsx(com.path) || formattedCode
+            // showPropertiesPane:
+            //     this.state.selectedComponent &&
+            //     com.path === this.state.selectedComponent.path
         })
     }, 300)
 
@@ -259,7 +269,8 @@ export default class Styleguide extends React.Component {
             selectedComponent: null,
             selectedComponentInstance: null,
             componentsMetaListSorted: [],
-            showPropertiesPane: false
+            showPropertiesPane: false,
+            savingProps: false
         }
     }
 
@@ -292,7 +303,8 @@ export default class Styleguide extends React.Component {
             searchText,
             selectedComponent,
             selectedComponentInstance,
-            showPropertiesPane
+            showPropertiesPane,
+            savingProps
         } = this.state
 
         const leftPaneStyle = {
@@ -326,6 +338,7 @@ export default class Styleguide extends React.Component {
                         onFormatCodeClick={this.handleFormatCodeClick}
                         onImportPropsClick={this.handleImportPropsClick}
                         onExportSavedPropsClick={this.handleExportPropsClick}
+                        savingProps={savingProps}
                     />
                 </div>
                 {selectedComponent &&
