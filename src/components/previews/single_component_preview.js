@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
 import loadComponentFromPath from '../playground/load_component_from_path.js'
@@ -7,12 +6,22 @@ import iframeWrapper from './iframe_wrapper.js'
 import '../styleguide/loader.css'
 import { jsxToJs } from '../../tools/transpile_helpers.js'
 
-type NewStuff = 'a' | 'b'
+const JSX_PARSE_ERROR = 'JSX_PARSE_ERROR'
+const JSX_EVAL_ERROR = 'JSX_EVAL_ERROR'
+const COMPONENT_LOAD_ERROR = 'COMPONENT_LOAD_ERROR'
 
-function errorSection(e) {
+const errorStrings = {
+    [JSX_PARSE_ERROR]: 'Error trying to parse jsx',
+    [JSX_EVAL_ERROR]: 'Error evaluating the transpiled jsx',
+    [COMPONENT_LOAD_ERROR]: 'Error trying to load the componentj'
+}
+
+function errorSection(errorType, e) {
     return (
         <div>
-            <h4>Error loading jsx</h4>
+            <h4 style={{ marginBottom: '1em' }}>
+                {errorStrings[errorType] || 'Unknown error'}
+            </h4>
             <div>
                 {e.toString()}
             </div>
@@ -29,7 +38,7 @@ class SingleComponentPreview extends React.Component {
                 window[item.name] = com.component.default || com.component
                 this.setState({
                     loading: false,
-                    error: null,
+                    errorLoadingComponent: null,
                     component: com.component,
                     // if item has fakeProps, we want to get those. Since they might have changed from attribute pane or whereever
                     fakeProps: com.fakeProps
@@ -38,7 +47,7 @@ class SingleComponentPreview extends React.Component {
             .catch(e => {
                 this.setState({
                     loading: false,
-                    error: e
+                    errorLoadingComponent: e
                 })
             })
     }
@@ -56,7 +65,8 @@ class SingleComponentPreview extends React.Component {
                 ) {
                     return this.lastValidRender.codeToRender
                 } else {
-                    return errorSection(jsCode.error)
+                    console.error('Error transpiling jsx', jsCode.error)
+                    return errorSection(JSX_PARSE_ERROR, jsCode.error)
                 }
             } else {
                 try {
@@ -68,6 +78,10 @@ class SingleComponentPreview extends React.Component {
 
                     return codeToRender
                 } catch (e) {
+                    console.error(
+                        'Error evaluating transpiled jsx code. Should not actually happen. ever.',
+                        e
+                    )
                     if (
                         this.lastValidRender &&
                         this.lastValidRender.componentPath ===
@@ -75,7 +89,7 @@ class SingleComponentPreview extends React.Component {
                     ) {
                         return this.lastValidRender.codeToRender
                     } else {
-                        return errorSection(jsCode.error)
+                        return errorSection(JSX_EVAL_ERROR, jsCode.error)
                     }
                 }
             }
@@ -101,7 +115,7 @@ class SingleComponentPreview extends React.Component {
             loading: true,
             component: null,
             fakeProps: {},
-            error: null
+            errorLoadingComponent: null
         }
     }
 
@@ -120,7 +134,12 @@ class SingleComponentPreview extends React.Component {
 
     render() {
         const { item, jsxCode } = this.props
-        const { loading, error, component, fakeProps } = this.state
+        const {
+            loading,
+            errorLoadingComponent,
+            component,
+            fakeProps
+        } = this.state
 
         if (!item) {
             return null
@@ -130,15 +149,8 @@ class SingleComponentPreview extends React.Component {
             return <div className="loader" />
         }
 
-        if (error) {
-            return (
-                <div>
-                    <h4>Error loading component</h4>
-                    <div>
-                        {error.toString()}
-                    </div>
-                </div>
-            )
+        if (errorLoadingComponent) {
+            return errorSection(COMPONENT_LOAD_ERROR, errorLoadingComponent)
         } else {
             return (
                 <div>

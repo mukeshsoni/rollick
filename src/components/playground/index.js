@@ -41,15 +41,13 @@ const rightPaneId = 'reactpen-right-pane'
 export default class Playground extends React.Component {
     handleExportPropsClick = e => {
         // TODO - the export should export saved props/jsx for all components
-        if (this.state.selectedComponent) {
-            var blob = new Blob(
-                [JSON.stringify(getAllSavedComponentsData(), null, 2)],
-                {
-                    type: 'text/plain;charset=utf-8'
-                }
-            )
-            FileSaver.saveAs(blob, 'rollick-saved-props.json')
-        }
+        var blob = new Blob(
+            [JSON.stringify(getAllSavedComponentsData(), null, 2)],
+            {
+                type: 'text/plain;charset=utf-8'
+            }
+        )
+        FileSaver.saveAs(blob, 'rollick-saved-props.json')
     }
 
     handleImportPropsClick = e => {

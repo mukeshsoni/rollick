@@ -115,11 +115,12 @@ class PropsAndMethods extends React.PureComponent {
                             <th style={tableHeaderStyle}>Description</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {Object.entries(item.props).map(prop =>
-                            getPropRow(prop)
-                        )}
-                    </tbody>
+                    {item.props &&
+                        <tbody>
+                            {Object.entries(item.props).map(prop =>
+                                getPropRow(prop)
+                            )}
+                        </tbody>}
                 </table>
             </div>
         )
