@@ -146,7 +146,6 @@ class SingleComponentPreview extends React.Component {
                         style={{
                             padding: 16,
                             borderTop: '2px solid #24B981',
-                            borderBottom: '2px solid #24B981',
                             borderRadius: 3,
                             marginBottom: 16,
                             paddingTop: 36,
