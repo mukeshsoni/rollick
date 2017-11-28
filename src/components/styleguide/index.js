@@ -199,12 +199,19 @@ export default class Styleguide extends React.Component {
             return getSavedProps(componentPath)
         }
 
-        const newSelectedComponent = {
-            ...com,
-            fakeProps: {
-                ...faker(com.props, { optional: true }),
-                ...populateSavedProps(com.path)
-            }
+        let newSelectedComponent = {
+            ...com
+        }
+
+        if (
+            Object.keys(populateSavedProps(com.path)) &&
+            Object.keys(populateSavedProps(com.path)).length > 0
+        ) {
+            newSelectedComponent.fakeProps = populateSavedProps(com.path)
+        } else {
+            newSelectedComponent.fakeProps = faker(com.props, {
+                optional: true
+            })
         }
 
         let formattedCode = formatCode(componentJsx(newSelectedComponent), {
