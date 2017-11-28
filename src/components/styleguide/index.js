@@ -135,14 +135,19 @@ export default class Styleguide extends React.Component {
     }
 
     handleFormatCodeClick = () => {
-        let { selectedComponent } = this.state
+        // let { selectedComponent } = this.state
 
-        let formattedCode = formatCode(componentJsx(selectedComponent), {
-            line: 0,
-            ch: 0
-        }).formattedCode.slice(1)
+        // let formattedCode = formatCode(componentJsx(selectedComponent), {
+        //     line: 0,
+        //     ch: 0
+        // }).formattedCode.slice(1)
+        let formattedCode = formatCode(this.state.jsxCode, { line: 0, ch: 0 })
 
-        this.setState({ jsxCode: formattedCode })
+        if (formattedCode.error) {
+            console.error('error formatting jsx - ', formattedCode.error)
+        } else {
+            this.setState({ jsxCode: formattedCode.formattedCode.slice(1) })
+        }
     }
 
     // TODO - probably need to state variables for selectedComponent. One will have the dirty/invalid state.
