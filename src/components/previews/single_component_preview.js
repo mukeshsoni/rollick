@@ -133,7 +133,7 @@ class SingleComponentPreview extends React.Component {
     }
 
     render() {
-        const { item, jsxCode } = this.props
+        const { item, jsxCode, containerClasses } = this.props
         const {
             loading,
             errorLoadingComponent,
@@ -163,6 +163,7 @@ class SingleComponentPreview extends React.Component {
                             paddingTop: 36,
                             paddingBottom: 36
                         }}
+                        className={containerClasses}
                     >
                         {this.getComponentToRender()}
                     </div>
@@ -177,13 +178,15 @@ SingleComponentPreview.propTypes = {
     style: PropTypes.object,
     cssUrlsToInsert: PropTypes.arrayOf(PropTypes.string),
     jsUrlsToInsert: PropTypes.arrayOf(PropTypes.string),
-    jsxCode: PropTypes.string
+    jsxCode: PropTypes.string,
+    containerClasses: PropTypes.string
 }
 
 SingleComponentPreview.defaultProps = {
     style: {},
     cssUrlsToInsert: [],
-    jsUrlsToInsert: []
+    jsUrlsToInsert: [],
+    containerClasses: ''
 }
 
 export default iframeWrapper(SingleComponentPreview)

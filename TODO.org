@@ -1,4 +1,4 @@
-* P1 [94/187]
+* P1 [95/190]
 - [X] Change react-codemirror lib - https://github.com/scniro/react-codemirror2.
 The one we use has a nasty bug where changing `value` prop does not change the editor value.
 Wasted so many days without realising that it was a bug in react-codemirror.
@@ -7,6 +7,8 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Save
   - [X] Create New
   - [X] Open
+- [ ] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
+there should be an option to import that child component. Mostly needed when the selected component takes children components.
 - [ ] Bug - Once jsx goes to invalid state, even if i change jsx to be in valid state, the single component preview does not refresh. I need to go to some other
 component in the styleguide and come back to this component again. Also making sure that i save the props.
 - [ ] Bug - changing component in styleguide does not refresh the props table

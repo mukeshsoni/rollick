@@ -67,7 +67,8 @@ export default function iframeWrapper(WrappedComponent) {
                     this.setState({
                         cssFilesToInject: this.state.cssFilesToInject.concat(
                             config.globals.css.urls
-                        )
+                        ),
+                        containerClasses: config.globals.containerClasses || ''
                     })
                 }
             })
@@ -104,7 +105,8 @@ export default function iframeWrapper(WrappedComponent) {
 
             this.state = {
                 cssToInsertInIframe: [],
-                cssFilesToInject: []
+                cssFilesToInject: [],
+                containerClasses: ''
             }
         }
 
@@ -129,7 +131,10 @@ export default function iframeWrapper(WrappedComponent) {
                     contentDidMount={this.onMount}
                     contentDidUpdate={this.onUpdate}
                 >
-                    <WrappedComponent {...this.props} />
+                    <WrappedComponent
+                        {...this.props}
+                        containerClasses={this.state.containerClasses}
+                    />
                 </Frame>
             )
         }

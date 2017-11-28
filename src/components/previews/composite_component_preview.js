@@ -64,7 +64,7 @@ class CompositeComponentPreview extends React.Component {
         }
 
         return (
-            <div>
+            <div className={this.props.containerClasses}>
                 {this.getJsxToInsert()}
             </div>
         )
@@ -74,13 +74,15 @@ class CompositeComponentPreview extends React.Component {
 CompositeComponentPreview.propTypes = {
     loading: PropTypes.bool,
     jsxToInsert: PropTypes.string.isRequired,
-    jsToInsert: PropTypes.string
+    jsToInsert: PropTypes.string,
+    containerClasses: PropTypes.string
 }
 
 CompositeComponentPreview.defaultProps = {
     loading: false,
     jsxToInsert: '',
-    jsToInsert: ''
+    jsToInsert: '',
+    containerClasses: ''
 }
 
 export default iframeWrapper(CompositeComponentPreview)
