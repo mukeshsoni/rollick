@@ -43,15 +43,17 @@ export default function iframeWrapper(WrappedComponent) {
                                 />
                             )
                         })}
-                    {this.props.jsUrlsToInsert.map(scriptPath => {
-                        return (
-                            <script
-                                key={'iframe_head_script_' + scriptPath}
-                                type="text/javascript"
-                                src={scriptPath}
-                            />
-                        )
-                    })}
+                    {this.props.jsUrlsToInsert
+                        .concat(this.state.jsUrlsToInsert)
+                        .map(scriptPath => {
+                            return (
+                                <script
+                                    key={'iframe_head_script_' + scriptPath}
+                                    type="text/javascript"
+                                    src={scriptPath}
+                                />
+                            )
+                        })}
                 </div>
             )
         }
@@ -68,7 +70,9 @@ export default function iframeWrapper(WrappedComponent) {
                         cssFilesToInject: this.state.cssFilesToInject.concat(
                             config.globals.css.urls
                         ),
-                        containerClasses: config.globals.containerClasses || ''
+                        containerClasses: config.globals.containerClasses || '',
+                        jsUrlsToInsert:
+                            (config.globals.js && config.globals.js.urls) || []
                     })
                 }
             })
@@ -105,8 +109,9 @@ export default function iframeWrapper(WrappedComponent) {
 
             this.state = {
                 cssToInsertInIframe: [],
-                cssFilesToInject: [],
-                containerClasses: ''
+                cssFilesToInject: ['src/components/styleguide/loader.css'],
+                containerClasses: '',
+                jsUrlsToInsert: []
             }
         }
 

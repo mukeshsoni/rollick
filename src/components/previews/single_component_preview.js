@@ -33,6 +33,7 @@ class SingleComponentPreview extends React.Component {
     lastValidRender: null
 
     getComponent = item => {
+        this.setState({ loading: true })
         loadComponentFromPath(item)
             .then(com => {
                 window[item.name] = com.component.default || com.component
@@ -145,31 +146,30 @@ class SingleComponentPreview extends React.Component {
             return null
         }
 
-        if (loading) {
-            return <div className="loader" />
-        }
-
-        if (errorLoadingComponent) {
-            return errorSection(COMPONENT_LOAD_ERROR, errorLoadingComponent)
-        } else {
-            return (
-                <div>
-                    <div
-                        style={{
-                            padding: 16,
-                            borderTop: '2px solid #24B981',
-                            borderRadius: 3,
-                            marginBottom: 16,
-                            paddingTop: 36,
-                            paddingBottom: 36
-                        }}
-                        className={containerClasses}
-                    >
-                        {this.getComponentToRender()}
-                    </div>
+        return (
+            <div>
+                <div
+                    style={{
+                        padding: 16,
+                        borderTop: '2px solid #24B981',
+                        borderRadius: 3,
+                        marginBottom: 16,
+                        paddingTop: 36,
+                        paddingBottom: 36
+                    }}
+                    className={containerClasses}
+                >
+                    {loading
+                        ? <div>Loading...</div>
+                        : errorLoadingComponent
+                          ? errorSection(
+                                COMPONENT_LOAD_ERROR,
+                                errorLoadingComponent
+                            )
+                          : this.getComponentToRender()}
                 </div>
-            )
-        }
+            </div>
+        )
     }
 }
 
