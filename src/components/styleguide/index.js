@@ -249,8 +249,7 @@ export default class Styleguide extends React.Component {
         }
 
         let newSelectedComponent = {
-            ...com,
-            stories: getSavedStories(com.path) || []
+            ...com
         }
 
         if (
@@ -268,6 +267,16 @@ export default class Styleguide extends React.Component {
             line: 0,
             ch: 0
         }).formattedCode.slice(1)
+
+        if (getSavedStories(com.path) && getSavedStories(com.path).length > 1) {
+            newSelectedComponent.stories = getSavedStories(com.path)
+        } else {
+            newSelectedComponent.stories = [
+                {
+                    jsxCode: getSavedJsx(com.path) || formattedCode
+                }
+            ]
+        }
 
         this.setState({
             selectedComponent: newSelectedComponent,
