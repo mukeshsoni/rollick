@@ -122,6 +122,8 @@ export const saveProps = saveComponentData.bind(null, 'props')
 export const getSavedProps = getSavedComponentData.bind(null, 'props', {})
 export const saveJsx = saveComponentData.bind(null, 'jsxCode')
 export const getSavedJsx = getSavedComponentData.bind(null, 'jsxCode', '')
+export const getSavedStories = getSavedComponentData.bind(null, 'stories', [])
+export const saveStories = saveComponentData.bind(null, 'stories')
 
 export function getAllSavedComponentsData() {
     try {

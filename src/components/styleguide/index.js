@@ -29,7 +29,9 @@ import {
 import {
     saveProps,
     getSavedProps,
+    getSavedStories,
     saveJsx,
+    saveStories,
     getSavedJsx,
     getAllSavedComponentsData,
     saveAllComponentsData
@@ -37,6 +39,19 @@ import {
 import { getPropsFromJsxCode } from '../../tools/jsx_utils.js'
 
 const code = `<div width={100}>abc</div>`
+
+function updateJsxCodeInStory(stories, selectedStoryIndex, jsxCode) {
+    return stories.map((story, index) => {
+        if (index === selectedStoryIndex) {
+            return {
+                ...story,
+                jsxCode
+            }
+        } else {
+            return story
+        }
+    })
+}
 
 // const ast = transpile(code).ast
 // const ast = babylon.parse(code, { plugins: ['jsx'] })
@@ -116,12 +131,16 @@ export default class Styleguide extends React.Component {
     // TODO - Maybe, just get the jsx props when the user adds the component to the playground.
     // Don't need to do it all the time
     // 2. Another case when we want the props is when there is a properties pane
-    handleSavePropsClick = () => {
+    handleSavePropsClick = storyIndex => {
         // saveProps(
         //     this.state.selectedComponent.path,
         //     this.state.selectedComponent.fakeProps
         // )
-        saveJsx(this.state.selectedComponent.path, this.state.jsxCode)
+        // saveJsx(this.state.selectedComponent.path, this.state.jsxCode)
+        saveStories(
+            this.state.selectedComponent.path,
+            this.state.selectedComponent.stories
+        )
         this.setState(
             {
                 savingProps: true
@@ -134,25 +153,38 @@ export default class Styleguide extends React.Component {
         )
     }
 
-    handleFormatCodeClick = () => {
+    handleFormatCodeClick = storyIndex => {
         // let { selectedComponent } = this.state
 
         // let formattedCode = formatCode(componentJsx(selectedComponent), {
         //     line: 0,
         //     ch: 0
         // }).formattedCode.slice(1)
-        let formattedCode = formatCode(this.state.jsxCode, { line: 0, ch: 0 })
+        let formattedCode = formatCode(
+            this.state.selectedComponent.stories[storyIndex].jsxCode,
+            { line: 0, ch: 0 }
+        )
 
         if (formattedCode.error) {
             console.error('error formatting jsx - ', formattedCode.error)
         } else {
-            this.setState({ jsxCode: formattedCode.formattedCode.slice(1) })
+            this.setState({
+                selectedComponent: {
+                    ...this.state.selectedComponent,
+                    stories: updateJsxCodeInStory(
+                        this.state.selectedComponent.stories,
+                        storyIndex,
+                        formattedCode.formattedCode.slice(1)
+                    )
+                },
+                jsxCode: formattedCode.formattedCode.slice(1)
+            })
         }
     }
 
     // TODO - probably need to state variables for selectedComponent. One will have the dirty/invalid state.
     // Another one will sync whenever the first one gets into valid state again and is sent to the preview component.
-    handleJsxCodeChange = newCode => {
+    handleJsxCodeChange = (storyIndex, newCode) => {
         let propsFromChangedCode =
             getPropsFromJsxCode(newCode) ||
             this.state.selectedComponent.fakeProps
@@ -163,7 +195,12 @@ export default class Styleguide extends React.Component {
                 fakeProps: {
                     ...this.state.selectedComponent.fakeProps,
                     ...propsFromChangedCode
-                }
+                },
+                stories: updateJsxCodeInStory(
+                    this.state.selectedComponent.stories,
+                    storyIndex,
+                    newCode
+                )
             },
             jsxCode: newCode
         })
@@ -193,7 +230,14 @@ export default class Styleguide extends React.Component {
 
         if (selectedComponent) {
             this.setState({
-                selectedComponent: newSelectedComponent,
+                selectedComponent: {
+                    ...newSelectedComponent,
+                    stories: updateJsxCodeInStory(
+                        selectedComponent.stories,
+                        0,
+                        formattedCode
+                    )
+                },
                 jsxCode: formattedCode
             })
         }
@@ -205,7 +249,8 @@ export default class Styleguide extends React.Component {
         }
 
         let newSelectedComponent = {
-            ...com
+            ...com,
+            stories: getSavedStories(com.path) || []
         }
 
         if (
@@ -282,7 +327,8 @@ export default class Styleguide extends React.Component {
             selectedComponentInstance: null,
             componentsMetaListSorted: [],
             showPropertiesPane: false,
-            savingProps: false
+            savingProps: false,
+            activeStoryIndex: 0
         }
     }
 

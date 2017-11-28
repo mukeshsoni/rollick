@@ -6,6 +6,7 @@ import Button from '../buttons/button.js'
 import PropsAndMethods from '../previews/props_and_methods.js'
 import PreviewCodeSection from '../previews/preview_code_section.js'
 import SingleComponentPreview from '../previews/single_component_preview.js'
+import StyleguidePlaygroundHeader from './styleguide_playground_header.js'
 
 class EmptyStyleguidePlayground extends React.PureComponent {
     render() {
@@ -27,23 +28,15 @@ class EmptyStyleguidePlayground extends React.PureComponent {
 }
 
 class StyleguidePlayground extends React.PureComponent {
-    render() {
+    getStoryBoards() {
         let {
             item,
-            onAddComponent,
             onCodeChange,
-            jsxCode,
             onEditorFocusChange,
             onSavePropClick,
             onFormatCodeClick,
-            onExportSavedPropsClick,
-            onImportPropsClick,
             savingProps
         } = this.props
-
-        if (!item) {
-            return <EmptyStyleguidePlayground />
-        }
 
         let jsUrlsToInsert = [
             'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
@@ -55,13 +48,57 @@ class StyleguidePlayground extends React.PureComponent {
         ]
         let cssToInsertInIframe = '.ReactCodeMirror .CodeMirror {height: 100%}'
 
-        const bodyStyle = {
-            padding: '6em'
+        let boards = item.stories.map((story, index) => {
+            return (
+                <div>
+                    <div style={{ height: 'auto' }}>
+                        <SingleComponentPreview
+                            jsUrlsToInsert={jsUrlsToInsert}
+                            cssUrlsToInsert={cssUrlsToInsert}
+                            cssToInsert={cssToInsertInIframe}
+                            item={item}
+                            jsxCode={story.jsxCode}
+                        />
+                    </div>
+                    <div style={{ marginBottom: 32 }}>
+                        <PreviewCodeSection
+                            item={item}
+                            jsxCode={story.jsxCode}
+                            onCodeChange={onCodeChange.bind(null, index)}
+                            onEditorFocusChange={onEditorFocusChange}
+                            onSavePropClick={onSavePropClick.bind(null, index)}
+                            onFormatCodeClick={onFormatCodeClick.bind(
+                                null,
+                                index
+                            )}
+                            savingProps={savingProps}
+                        />
+                    </div>
+                </div>
+            )
+        })
+
+        return boards
+    }
+
+    render() {
+        let {
+            item,
+            onAddComponent,
+            onCodeChange,
+            jsxCode,
+            onEditorFocusChange,
+            onSavePropClick,
+            onFormatCodeClick,
+            savingProps
+        } = this.props
+
+        if (!item) {
+            return <EmptyStyleguidePlayground />
         }
 
-        let addButtonStyle = {
-            outline: 'none',
-            cursor: 'pointer'
+        const bodyStyle = {
+            padding: '6em'
         }
 
         // console.log(
@@ -71,108 +108,15 @@ class StyleguidePlayground extends React.PureComponent {
 
         return (
             <div style={bodyStyle}>
-                <header
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        marginBottom: 42
-                    }}
-                >
-                    <div>
-                        <h2
-                            style={{
-                                marginBottom: 8,
-                                fontWeight: 'normal'
-                            }}
-                        >
-                            {item.name}
-                        </h2>
-                        <div
-                            style={{
-                                fontSize: '0.9em',
-                                color: '#999'
-                            }}
-                        >
-                            {item.path}
-                            <button
-                                type="button"
-                                title="Copy to clipboard"
-                                style={{
-                                    background: 'transparent',
-                                    transition: 'color 750ms ease-out',
-                                    color: '#999',
-                                    padding: 2,
-                                    marginLeft: 4,
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                <svg
-                                    fill="currentColor"
-                                    preserveAspectRatio="xMidYMid meet"
-                                    height="1em"
-                                    width="1em"
-                                    viewBox="0 0 40 40"
-                                    style={{ verticalAlign: 'middle' }}
-                                >
-                                    <g>
-                                        <path d="m31.6 35v-23.4h-18.2v23.4h18.2z m0-26.6c1.8 0 3.4 1.4 3.4 3.2v23.4c0 1.8-1.6 3.4-3.4 3.4h-18.2c-1.8 0-3.4-1.6-3.4-3.4v-23.4c0-1.8 1.6-3.2 3.4-3.2h18.2z m-5-6.8v3.4h-20v23.4h-3.2v-23.4c0-1.8 1.4-3.4 3.2-3.4h20z" />
-                                    </g>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            cursor: 'pointer'
-                        }}
-                        onClick={onAddComponent}
-                    >
-                        <div
-                            style={{
-                                background: '#24b987',
-                                color: 'white',
-                                display: 'inline-block',
-                                borderRadius: '50%',
-                                width: 42,
-                                height: 42,
-                                textAlign: 'center',
-                                verticalAlign: 'center',
-                                fontSize: 36,
-                                marginRight: 10,
-                                padding: 5
-                            }}
-                        >
-                            +
-                        </div>
-                        <a style={addButtonStyle}>AddThis</a>
-                    </div>
-                </header>
+                <StyleguidePlaygroundHeader
+                    item={item}
+                    onAddComponent={onAddComponent}
+                />
                 {item.description &&
                     <div style={{ marginBottom: 16 }}>
                         {item.description}
                     </div>}
-                <div style={{ height: 'auto' }}>
-                    <SingleComponentPreview
-                        jsUrlsToInsert={jsUrlsToInsert}
-                        cssUrlsToInsert={cssUrlsToInsert}
-                        cssToInsert={cssToInsertInIframe}
-                        item={item}
-                        jsxCode={jsxCode}
-                    />
-                </div>
-                <div style={{ marginBottom: 32 }}>
-                    <PreviewCodeSection
-                        item={item}
-                        jsxCode={jsxCode}
-                        onCodeChange={onCodeChange}
-                        onEditorFocusChange={onEditorFocusChange}
-                        onSavePropClick={onSavePropClick}
-                        onFormatCodeClick={onFormatCodeClick}
-                        savingProps={savingProps}
-                    />
-                </div>
+                {this.getStoryBoards()}
                 <div style={{ marginBottom: 32 }}>
                     <PropsAndMethods item={item} />
                 </div>
@@ -215,14 +159,6 @@ StyleguidePlayground.propTypes = {
       * callback invoked when 'Format code' button is clicked
       **/
     onFormatCodeClick: PropTypes.func.isRequired,
-    /**
-      * callback invoked when 'Import saved props' button is clicked
-      **/
-    onImportPropsClick: PropTypes.func.isRequired,
-    /**
-      * callback invoked when 'Export saved props' button is clicked
-      **/
-    onExportSavedPropsClick: PropTypes.func.isRequired,
     savingProps: PropTypes.bool
 }
 
