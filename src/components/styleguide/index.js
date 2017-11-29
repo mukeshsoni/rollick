@@ -89,6 +89,36 @@ function resetSavingPropsProperty(stories) {
 // })
 
 export default class Styleguide extends React.Component {
+    handleDeleteStory = storyIndex => {
+        let { selectedComponent } = this.state
+        if (!selectedComponent || !selectedComponent.stories) {
+            return
+        }
+
+        let confirmation = window.confirm(
+            'Are you sure you want to delete this story?'
+        )
+
+        if (confirmation === true) {
+            this.setState(
+                {
+                    selectedComponent: {
+                        ...selectedComponent,
+                        stories: selectedComponent.stories.filter(
+                            (story, index) => index !== storyIndex
+                        )
+                    }
+                },
+                () => {
+                    saveStories(
+                        this.state.selectedComponent.path,
+                        this.state.selectedComponent.stories
+                    )
+                }
+            )
+        }
+    }
+
     handleExportPropsClick = e => {
         // TODO - the export should export saved props/jsx for all components
         if (this.state.selectedComponent) {
@@ -438,6 +468,7 @@ export default class Styleguide extends React.Component {
                 </div>
                 <div className="styleguide-body">
                     <StyleguidePlayground
+                        onDeleteStory={this.handleDeleteStory}
                         onAddComponent={this.handleAddComponent}
                         onAddStory={this.handleAddStory}
                         item={selectedComponent}

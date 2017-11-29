@@ -12,18 +12,12 @@ import { componentJsx, transpile } from '../../tools/transpile_helpers.js'
 import { formatCode } from '../../tools/code_formatter.js'
 import { getSavedJsx } from '../../persist.js'
 
-function notEqual(a, b) {
-    return a !== b
-}
-
 class PreviewCodeSection extends React.PureComponent {
     lastSavedJsx: ''
     getSavePropsButtonLabel = () => {
         if (this.props.savingProps) {
             return 'Saving props'
-        } else if (
-            !notEqual(getSavedJsx(this.props.item.path), this.props.jsxCode)
-        ) {
+        } else if (!this.props.propsDirty) {
             return 'Props saved'
         } else {
             return 'Save props'
@@ -39,7 +33,7 @@ class PreviewCodeSection extends React.PureComponent {
             onEditorFocusChange,
             onSavePropClick,
             onFormatCodeClick,
-            onAddComponent
+            propsDirty
         } = this.props
         const codeMirrorOptions = {
             lineNumbers: false,
@@ -76,12 +70,6 @@ class PreviewCodeSection extends React.PureComponent {
                     }}
                 >
                     <Button
-                        label="Use this story"
-                        size="small"
-                        onClick={onAddComponent}
-                        style={{ marginRight: '1em' }}
-                    />
-                    <Button
                         label="Format code"
                         size="small"
                         onClick={onFormatCodeClick}
@@ -91,11 +79,7 @@ class PreviewCodeSection extends React.PureComponent {
                         label={this.getSavePropsButtonLabel()}
                         size="small"
                         onClick={onSavePropClick}
-                        enabled={
-                            !error &&
-                            notEqual(getSavedJsx(item.path), jsxCode) &&
-                            !savingProps
-                        }
+                        enabled={!error && propsDirty && !savingProps}
                     />
                 </div>
                 <div>
@@ -140,11 +124,8 @@ PreviewCodeSection.propTypes = {
      * callback invoked when 'Format code' button is clicked
      **/
     onFormatCodeClick: PropTypes.func.isRequired,
-    /**
-     * callback invoked when 'Add this story' button is clicked
-     **/
-    onAddComponent: PropTypes.func.isRequired,
-    savingProps: PropTypes.bool
+    savingProps: PropTypes.bool,
+    propsDirty: PropTypes.bool
 }
 
 PreviewCodeSection.defaultProps = {

@@ -7,6 +7,7 @@ import PropsAndMethods from '../previews/props_and_methods.js'
 import PreviewCodeSection from '../previews/preview_code_section.js'
 import SingleComponentPreview from '../previews/single_component_preview.js'
 import StyleguidePlaygroundHeader from './styleguide_playground_header.js'
+import { getSavedStories } from '../../persist.js'
 
 class EmptyStyleguidePlayground extends React.PureComponent {
     render() {
@@ -27,6 +28,16 @@ class EmptyStyleguidePlayground extends React.PureComponent {
     }
 }
 
+function arePropsDirtyForStory(componentPath, story, storyIndex) {
+    let savedStories = getSavedStories(componentPath)
+
+    if (savedStories.length === 0 || !savedStories[storyIndex]) {
+        return true
+    } else {
+        return savedStories[storyIndex].jsxCode !== story.jsxCode
+    }
+}
+
 class StyleguidePlayground extends React.PureComponent {
     getStoryBoards() {
         let {
@@ -35,6 +46,7 @@ class StyleguidePlayground extends React.PureComponent {
             onEditorFocusChange,
             onSavePropClick,
             onFormatCodeClick,
+            onDeleteStory,
             onAddComponent
         } = this.props
 
@@ -51,6 +63,25 @@ class StyleguidePlayground extends React.PureComponent {
         let boards = item.stories.map((story, index) => {
             return (
                 <div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row-reverse',
+                            marginBottom: '1em'
+                        }}
+                    >
+                        <Button
+                            label="Use this story"
+                            size="small"
+                            onClick={onAddComponent.bind(null, index)}
+                            style={{ marginLeft: '1em' }}
+                        />
+                        <Button
+                            label="Delete story"
+                            size="small"
+                            onClick={onDeleteStory.bind(null, index)}
+                        />
+                    </div>
                     <div style={{ height: 'auto' }}>
                         <SingleComponentPreview
                             jsUrlsToInsert={jsUrlsToInsert}
@@ -64,10 +95,14 @@ class StyleguidePlayground extends React.PureComponent {
                         <PreviewCodeSection
                             item={item}
                             jsxCode={story.jsxCode}
-                            onAddComponent={onAddComponent.bind(null, index)}
                             onCodeChange={onCodeChange.bind(null, index)}
                             onEditorFocusChange={onEditorFocusChange}
                             onSavePropClick={onSavePropClick.bind(null, index)}
+                            propsDirty={arePropsDirtyForStory(
+                                item.path,
+                                story,
+                                index
+                            )}
                             onFormatCodeClick={onFormatCodeClick.bind(
                                 null,
                                 index
@@ -160,7 +195,11 @@ StyleguidePlayground.propTypes = {
     /**
       * callback invoked when 'Add New Story' button is clicked
       **/
-    onAddStory: PropTypes.func.isRequired
+    onAddStory: PropTypes.func.isRequired,
+    /**
+     * callback invoked when 'Delete story' button is clicked
+     **/
+    onDeleteStory: PropTypes.func.isRequired
 }
 
 StyleguidePlayground.defaultProps = {}
