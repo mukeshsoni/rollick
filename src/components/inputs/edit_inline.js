@@ -67,13 +67,29 @@ class EditInline extends React.Component {
         return (
             <div
                 style={{ cursor: 'pointer' }}
-                onClick={() => this.setState({ editing: true })}
+                onClick={() =>
+                    this.setState({ editing: true }, () => {
+                        this.inputRef && this.inputRef.focus()
+                        this.inputRef.setSelectionRange(
+                            this.props.value.length,
+                            this.props.value.length
+                        )
+                    })}
             >
                 {this.state.editing
                     ? <input
                           value={this.state.value}
                           onChange={this.handleChange}
                           onKeyDown={this.handleKeyDown}
+                          style={{
+                              fontSize: 'inherit',
+                              width: '100%',
+                              border: '1px solid #23b987',
+                              borderRadius: 3,
+                              padding: '0.5em',
+                              margin: 0
+                          }}
+                          ref={node => (this.inputRef = node)}
                       />
                     : this.props.value === ''
                       ? 'Click to edit'

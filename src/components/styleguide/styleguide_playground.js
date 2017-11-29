@@ -2,12 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import docgen from 'react-docgen'
 
-import Button from '../buttons/button.js'
 import PropsAndMethods from '../previews/props_and_methods.js'
-import PreviewCodeSection from '../previews/preview_code_section.js'
-import SingleComponentPreview from '../previews/single_component_preview.js'
 import StyleguidePlaygroundHeader from './styleguide_playground_header.js'
 import { getSavedStories } from '../../persist.js'
+import Story from '../story/index.js'
 
 class EmptyStyleguidePlayground extends React.PureComponent {
     render() {
@@ -47,74 +45,26 @@ class StyleguidePlayground extends React.PureComponent {
             onSavePropClick,
             onFormatCodeClick,
             onDeleteStory,
-            onAddComponent
+            onAddComponent,
+            onStoryTitleChange
         } = this.props
 
-        let jsUrlsToInsert = [
-            'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
-        ]
-
-        let cssUrlsToInsert = [
-            'node_modules/codemirror/lib/codemirror.css',
-            'node_modules/codemirror/theme/base16-light.css'
-        ]
-        let cssToInsertInIframe = '.ReactCodeMirror .CodeMirror {height: 100%}'
-
-        let boards = item.stories.map((story, index) => {
+        return item.stories.map((story, index) => {
             return (
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row-reverse',
-                            marginBottom: '1em'
-                        }}
-                    >
-                        <Button
-                            label="Use this story"
-                            size="small"
-                            onClick={onAddComponent.bind(null, index)}
-                            style={{ marginLeft: '1em' }}
-                        />
-                        <Button
-                            label="Delete story"
-                            size="small"
-                            onClick={onDeleteStory.bind(null, index)}
-                        />
-                    </div>
-                    <div style={{ height: 'auto' }}>
-                        <SingleComponentPreview
-                            jsUrlsToInsert={jsUrlsToInsert}
-                            cssUrlsToInsert={cssUrlsToInsert}
-                            cssToInsert={cssToInsertInIframe}
-                            item={item}
-                            jsxCode={story.jsxCode}
-                        />
-                    </div>
-                    <div style={{ marginBottom: 32 }}>
-                        <PreviewCodeSection
-                            item={item}
-                            jsxCode={story.jsxCode}
-                            onCodeChange={onCodeChange.bind(null, index)}
-                            onEditorFocusChange={onEditorFocusChange}
-                            onSavePropClick={onSavePropClick.bind(null, index)}
-                            propsDirty={arePropsDirtyForStory(
-                                item.path,
-                                story,
-                                index
-                            )}
-                            onFormatCodeClick={onFormatCodeClick.bind(
-                                null,
-                                index
-                            )}
-                            savingProps={story.savingProps}
-                        />
-                    </div>
-                </div>
+                <Story
+                    item={item}
+                    story={story}
+                    onCodeChange={onCodeChange.bind(null, index)}
+                    onEditorFocusChange={onEditorFocusChange}
+                    onSavePropClick={onSavePropClick.bind(null, index)}
+                    onFormatCodeClick={onFormatCodeClick.bind(null, index)}
+                    onDeleteStory={onDeleteStory.bind(null, index)}
+                    onAddComponent={onAddComponent.bind(null, index)}
+                    onStoryTitleChange={onStoryTitleChange.bind(null, index)}
+                    propsDirty={arePropsDirtyForStory(item.path, story, index)}
+                />
             )
         })
-
-        return boards
     }
 
     render() {
@@ -199,7 +149,11 @@ StyleguidePlayground.propTypes = {
     /**
      * callback invoked when 'Delete story' button is clicked
      **/
-    onDeleteStory: PropTypes.func.isRequired
+    onDeleteStory: PropTypes.func.isRequired,
+    /**
+     * callback invoked when story title is changed
+     **/
+    onStoryTitleChange: PropTypes.func.isRequired
 }
 
 StyleguidePlayground.defaultProps = {}

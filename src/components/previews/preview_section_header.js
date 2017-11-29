@@ -24,7 +24,7 @@ class PreviewSectionHeader extends React.PureComponent {
 
 PreviewSectionHeader.propTypes = {
     text: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func
 }
 
 export default PreviewSectionHeader

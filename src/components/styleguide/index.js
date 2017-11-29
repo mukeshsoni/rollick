@@ -132,6 +132,28 @@ export default class Styleguide extends React.Component {
         }
     }
 
+    handleStoryTitleChange = (index, newTitle) => {
+        this.setState(
+            {
+                selectedComponent: {
+                    ...this.state.selectedComponent,
+                    stories: updatePropAtIndex(
+                        'title',
+                        index,
+                        newTitle,
+                        this.state.selectedComponent.stories
+                    )
+                }
+            },
+            () => {
+                saveStories(
+                    this.state.selectedComponent.path,
+                    this.state.selectedComponent.stories
+                )
+            }
+        )
+    }
+
     handleImportPropsClick = e => {
         document.getElementById('import-component-data').click()
     }
@@ -480,6 +502,7 @@ export default class Styleguide extends React.Component {
                         onFormatCodeClick={this.handleFormatCodeClick}
                         onImportPropsClick={this.handleImportPropsClick}
                         onExportSavedPropsClick={this.handleExportPropsClick}
+                        onStoryTitleChange={this.handleStoryTitleChange}
                     />
                 </div>
                 {selectedComponent &&
