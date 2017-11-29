@@ -15,6 +15,15 @@ export default function cssObserver(WrappedComponent) {
             this.state = {
                 cssToInsertInIframe: cssToInsertInIframe
             }
+            this._isMounted = false
+        }
+
+        componentDidMount() {
+            this._isMounted = true
+        }
+
+        componentWillUnmounte() {
+            this._isMounted = false
         }
 
         componentWillMount() {
@@ -42,15 +51,18 @@ export default function cssObserver(WrappedComponent) {
                                     addedNodes[0].innerText
                                 )
                             )
-                            this.setState(
-                                {
-                                    cssToInsertInIframe
-                                    // TODO - need to dedup the cssToInsertInIframe array
-                                },
-                                () => {
-                                    addedNodes[0].remove()
-                                }
-                            )
+
+                            if (this._isMounted) {
+                                this.setState(
+                                    {
+                                        cssToInsertInIframe
+                                        // TODO - need to dedup the cssToInsertInIframe array
+                                    },
+                                    () => {
+                                        addedNodes[0].remove()
+                                    }
+                                )
+                            }
                         }
                     }
                 }
