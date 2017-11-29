@@ -86,17 +86,23 @@ export default function iframeWrapper(WrappedComponent) {
                     iframeDOMNode &&
                     iframeDOMNode.contentWindow &&
                     iframeDOMNode.contentWindow.document &&
-                    iframeDOMNode.contentWindow.document.body
+                    iframeDOMNode.contentWindow.document.body &&
+                    iframeDOMNode.height !==
+                        iframeDOMNode.contentWindow.document.body.scrollHeight
                 ) {
-                    iframeDOMNode.height =
-                        iframeDOMNode.contentWindow.document.body
-                            .scrollHeight || 'auto'
+                    iframeDOMNode.height = iframeDOMNode.contentWindow.document
+                        .body.scrollHeight
+                        ? iframeDOMNode.contentWindow.document.body
+                              .scrollHeight + 'px'
+                        : 'auto'
                 }
+
+                this.timeoutToken = setTimeout(this.adjustIframeHeight, 500)
             }, 200)
         }
 
         onMount = () => {
-            setTimeout(this.adjustIframeHeight, 200)
+            this.adjustIframeHeight()
         }
 
         onUpdate = () => {
@@ -117,6 +123,14 @@ export default function iframeWrapper(WrappedComponent) {
 
         componentWillMount() {
             this.globalCssLinks()
+        }
+
+        componentDidMount() {
+            this.timeoutToken = setTimeout(this.adjustIframeHeight, 500)
+        }
+
+        componentWillUnmount() {
+            clearTimeout(this.timeoutToken)
         }
 
         render() {
