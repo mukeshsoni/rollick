@@ -28,7 +28,8 @@ import {
     jsxToJs,
     compileCss,
     wrapCss,
-    addComponentToExistingJsx
+    addCodeToExistingJsx,
+    componentJsx
 } from '../../tools/transpile_helpers.js'
 import loadComponentFromPath from './load_component_from_path.js'
 import {
@@ -73,8 +74,8 @@ export default class Playground extends React.Component {
         reader.readAsText(file)
     }
 
-    addComponentFromStyleguide = component => {
-        this.handleSearchSelection(component)
+    addComponentFromStyleguide = (component, jsxCode) => {
+        this.handleSearchSelection(component, jsxCode)
     }
 
     penSaved = () => {
@@ -209,7 +210,7 @@ export default class Playground extends React.Component {
         document.getElementById('import-file').click()
     }
 
-    handleSearchSelection = selectedItem => {
+    handleSearchSelection = (selectedItem, jsxCode) => {
         // handleSearchSelection is called even if enter is pressed when there are zero search results
         if (selectedItem && selectedItem.path) {
             this.hideSearchModal()
@@ -217,12 +218,13 @@ export default class Playground extends React.Component {
                 .then(com => {
                     window[selectedItem.name] =
                         com.component.default || com.component
-                    let jsxWithNewComponent = addComponentToExistingJsx(
+                    const codeToInsert = jsxCode || componentJsx(component)
+                    let jsxWithNewComponent = addCodeToExistingJsx(
                         this.state.jsx.code,
                         this.jsxEditorRef.codeMirrorRef
                             .getCodeMirror()
                             .getCursor(),
-                        { ...selectedItem, fakeProps: selectedItem.fakeProps }
+                        jsxCode
                     )
 
                     // TODO - no idea why i am doing so much stuff here. Need to refactor

@@ -265,8 +265,10 @@ export default class Styleguide extends React.Component {
     }
 
     handleAddComponent = index => {
-        this.handleAddStory()
-        // this.props.onAddComponent(this.state.selectedComponent)
+        this.props.onAddComponent(
+            this.state.selectedComponent,
+            this.state.selectedComponent.stories[index].jsxCode
+        )
     }
 
     handleAddStory = story => {

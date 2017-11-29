@@ -58,9 +58,7 @@ export function componentJsx(component) {
     return `<${component.name} ${propValuePairs}></${component.name}>`
 }
 
-export function addComponentToExistingJsx(oldCode = '', cursor, component) {
-    const codeToInsert = componentJsx(component)
-
+export function addCodeToExistingJsx(oldCode = '', cursor, codeToInsert) {
     // need to insert new jsx into the existing jsx code at the right place
     // 1. Right place can be where the cursor is
     // 2. If that throws an error, just append the new jsx to the end of the existing code in editor
@@ -77,6 +75,11 @@ export function addComponentToExistingJsx(oldCode = '', cursor, component) {
     }
 
     return codeAfterInsertion
+}
+
+export function addComponentToExistingJsx(oldCode = '', cursor, component) {
+    const codeToInsert = componentJsx(component)
+    return addComponentToExistingJsx(oldCode, cursor, codeToInsert)
 }
 
 // TODO - returning the same css for now while trying to load preview in iframe

@@ -16,7 +16,7 @@ export default class App extends React.Component {
 
     hideStyleguide = () => this.setState({ showStyleguide: false })
 
-    handleAddComponent = component => {
+    handleAddComponent = (component, jsxCode) => {
         this.setState(
             {
                 showStyleguide: false
@@ -26,7 +26,8 @@ export default class App extends React.Component {
                 setTimeout(
                     () =>
                         this.playgroundRef.addComponentFromStyleguide(
-                            component
+                            component,
+                            jsxCode
                         ),
                     1000
                 )

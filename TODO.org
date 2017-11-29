@@ -7,19 +7,19 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Save
   - [X] Create New
   - [X] Open
-- [ ] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
+- [X] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
 there should be an option to import that child component. Mostly needed when the selected component takes children components.
 - [ ] A 'refresh' button in the styleguide preview window, to take the component back to first mount state
 - [ ] Bug - Once jsx goes to invalid state, even if i change jsx to be in valid state, the single component preview does not refresh. I need to go to some other
 component in the styleguide and come back to this component again. Also making sure that i save the props.
-- [ ] Bug - changing component in styleguide does not refresh the props table
+- [X] Bug - changing component in styleguide does not refresh the props table
 - [X] Bug - the less files required in pp/shared components are not loaded as css anymore. They are directly loaded as the less file in the browser.
 I thought i had fixed that problem :(. That is why none of the shared components are styled.
             - False alarm
 - [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
 Sharing through url? Store the code in database against the unique url.
 Saving configuration for the tool? Store in the database.
-- [ ] Storing particular values for props and state? Store in the database.
+- [X] Storing particular values for props and state? Store in the database.
 - [ ] Copy/pasting some code should work. If that copy/pasted code has custom components, they should be parsed and loaded.
 - [ ] Enhancing documentation of components through a rich text editor or however way? Store it in the database.
 - [ ] Feature - import styleguide as an html/pdf document

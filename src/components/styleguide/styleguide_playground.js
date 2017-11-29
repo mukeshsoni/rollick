@@ -125,7 +125,7 @@ class StyleguidePlayground extends React.PureComponent {
         }
 
         const bodyStyle = {
-            padding: '6em',
+            padding: '4em',
             display: 'flex',
             flexDirection: 'column',
             overflowY: 'hidden',
