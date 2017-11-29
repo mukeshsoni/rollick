@@ -12,7 +12,7 @@ import { componentJsx, transpile } from '../../tools/transpile_helpers.js'
 import { formatCode } from '../../tools/code_formatter.js'
 import { getSavedJsx } from '../../persist.js'
 
-class PreviewCodeSection extends React.PureComponent {
+class PreviewCodeSection extends React.Component {
     lastSavedJsx: ''
     getSavePropsButtonLabel = () => {
         if (this.props.savingProps) {
@@ -21,6 +21,18 @@ class PreviewCodeSection extends React.PureComponent {
             return 'Props saved'
         } else {
             return 'Save props'
+        }
+    }
+
+    handleHeaderClick = () => {
+        this.setState({ showEditor: !this.state.showEditor })
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            showEditor: false
         }
     }
 
@@ -58,52 +70,54 @@ class PreviewCodeSection extends React.PureComponent {
 
         return (
             <div>
-                <style>
-                    {cssToInsert}
-                </style>
-                <PreviewSectionHeader text="Code" />
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginBottom: 8
-                    }}
-                >
-                    <Button
-                        label="Format code"
-                        size="small"
-                        onClick={onFormatCodeClick}
-                        style={{ marginRight: '1em' }}
-                    />
-                    <Button
-                        label={this.getSavePropsButtonLabel()}
-                        size="small"
-                        onClick={onSavePropClick}
-                        enabled={!error && propsDirty && !savingProps}
-                    />
-                </div>
-                <div>
-                    <CodeMirror
-                        autoFocus={false}
-                        value={formattedCode.trim('\n')}
-                        onChange={onCodeChange}
-                        options={codeMirrorOptions}
-                        codeMirrorInstance={codeMirrorInstance}
-                        onFocusChange={onEditorFocusChange}
-                    />
-                </div>
-                {error
-                    ? <div
-                          style={{
-                              color: 'red',
-                              marginTop: '0.5em',
-                              fontSize: '0.9em',
-                              paddingLeft: '0.1em'
-                          }}
-                      >
-                          Invalid JSX - {error.toString()}
-                      </div>
-                    : null}
+                <style>{cssToInsert}</style>
+                <PreviewSectionHeader text="Code" onClick={this.handleHeaderClick} />
+                {this.state.showEditor && (
+                    <div>
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                                marginBottom: 8
+                            }}
+                        >
+                            <Button
+                                label="Format code"
+                                size="small"
+                                onClick={onFormatCodeClick}
+                                style={{ marginRight: '1em' }}
+                            />
+                            <Button
+                                label={this.getSavePropsButtonLabel()}
+                                size="small"
+                                onClick={onSavePropClick}
+                                enabled={!error && propsDirty && !savingProps}
+                            />
+                        </div>
+                        <div>
+                            <CodeMirror
+                                autoFocus={false}
+                                value={formattedCode.trim('\n')}
+                                onChange={onCodeChange}
+                                options={codeMirrorOptions}
+                                codeMirrorInstance={codeMirrorInstance}
+                                onFocusChange={onEditorFocusChange}
+                            />
+                        </div>
+                        {error ? (
+                            <div
+                                style={{
+                                    color: 'red',
+                                    marginTop: '0.5em',
+                                    fontSize: '0.9em',
+                                    paddingLeft: '0.1em'
+                                }}
+                            >
+                                Invalid JSX - {error.toString()}
+                            </div>
+                        ) : null}
+                    </div>
+                )}
             </div>
         )
     }

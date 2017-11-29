@@ -10,11 +10,12 @@ class PreviewSectionHeader extends React.PureComponent {
             textTransition: 'uppercase',
             fontSize: '1.25em',
             marginBottom: 16,
-            display: 'inline-block'
+            display: 'inline-block',
+            cursor: 'pointer'
         }
 
         return (
-            <div style={headerStyle}>
+            <div style={headerStyle} onClick={this.props.onClick}>
                 {this.props.text}
             </div>
         )
@@ -22,7 +23,8 @@ class PreviewSectionHeader extends React.PureComponent {
 }
 
 PreviewSectionHeader.propTypes = {
-    text: PropTypes.string.isRequired
+    text: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired
 }
 
 export default PreviewSectionHeader
