@@ -35,10 +35,11 @@ class PreviewCodeSection extends React.PureComponent {
             item,
             onCodeChange,
             jsxCode,
+            savingProps,
             onEditorFocusChange,
             onSavePropClick,
             onFormatCodeClick,
-            savingProps
+            onAddComponent
         } = this.props
         const codeMirrorOptions = {
             lineNumbers: false,
@@ -74,6 +75,12 @@ class PreviewCodeSection extends React.PureComponent {
                         marginBottom: 8
                     }}
                 >
+                    <Button
+                        label="Use this story"
+                        size="small"
+                        onClick={onAddComponent}
+                        style={{ marginRight: '1em' }}
+                    />
                     <Button
                         label="Format code"
                         size="small"
@@ -133,6 +140,10 @@ PreviewCodeSection.propTypes = {
      * callback invoked when 'Format code' button is clicked
      **/
     onFormatCodeClick: PropTypes.func.isRequired,
+    /**
+     * callback invoked when 'Add this story' button is clicked
+     **/
+    onAddComponent: PropTypes.func.isRequired,
     savingProps: PropTypes.bool
 }
 

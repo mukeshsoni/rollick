@@ -35,7 +35,7 @@ class StyleguidePlayground extends React.PureComponent {
             onEditorFocusChange,
             onSavePropClick,
             onFormatCodeClick,
-            savingProps
+            onAddComponent
         } = this.props
 
         let jsUrlsToInsert = [
@@ -64,6 +64,7 @@ class StyleguidePlayground extends React.PureComponent {
                         <PreviewCodeSection
                             item={item}
                             jsxCode={story.jsxCode}
+                            onAddComponent={onAddComponent.bind(null, index)}
                             onCodeChange={onCodeChange.bind(null, index)}
                             onEditorFocusChange={onEditorFocusChange}
                             onSavePropClick={onSavePropClick.bind(null, index)}
@@ -71,7 +72,7 @@ class StyleguidePlayground extends React.PureComponent {
                                 null,
                                 index
                             )}
-                            savingProps={savingProps}
+                            savingProps={story.savingProps}
                         />
                     </div>
                 </div>
@@ -82,23 +83,18 @@ class StyleguidePlayground extends React.PureComponent {
     }
 
     render() {
-        let {
-            item,
-            onAddComponent,
-            onCodeChange,
-            jsxCode,
-            onEditorFocusChange,
-            onSavePropClick,
-            onFormatCodeClick,
-            savingProps
-        } = this.props
+        let { item, onAddStory } = this.props
 
         if (!item) {
             return <EmptyStyleguidePlayground />
         }
 
         const bodyStyle = {
-            padding: '6em'
+            padding: '6em',
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'hidden',
+            height: '100%'
         }
 
         // console.log(
@@ -110,15 +106,17 @@ class StyleguidePlayground extends React.PureComponent {
             <div style={bodyStyle}>
                 <StyleguidePlaygroundHeader
                     item={item}
-                    onAddComponent={onAddComponent}
+                    onAddStory={onAddStory}
                 />
-                {item.description &&
-                    <div style={{ marginBottom: 16 }}>
-                        {item.description}
-                    </div>}
-                {this.getStoryBoards()}
-                <div style={{ marginBottom: 32 }}>
-                    <PropsAndMethods item={item} />
+                <div style={{ padding: '1em', flexGrow: 1, overflowY: 'auto' }}>
+                    {item.description &&
+                        <div style={{ marginBottom: 16 }}>
+                            {item.description}
+                        </div>}
+                    {this.getStoryBoards()}
+                    <div style={{ marginBottom: 32 }}>
+                        <PropsAndMethods item={item} />
+                    </div>
                 </div>
             </div>
         )
@@ -159,11 +157,12 @@ StyleguidePlayground.propTypes = {
       * callback invoked when 'Format code' button is clicked
       **/
     onFormatCodeClick: PropTypes.func.isRequired,
-    savingProps: PropTypes.bool
+    /**
+      * callback invoked when 'Add New Story' button is clicked
+      **/
+    onAddStory: PropTypes.func.isRequired
 }
 
-StyleguidePlayground.defaultProps = {
-    savingProps: false
-}
+StyleguidePlayground.defaultProps = {}
 
 export default StyleguidePlayground

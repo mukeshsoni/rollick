@@ -30,9 +30,7 @@ import {
     saveProps,
     getSavedProps,
     getSavedStories,
-    saveJsx,
     saveStories,
-    getSavedJsx,
     getAllSavedComponentsData,
     saveAllComponentsData
 } from '../../persist.js'
@@ -40,15 +38,26 @@ import { getPropsFromJsxCode } from '../../tools/jsx_utils.js'
 
 const code = `<div width={100}>abc</div>`
 
-function updateJsxCodeInStory(stories, selectedStoryIndex, jsxCode) {
-    return stories.map((story, index) => {
-        if (index === selectedStoryIndex) {
+function updatePropAtIndex(propName, index, propValue, arr) {
+    return arr.map((item, i) => {
+        if (i === index) {
             return {
-                ...story,
-                jsxCode
+                ...item,
+                [propName]: propValue
             }
         } else {
-            return story
+            return item
+        }
+    })
+}
+
+const updateJsxCodeInStory = updatePropAtIndex.bind(null, 'jsxCode')
+
+function resetSavingPropsProperty(stories) {
+    return stories.map(story => {
+        return {
+            ...story,
+            savingProps: false
         }
     })
 }
@@ -136,18 +145,35 @@ export default class Styleguide extends React.Component {
         //     this.state.selectedComponent.path,
         //     this.state.selectedComponent.fakeProps
         // )
-        // saveJsx(this.state.selectedComponent.path, this.state.jsxCode)
         saveStories(
             this.state.selectedComponent.path,
             this.state.selectedComponent.stories
         )
         this.setState(
             {
-                savingProps: true
+                selectedComponent: {
+                    ...this.state.selectedComponent,
+                    stories: updatePropAtIndex(
+                        'savingProps',
+                        storyIndex,
+                        true,
+                        this.state.selectedComponent.stories
+                    )
+                }
             },
             () => {
                 setTimeout(() => {
-                    this.setState({ savingProps: false })
+                    this.setState({
+                        selectedComponent: {
+                            ...this.state.selectedComponent,
+                            stories: updatePropAtIndex(
+                                'savingProps',
+                                storyIndex,
+                                false,
+                                this.state.selectedComponent.stories
+                            )
+                        }
+                    })
                 }, 1000)
             }
         )
@@ -172,12 +198,11 @@ export default class Styleguide extends React.Component {
                 selectedComponent: {
                     ...this.state.selectedComponent,
                     stories: updateJsxCodeInStory(
-                        this.state.selectedComponent.stories,
                         storyIndex,
-                        formattedCode.formattedCode.slice(1)
+                        formattedCode.formattedCode.slice(1),
+                        this.state.selectedComponent.stories
                     )
-                },
-                jsxCode: formattedCode.formattedCode.slice(1)
+                }
             })
         }
     }
@@ -197,12 +222,11 @@ export default class Styleguide extends React.Component {
                     ...propsFromChangedCode
                 },
                 stories: updateJsxCodeInStory(
-                    this.state.selectedComponent.stories,
                     storyIndex,
-                    newCode
+                    newCode,
+                    this.state.selectedComponent.stories
                 )
-            },
-            jsxCode: newCode
+            }
         })
     }
 
@@ -210,8 +234,28 @@ export default class Styleguide extends React.Component {
         this.setState({ searchText: e.target.value })
     }
 
-    handleAddComponent = () => {
-        this.props.onAddComponent(this.state.selectedComponent)
+    handleAddComponent = index => {
+        this.handleAddStory()
+        // this.props.onAddComponent(this.state.selectedComponent)
+    }
+
+    handleAddStory = story => {
+        let { selectedComponent } = this.state
+
+        if (!selectedComponent) {
+            return
+        }
+
+        this.setState({
+            selectedComponent: {
+                ...selectedComponent,
+                stories: selectedComponent.stories.concat(
+                    selectedComponent.stories[
+                        selectedComponent.stories.length - 1
+                    ]
+                )
+            }
+        })
     }
 
     handleAttributeValueChange = (propName, value) => {
@@ -233,12 +277,11 @@ export default class Styleguide extends React.Component {
                 selectedComponent: {
                     ...newSelectedComponent,
                     stories: updateJsxCodeInStory(
-                        selectedComponent.stories,
                         0,
-                        formattedCode
+                        formattedCode,
+                        selectedComponent.stories
                     )
-                },
-                jsxCode: formattedCode
+                }
             })
         }
     }
@@ -268,19 +311,20 @@ export default class Styleguide extends React.Component {
             ch: 0
         }).formattedCode.slice(1)
 
-        if (getSavedStories(com.path) && getSavedStories(com.path).length > 1) {
-            newSelectedComponent.stories = getSavedStories(com.path)
+        if (getSavedStories(com.path) && getSavedStories(com.path).length > 0) {
+            newSelectedComponent.stories = resetSavingPropsProperty(
+                getSavedStories(com.path)
+            )
         } else {
             newSelectedComponent.stories = [
                 {
-                    jsxCode: getSavedJsx(com.path) || formattedCode
+                    jsxCode: formattedCode
                 }
             ]
         }
 
         this.setState({
-            selectedComponent: newSelectedComponent,
-            jsxCode: getSavedJsx(com.path) || formattedCode
+            selectedComponent: newSelectedComponent
             // showPropertiesPane:
             //     this.state.selectedComponent &&
             //     com.path === this.state.selectedComponent.path
@@ -336,7 +380,6 @@ export default class Styleguide extends React.Component {
             selectedComponentInstance: null,
             componentsMetaListSorted: [],
             showPropertiesPane: false,
-            savingProps: false,
             activeStoryIndex: 0
         }
     }
@@ -370,8 +413,7 @@ export default class Styleguide extends React.Component {
             searchText,
             selectedComponent,
             selectedComponentInstance,
-            showPropertiesPane,
-            savingProps
+            showPropertiesPane
         } = this.state
 
         const leftPaneStyle = {
@@ -397,15 +439,14 @@ export default class Styleguide extends React.Component {
                 <div className="styleguide-body">
                     <StyleguidePlayground
                         onAddComponent={this.handleAddComponent}
+                        onAddStory={this.handleAddStory}
                         item={selectedComponent}
-                        jsxCode={this.state.jsxCode}
                         onCodeChange={this.handleJsxCodeChange}
                         onEditorFocusChange={this.handleEditorFocusChange}
                         onSavePropClick={this.handleSavePropsClick}
                         onFormatCodeClick={this.handleFormatCodeClick}
                         onImportPropsClick={this.handleImportPropsClick}
                         onExportSavedPropsClick={this.handleExportPropsClick}
-                        savingProps={savingProps}
                     />
                 </div>
                 {selectedComponent &&

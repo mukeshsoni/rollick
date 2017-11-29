@@ -8,7 +8,7 @@ class StyleguidePlaygroundHeader extends React.PureComponent {
             cursor: 'pointer'
         }
 
-        let { item, onAddComponent } = this.props
+        let { item, onAddStory } = this.props
         return (
             <header
                 style={{
@@ -66,7 +66,7 @@ class StyleguidePlaygroundHeader extends React.PureComponent {
                         alignItems: 'center',
                         cursor: 'pointer'
                     }}
-                    onClick={onAddComponent}
+                    onClick={onAddStory}
                 >
                     <div
                         style={{
@@ -85,7 +85,7 @@ class StyleguidePlaygroundHeader extends React.PureComponent {
                     >
                         +
                     </div>
-                    <a style={addButtonStyle}>AddThis</a>
+                    <a style={addButtonStyle}>Add New Story</a>
                 </div>
             </header>
         )
@@ -98,9 +98,9 @@ StyleguidePlaygroundHeader.propTypes = {
      **/
     item: PropTypes.object.isRequired,
     /**
-     * function to call when user wants to add the component to the playground
+     * function to call when user wants to add a new story
      **/
-    onAddComponent: PropTypes.func.isRequired
+    onAddStory: PropTypes.func.isRequired
 }
 
 export default StyleguidePlaygroundHeader
