@@ -2,6 +2,7 @@ import React from 'react'
 import belt from '../../../belt.js'
 let { dedupe } = belt
 
+let cssToInsertInIframe = []
 /*
   * HOC which listens on style tag additions to head tag
   * gets the css out of them and passing that css a prop to WrappedComponent
@@ -12,7 +13,7 @@ export default function cssObserver(WrappedComponent) {
             super(props)
 
             this.state = {
-                cssToInsertInIframe: []
+                cssToInsertInIframe: cssToInsertInIframe
             }
         }
 
@@ -36,14 +37,15 @@ export default function cssObserver(WrappedComponent) {
                                 addedNodes[0].innerText
                             )
                         } else {
+                            cssToInsertInIframe = dedupe(
+                                cssToInsertInIframe.concat(
+                                    addedNodes[0].innerText
+                                )
+                            )
                             this.setState(
                                 {
+                                    cssToInsertInIframe
                                     // TODO - need to dedup the cssToInsertInIframe array
-                                    cssToInsertInIframe: dedupe(
-                                        this.state.cssToInsertInIframe.concat(
-                                            addedNodes[0].innerText
-                                        )
-                                    )
                                 },
                                 () => {
                                     addedNodes[0].remove()

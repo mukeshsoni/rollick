@@ -40,7 +40,7 @@ class SingleComponentPreview extends React.Component {
                 this.setState({
                     loading: false,
                     errorLoadingComponent: null,
-                    component: com.component,
+                    component: com.component.default || com.component,
                     // if item has fakeProps, we want to get those. Since they might have changed from attribute pane or whereever
                     fakeProps: com.fakeProps
                 })
@@ -96,7 +96,7 @@ class SingleComponentPreview extends React.Component {
             }
         } else {
             let codeToRender = React.createElement(
-                component,
+                this.state.component,
                 item.fakeProps ? item.fakeProps : fakeProps
             )
 
