@@ -9,6 +9,7 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Open
 - [X] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
 there should be an option to import that child component. Mostly needed when the selected component takes children components.
+- [ ] Allow user to increase the height of the preview container (iframe). Sometimes due to absolute positioning, some elements are hidden at the bottom area of the iframe.
 - [ ] A 'refresh' button in the styleguide preview window, to take the component back to first mount state
 - [ ] Bug - Once jsx goes to invalid state, even if i change jsx to be in valid state, the single component preview does not refresh. I need to go to some other
 component in the styleguide and come back to this component again. Also making sure that i save the props.
@@ -20,6 +21,11 @@ I thought i had fixed that problem :(. That is why none of the shared components
 Sharing through url? Store the code in database against the unique url.
 Saving configuration for the tool? Store in the database.
 - [X] Storing particular values for props and state? Store in the database.
+- [ ] Better fake props. E.g. for arrayOf(Objects), create between 2 to 5 element array
+- [ ] In the list search component in styleguide
+  - [ ] Should enable arrow key navigation after searching. Enter key then should open stories for the selected component.
+  - [ ] If user searches, and then clicks on a result (e.g. SearchInput), and then removes the search input, the list should bring the selected item in viewport somehow.
+In the above example, once the search input is cleared, the selected item might go out of the viewport (way below)
 - [ ] Copy/pasting some code should work. If that copy/pasted code has custom components, they should be parsed and loaded.
 - [ ] Enhancing documentation of components through a rich text editor or however way? Store it in the database.
 - [ ] Feature - import styleguide as an html/pdf document
