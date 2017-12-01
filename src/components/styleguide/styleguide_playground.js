@@ -94,10 +94,11 @@ class StyleguidePlayground extends React.PureComponent {
                     onAddStory={onAddStory}
                 />
                 <div style={{ padding: '1em', flexGrow: 1, overflowY: 'auto' }}>
-                    {item.description &&
+                    {item.description && (
                         <div style={{ marginBottom: 16 }}>
                             {item.description}
-                        </div>}
+                        </div>
+                    )}
                     {this.getStoryBoards()}
                     <div style={{ marginBottom: 32 }}>
                         <PropsAndMethods item={item} />

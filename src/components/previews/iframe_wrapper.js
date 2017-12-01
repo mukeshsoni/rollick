@@ -10,10 +10,6 @@ import cssObserver from './css_observer.js'
 
 export default function iframeWrapper(WrappedComponent) {
     class IframeWrapperComponent extends React.Component {
-        static contextTypes = {
-            window: PropTypes.any,
-            document: PropTypes.any
-        }
         iframeRef: null
         getIframeHead() {
             return (
