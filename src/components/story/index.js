@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Button from '../buttons/button.js'
 import SingleComponentPreview from '../previews/single_component_preview.js'
-import NewIframeWrapper from '../previews/new_iframe_wrapper.js'
+import NewSingleComponentPreview from '../previews/new/new_iframe_wrapper.js'
 import PreviewCodeSection from '../previews/preview_code_section.js'
 import EditInline from '../inputs/edit_inline.js'
 
@@ -65,7 +65,6 @@ class Story extends React.PureComponent {
                         item={item}
                         jsxCode={story.jsxCode}
                     />
-                    <NewIframeWrapper />
                 </div>
                 <div style={{ marginBottom: 32 }}>
                     <PreviewCodeSection
@@ -81,6 +80,10 @@ class Story extends React.PureComponent {
                 </div>
             </div>
         )
+        // <NewSingleComponentPreview
+        //     item={item}
+        //     jsxCode={story.jsxCode}
+        // />
     }
 }
 

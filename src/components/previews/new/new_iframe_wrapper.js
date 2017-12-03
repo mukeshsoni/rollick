@@ -2,15 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import Frame from 'react-frame-component'
+import Bridge from './bridge.js'
 
 class NewIframeWrapper extends React.Component {
     iframeRef: null
     getIframeHead() {
         return (
             <div>
-                <script src="jspm_packages/system.js" />
-                <script src="jspm.config.js" />
-                <script src="/iframe_main.js" />
                 <style>
                     {this.props.cssToInsertInIframe &&
                         this.props.cssToInsertInIframe.length &&
@@ -94,6 +92,10 @@ class NewIframeWrapper extends React.Component {
         }, 200)
     }
 
+    componentDidUpdate() {
+        const iframeDOMNode = ReactDOM.findDOMNode(this.iframeRef)
+    }
+
     onMount = () => {
         this.adjustIframeHeight()
     }
@@ -126,17 +128,18 @@ class NewIframeWrapper extends React.Component {
     }
 
     render() {
-        const { style } = this.props
+        const { style, item, jsxCode } = this.props
         const containerStyle = {
             width: '100%',
             margin: 0,
             ...style
         }
         let initialContent =
-            '<!DOCTYPE html><html><head></head><body><div></div></body></html>'
+            '<!DOCTYPE html><html><head></head><body><div id="container"></div><script src="jspm_packages/system.js"></script><script src="jspm.config.js"></script><script>SystemJS.import("src/components/previews/new/main.js")</script></body></html>'
 
         return (
             <Frame
+                initialContent={initialContent}
                 style={containerStyle}
                 frameBorder={'0'}
                 head={this.getIframeHead()}
@@ -144,7 +147,8 @@ class NewIframeWrapper extends React.Component {
                 contentDidMount={this.onMount}
                 contentDidUpdate={this.onUpdate}
             >
-                <div>new iframe</div>
+                <div className="container2" />
+                <Bridge item={item} jsxCode={jsxCode} />
             </Frame>
         )
     }

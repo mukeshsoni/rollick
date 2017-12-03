@@ -52,6 +52,7 @@ class StyleguidePlayground extends React.PureComponent {
         return item.stories.map((story, index) => {
             return (
                 <Story
+                    key={'story_number_' + index}
                     item={item}
                     story={story}
                     onCodeChange={onCodeChange.bind(null, index)}
@@ -116,36 +117,36 @@ StyleguidePlayground.contextTypes = {
 
 StyleguidePlayground.propTypes = {
     /**
-    * UI component object which is output by react-docgen, and enhanced with fakeProps
-    **/
+     * UI component object which is output by react-docgen, and enhanced with fakeProps
+     **/
     item: PropTypes.object.isRequired,
     /**
-      * jsx Code string for the component
-    **/
+     * jsx Code string for the component
+     **/
     jsxCode: PropTypes.string,
     /**
-    * function to call when user wants to add the component to the playground
-    **/
+     * function to call when user wants to add the component to the playground
+     **/
     onAddComponent: PropTypes.func.isRequired,
     /**
-    * function to callback when jsx code is changed in the code panel
-    **/
+     * function to callback when jsx code is changed in the code panel
+     **/
     onCodeChange: PropTypes.func.isRequired,
     /**
-      * When the editor is in focus or goes out of focus
-      **/
+     * When the editor is in focus or goes out of focus
+     **/
     onEditorFocusChange: PropTypes.func.isRequired,
     /**
-      * callback invoked when 'Save props' button is clicked
-      **/
+     * callback invoked when 'Save props' button is clicked
+     **/
     onSavePropClick: PropTypes.func.isRequired,
     /**
-      * callback invoked when 'Format code' button is clicked
-      **/
+     * callback invoked when 'Format code' button is clicked
+     **/
     onFormatCodeClick: PropTypes.func.isRequired,
     /**
-      * callback invoked when 'Add New Story' button is clicked
-      **/
+     * callback invoked when 'Add New Story' button is clicked
+     **/
     onAddStory: PropTypes.func.isRequired,
     /**
      * callback invoked when 'Delete story' button is clicked
