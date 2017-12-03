@@ -135,7 +135,7 @@ class NewIframeWrapper extends React.Component {
             ...style
         }
         let initialContent =
-            '<!DOCTYPE html><html><head></head><body><div id="container"></div><script src="jspm_packages/system.js"></script><script src="jspm.config.js"></script><script>SystemJS.import("src/components/previews/new/main.js")</script></body></html>'
+            '<!DOCTYPE html><html><head></head><body><div id="for-react-frame-component"></div><div id="container"></div><script src="jspm_packages/system.js"></script><script src="jspm.config.js"></script><script>SystemJS.import("src/components/previews/new/main.js")</script></body></html>'
 
         return (
             <Frame

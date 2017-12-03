@@ -6,8 +6,18 @@ class Bridge extends React.Component {
     constructor(props) {
         super(props)
 
+        this._isMounted = false
         this.state = {
             farSideReady: false
+        }
+    }
+
+    askFarSideToRender = () => {
+        if (this._isMounted) {
+            this.context.window.window.renderAgain(
+                this.props.item,
+                this.props.jsxCode
+            )
         }
     }
 
@@ -19,10 +29,7 @@ class Bridge extends React.Component {
             this.context.window.window &&
             this.context.window.window.renderAgain
         ) {
-            this.context.window.window.renderAgain(
-                this.props.item,
-                this.props.jsxCode
-            )
+            this.askFarSideToRender()
         } else {
             console.error(
                 'renderAgain function not found in the component inside iframe'
@@ -60,10 +67,7 @@ class Bridge extends React.Component {
                 this.context.window.window &&
                 this.context.window.window.renderAgain)
         ) {
-            this.context.window.window.renderAgain(
-                this.props.item,
-                this.props.jsxCode
-            )
+            this.askFarSideToRender()
         } else {
             console.log(
                 'Far side not yet ready. Will try again in 500 milliseconds'
@@ -73,11 +77,16 @@ class Bridge extends React.Component {
     }
 
     componentDidMount() {
+        this._isMounted = true
         this.setOurSideOfTheBridge()
     }
 
     componentDidUpdate() {
         this.updateWhenFarSideReady()
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false
     }
 
     render() {

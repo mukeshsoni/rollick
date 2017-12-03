@@ -58,10 +58,7 @@ class Story extends React.PureComponent {
                     />
                 </div>
                 <div style={{ height: 'auto' }}>
-                    <SingleComponentPreview
-                        jsUrlsToInsert={jsUrlsToInsert}
-                        cssUrlsToInsert={cssUrlsToInsert}
-                        cssToInsert={cssToInsertInIframe}
+                    <NewSingleComponentPreview
                         item={item}
                         jsxCode={story.jsxCode}
                     />
@@ -80,7 +77,10 @@ class Story extends React.PureComponent {
                 </div>
             </div>
         )
-        // <NewSingleComponentPreview
+        //     <SingleComponentPreview
+        //     jsUrlsToInsert={jsUrlsToInsert}
+        //     cssUrlsToInsert={cssUrlsToInsert}
+        //     cssToInsert={cssToInsertInIframe}
         //     item={item}
         //     jsxCode={story.jsxCode}
         // />
