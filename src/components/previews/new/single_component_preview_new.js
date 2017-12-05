@@ -27,8 +27,6 @@ function errorSection(errorType, e) {
 }
 
 class SingleComponentPreviewNew extends React.Component {
-    lastValidRender: null
-
     getComponent = item => {
         this.setState({ loading: true })
         loadComponentFromPath(item)
@@ -115,6 +113,7 @@ class SingleComponentPreviewNew extends React.Component {
             fakeProps: {},
             errorLoadingComponent: null
         }
+        this.lastValidRender = null
     }
 
     componentWillReceiveProps(nextProps) {

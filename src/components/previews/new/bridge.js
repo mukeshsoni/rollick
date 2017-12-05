@@ -66,9 +66,6 @@ class Bridge extends React.Component {
         ) {
             this.askFarSideToRender()
         } else {
-            console.log(
-                'Far side not yet ready. Will try again in 500 milliseconds'
-            )
             window.setTimeout(this.updateWhenFarSideReady, 500)
         }
     }

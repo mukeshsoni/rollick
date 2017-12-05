@@ -9,7 +9,8 @@ import cssbeautify from 'cssbeautify'
 import './app.css'
 import './split_pane.css'
 import EditInline from '../../components/inputs/edit_inline.js'
-import Preview from '../previews/composite_component_preview.js'
+// import Preview from '../previews/composite_component_preview.js'
+import Preview from '../previews/new/new_iframe_wrapper.js'
 import Editor from './editor/index.js'
 import LoadPenModal from './load_pen_modal.js'
 import FileSaver from 'file-saver'
@@ -646,23 +647,26 @@ export default class Playground extends React.Component {
                             zIndex: 23
                         }}
                     >
-                        {showSearchModal
-                            ? <SearchBox
-                                  items={componentsMetaList}
-                                  onSelection={this.handleSearchSelection}
-                                  onRequestClose={this.hideSearchModal}
-                              />
-                            : <div style={{ width: '100%' }}>
-                                  <SearchInput
-                                      style={{ width: 300 }}
-                                      className={inputClassnames}
-                                      placeholder="Search Component (Command + i)"
-                                      onFocus={() =>
-                                          this.setState({
-                                              showSearchModal: true
-                                          })}
-                                  />
-                              </div>}
+                        {showSearchModal ? (
+                            <SearchBox
+                                items={componentsMetaList}
+                                onSelection={this.handleSearchSelection}
+                                onRequestClose={this.hideSearchModal}
+                            />
+                        ) : (
+                            <div style={{ width: '100%' }}>
+                                <SearchInput
+                                    style={{ width: 300 }}
+                                    className={inputClassnames}
+                                    placeholder="Search Component (Command + i)"
+                                    onFocus={() =>
+                                        this.setState({
+                                            showSearchModal: true
+                                        })
+                                    }
+                                />
+                            </div>
+                        )}
                         <Button
                             onClick={this.props.fromStyleguideClick}
                             label="Styleguide"
@@ -672,20 +676,22 @@ export default class Playground extends React.Component {
                             }}
                         />
                     </div>
-                    {showSavedPensModal
-                        ? <LoadPenModal
-                              onClose={() =>
-                                  this.setState({ showSavedPensModal: false })}
-                              onSelect={this.loadPen}
-                          />
-                        : null}
-                    {penId &&
+                    {showSavedPensModal ? (
+                        <LoadPenModal
+                            onClose={() =>
+                                this.setState({ showSavedPensModal: false })
+                            }
+                            onSelect={this.loadPen}
+                        />
+                    ) : null}
+                    {penId && (
                         <div style={{ marginRight: '1em' }}>
                             <EditInline
                                 value={penName}
                                 onChange={this.handlePenNameChange}
                             />
-                        </div>}
+                        </div>
+                    )}
                     <Button
                         onClick={this.handleNewPenClick}
                         label="New"
@@ -752,7 +758,8 @@ export default class Playground extends React.Component {
                                             .style.setProperty('top', '69px')
                                     }
                                 }
-                            )}
+                            )
+                        }
                         label="Toggle editor layout"
                     />
                 </header>
@@ -805,7 +812,8 @@ export default class Playground extends React.Component {
                             >
                                 <Editor
                                     ref={instance =>
-                                        (this.cssEditorRef = instance)}
+                                        (this.cssEditorRef = instance)
+                                    }
                                     code={css.code}
                                     onCodeChange={this.updateCss}
                                     mode="css"
@@ -815,7 +823,8 @@ export default class Playground extends React.Component {
                                 />
                                 <Editor
                                     ref={instance =>
-                                        (this.jsEditorRef = instance)}
+                                        (this.jsEditorRef = instance)
+                                    }
                                     code={js.code}
                                     onCodeChange={this.updateJs}
                                     mode="jsx"
@@ -826,13 +835,18 @@ export default class Playground extends React.Component {
                             </SplitPane>
                         </SplitPane>
                         <div className="editor-right-pane" id={rightPaneId}>
-                            {!this.props.hidePreview &&
+                            {!this.props.hidePreview && (
                                 <Preview
+                                    composite={true}
                                     loading={loading}
+                                    jsxCode={jsx.code}
+                                    jsCode={js.code}
+                                    cssCode={css.code}
                                     jsxToInsert={jsx.toInsert}
                                     jsToInsert={js.toInsert}
                                     cssToInsert={css.toInsert}
-                                />}
+                                />
+                            )}
                         </div>
                     </SplitPane>
                 </div>

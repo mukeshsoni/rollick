@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import SingleComponentPreviewNew from './single_component_preview_new.js'
+import CompositeComponentPreviewNew from './composite_component_preview_new.js'
 import 'src/components/styleguide/loader.css!css'
 
 class PreviewApp extends React.Component {
@@ -10,7 +11,9 @@ class PreviewApp extends React.Component {
         this.state = {
             item: null,
             jsxCode: null,
-            containerClasses: ''
+            containerClasses: '',
+            composite: false,
+            loading: true
         }
     }
 
@@ -39,8 +42,29 @@ class PreviewApp extends React.Component {
         ]
         let cssToInsertInIframe = '.ReactCodeMirror .CodeMirror {height: 100%}'
 
-        let { item, jsxCode } = this.state
-        if (item && jsxCode) {
+        let {
+            composite,
+            item,
+            jsxCode,
+            jsxToInsert,
+            jsToInsert,
+            cssToInsert,
+            loading
+        } = this.state
+
+        if (composite) {
+            return (
+                <div className={this.state.containerClasses}>
+                    <CompositeComponentPreviewNew
+                        loading={loading}
+                        jsxCode={jsxCode}
+                        jsxToInsert={jsxToInsert}
+                        jsToInsert={jsToInsert}
+                        cssToInsert={cssToInsert}
+                    />
+                </div>
+            )
+        } else if (item && jsxCode) {
             return (
                 <div className={this.state.containerClasses}>
                     <SingleComponentPreviewNew
