@@ -9,14 +9,14 @@ class PreviewApp extends React.Component {
 
         this.state = {
             item: null,
-            jsxCode: null
+            jsxCode: null,
+            options: {}
         }
     }
 
     componentDidMount() {
-        window.renderAgain = (item, jsxCode) => {
-            console.log('item to rendre', item.path, jsxCode)
-            this.setState({ item, jsxCode })
+        window.renderAgain = (options, item, jsxCode) => {
+            this.setState({ options, item, jsxCode })
         }
 
         if (window.callMeWhenReady) {
@@ -41,9 +41,8 @@ class PreviewApp extends React.Component {
 
         let { item, jsxCode } = this.state
         if (item && jsxCode) {
-            console.log('render: item to render', item.path, jsxCode)
             return (
-                <div>
+                <div className={this.state.options.containerClasses}>
                     <SingleComponentPreviewNew
                         jsUrlsToInsert={jsUrlsToInsert}
                         cssUrlsToInsert={cssUrlsToInsert}

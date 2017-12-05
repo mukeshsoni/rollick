@@ -134,8 +134,17 @@ class NewIframeWrapper extends React.Component {
             margin: 0,
             ...style
         }
-        let initialContent =
-            '<!DOCTYPE html><html><head></head><body><div id="for-react-frame-component"></div><div id="container"></div><script src="jspm_packages/system.js"></script><script src="jspm.config.js"></script><script>SystemJS.import("src/components/previews/new/main.js")</script></body></html>'
+        let initialContent = `<!DOCTYPE html>
+                <html>
+                    <head></head>
+                    <body>
+                        <div id="for-react-frame-component"></div>
+                        <div id="container"></div>
+                        <script src="jspm_packages/system.js"></script>
+                        <script src="jspm.config.js"></script>
+                        <script>SystemJS.import("src/components/previews/new/main.js")</script>
+                    </body>
+                </html>`
 
         return (
             <Frame
@@ -148,7 +157,11 @@ class NewIframeWrapper extends React.Component {
                 contentDidUpdate={this.onUpdate}
             >
                 <div className="container2" />
-                <Bridge item={item} jsxCode={jsxCode} />
+                <Bridge
+                    item={item}
+                    jsxCode={jsxCode}
+                    containerClasses={this.state.containerClasses}
+                />
             </Frame>
         )
     }
