@@ -109,12 +109,22 @@ function tryResolvingFilePath(filePath, req) {
 
     // give it to resolveFile to try and resolve it as such
     if (resolveFile(filePath)) {
-        if(fs.lstatSync(resolveFile(filePath)) && fs.lstatSync(resolveFile(filePath)).isDirectory()) {
+        if (
+            fs.lstatSync(resolveFile(filePath)) &&
+            fs.lstatSync(resolveFile(filePath)).isDirectory()
+        ) {
             console.log('file is a directory. trying to resolve', filePath)
-            if(fs.lstatSync(resolveFile(filePath) + '/index.js') && fs.lstatSync(resolveFile(filePath) + '/index.js').isFile()) {
+            if (
+                fs.lstatSync(resolveFile(filePath) + '/index.js') &&
+                fs.lstatSync(resolveFile(filePath) + '/index.js').isFile()
+            ) {
                 return resolveFile(filePath) + '/index.js'
             } else {
-                console.log('file path is a directory path', filePath, resolveFile(filePath))
+                console.log(
+                    'file path is a directory path',
+                    filePath,
+                    resolveFile(filePath)
+                )
                 return resolveFile(filePath)
             }
         } else {
@@ -155,10 +165,16 @@ var request = http
         var filePath = req.url.slice(1).split('?')[0]
         filePath = tryResolvingFilePath(adjustPaths(toolConfig, filePath), req)
 
-
         // console.log('filePath', filePath)
         if (fs.existsSync(filePath)) {
-            response.writeHead(200, {'Content-Type': mime.lookup(filePath)})
+            if (
+                filePath.includes('jspm_packages') ||
+                filePath.includes('node_modules')
+            ) {
+                response.setHeader('Cache-Control', 'public, max-age=31557600')
+            }
+
+            response.writeHead(200, { 'Content-Type': mime.lookup(filePath) })
             // font files should not be loaded with 'utf8' encoding. They are binary files. Loading them with 'utf8' encoding and sending them across to browser breaks/corrupts them.
             // send buffered content to loaders. Let them convert to 'utf8' string manually (using .toString('utf'))
             // console.log('filePath to read', filePath)
