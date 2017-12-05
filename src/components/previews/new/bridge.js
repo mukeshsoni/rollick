@@ -14,11 +14,7 @@ class Bridge extends React.Component {
 
     askFarSideToRender = () => {
         if (this._isMounted) {
-            this.context.window.window.renderAgain(
-                { containerClasses: this.props.containerClasses },
-                this.props.item,
-                this.props.jsxCode
-            )
+            this.context.window.window.renderAgain(this.props)
         }
     }
 

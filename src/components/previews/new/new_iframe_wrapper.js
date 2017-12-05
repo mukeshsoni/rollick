@@ -158,8 +158,7 @@ class NewIframeWrapper extends React.Component {
             >
                 <div className="container2" />
                 <Bridge
-                    item={item}
-                    jsxCode={jsxCode}
+                    {...this.props}
                     containerClasses={this.state.containerClasses}
                 />
             </Frame>

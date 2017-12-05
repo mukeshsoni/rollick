@@ -10,13 +10,13 @@ class PreviewApp extends React.Component {
         this.state = {
             item: null,
             jsxCode: null,
-            options: {}
+            containerClasses: ''
         }
     }
 
     componentDidMount() {
-        window.renderAgain = (options, item, jsxCode) => {
-            this.setState({ options, item, jsxCode })
+        window.renderAgain = props => {
+            this.setState(props)
         }
 
         if (window.callMeWhenReady) {
@@ -42,7 +42,7 @@ class PreviewApp extends React.Component {
         let { item, jsxCode } = this.state
         if (item && jsxCode) {
             return (
-                <div className={this.state.options.containerClasses}>
+                <div className={this.state.containerClasses}>
                     <SingleComponentPreviewNew
                         jsUrlsToInsert={jsUrlsToInsert}
                         cssUrlsToInsert={cssUrlsToInsert}
