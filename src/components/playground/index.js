@@ -22,7 +22,6 @@ import {
     lastSavedPen,
     updatePenName
 } from '../../persist.js'
-const { any, isCapitalized, last, dedupe, fileExtension } = belt
 import { formatCode } from '../../tools/code_formatter.js'
 import {
     transpile,
@@ -139,7 +138,7 @@ export default class Playground extends React.Component {
     }
 
     reloadPreview = () => {
-        this.loadCustomComponents()
+        this.loadComponentsMeta()
         this.formatJsx() // putting formatting stuff after loading, since they might blow up and not lead to loading of custom components at all
         this.formatJs()
         this.formatCss()
@@ -454,52 +453,11 @@ export default class Playground extends React.Component {
         }
     }
 
-    loadCustomComponents = () => {
+    loadComponentsMeta = () => {
         // load custom components, if any, in the jsx editor
         SystemJS.import('components.meta.json!json')
             .then(meta => {
-                this.setState({ componentsMetaList: meta }, () => {
-                    const js = transpile(`<div>${this.state.jsx.code}</div>`)
-
-                    if (!js.error) {
-                        const customComponentTokens = js.ast.tokens.filter(
-                            token => {
-                                return (
-                                    token.type.label === 'jsxName' &&
-                                    isCapitalized(token.value)
-                                )
-                            }
-                        )
-
-                        const componentsToLoad = this.state.componentsMetaList.filter(
-                            comMeta => {
-                                return (
-                                    any(
-                                        token => token.value === comMeta.name,
-                                        customComponentTokens
-                                    ) && !window[comMeta.name]
-                                )
-                            }
-                        )
-
-                        const loadPromises = componentsToLoad.map(comMeta => {
-                            return SystemJS.import(comMeta.path).then(com => {
-                                window[comMeta.name] = com.default || com
-                            })
-                        })
-
-                        Promise.all(loadPromises)
-                            .then(() => {
-                                this.setState({ loading: false })
-                            })
-                            .catch(e => {
-                                console.log('error loading component', e)
-                                this.setState({ loading: false })
-                            })
-                    } else {
-                        this.setState({ loading: false })
-                    }
-                })
+                this.setState({ componentsMetaList: meta, loading: false })
             })
             .catch(() => this.setState({ loading: false }))
     }
@@ -548,7 +506,7 @@ export default class Playground extends React.Component {
     componentWillMount() {
         // this.registerServiceWorker()
 
-        this.loadCustomComponents()
+        this.loadComponentsMeta()
         // if we set initial cssCode in state from localstorage
         // we can't get the compiled version (wrap with 'right-container' tag and compile with sass compiler)
         // because sass compiler is async
