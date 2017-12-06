@@ -142,7 +142,7 @@ class NewIframeWrapper extends React.Component {
                         <div id="container"></div>
                         <script src="jspm_packages/system.js"></script>
                         <script src="jspm.config.js"></script>
-                        <script>SystemJS.import("src/components/previews/new/main.js")</script>
+                        <script>SystemJS.import("src/components/previews/iframe_main.js")</script>
                     </body>
                 </html>`
 

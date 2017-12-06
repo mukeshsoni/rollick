@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SearchResults from './search_results'
 import SearchInput from './search_input'
-import Preview from '../previews/single_component_preview.js'
+import Preview from '../previews/index.js'
 import classnames from 'classnames'
 import onClickOutside from 'react-onclickoutside'
 import deboune from 'debounce'
@@ -210,7 +210,7 @@ class SearchBox extends React.Component {
         return (
             <div style={{ width: '100%' }}>
                 {this.getInput()}
-                {this.getFilteredComponents().length > 0 &&
+                {this.getFilteredComponents().length > 0 && (
                     <div style={{ display: 'flex', width: searchBoxWidth * 2 }}>
                         <div style={{ width: searchBoxWidth, zIndex: 1000 }}>
                             <SearchResults
@@ -222,7 +222,7 @@ class SearchBox extends React.Component {
                             />
                         </div>
                         <div style={{ width: searchBoxWidth, height: 500 }}>
-                            {previewItem &&
+                            {previewItem && (
                                 <Preview
                                     item={previewItem}
                                     style={{
@@ -231,9 +231,11 @@ class SearchBox extends React.Component {
                                         marginLeft: 10,
                                         padding: '1em'
                                     }}
-                                />}
+                                />
+                            )}
                         </div>
-                    </div>}
+                    </div>
+                )}
             </div>
         )
     }

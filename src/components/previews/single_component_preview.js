@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import loadComponentFromPath from '../playground/load_component_from_path.js'
 import faker from '../../faker.js'
-import iframeWrapper from './iframe_wrapper.js'
 import '../styleguide/loader.css'
 import { jsxToJs } from '../../tools/transpile_helpers.js'
 
@@ -22,16 +21,12 @@ function errorSection(errorType, e) {
             <h4 style={{ marginBottom: '1em' }}>
                 {errorStrings[errorType] || 'Unknown error'}
             </h4>
-            <div>
-                {e.toString()}
-            </div>
+            <div>{e.toString()}</div>
         </div>
     )
 }
 
-class SingleComponentPreview extends React.Component {
-    lastValidRender: null
-
+class SingleComponentPreviewNew extends React.Component {
     getComponent = item => {
         this.setState({ loading: true })
         loadComponentFromPath(item)
@@ -118,6 +113,7 @@ class SingleComponentPreview extends React.Component {
             fakeProps: {},
             errorLoadingComponent: null
         }
+        this.lastValidRender = null
     }
 
     componentWillReceiveProps(nextProps) {
@@ -159,21 +155,23 @@ class SingleComponentPreview extends React.Component {
                     }}
                     className={containerClasses}
                 >
-                    {loading
-                        ? <div>Loading...</div>
-                        : errorLoadingComponent
-                          ? errorSection(
-                                COMPONENT_LOAD_ERROR,
-                                errorLoadingComponent
-                            )
-                          : this.getComponentToRender()}
+                    {loading ? (
+                        <div>Loading...</div>
+                    ) : errorLoadingComponent ? (
+                        errorSection(
+                            COMPONENT_LOAD_ERROR,
+                            errorLoadingComponent
+                        )
+                    ) : (
+                        this.getComponentToRender()
+                    )}
                 </div>
             </div>
         )
     }
 }
 
-SingleComponentPreview.propTypes = {
+SingleComponentPreviewNew.propTypes = {
     item: PropTypes.object.isRequired,
     style: PropTypes.object,
     cssUrlsToInsert: PropTypes.arrayOf(PropTypes.string),
@@ -182,11 +180,11 @@ SingleComponentPreview.propTypes = {
     containerClasses: PropTypes.string
 }
 
-SingleComponentPreview.defaultProps = {
+SingleComponentPreviewNew.defaultProps = {
     style: {},
     cssUrlsToInsert: [],
     jsUrlsToInsert: [],
     containerClasses: ''
 }
 
-export default iframeWrapper(SingleComponentPreview)
+export default SingleComponentPreviewNew

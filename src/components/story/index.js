@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Button from '../buttons/button.js'
-import SingleComponentPreview from '../previews/single_component_preview.js'
-import NewSingleComponentPreview from '../previews/new/new_iframe_wrapper.js'
+import Preview from '../previews/index.js'
 import PreviewCodeSection from '../previews/preview_code_section.js'
 import EditInline from '../inputs/edit_inline.js'
 
@@ -58,10 +57,7 @@ class Story extends React.PureComponent {
                     />
                 </div>
                 <div style={{ height: 'auto' }}>
-                    <NewSingleComponentPreview
-                        item={item}
-                        jsxCode={story.jsxCode}
-                    />
+                    <Preview item={item} jsxCode={story.jsxCode} />
                 </div>
                 <div style={{ marginBottom: 32 }}>
                     <PreviewCodeSection
