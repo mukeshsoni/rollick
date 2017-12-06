@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import SearchBox from '../search_box/index.js'
-import SearchInput from '../search_box/search_input.js'
 import Button from '../buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
@@ -31,7 +29,6 @@ import {
     addCodeToExistingJsx,
     componentJsx
 } from '../../tools/transpile_helpers.js'
-import loadComponentFromPath from './load_component_from_path.js'
 import {
     getAllSavedComponentsData,
     saveAllComponentsData
@@ -210,36 +207,6 @@ export default class Playground extends React.Component {
         document.getElementById('import-file').click()
     }
 
-    handleSearchSelection = (selectedItem, jsxCode) => {
-        // handleSearchSelection is called even if enter is pressed when there are zero search results
-        if (selectedItem && selectedItem.path) {
-            this.hideSearchModal()
-            loadComponentFromPath(selectedItem)
-                .then(com => {
-                    window[selectedItem.name] =
-                        com.component.default || com.component
-                    const codeToInsert = jsxCode || componentJsx(component)
-                    let jsxWithNewComponent = addCodeToExistingJsx(
-                        this.state.jsx.code,
-                        this.jsxEditorRef.codeMirrorRef
-                            .getCodeMirror()
-                            .getCursor(),
-                        jsxCode
-                    )
-
-                    // TODO - no idea why i am doing so much stuff here. Need to refactor
-                    // TODO - need to probably format code after adding component
-                    this.updateJsx(jsxWithNewComponent)
-                })
-                .catch(e =>
-                    console.error(
-                        'error loading component',
-                        selectedItem.name,
-                        e
-                    )
-                )
-        }
-    }
     formatCss = () => {
         this.setState({
             css: {
@@ -367,19 +334,6 @@ export default class Playground extends React.Component {
         this._updateJs(newCode)
     }, 300)
 
-    hideSearchModal = () => {
-        return this.setState({ showSearchModal: false }, () => {
-            if (
-                this.state.editorInFocus &&
-                this.state.editorInFocus.length > 0
-            ) {
-                this[this.state.editorInFocus + 'EditorRef'].codeMirrorRef
-                    .getCodeMirror()
-                    .focus()
-            }
-        })
-    }
-
     adjustEditorSizes = () => {
         const headerHeight = 31
         const footerHeight = 20
@@ -425,7 +379,6 @@ export default class Playground extends React.Component {
 
         switch (keyCode) {
             case 105: // i
-                // only show the search box if the jsx code editor is in focus
                 /* if (
                  *     e.metaKey &&
                  *     this.jsxEditorRef.codeMirrorRef.getCodeMirror().hasFocus()
@@ -439,8 +392,7 @@ export default class Playground extends React.Component {
                             this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
                             this.cssEditorRef.codeMirrorRef.getCodeMirror(),
                             this.jsEditorRef.codeMirrorRef.getCodeMirror()
-                        ),
-                        showSearchModal: true
+                        )
                     })
                 }
                 break
@@ -491,8 +443,6 @@ export default class Playground extends React.Component {
                 toInsert: transpile(startingJs).transpiledCode,
                 error: transpile(startingJs).error
             },
-            showSearchModal: false,
-            searchText: '',
             componentsMetaList: [],
             editorLayout: 'left',
             loading: true
@@ -547,7 +497,6 @@ export default class Playground extends React.Component {
             jsx,
             css,
             js,
-            showSearchModal,
             showSavedPensModal,
             componentsMetaList,
             editorLayout,
@@ -572,8 +521,6 @@ export default class Playground extends React.Component {
         const jsxEditorExtraKeys = {
             'Ctrl-Alt-Space': this.formatJsx
         }
-
-        const inputClassnames = 'search-modal-input'
 
         //       <style>
         //       {css.toInsert}
@@ -605,26 +552,6 @@ export default class Playground extends React.Component {
                             zIndex: 23
                         }}
                     >
-                        {showSearchModal ? (
-                            <SearchBox
-                                items={componentsMetaList}
-                                onSelection={this.handleSearchSelection}
-                                onRequestClose={this.hideSearchModal}
-                            />
-                        ) : (
-                            <div style={{ width: '100%' }}>
-                                <SearchInput
-                                    style={{ width: 300 }}
-                                    className={inputClassnames}
-                                    placeholder="Search Component (Command + i)"
-                                    onFocus={() =>
-                                        this.setState({
-                                            showSearchModal: true
-                                        })
-                                    }
-                                />
-                            </div>
-                        )}
                         <Button
                             onClick={this.props.fromStyleguideClick}
                             label="Styleguide"
