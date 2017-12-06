@@ -5,7 +5,9 @@ import 'jspm_packages/npm/codemirror@5.31.0/mode/jsx/jsx.js'
 import 'node_modules/codemirror/lib/codemirror.css!css'
 import 'node_modules/codemirror/theme/base16-light.css!css'
 import CodeMirror from '@skidding/react-codemirror'
+import emmetCodemirror from '@emmetio/codemirror-plugin'
 import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirror.js'
+emmetCodemirror(codeMirrorInstance)
 import PreviewSectionHeader from './preview_section_header.js'
 import Button from '../buttons/button.js'
 import { componentJsx, transpile } from '../../tools/transpile_helpers.js'
@@ -71,7 +73,10 @@ class PreviewCodeSection extends React.Component {
         return (
             <div>
                 <style>{cssToInsert}</style>
-                <PreviewSectionHeader text="Code" onClick={this.handleHeaderClick} />
+                <PreviewSectionHeader
+                    text="Code"
+                    onClick={this.handleHeaderClick}
+                />
                 {this.state.showEditor && (
                     <div>
                         <div
