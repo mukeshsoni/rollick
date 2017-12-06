@@ -49,15 +49,19 @@ class PreviewCodeSection extends React.Component {
             onFormatCodeClick,
             propsDirty
         } = this.props
+
         const codeMirrorOptions = {
-            lineNumbers: false,
+            lineNumbers: true,
             lineWrapping: true,
-            // theme: 'twilight',
             theme: 'base16-light',
             mode: 'jsx',
             smartIndent: false,
             matchBrackets: true,
-            viewportMargin: Infinity
+            viewportMargin: Infinity,
+            extraKeys: {
+                Tab: 'emmetExpandAbbreviation',
+                Enter: 'emmetInsertLineBreak'
+            }
         }
 
         let formattedCode =
