@@ -14,11 +14,7 @@ class Bridge extends React.Component {
 
     askFarSideToRender = () => {
         if (this._isMounted) {
-            this.context.window.window.renderAgain(
-                { containerClasses: this.props.containerClasses },
-                this.props.item,
-                this.props.jsxCode
-            )
+            this.context.window.window.renderAgain(this.props)
         }
     }
 
@@ -70,9 +66,6 @@ class Bridge extends React.Component {
         ) {
             this.askFarSideToRender()
         } else {
-            console.log(
-                'Far side not yet ready. Will try again in 500 milliseconds'
-            )
             window.setTimeout(this.updateWhenFarSideReady, 500)
         }
     }

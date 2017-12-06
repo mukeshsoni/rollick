@@ -9,7 +9,8 @@ import cssbeautify from 'cssbeautify'
 import './app.css'
 import './split_pane.css'
 import EditInline from '../../components/inputs/edit_inline.js'
-import Preview from '../previews/composite_component_preview.js'
+// import Preview from '../previews/composite_component_preview.js'
+import Preview from '../previews/new/new_iframe_wrapper.js'
 import Editor from './editor/index.js'
 import LoadPenModal from './load_pen_modal.js'
 import FileSaver from 'file-saver'
@@ -21,7 +22,6 @@ import {
     lastSavedPen,
     updatePenName
 } from '../../persist.js'
-const { any, isCapitalized, last, dedupe, fileExtension } = belt
 import { formatCode } from '../../tools/code_formatter.js'
 import {
     transpile,
@@ -138,7 +138,7 @@ export default class Playground extends React.Component {
     }
 
     reloadPreview = () => {
-        this.loadCustomComponents()
+        this.loadComponentsMeta()
         this.formatJsx() // putting formatting stuff after loading, since they might blow up and not lead to loading of custom components at all
         this.formatJs()
         this.formatCss()
@@ -453,52 +453,11 @@ export default class Playground extends React.Component {
         }
     }
 
-    loadCustomComponents = () => {
+    loadComponentsMeta = () => {
         // load custom components, if any, in the jsx editor
         SystemJS.import('components.meta.json!json')
             .then(meta => {
-                this.setState({ componentsMetaList: meta }, () => {
-                    const js = transpile(`<div>${this.state.jsx.code}</div>`)
-
-                    if (!js.error) {
-                        const customComponentTokens = js.ast.tokens.filter(
-                            token => {
-                                return (
-                                    token.type.label === 'jsxName' &&
-                                    isCapitalized(token.value)
-                                )
-                            }
-                        )
-
-                        const componentsToLoad = this.state.componentsMetaList.filter(
-                            comMeta => {
-                                return (
-                                    any(
-                                        token => token.value === comMeta.name,
-                                        customComponentTokens
-                                    ) && !window[comMeta.name]
-                                )
-                            }
-                        )
-
-                        const loadPromises = componentsToLoad.map(comMeta => {
-                            return SystemJS.import(comMeta.path).then(com => {
-                                window[comMeta.name] = com.default || com
-                            })
-                        })
-
-                        Promise.all(loadPromises)
-                            .then(() => {
-                                this.setState({ loading: false })
-                            })
-                            .catch(e => {
-                                console.log('error loading component', e)
-                                this.setState({ loading: false })
-                            })
-                    } else {
-                        this.setState({ loading: false })
-                    }
-                })
+                this.setState({ componentsMetaList: meta, loading: false })
             })
             .catch(() => this.setState({ loading: false }))
     }
@@ -547,7 +506,7 @@ export default class Playground extends React.Component {
     componentWillMount() {
         // this.registerServiceWorker()
 
-        this.loadCustomComponents()
+        this.loadComponentsMeta()
         // if we set initial cssCode in state from localstorage
         // we can't get the compiled version (wrap with 'right-container' tag and compile with sass compiler)
         // because sass compiler is async
@@ -646,23 +605,26 @@ export default class Playground extends React.Component {
                             zIndex: 23
                         }}
                     >
-                        {showSearchModal
-                            ? <SearchBox
-                                  items={componentsMetaList}
-                                  onSelection={this.handleSearchSelection}
-                                  onRequestClose={this.hideSearchModal}
-                              />
-                            : <div style={{ width: '100%' }}>
-                                  <SearchInput
-                                      style={{ width: 300 }}
-                                      className={inputClassnames}
-                                      placeholder="Search Component (Command + i)"
-                                      onFocus={() =>
-                                          this.setState({
-                                              showSearchModal: true
-                                          })}
-                                  />
-                              </div>}
+                        {showSearchModal ? (
+                            <SearchBox
+                                items={componentsMetaList}
+                                onSelection={this.handleSearchSelection}
+                                onRequestClose={this.hideSearchModal}
+                            />
+                        ) : (
+                            <div style={{ width: '100%' }}>
+                                <SearchInput
+                                    style={{ width: 300 }}
+                                    className={inputClassnames}
+                                    placeholder="Search Component (Command + i)"
+                                    onFocus={() =>
+                                        this.setState({
+                                            showSearchModal: true
+                                        })
+                                    }
+                                />
+                            </div>
+                        )}
                         <Button
                             onClick={this.props.fromStyleguideClick}
                             label="Styleguide"
@@ -672,20 +634,22 @@ export default class Playground extends React.Component {
                             }}
                         />
                     </div>
-                    {showSavedPensModal
-                        ? <LoadPenModal
-                              onClose={() =>
-                                  this.setState({ showSavedPensModal: false })}
-                              onSelect={this.loadPen}
-                          />
-                        : null}
-                    {penId &&
+                    {showSavedPensModal ? (
+                        <LoadPenModal
+                            onClose={() =>
+                                this.setState({ showSavedPensModal: false })
+                            }
+                            onSelect={this.loadPen}
+                        />
+                    ) : null}
+                    {penId && (
                         <div style={{ marginRight: '1em' }}>
                             <EditInline
                                 value={penName}
                                 onChange={this.handlePenNameChange}
                             />
-                        </div>}
+                        </div>
+                    )}
                     <Button
                         onClick={this.handleNewPenClick}
                         label="New"
@@ -752,7 +716,8 @@ export default class Playground extends React.Component {
                                             .style.setProperty('top', '69px')
                                     }
                                 }
-                            )}
+                            )
+                        }
                         label="Toggle editor layout"
                     />
                 </header>
@@ -805,7 +770,8 @@ export default class Playground extends React.Component {
                             >
                                 <Editor
                                     ref={instance =>
-                                        (this.cssEditorRef = instance)}
+                                        (this.cssEditorRef = instance)
+                                    }
                                     code={css.code}
                                     onCodeChange={this.updateCss}
                                     mode="css"
@@ -815,7 +781,8 @@ export default class Playground extends React.Component {
                                 />
                                 <Editor
                                     ref={instance =>
-                                        (this.jsEditorRef = instance)}
+                                        (this.jsEditorRef = instance)
+                                    }
                                     code={js.code}
                                     onCodeChange={this.updateJs}
                                     mode="jsx"
@@ -826,13 +793,18 @@ export default class Playground extends React.Component {
                             </SplitPane>
                         </SplitPane>
                         <div className="editor-right-pane" id={rightPaneId}>
-                            {!this.props.hidePreview &&
+                            {!this.props.hidePreview && (
                                 <Preview
+                                    composite={true}
                                     loading={loading}
+                                    jsxCode={jsx.code}
+                                    jsCode={js.code}
+                                    cssCode={css.code}
                                     jsxToInsert={jsx.toInsert}
                                     jsToInsert={js.toInsert}
                                     cssToInsert={css.toInsert}
-                                />}
+                                />
+                            )}
                         </div>
                     </SplitPane>
                 </div>
