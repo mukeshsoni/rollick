@@ -41,19 +41,6 @@ function errorSection(errorType, e) {
 }
 
 class CompositeComponentPreview extends React.Component {
-    getJsxToInsert = () => {
-        try {
-            return eval(this.props.jsxToInsert)
-        } catch (e) {
-            return (
-                <div>
-                    <h4>Error loading jsx</h4>
-                    <div>{e.toString()}</div>
-                </div>
-            )
-        }
-    }
-
     getComponentToRender = () => {
         let { jsxCode } = this.props
 
@@ -105,10 +92,7 @@ class CompositeComponentPreview extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            jsxToInsert: this.props.jsxToInsert,
-            previousJsxToInsert: React.createElement('span')
-        }
+        this.state = {}
         this.lastValidRender = null
     }
 
@@ -162,14 +146,12 @@ class CompositeComponentPreview extends React.Component {
 
 CompositeComponentPreview.propTypes = {
     loading: PropTypes.bool,
-    jsxToInsert: PropTypes.string.isRequired,
     jsToInsert: PropTypes.string,
     containerClasses: PropTypes.string
 }
 
 CompositeComponentPreview.defaultProps = {
     loading: false,
-    jsxToInsert: '',
     jsToInsert: '',
     containerClasses: ''
 }

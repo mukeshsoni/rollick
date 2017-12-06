@@ -9,6 +9,7 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Open
 - [X] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
 there should be an option to import that child component. Mostly needed when the selected component takes children components.
+- [ ] Retain the cursor position of the saved pen and scroll to that cursor position, if possible, on load of the pen
 - [ ] Allow user to increase the height of the preview container (iframe). Sometimes due to absolute positioning, some elements are hidden at the bottom area of the iframe.
 - [ ] A 'refresh' button in the styleguide preview window, to take the component back to first mount state
 - [ ] Bug - Once jsx goes to invalid state, even if i change jsx to be in valid state, the single component preview does not refresh. I need to go to some other

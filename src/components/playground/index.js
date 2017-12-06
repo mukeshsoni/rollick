@@ -70,6 +70,20 @@ export default class Playground extends React.Component {
         reader.readAsText(file)
     }
 
+    handleSearchSelection = (selectedItem, jsxCode) => {
+        if (selectedItem && selectedItem.path) {
+            let jsxWithNewComponent = addCodeToExistingJsx(
+                this.state.jsx.code,
+                this.jsxEditorRef.codeMirrorRef.getCodeMirror().getCursor(),
+                jsxCode
+            )
+
+            // TODO - no idea why i am doing so much stuff here. Need to refactor
+            // TODO - need to probably format code after adding component
+            this.updateJsx(jsxWithNewComponent)
+        }
+    }
+
     addComponentFromStyleguide = (component, jsxCode) => {
         this.handleSearchSelection(component, jsxCode)
     }
@@ -277,13 +291,13 @@ export default class Playground extends React.Component {
     }
 
     _updateJsx = newCode => {
-        const js = jsxToJs(newCode, this.state.jsx.toInsert)
+        // const js = jsxToJs(newCode, this.state.jsx.toInsert)
 
         this.setState({
             jsx: {
                 code: newCode,
-                toInsert: js.transpiledCode,
-                error: js.error
+                toInsert: '',
+                error: ''
             }
         })
     }
@@ -385,7 +399,7 @@ export default class Playground extends React.Component {
                 // command + i
                 if (e.metaKey) {
                     e.preventDefault()
-                    /* this.props.showStyleguide()*/
+                    this.props.showStyleguide()
                     return this.setState({
                         editorInFocus: getEditorInFocus(
                             this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
@@ -422,6 +436,7 @@ export default class Playground extends React.Component {
         const startingJsx = (savedPen && savedPen.jsxCode) || ''
         const startingCss = (savedPen && savedPen.cssCode) || ''
         const startingJs = (savedPen && savedPen.jsCode) || ''
+        const transpiledJs = transpile(startingJs)
 
         this.state = {
             penId,
@@ -429,8 +444,8 @@ export default class Playground extends React.Component {
             com: null,
             jsx: {
                 code: startingJsx,
-                toInsert: jsxToJs(startingJsx).transpiledCode,
-                error: jsxToJs(startingJsx).error
+                toInsert: '',
+                error: ''
             },
             css: {
                 code: startingCss,
@@ -439,8 +454,11 @@ export default class Playground extends React.Component {
             },
             js: {
                 code: startingJs,
-                toInsert: transpile(startingJs).transpiledCode,
-                error: transpile(startingJs).error
+                // TODO - remove the double call to transpile. Very expensive call.
+                // TODO - this module should not do any transpiling at all. Let the transpiling
+                // be left to renderers
+                toInsert: transpiledJs.transpiledCode,
+                error: transpiledJs.error
             },
             componentsMetaList: [],
             editorLayout: 'left',
@@ -726,7 +744,6 @@ export default class Playground extends React.Component {
                                     jsxCode={jsx.code}
                                     jsCode={js.code}
                                     cssCode={css.code}
-                                    jsxToInsert={jsx.toInsert}
                                     jsToInsert={js.toInsert}
                                     cssToInsert={css.toInsert}
                                 />
