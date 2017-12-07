@@ -394,7 +394,7 @@ SystemJS.config({
         'react-frame-component': 'npm:react-frame-component@1.1.1',
         'react-modal': 'npm:react-modal@2.3.2',
         'react-onclickoutside': 'npm:react-onclickoutside@6.5.0',
-        'react-split-pane': 'npm:react-split-pane@0.1.66',
+        'react-split-pane': 'npm:react-split-pane@0.1.71',
         'request': 'npm:request@2.81.0',
         'sass.js': 'npm:sass.js@0.10.6',
         'source-map': 'npm:source-map@0.5.7',
@@ -1383,29 +1383,6 @@ SystemJS.config({
                 'process': 'npm:process@0.11.10'
             }
         },
-        'npm:react-split-pane@0.1.66': {
-            'map': {
-                'prop-types': 'npm:prop-types@15.6.0',
-                'react-style-proptype': 'npm:react-style-proptype@3.0.0',
-                'inline-style-prefixer': 'npm:inline-style-prefixer@3.0.7'
-            }
-        },
-        'npm:react-style-proptype@3.0.0': {
-            'map': {
-                'prop-types': 'npm:prop-types@15.6.0'
-            }
-        },
-        'npm:inline-style-prefixer@3.0.7': {
-            'map': {
-                'bowser': 'npm:bowser@1.7.3',
-                'css-in-js-utils': 'npm:css-in-js-utils@1.0.3'
-            }
-        },
-        'npm:css-in-js-utils@1.0.3': {
-            'map': {
-                'hyphenate-style-name': 'npm:hyphenate-style-name@1.0.2'
-            }
-        },
         'npm:emmet-codemirror@1.2.5': {
             'map': {
                 'emmet': 'npm:emmet@1.6.3'
@@ -1726,6 +1703,31 @@ SystemJS.config({
                 'jsesc': 'npm:jsesc@1.3.0',
                 'lodash': 'npm:lodash@4.17.4',
                 'detect-indent': 'npm:detect-indent@4.0.0'
+            }
+        },
+        'npm:react-split-pane@0.1.71': {
+            'map': {
+                'inline-style-prefixer': 'npm:inline-style-prefixer@3.0.8',
+                'prop-types': 'npm:prop-types@15.6.0',
+                'react-style-proptype': 'npm:react-style-proptype@3.1.0',
+                '@types/inline-style-prefixer': 'npm:@types/inline-style-prefixer@3.0.1',
+                '@types/react': 'npm:@types/react@16.0.27'
+            }
+        },
+        'npm:react-style-proptype@3.1.0': {
+            'map': {
+                'prop-types': 'npm:prop-types@15.6.0'
+            }
+        },
+        'npm:inline-style-prefixer@3.0.8': {
+            'map': {
+                'bowser': 'npm:bowser@1.8.1',
+                'css-in-js-utils': 'npm:css-in-js-utils@2.0.0'
+            }
+        },
+        'npm:css-in-js-utils@2.0.0': {
+            'map': {
+                'hyphenate-style-name': 'npm:hyphenate-style-name@1.0.2'
             }
         }
     }

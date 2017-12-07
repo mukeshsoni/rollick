@@ -51,7 +51,7 @@
             "react-frame-component": "npm:react-frame-component@^1.1.1",
             "react-modal": "npm:react-modal@^2.3.2",
             "react-onclickoutside": "npm:react-onclickoutside@^6.5.0",
-            "react-split-pane": "npm:react-split-pane@^0.1.66",
+            "react-split-pane": "npm:react-split-pane@0.1.71",
             "sass.js": "npm:sass.js@^0.10.6",
             "systemjs/plugin-json": "github:systemjs/plugin-json@^0.3.0"
         },

@@ -352,6 +352,10 @@ export default class Playground extends React.Component {
         const footerHeight = 20
         const editors = ['jsx', 'css', 'js']
 
+        console.log(
+            'css editor height',
+            this.cssEditorRef.containerRef.clientHeight
+        )
         if (this.paneContainerRef && this.paneContainerRef.clientHeight) {
             editors.forEach(editor => {
                 const editorRef = this[editor + 'EditorRef']
@@ -359,12 +363,31 @@ export default class Playground extends React.Component {
 
                 const editorHeight =
                     parentHeight / 3 - headerHeight - footerHeight
+
                 editorRef.codeMirrorRef &&
                     editorRef.codeMirrorRef
                         .getCodeMirror()
                         .setSize('100%', editorHeight)
             })
         }
+    }
+
+    adjustEditorHeightsOnSplitPaneAdjustment = () => {
+        const headerHeight = 31
+        const footerHeight = 20
+        const editors = ['jsx', 'css', 'js']
+
+        editors.forEach(editor => {
+            const editorRef = this[editor + 'EditorRef']
+            const cm = editorRef.codeMirrorRef.getCodeMirror()
+
+            cm.setSize(
+                '100%',
+                editorRef.containerRef.clientHeight -
+                    headerHeight -
+                    footerHeight
+            )
+        })
     }
 
     handleKeypress = e => {
@@ -680,7 +703,7 @@ export default class Playground extends React.Component {
                         minSize={editorLayout === 'left' ? 400 : 300}
                         pane1Style={{ height: '100%' }}
                         pane2Style={{ background: 'white' }}
-                        onChange={this.adjustEditorSizes}
+                        onChange={this.adjustEditorHeightsOnSplitPaneAdjustment}
                     >
                         <SplitPane
                             split={
@@ -689,7 +712,9 @@ export default class Playground extends React.Component {
                                     : 'vertical'
                             }
                             defaultSize="33%"
-                            onChange={this.adjustEditorSizes}
+                            onChange={
+                                this.adjustEditorHeightsOnSplitPaneAdjustment
+                            }
                         >
                             <Editor
                                 ref={instance => (this.jsxEditorRef = instance)}
