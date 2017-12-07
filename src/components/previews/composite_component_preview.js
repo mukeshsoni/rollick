@@ -118,10 +118,7 @@ class CompositeComponentPreview extends React.Component {
     componentWillReceiveProps(nextProps) {
         // This is the crazy part. We insert methods which the user has defined in the JS editor section
         // something like `this.handleThisButtonClick = () => this.setState({...})`
-        if (
-            nextProps.jsToInsert !== this.props.jsToInsert &&
-            validJs.bind(this, nextProps.jsToInsert)
-        ) {
+        if (nextProps.jsxCode !== this.props.jsxCode) {
             this.getComponents(nextProps)
             try {
                 myEval(this, nextProps.jsToInsert)

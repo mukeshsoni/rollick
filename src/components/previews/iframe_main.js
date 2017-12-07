@@ -13,7 +13,7 @@ class PreviewApp extends React.Component {
             jsxCode: null,
             containerClasses: '',
             composite: false,
-            loading: true
+            loading: false
         }
     }
 
@@ -56,7 +56,6 @@ class PreviewApp extends React.Component {
             return (
                 <div className={this.state.containerClasses}>
                     <CompositeComponentPreviewNew
-                        loading={loading}
                         jsxCode={jsxCode}
                         jsxToInsert={jsxToInsert}
                         jsToInsert={jsToInsert}

@@ -57,7 +57,11 @@ class Story extends React.PureComponent {
                     />
                 </div>
                 <div style={{ height: 'auto' }}>
-                    <Preview item={item} jsxCode={story.jsxCode} />
+                    <Preview
+                        item={item}
+                        composite={true}
+                        jsxCode={story.jsxCode}
+                    />
                 </div>
                 <div style={{ marginBottom: 32 }}>
                     <PreviewCodeSection
