@@ -9,6 +9,12 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Open
 - [X] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
 there should be an option to import that child component. Mostly needed when the selected component takes children components.
+- [ ] Showing the styleguide in a modal doesn't make sense anymore. Can as well just take the whole window and be a different screen. Same header with maybe different options.
+Can use fancy animation to transition between styleguide and pen window and vice versa. Another animation when a story is added from styleguide to the pen.
+- [ ] Allow import of components from paths other than shared ui components. E.g. if we want to test out phase calendar from roadmap (projectplace specific), we should just give the path and have it imported on the fly.
+This will allow us to create pens specific to modules and test them out in the context of the modules.
+- [ ] Allow saving of pen as a story
+- [ ] Show the dependency list for a component in styleguide. The main idea is to construct a narrative on how that component is made. E.g. it consists of two quarks, a boson and one atom (if we follow the atomic design)
 - [ ] Ability to expand preview pane height (in case when there are absolute elements floating and doesn’t change the height of the document. E.g. data input)
 - [ ] Ability to bring in arbitrary less files when we want to pass specific classes to some components
 - [ ] Ability to insert other components as children in the story of some component. E.g. FilterGroup works well with FilterItem’s as children. Collapsible works well with CollapsibleSection as children.
