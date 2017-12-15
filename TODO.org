@@ -9,6 +9,9 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Open
 - [X] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
 there should be an option to import that child component. Mostly needed when the selected component takes children components.
+- [ ] Ability to import stuff from sketch to styleguide. Can try using html-sketchapp for this.
+- [ ] The landing screen can be a screen with thumbnails (or list) of saved pens (if any), instead of directly going to the playground view.
+Latest photoshop has that. I think compositor.io also has that.
 - [ ] Ability to expand preview pane height (in case when there are absolute elements floating and doesn’t change the height of the document. E.g. data input)
 - [ ] Ability to bring in arbitrary less files when we want to pass specific classes to some components
 - [ ] Ability to insert other components as children in the story of some component. E.g. FilterGroup works well with FilterItem’s as children. Collapsible works well with CollapsibleSection as children.

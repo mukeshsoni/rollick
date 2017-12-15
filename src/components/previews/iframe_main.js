@@ -54,7 +54,10 @@ class PreviewApp extends React.Component {
 
         if (composite) {
             return (
-                <div className={this.state.containerClasses}>
+                <div
+                    className={this.state.containerClasses}
+                    style={{ padding: 20 }}
+                >
                     <CompositeComponentPreviewNew
                         jsxCode={jsxCode}
                         jsxToInsert={jsxToInsert}
@@ -65,7 +68,10 @@ class PreviewApp extends React.Component {
             )
         } else if (item && jsxCode) {
             return (
-                <div className={this.state.containerClasses}>
+                <div
+                    className={this.state.containerClasses}
+                    style={{ padding: 20 }}
+                >
                     <SingleComponentPreviewNew
                         jsUrlsToInsert={jsUrlsToInsert}
                         cssUrlsToInsert={cssUrlsToInsert}
