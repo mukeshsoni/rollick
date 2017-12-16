@@ -79,6 +79,7 @@ export default class Playground extends React.Component {
                 jsxCode
             )
 
+            this.setState({ showQuickSearchModal: false })
             // TODO - no idea why i am doing so much stuff here. Need to refactor
             // TODO - need to probably format code after adding component
             this.updateJsx(jsxWithNewComponent)

@@ -71,9 +71,10 @@ class SearchBox extends React.Component {
         if (this.state.selectedItemIndex >= 0) {
             stopAllPropagations(e)
             // this.setState({ searchText: '', selectedItemIndex: 0 })
-            // this.props.onSelection(
-            //     this.getFilteredComponents()[this.state.selectedItemIndex]
-            // )
+            this.props.onSelection(
+                this.getPreviewItem(),
+                this.getPreviewItemJsx()
+            )
         }
     }
 
@@ -281,7 +282,7 @@ class SearchBox extends React.Component {
                                     onSavePropClick={noop}
                                     onFormatCodeClick={noop}
                                     onDeleteStory={noop}
-                                    onAddComponent={noop}
+                                    onAddComponent={this.handleEnterKey}
                                     onStoryTitleChange={noop}
                                     propsDirty={false}
                                 />
