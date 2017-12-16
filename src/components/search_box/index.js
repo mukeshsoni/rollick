@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import SearchResults from './search_results'
 import SearchInput from './search_input'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
-import Preview from '../previews/index.js'
 import classnames from 'classnames'
 import onClickOutside from 'react-onclickoutside'
 import deboune from 'debounce'
@@ -11,6 +10,7 @@ import key from 'keymaster'
 import looseFilter from '../../tools/loose_filter.js'
 import './search_box.css'
 import { enhanceComponent } from '../../tools/component_loaders.js'
+import Story from '../story/index.js'
 
 import belt from '../../../belt.js'
 const { findIndex } = belt
@@ -21,6 +21,7 @@ function stopAllPropagations(e) {
     e.stopPropagation()
 }
 
+function noop() {}
 class SearchBox extends React.Component {
     handleClickOutside = e => {
         this.props.onRequestClose()
@@ -261,12 +262,28 @@ class SearchBox extends React.Component {
                                     onItemClick={this.handleItemClick}
                                 />
                             </div>
-                            <div style={{ height: 'auto', flexGrow: 3 }}>
-                                <Preview
-                                    loading={!this.getPreviewItem()}
+                            <div
+                                style={{
+                                    flexGrow: 3,
+                                    padding: 20,
+                                    overflowY: 'auto'
+                                }}
+                            >
+                                <Story
                                     item={this.getPreviewItem()}
-                                    composite={true}
-                                    jsxCode={this.getPreviewItemJsx()}
+                                    story={
+                                        this.getPreviewItem()
+                                            ? this.getPreviewItem().stories[0]
+                                            : { jsxCode: '' }
+                                    }
+                                    onCodeChange={noop}
+                                    onEditorFocusChange={noop}
+                                    onSavePropClick={noop}
+                                    onFormatCodeClick={noop}
+                                    onDeleteStory={noop}
+                                    onAddComponent={noop}
+                                    onStoryTitleChange={noop}
+                                    propsDirty={false}
                                 />
                             </div>
                         </div>
