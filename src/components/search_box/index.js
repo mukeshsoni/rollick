@@ -162,7 +162,7 @@ class SearchBox extends React.Component {
 
         return (
             <SearchInput
-                style={{ width: '100%' }}
+                style={{ width: '100%', flex: '0 0 auto' }}
                 ref={node => (this.searchInputRef = node)}
                 autoFocus={true}
                 onKeyDown={this.handleKeyDown}
@@ -225,7 +225,8 @@ class SearchBox extends React.Component {
                 zIndex: 25
             },
             content: {
-                padding: 0
+                padding: 0,
+                overflowY: 'hidden'
             }
         }
 
@@ -237,11 +238,23 @@ class SearchBox extends React.Component {
                 style={modalStyle}
                 contentLabel="Quick search components"
             >
-                <div style={{ width: '100%' }}>
+                <div
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}
+                >
                     {this.getInput()}
                     {this.getFilteredComponents().length > 0 && (
-                        <div style={{ display: 'flex' }}>
-                            <div style={{ flexGrow: 1 }}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flex: '1 1 auto',
+                                height: 500
+                            }}
+                        >
+                            <div style={{ overflowY: 'auto' }}>
                                 <SearchResults
                                     items={this.getFilteredComponents()}
                                     selectedItemIndex={selectedItemIndex}

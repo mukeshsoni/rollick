@@ -68,7 +68,10 @@ class CompositeComponentPreview extends React.Component {
                         'Error evaluating transpiled jsx code. Should not actually happen. ever.',
                         e
                     )
-                    if (this.lastValidRender) {
+                    if (
+                        this.lastValidRender &&
+                        this.lastValidRender.codeToRender
+                    ) {
                         return this.lastValidRender.codeToRender
                     } else {
                         return errorSection(JSX_EVAL_ERROR, e)
@@ -77,12 +80,8 @@ class CompositeComponentPreview extends React.Component {
             }
         } else {
             // Let's not support rendering when jsx itself is not provided
-            return eval(
-                jsxToJs(
-                    <div>
-                        Not yet supported. Need jsxCode to render something
-                    </div>
-                ).transpiledCode
+            return (
+                <div>Not yet supported. Need jsxCode to render something</div>
             )
             // let codeToRender = React.createElement(
             //     this.state.component,
