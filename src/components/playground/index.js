@@ -366,10 +366,6 @@ export default class Playground extends React.Component {
         const footerHeight = 20
         const editors = ['jsx', 'css', 'js']
 
-        console.log(
-            'css editor height',
-            this.cssEditorRef.containerRef.clientHeight
-        )
         if (this.paneContainerRef && this.paneContainerRef.clientHeight) {
             editors.forEach(editor => {
                 const editorRef = this[editor + 'EditorRef']
@@ -501,7 +497,7 @@ export default class Playground extends React.Component {
             componentsMetaList: [],
             editorLayout: 'left',
             loading: true,
-            showQuickSearchModal: false
+            showQuickSearchModal: true
         }
         this.jsxEditorRef = null
         this.cssEditorRef = null

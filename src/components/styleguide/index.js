@@ -5,6 +5,7 @@ import '../search_box/search_box.css'
 import './styleguide.css'
 import './loader.css'
 import { getComponent, getComponentElement } from './component_maker.js'
+import { enhanceComponent } from '../../tools/component_loaders.js'
 import faker from '../../faker.js'
 import AttributePane from './attribute_pane/index.js'
 import debounce from 'debounce'
@@ -52,15 +53,6 @@ function updatePropAtIndex(propName, index, propValue, arr) {
 }
 
 const updateJsxCodeInStory = updatePropAtIndex.bind(null, 'jsxCode')
-
-function resetSavingPropsProperty(stories) {
-    return stories.map(story => {
-        return {
-            ...story,
-            savingProps: false
-        }
-    })
-}
 
 // const ast = transpile(code).ast
 // const ast = babylon.parse(code, { plugins: ['jsx'] })
@@ -341,44 +333,8 @@ export default class Styleguide extends React.Component {
     }
 
     handleComponentItemClick = debounce(com => {
-        function populateSavedProps(componentPath) {
-            return getSavedProps(componentPath)
-        }
-
-        let newSelectedComponent = {
-            ...com
-        }
-
-        if (
-            Object.keys(populateSavedProps(com.path)) &&
-            Object.keys(populateSavedProps(com.path)).length > 0
-        ) {
-            newSelectedComponent.fakeProps = populateSavedProps(com.path)
-        } else {
-            newSelectedComponent.fakeProps = faker(com.props, {
-                optional: true
-            })
-        }
-
-        let formattedCode = formatCode(componentJsx(newSelectedComponent), {
-            line: 0,
-            ch: 0
-        }).formattedCode.slice(1)
-
-        if (getSavedStories(com.path) && getSavedStories(com.path).length > 0) {
-            newSelectedComponent.stories = resetSavingPropsProperty(
-                getSavedStories(com.path)
-            )
-        } else {
-            newSelectedComponent.stories = [
-                {
-                    jsxCode: formattedCode
-                }
-            ]
-        }
-
         this.setState({
-            selectedComponent: newSelectedComponent
+            selectedComponent: enhanceComponent(com)
             // showPropertiesPane:
             //     this.state.selectedComponent &&
             //     com.path === this.state.selectedComponent.path
@@ -486,9 +442,7 @@ export default class Styleguide extends React.Component {
                         onChange={this.handleInputChange}
                         placeholder="Search Component"
                     />
-                    <div>
-                        {this.getComponentList()}
-                    </div>
+                    <div>{this.getComponentList()}</div>
                 </div>
                 <div className="styleguide-body">
                     <StyleguidePlayground
@@ -506,11 +460,12 @@ export default class Styleguide extends React.Component {
                     />
                 </div>
                 {selectedComponent &&
-                    showPropertiesPane &&
-                    <AttributePane
-                        component={this.state.selectedComponent}
-                        onChange={this.handleAttributeValueChange}
-                    />}
+                    showPropertiesPane && (
+                        <AttributePane
+                            component={this.state.selectedComponent}
+                            onChange={this.handleAttributeValueChange}
+                        />
+                    )}
                 <input
                     type="file"
                     id="import-component-data"

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
     isFunctionProp,
     isObjectProp,
@@ -104,14 +105,15 @@ export default class AttributePane extends React.Component {
                 }
             },
             () => {
-                this.props.onChange(
-                    propName,
-                    inputValueToPropValue(
-                        this.props.component.props[propName],
-                        oldValue,
-                        newValue
+                this.props.onChange &&
+                    this.props.onChange(
+                        propName,
+                        inputValueToPropValue(
+                            this.props.component.props[propName],
+                            oldValue,
+                            newValue
+                        )
                     )
-                )
             }
         )
     }
@@ -134,9 +136,7 @@ export default class AttributePane extends React.Component {
                                 wordWrap: 'break-word'
                             }}
                         >
-                            <span style={{ flex: 1 }}>
-                                {propName}
-                            </span>
+                            <span style={{ flex: 1 }}>{propName}</span>
                         </div>
                         <div style={{ flex: 3, width: '100%' }}>
                             {getInputField(
@@ -218,10 +218,17 @@ export default class AttributePane extends React.Component {
                 >
                     {this.props.component.name + ' properties'}
                 </div>
-                <div style={{ padding: '1em' }}>
-                    {this.getAttributes()}
-                </div>
+                <div style={{ padding: '1em' }}>{this.getAttributes()}</div>
             </div>
         )
     }
+}
+
+AttributePane.propTypes = {
+    component: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        props: PropTypes.object.isRequired
+    }).isRequired,
+    onChange: PropTypes.func.isRequired
 }

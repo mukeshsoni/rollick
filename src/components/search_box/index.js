@@ -237,9 +237,6 @@ class SearchBox extends React.Component {
                 style={modalStyle}
                 contentLabel="Quick search components"
             >
-                <a className="close-button-modal" onClick={onRequestClose}>
-                    +
-                </a>
                 <div style={{ width: '100%' }}>
                     {this.getInput()}
                     {this.getFilteredComponents().length > 0 && (
