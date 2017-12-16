@@ -4,32 +4,26 @@ import PropTypes from 'prop-types'
 
 import './search_results.css'
 
-const SearchResults = ({
-    items = [],
-    selectedItemIndex = -1,
-    onItemClick,
-    onShowPreviewClick,
-    previewItemIndex = -1
-}) => {
+const SearchResults = ({ items = [], selectedItemIndex = -1, onItemClick }) => {
     if (!items || items.length === 0) {
         return null
     }
 
     return (
         <div className="search-list-container">
-            {items.map((item, index) =>
+            {items.map((item, index) => (
                 <SearchItem
                     key={'search_item_' + index}
                     item={item}
                     selected={selectedItemIndex === index}
                     onClick={e =>
-                        typeof onItemClick === 'function' && onItemClick(item)}
+                        typeof onItemClick === 'function' && onItemClick(item)
+                    }
                     onShowPreviewClick={() =>
-                        onShowPreviewClick && onShowPreviewClick(item)}
-                    withPreview={previewItemIndex === index}
-                    className={previewItemIndex === index ? 'with-preview' : ''}
+                        onShowPreviewClick && onShowPreviewClick(item)
+                    }
                 />
-            )}
+            ))}
         </div>
     )
 }
@@ -41,7 +35,6 @@ SearchResults.propTypes = {
         })
     ).isRequired,
     selectedItemIndex: PropTypes.number,
-    previewItemIndex: PropTypes.number,
     onItemClick: PropTypes.func.isRequired
 }
 

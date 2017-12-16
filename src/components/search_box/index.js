@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SearchResults from './search_results'
 import SearchInput from './search_input'
+import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import Preview from '../previews/index.js'
 import classnames from 'classnames'
 import onClickOutside from 'react-onclickoutside'
@@ -9,6 +10,7 @@ import deboune from 'debounce'
 import key from 'keymaster'
 import looseFilter from '../../tools/loose_filter.js'
 import './search_box.css'
+import { enhanceComponent } from '../../tools/component_loaders.js'
 
 import belt from '../../../belt.js'
 const { findIndex } = belt
@@ -29,27 +31,19 @@ class SearchBox extends React.Component {
     }
 
     handleItemClick = item => {
-        this.props.onSelection(item)
+        this.setState({
+            selectedItemIndex: findIndex(
+                this.getFilteredComponents(),
+                i => i.path === item.path
+            )
+        })
+        // this.props.onSelection(item)
     }
 
     handleEscKey = e => {
         stopAllPropagations(e)
         this.setState({ searchText: '', selectedItemIndex: -1 })
         this.props.onRequestClose()
-    }
-
-    handleRightKey = e => {
-        if (this.state.selectedItemIndex >= 0) {
-            this.showPreview(
-                this.getFilteredComponents()[this.state.selectedItemIndex]
-            )
-        }
-    }
-
-    handleLeftKey = e => {
-        if (this.state.selectedItemIndex >= 0 && this.state.previewItem) {
-            this.hidePreview()
-        }
     }
 
     handleDownKey = e => {
@@ -75,10 +69,10 @@ class SearchBox extends React.Component {
     handleEnterKey = e => {
         if (this.state.selectedItemIndex >= 0) {
             stopAllPropagations(e)
-            this.setState({ searchText: '', selectedItemIndex: 0 })
-            this.props.onSelection(
-                this.getFilteredComponents()[this.state.selectedItemIndex]
-            )
+            // this.setState({ searchText: '', selectedItemIndex: 0 })
+            // this.props.onSelection(
+            //     this.getFilteredComponents()[this.state.selectedItemIndex]
+            // )
         }
     }
 
@@ -121,8 +115,8 @@ class SearchBox extends React.Component {
         }
     }
 
-    showPreview = item => {
-        this.setState({ previewItem: item })
+    showPreview = com => {
+        this.setState({ previewItem: enhanceComponent(com) })
     }
 
     hidePreview = () => {
@@ -168,7 +162,7 @@ class SearchBox extends React.Component {
 
         return (
             <SearchInput
-                style={{ width: 300 }}
+                style={{ width: '100%' }}
                 ref={node => (this.searchInputRef = node)}
                 autoFocus={true}
                 onKeyDown={this.handleKeyDown}
@@ -192,10 +186,26 @@ class SearchBox extends React.Component {
         this.searchInputRef = null
     }
 
+    getPreviewItem = () => {
+        if (this.state.selectedItemIndex >= 0) {
+            return enhanceComponent(
+                this.getFilteredComponents()[this.state.selectedItemIndex]
+            )
+        } else {
+            return null
+        }
+    }
+
+    getPreviewItemJsx = () => {
+        if (this.getPreviewItem()) {
+            return this.getPreviewItem().stories[0].jsxCode
+        } else {
+            return ''
+        }
+    }
+
     componentDidMount() {
         key('esc', this.handleEscKey)
-        key('right', this.handleRightKey)
-        key('left', this.handleLeftKey)
         key('down', this.handleDownKey)
         key('up', this.handleUpKey)
         key('enter', this.handleEnterKey)
@@ -205,38 +215,54 @@ class SearchBox extends React.Component {
         const { onRequestClose, isOpen } = this.props
         const { selectedItemIndex, previewItem } = this.state
 
-        const searchBoxWidth = 300
+        const modalStyle = {
+            overlay: {
+                left: '25%',
+                right: '25%',
+                top: '25%',
+                bottom: '25%',
+                background: 'rgba(255, 255, 255, 0.9)',
+                zIndex: 25
+            },
+            content: {
+                padding: 0
+            }
+        }
 
         return (
-            <div style={{ width: '100%' }}>
-                {this.getInput()}
-                {this.getFilteredComponents().length > 0 && (
-                    <div style={{ display: 'flex', width: searchBoxWidth * 2 }}>
-                        <div style={{ width: searchBoxWidth, zIndex: 1000 }}>
-                            <SearchResults
-                                items={this.getFilteredComponents()}
-                                selectedItemIndex={selectedItemIndex}
-                                previewItemIndex={this.getPreviewComponentIndex()}
-                                onItemClick={this.handleItemClick}
-                                onShowPreviewClick={this.handleShowPreviewClick}
-                            />
-                        </div>
-                        <div style={{ width: searchBoxWidth, height: 500 }}>
-                            {previewItem && (
-                                <Preview
-                                    item={previewItem}
-                                    style={{
-                                        background: 'cadetblue',
-                                        height: '100%',
-                                        marginLeft: 10,
-                                        padding: '1em'
-                                    }}
+            <Modal
+                isOpen={true}
+                onRequestClose={onRequestClose}
+                closeTimeoutMS={200}
+                style={modalStyle}
+                contentLabel="Quick search components"
+            >
+                <a className="close-button-modal" onClick={onRequestClose}>
+                    +
+                </a>
+                <div style={{ width: '100%' }}>
+                    {this.getInput()}
+                    {this.getFilteredComponents().length > 0 && (
+                        <div style={{ display: 'flex' }}>
+                            <div style={{ flexGrow: 1 }}>
+                                <SearchResults
+                                    items={this.getFilteredComponents()}
+                                    selectedItemIndex={selectedItemIndex}
+                                    onItemClick={this.handleItemClick}
                                 />
-                            )}
+                            </div>
+                            <div style={{ height: 'auto', flexGrow: 3 }}>
+                                <Preview
+                                    loading={!this.getPreviewItem()}
+                                    item={this.getPreviewItem()}
+                                    composite={true}
+                                    jsxCode={this.getPreviewItemJsx()}
+                                />
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            </Modal>
         )
     }
 }

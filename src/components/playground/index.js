@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import SearchBox from '../search_box/index.js'
 import Button from '../buttons/button'
 import debounce from 'debounce'
 import SplitPane from 'react-split-pane'
@@ -347,6 +348,19 @@ export default class Playground extends React.Component {
         this._updateJs(newCode)
     }, 300)
 
+    hideSearchModal = () => {
+        return this.setState({ showQuickSearchModal: false }, () => {
+            if (
+                this.state.editorInFocus &&
+                this.state.editorInFocus.length > 0
+            ) {
+                this[this.state.editorInFocus + 'EditorRef'].codeMirrorRef
+                    .getCodeMirror()
+                    .focus()
+            }
+        })
+    }
+
     adjustEditorSizes = () => {
         const headerHeight = 31
         const footerHeight = 20
@@ -422,8 +436,9 @@ export default class Playground extends React.Component {
                 // command + i
                 if (e.metaKey) {
                     e.preventDefault()
-                    this.props.showStyleguide()
+                    // this.props.showStyleguide()
                     return this.setState({
+                        showQuickSearchModal: true,
                         editorInFocus: getEditorInFocus(
                             this.jsxEditorRef.codeMirrorRef.getCodeMirror(),
                             this.cssEditorRef.codeMirrorRef.getCodeMirror(),
@@ -485,7 +500,8 @@ export default class Playground extends React.Component {
             },
             componentsMetaList: [],
             editorLayout: 'left',
-            loading: true
+            loading: true,
+            showQuickSearchModal: false
         }
         this.jsxEditorRef = null
         this.cssEditorRef = null
@@ -542,7 +558,8 @@ export default class Playground extends React.Component {
             editorLayout,
             loading,
             penId,
-            penName
+            penName,
+            showQuickSearchModal
         } = this.state
 
         const modalStyle = {
@@ -592,6 +609,13 @@ export default class Playground extends React.Component {
                             zIndex: 23
                         }}
                     >
+                        {showQuickSearchModal && (
+                            <SearchBox
+                                items={componentsMetaList}
+                                onSelection={this.handleSearchSelection}
+                                onRequestClose={this.hideSearchModal}
+                            />
+                        )}
                         <Button
                             onClick={this.props.fromStyleguideClick}
                             label="Styleguide"

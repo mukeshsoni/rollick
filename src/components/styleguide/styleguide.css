@@ -21,11 +21,11 @@
     overflow-y: auto;
 }
 
-.styleguide-list > div, input {
+.styleguide-list > div + input {
     margin-bottom: 1em;
 }
 
-.styleguide-list > div:last-child(){
+.styleguide-list > div:last-child() {
     margin-bottom: 0;
 }
 
@@ -36,7 +36,7 @@
 
 .styleguide-list-item.selected {
     background-color: #24b987;
-    color: #FFF;
+    color: #fff;
 }
 
 .styleguide-list-item:hover {

@@ -76,17 +76,25 @@ class CompositeComponentPreview extends React.Component {
                 }
             }
         } else {
-            let codeToRender = React.createElement(
-                this.state.component,
-                item.fakeProps ? item.fakeProps : fakeProps
+            // Let's not support rendering when jsx itself is not provided
+            return eval(
+                jsxToJs(
+                    <div>
+                        Not yet supported. Need jsxCode to render something
+                    </div>
+                ).transpiledCode
             )
+            // let codeToRender = React.createElement(
+            //     this.state.component,
+            //     item.fakeProps ? item.fakeProps : fakeProps
+            // )
 
-            this.lastValidRender = {
-                jsxCode,
-                codeToRender
-            }
+            // this.lastValidRender = {
+            //     jsxCode,
+            //     codeToRender
+            // }
 
-            return codeToRender
+            // return codeToRender
         }
     }
     constructor(props) {
@@ -119,6 +127,7 @@ class CompositeComponentPreview extends React.Component {
         // This is the crazy part. We insert methods which the user has defined in the JS editor section
         // something like `this.handleThisButtonClick = () => this.setState({...})`
         if (nextProps.jsxCode !== this.props.jsxCode) {
+            console.log('jsx changed', nextProps.jsxCode)
             this.getComponents(nextProps)
             try {
                 myEval(this, nextProps.jsToInsert)
