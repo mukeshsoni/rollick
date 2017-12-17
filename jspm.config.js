@@ -395,6 +395,7 @@ SystemJS.config({
         'react-modal': 'npm:react-modal@2.3.2',
         'react-onclickoutside': 'npm:react-onclickoutside@6.5.0',
         'react-split-pane': 'npm:react-split-pane@0.1.71',
+        'react-try-catch-render': 'npm:react-try-catch-render@1.0.0',
         'request': 'npm:request@2.81.0',
         'sass.js': 'npm:sass.js@0.10.6',
         'source-map': 'npm:source-map@0.5.7',

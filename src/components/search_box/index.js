@@ -211,6 +211,21 @@ class SearchBox extends React.Component {
         key('down', this.handleDownKey)
         key('up', this.handleUpKey)
         key('enter', this.handleEnterKey)
+
+        // this.adjustContentContainerHeight()
+    }
+
+    adjustContentContainerHeight = () => {
+        setTimeout(() => {
+            if (this.contentContainerRef) {
+                this.contentContainerRef.style.height =
+                    this.contentContainerRef.parentElement.offsetHeight -
+                    this.contentContainerRef.parentElement.children[0]
+                        .offsetHeight
+            } else {
+                this.adjustContentContainerHeight()
+            }
+        }, 20)
     }
 
     render() {
@@ -250,10 +265,12 @@ class SearchBox extends React.Component {
                     {this.getInput()}
                     {this.getFilteredComponents().length > 0 && (
                         <div
+                            ref={node => (this.contentContainerRef = node)}
                             style={{
                                 display: 'flex',
                                 flex: '1 1 auto',
-                                height: 500
+                                // this is not correct. This will keep changing based on the display and browser size
+                                height: 480
                             }}
                         >
                             <div style={{ overflowY: 'auto' }}>

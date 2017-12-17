@@ -56,6 +56,10 @@ function resetSavingPropsProperty(stories) {
  * @param {Object} com - the component object as created by react docgen
  */
 export function enhanceComponent(com) {
+    if (!com) {
+        return {}
+    }
+
     let enhancedComponent = {
         ...com
     }

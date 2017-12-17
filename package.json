@@ -52,6 +52,7 @@
             "react-modal": "npm:react-modal@^2.3.2",
             "react-onclickoutside": "npm:react-onclickoutside@^6.5.0",
             "react-split-pane": "npm:react-split-pane@0.1.71",
+            "react-try-catch-render": "npm:react-try-catch-render@^1.0.0",
             "sass.js": "npm:sass.js@^0.10.6",
             "systemjs/plugin-json": "github:systemjs/plugin-json@^0.3.0"
         },

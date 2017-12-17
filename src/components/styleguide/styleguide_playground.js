@@ -49,23 +49,34 @@ class StyleguidePlayground extends React.PureComponent {
             onStoryTitleChange
         } = this.props
 
-        return item.stories.map((story, index) => {
-            return (
-                <Story
-                    key={'story_number_' + index}
-                    item={item}
-                    story={story}
-                    onCodeChange={onCodeChange.bind(null, index)}
-                    onEditorFocusChange={onEditorFocusChange}
-                    onSavePropClick={onSavePropClick.bind(null, index)}
-                    onFormatCodeClick={onFormatCodeClick.bind(null, index)}
-                    onDeleteStory={onDeleteStory.bind(null, index)}
-                    onAddComponent={onAddComponent.bind(null, index)}
-                    onStoryTitleChange={onStoryTitleChange.bind(null, index)}
-                    propsDirty={arePropsDirtyForStory(item.path, story, index)}
-                />
-            )
-        })
+        if (Array.isArray(item.stories)) {
+            return item.stories.map((story, index) => {
+                return (
+                    <Story
+                        key={'story_number_' + index}
+                        item={item}
+                        story={story}
+                        onCodeChange={onCodeChange.bind(null, index)}
+                        onEditorFocusChange={onEditorFocusChange}
+                        onSavePropClick={onSavePropClick.bind(null, index)}
+                        onFormatCodeClick={onFormatCodeClick.bind(null, index)}
+                        onDeleteStory={onDeleteStory.bind(null, index)}
+                        onAddComponent={onAddComponent.bind(null, index)}
+                        onStoryTitleChange={onStoryTitleChange.bind(
+                            null,
+                            index
+                        )}
+                        propsDirty={arePropsDirtyForStory(
+                            item.path,
+                            story,
+                            index
+                        )}
+                    />
+                )
+            })
+        } else {
+            return []
+        }
     }
 
     render() {

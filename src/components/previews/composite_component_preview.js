@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import wrapWithTryCatch from 'react-try-catch-render'
 import { loadComponentsInJsx } from '../../tools/component_loaders.js'
 import { jsxToJs } from '../../tools/transpile_helpers.js'
 window.React = React
@@ -107,6 +108,7 @@ class CompositeComponentPreview extends React.Component {
         loadComponentsInJsx(props.jsxCode)
             .then(components => {
                 this.setState({
+                    errorLoadingComponents: null,
                     loading: false
                 })
             })
@@ -139,6 +141,12 @@ class CompositeComponentPreview extends React.Component {
     render() {
         if (this.props.loading) {
             return <div className="loader" />
+        } else if (this.state.errorLoadingComponents) {
+            return (
+                <MyErrorHandler
+                    error={this.state.errorLoadingComponents.stack.toString()}
+                />
+            )
         }
 
         return (
@@ -161,4 +169,14 @@ CompositeComponentPreview.defaultProps = {
     containerClasses: ''
 }
 
-export default CompositeComponentPreview
+class MyErrorHandler extends React.PureComponent {
+    render() {
+        return <div className="terrible-error">{this.props.error}</div>
+    }
+}
+
+export default wrapWithTryCatch(React, MyErrorHandler, {
+    error: 'Some custom error message!'
+})(CompositeComponentPreview)
+
+// export default CompositeComponentPreview
