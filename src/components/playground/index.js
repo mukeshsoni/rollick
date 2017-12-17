@@ -498,7 +498,7 @@ export default class Playground extends React.Component {
             componentsMetaList: [],
             editorLayout: 'left',
             loading: true,
-            showQuickSearchModal: true
+            showQuickSearchModal: false
         }
         this.jsxEditorRef = null
         this.cssEditorRef = null

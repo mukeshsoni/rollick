@@ -18,7 +18,8 @@ class Story extends React.PureComponent {
             onFormatCodeClick,
             onDeleteStory,
             onAddComponent,
-            onStoryTitleChange
+            onStoryTitleChange,
+            rendering
         } = this.props
 
         let jsUrlsToInsert = [
@@ -50,11 +51,13 @@ class Story extends React.PureComponent {
                         onClick={onAddComponent}
                         style={{ marginLeft: '1em' }}
                     />
-                    <Button
-                        label="Delete story"
-                        size="small"
-                        onClick={onDeleteStory}
-                    />
+                    {rendering === 'heavy' && (
+                        <Button
+                            label="Delete story"
+                            size="small"
+                            onClick={onDeleteStory}
+                        />
+                    )}
                 </div>
                 <div style={{ height: 'auto' }}>
                     <Preview
@@ -63,18 +66,20 @@ class Story extends React.PureComponent {
                         jsxCode={story.jsxCode}
                     />
                 </div>
-                <div style={{ marginBottom: 32 }}>
-                    <PreviewCodeSection
-                        item={item}
-                        jsxCode={story.jsxCode}
-                        onCodeChange={onCodeChange}
-                        onEditorFocusChange={onEditorFocusChange}
-                        onSavePropClick={onSavePropClick}
-                        onFormatCodeClick={onFormatCodeClick}
-                        propsDirty={propsDirty}
-                        savingProps={story.savingProps}
-                    />
-                </div>
+                {rendering === 'heavy' && (
+                    <div style={{ marginBottom: 32 }}>
+                        <PreviewCodeSection
+                            item={item}
+                            jsxCode={story.jsxCode}
+                            onCodeChange={onCodeChange}
+                            onEditorFocusChange={onEditorFocusChange}
+                            onSavePropClick={onSavePropClick}
+                            onFormatCodeClick={onFormatCodeClick}
+                            propsDirty={propsDirty}
+                            savingProps={story.savingProps}
+                        />
+                    </div>
+                )}
             </div>
         )
         //     <SingleComponentPreview
@@ -101,6 +106,7 @@ Story.propTypes = {
     story: PropTypes.shape({
         jsxCode: PropTypes.string
     }).isRequired,
+    rendering: PropTypes.oneOf(['light', 'heavy']).isRequired,
     onCodeChange: PropTypes.func.isRequired,
     onSavePropClick: PropTypes.func.isRequired,
     onEditorFocusChange: PropTypes.func.isRequired,
@@ -109,6 +115,10 @@ Story.propTypes = {
     onDeleteStory: PropTypes.func.isRequired,
     onAddComponent: PropTypes.func.isRequired,
     onStoryTitleChange: PropTypes.func.isRequired
+}
+
+Story.defaultProps = {
+    rendering: 'heavy'
 }
 
 export default Story

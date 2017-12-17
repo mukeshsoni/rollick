@@ -285,6 +285,7 @@ class SearchBox extends React.Component {
                                 }}
                             >
                                 <Story
+                                    rendering="light"
                                     item={this.getPreviewItem()}
                                     story={
                                         this.getPreviewItem()
