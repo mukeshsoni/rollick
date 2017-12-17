@@ -4,7 +4,6 @@ import SearchResults from './search_results'
 import SearchInput from './search_input'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import classnames from 'classnames'
-import onClickOutside from 'react-onclickoutside'
 import deboune from 'debounce'
 import key from 'keymaster'
 import looseFilter from '../../tools/loose_filter.js'
@@ -23,10 +22,6 @@ function stopAllPropagations(e) {
 
 function noop() {}
 class SearchBox extends React.Component {
-    handleClickOutside = e => {
-        this.props.onRequestClose()
-    }
-
     handleInputChange = e => {
         this.setState({ searchText: e.target.value })
     }
@@ -43,7 +38,6 @@ class SearchBox extends React.Component {
 
     handleEscKey = e => {
         stopAllPropagations(e)
-        this.setState({ searchText: '', selectedItemIndex: -1 })
         this.props.onRequestClose()
     }
 
@@ -89,6 +83,8 @@ class SearchBox extends React.Component {
     handleKeyDown = e => {
         const keyCode = e.keyCode || e.which
         switch (keyCode) {
+            case 27:
+                return this.handleEscKey()
             case 13: // enter key
                 this.handleEnterKey(e)
                 break
@@ -234,15 +230,15 @@ class SearchBox extends React.Component {
 
         const modalStyle = {
             overlay: {
-                left: '25%',
-                right: '25%',
-                top: '25%',
-                bottom: '25%',
                 background: 'rgba(255, 255, 255, 0.9)',
                 zIndex: 25
             },
             content: {
                 padding: 0,
+                left: '25%',
+                right: '25%',
+                top: '25%',
+                bottom: '32%',
                 overflowY: 'hidden'
             }
         }
@@ -256,6 +252,7 @@ class SearchBox extends React.Component {
                 contentLabel="Quick search components"
             >
                 <div
+                    onKeyDown={this.handleContainerKeyDown}
                     style={{
                         width: '100%',
                         display: 'flex',
@@ -323,4 +320,4 @@ SearchBox.propTypes = {
     onRequestClose: PropTypes.func.isRequired
 }
 
-export default onClickOutside(SearchBox)
+export default SearchBox
