@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import SingleComponentPreviewNew from './single_component_preview.js'
 import CompositeComponentPreviewNew from './composite_component_preview.js'
 import 'src/components/styleguide/loader.css!css'
 
