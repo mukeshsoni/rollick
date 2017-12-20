@@ -9,6 +9,9 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Open
 - [X] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
 there should be an option to import that child component. Mostly needed when the selected component takes children components.
+- [ ] Ability to add any custom react component from npm to the scope. This can be easily achived, as our node server can install the component, given the component name, 
+and then we can load the component in 'composite_component_preview' component using systemjs. Boom, it should be availabe for the users to use.
+- [ ] Need a good story for rollick by showcasing it on some popular react UI library. Let's try running it with material-ui react library.
 - [ ] Bring back the quick search component. But the design will be like the sketch plugin Joe showed to find symbols in sketch.
 It's a modal with search input, list on left side and a preview pane for the component on right.
 - [ ] Ability to import stuff from sketch to styleguide. Can try using html-sketchapp for this.
