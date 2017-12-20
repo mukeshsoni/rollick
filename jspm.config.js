@@ -395,6 +395,7 @@ SystemJS.config({
         'react-modal': 'npm:react-modal@2.3.2',
         'react-onclickoutside': 'npm:react-onclickoutside@6.5.0',
         'react-split-pane': 'npm:react-split-pane@0.1.71',
+        'react-transition-group': 'npm:react-transition-group@2.2.1',
         'react-try-catch-render': 'npm:react-try-catch-render@1.0.0',
         'request': 'npm:request@2.81.0',
         'sass.js': 'npm:sass.js@0.10.6',
@@ -1729,6 +1730,21 @@ SystemJS.config({
         'npm:css-in-js-utils@2.0.0': {
             'map': {
                 'hyphenate-style-name': 'npm:hyphenate-style-name@1.0.2'
+            }
+        },
+        'npm:react-transition-group@2.2.1': {
+            'map': {
+                'prop-types': 'npm:prop-types@15.6.0',
+                'loose-envify': 'npm:loose-envify@1.3.1',
+                'classnames': 'npm:classnames@2.2.5',
+                'dom-helpers': 'npm:dom-helpers@3.2.1',
+                'chain-function': 'npm:chain-function@1.0.0',
+                'warning': 'npm:warning@3.0.0'
+            }
+        },
+        'npm:warning@3.0.0': {
+            'map': {
+                'loose-envify': 'npm:loose-envify@1.3.1'
             }
         }
     }

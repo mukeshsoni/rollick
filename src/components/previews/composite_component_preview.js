@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import wrapWithTryCatch from 'react-try-catch-render'
 import { loadComponentsInJsx } from '../../tools/component_loaders.js'
 import { jsxToJs } from '../../tools/transpile_helpers.js'
+import Transition from 'react-transition-group/Transition'
+import TransitionGroup from 'react-transition-group/TransitionGroup'
+import CSSTransition from 'react-transition-group/CSSTransition'
 window.React = React
 
 const JSX_PARSE_ERROR = 'JSX_PARSE_ERROR'
@@ -129,8 +132,12 @@ class CompositeComponentPreview extends React.Component {
         // something like `this.handleThisButtonClick = () => this.setState({...})`
         if (nextProps.jsxCode !== this.props.jsxCode) {
             this.getComponents(nextProps)
+        }
+
+        if (nextProps.jsToInsert !== this.props.jsToInsert) {
             try {
                 myEval(this, nextProps.jsToInsert)
+                this.forceUpdate()
             } catch (e) {
                 console.error('error loading jsx', e)
             }

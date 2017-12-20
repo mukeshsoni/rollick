@@ -725,6 +725,7 @@ export default class Playground extends React.Component {
                         pane1Style={{ height: '100%' }}
                         pane2Style={{ background: 'white' }}
                         onChange={this.adjustEditorHeightsOnSplitPaneAdjustment}
+                        defaultSize="33%"
                     >
                         <SplitPane
                             split={

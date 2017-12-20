@@ -15,8 +15,9 @@ class NewIframeWrapper extends React.Component {
                         this.props.cssToInsertInIframe.join('\n')}
                     {this.props.cssToInsert || ''}
                     {'* {margin: 0;}'}
+                    {'.CodeMirror {font-size: 24px}'}
                     {
-                        '.CodeMirror-code: {font-family: Fira Code Light; line-height: 1.2}'
+                        '.CodeMirror-code {font-family: Fira Code Light; line-height: 1.2; font-size: 20px}'
                     }
                     {
                         '.cm-s-base16-light span.cm-property, .cm-s-base16-light span.cm-attribute { font-family: Consolas, "Liberation Mono", Menlo, monospace; line-height: 1.5}'

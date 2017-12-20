@@ -10,6 +10,7 @@ import codeMirrorInstance from 'jspm_packages/npm/codemirror@5.31.0/lib/codemirr
 emmetCodemirror(codeMirrorInstance)
 import EditorHeader from './header.js'
 import EditorFooter from './footer.js'
+import './editor.css'
 
 export default class Editor extends React.Component {
     containerRef = null
