@@ -55,6 +55,9 @@
             "react-transition-group": "npm:react-transition-group@^2.2.1",
             "react-try-catch-render": "npm:react-try-catch-render@^1.0.0",
             "sass.js": "npm:sass.js@^0.10.6",
+            "socket-io": "npm:socket-io@^1.0.0",
+            "socket.io": "npm:socket.io@^2.0.4",
+            "socket.io-client": "npm:socket.io-client@^2.0.4",
             "systemjs/plugin-json": "github:systemjs/plugin-json@^0.3.0"
         },
         "repository": {
@@ -115,6 +118,7 @@
             "uglify-js": "npm:uglify-js@~2.3",
             "url": "npm:jspm-nodelibs-url@^0.2.0",
             "util": "npm:jspm-nodelibs-util@^0.2.0",
+            "uws": "npm:uws@~0.14.4",
             "vm": "npm:jspm-nodelibs-vm@^0.2.0",
             "zlib": "npm:jspm-nodelibs-zlib@^0.2.0"
         },
@@ -193,7 +197,8 @@
         "react-modal": "^2.2.4",
         "react-textarea-autosize": "^5.1.0",
         "resolve-file": "0.3.0",
-        "serialize-javascript": "^1.4.0"
+        "serialize-javascript": "^1.4.0",
+        "socket.io": "2.0.4"
     },
     "devDependencies": {}
 }

@@ -394,11 +394,15 @@ SystemJS.config({
         'react-frame-component': 'npm:react-frame-component@1.1.1',
         'react-modal': 'npm:react-modal@2.3.2',
         'react-onclickoutside': 'npm:react-onclickoutside@6.5.0',
+        'react-photo-grid': 'npm:react-photo-grid@1.1.4',
         'react-split-pane': 'npm:react-split-pane@0.1.71',
         'react-transition-group': 'npm:react-transition-group@2.2.1',
         'react-try-catch-render': 'npm:react-try-catch-render@1.0.0',
         'request': 'npm:request@2.81.0',
         'sass.js': 'npm:sass.js@0.10.6',
+        'socket-io': 'npm:socket-io@1.0.0',
+        'socket.io': 'npm:socket.io@2.0.4',
+        'socket.io-client': 'npm:socket.io-client@2.0.4/dist/socket.io.js',
         'source-map': 'npm:source-map@0.5.7',
         'stream': 'npm:jspm-nodelibs-stream@0.2.1',
         'string_decoder': 'npm:jspm-nodelibs-string_decoder@0.2.2',
@@ -411,6 +415,7 @@ SystemJS.config({
         'uglify-js': 'npm:uglify-js@2.3.6',
         'url': 'npm:jspm-nodelibs-url@0.2.1',
         'util': 'npm:jspm-nodelibs-util@0.2.2',
+        'uws': 'npm:uws@0.14.5',
         'vm': 'npm:jspm-nodelibs-vm@0.2.1',
         'zlib': 'npm:jspm-nodelibs-zlib@0.2.3'
     },
@@ -886,7 +891,7 @@ SystemJS.config({
                 'stringstream': 'npm:stringstream@0.0.5',
                 'isstream': 'npm:isstream@0.1.2',
                 'tough-cookie': 'npm:tough-cookie@2.3.2',
-                'mime-types': 'npm:mime-types@2.1.16',
+                'mime-types': 'npm:mime-types@2.1.17',
                 'hawk': 'npm:hawk@3.1.3',
                 'http-signature': 'npm:http-signature@1.1.1',
                 'uuid': 'npm:uuid@3.1.0',
@@ -911,11 +916,6 @@ SystemJS.config({
                 'punycode': 'npm:punycode@1.4.1'
             }
         },
-        'npm:mime-types@2.1.16': {
-            'map': {
-                'mime-db': 'npm:mime-db@1.29.0'
-            }
-        },
         'npm:hawk@3.1.3': {
             'map': {
                 'boom': 'npm:boom@2.10.1',
@@ -927,7 +927,7 @@ SystemJS.config({
         'npm:form-data@2.1.4': {
             'map': {
                 'combined-stream': 'npm:combined-stream@1.0.5',
-                'mime-types': 'npm:mime-types@2.1.16',
+                'mime-types': 'npm:mime-types@2.1.17',
                 'asynckit': 'npm:asynckit@0.4.0'
             }
         },
@@ -1745,6 +1745,121 @@ SystemJS.config({
         'npm:warning@3.0.0': {
             'map': {
                 'loose-envify': 'npm:loose-envify@1.3.1'
+            }
+        },
+        'npm:socket.io@2.0.4': {
+            'map': {
+                'socket.io-adapter': 'npm:socket.io-adapter@1.1.1',
+                'socket.io-parser': 'npm:socket.io-parser@3.1.2',
+                'socket.io-client': 'npm:socket.io-client@2.0.4',
+                'engine.io': 'npm:engine.io@3.1.4',
+                'debug': 'npm:debug@2.6.9'
+            }
+        },
+        'npm:socket.io-client@2.0.4': {
+            'map': {
+                'socket.io-parser': 'npm:socket.io-parser@3.1.2',
+                'debug': 'npm:debug@2.6.9',
+                'component-emitter': 'npm:component-emitter@1.2.1',
+                'parseuri': 'npm:parseuri@0.0.5',
+                'to-array': 'npm:to-array@0.1.4',
+                'base64-arraybuffer': 'npm:base64-arraybuffer@0.1.5',
+                'has-cors': 'npm:has-cors@1.1.0',
+                'object-component': 'npm:object-component@0.0.3',
+                'parseqs': 'npm:parseqs@0.0.5',
+                'indexof': 'npm:indexof@0.0.1',
+                'component-bind': 'npm:component-bind@1.0.0',
+                'backo2': 'npm:backo2@1.0.2',
+                'engine.io-client': 'npm:engine.io-client@3.1.4'
+            }
+        },
+        'npm:socket.io-parser@3.1.2': {
+            'map': {
+                'debug': 'npm:debug@2.6.9',
+                'isarray': 'npm:isarray@2.0.1',
+                'component-emitter': 'npm:component-emitter@1.2.1',
+                'has-binary2': 'npm:has-binary2@1.0.2'
+            }
+        },
+        'npm:engine.io@3.1.4': {
+            'map': {
+                'debug': 'npm:debug@2.6.9',
+                'base64id': 'npm:base64id@1.0.0',
+                'cookie': 'npm:cookie@0.3.1',
+                'engine.io-parser': 'npm:engine.io-parser@2.1.1',
+                'accepts': 'npm:accepts@1.3.3',
+                'ws': 'npm:ws@3.3.3'
+            }
+        },
+        'npm:engine.io-parser@2.1.1': {
+            'map': {
+                'base64-arraybuffer': 'npm:base64-arraybuffer@0.1.5',
+                'has-binary2': 'npm:has-binary2@1.0.2',
+                'arraybuffer.slice': 'npm:arraybuffer.slice@0.0.6',
+                'blob': 'npm:blob@0.0.4',
+                'after': 'npm:after@0.8.2'
+            }
+        },
+        'npm:engine.io-client@3.1.4': {
+            'map': {
+                'debug': 'npm:debug@2.6.9',
+                'component-emitter': 'npm:component-emitter@1.2.1',
+                'engine.io-parser': 'npm:engine.io-parser@2.1.1',
+                'has-cors': 'npm:has-cors@1.1.0',
+                'indexof': 'npm:indexof@0.0.1',
+                'parseqs': 'npm:parseqs@0.0.5',
+                'parseuri': 'npm:parseuri@0.0.5',
+                'ws': 'npm:ws@3.3.3',
+                'component-inherit': 'npm:component-inherit@0.0.3',
+                'yeast': 'npm:yeast@0.1.2',
+                'xmlhttprequest-ssl': 'npm:xmlhttprequest-ssl@1.5.4',
+                'node-ws': 'npm:ws@3.3.3',
+                'node-xmlhttprequest-ssl': 'npm:xmlhttprequest-ssl@1.5.4'
+            }
+        },
+        'npm:has-binary2@1.0.2': {
+            'map': {
+                'isarray': 'npm:isarray@2.0.1'
+            }
+        },
+        'npm:parseuri@0.0.5': {
+            'map': {
+                'better-assert': 'npm:better-assert@1.0.2'
+            }
+        },
+        'npm:parseqs@0.0.5': {
+            'map': {
+                'better-assert': 'npm:better-assert@1.0.2'
+            }
+        },
+        'npm:accepts@1.3.3': {
+            'map': {
+                'mime-types': 'npm:mime-types@2.1.17',
+                'negotiator': 'npm:negotiator@0.6.1'
+            }
+        },
+        'npm:better-assert@1.0.2': {
+            'map': {
+                'callsite': 'npm:callsite@1.0.0'
+            }
+        },
+        'npm:ws@3.3.3': {
+            'map': {
+                'safe-buffer': 'npm:safe-buffer@5.1.1',
+                'async-limiter': 'npm:async-limiter@1.0.0',
+                'ultron': 'npm:ultron@1.1.1'
+            }
+        },
+        'npm:mime-types@2.1.17': {
+            'map': {
+                'mime-db': 'npm:mime-db@1.30.0'
+            }
+        },
+        'npm:react-photo-grid@1.1.4': {
+            'map': {
+                'react-dom': 'npm:react-dom@15.6.2',
+                'react': 'npm:react@15.6.2',
+                'lodash': 'npm:lodash@3.10.1'
             }
         }
     }

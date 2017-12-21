@@ -1,6 +1,8 @@
 import React from 'react'
 import Button from './components/buttons/button'
 import Playground from './components/playground/index.js'
+import openSocket from 'socket.io-client'
+const socket = openSocket('http://localhost:8008')
 
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import Styleguide from './components/styleguide/index.js'
@@ -44,11 +46,34 @@ export default class App extends React.Component {
         }
     }
 
+    handleInstallClick = () => {
+        const packageName = window.prompt('Enter package name')
+        fetch('/install', { method: 'POST', body: JSON.stringify({ registry: 'npm', packageName }) }).then(response => {
+            console.log('Got response from server')
+        }).catch(e => console.error('POST request for install failed', e.toString()))
+    }
+
+    subscribeToInstallEvents = () => {
+        socket.emit('subscribeToInstalls', 1000)
+        socket.on('timer', timestamp => {
+            console.log('received timer event from socket io server', timestamp)
+        })
+        socket.on('installation', (message) => {
+            console.log('Got installation message')
+            if (message.error) {
+                console.log('Error installing package', message.packageName, message.error)
+            } else {
+                console.log('Hurrah! Package ', message.packageName, ' installed!!')
+            }
+        })
+    }
+
     constructor(props) {
         super(props)
         this.state = {
             showStyleguide: false
         }
+        this.subscribeToInstallEvents()
     }
 
     componentDidMount() {
@@ -94,6 +119,7 @@ export default class App extends React.Component {
                 <Playground
                     ref={node => (this.playgroundRef = node)}
                     fromStyleguideClick={this.handleShowStyleguideClick}
+                    onInstallClick={this.handleInstallClick}
                     showStyleguide={this.handleShowStyleguideClick}
                     hidePreview={this.state.showStyleguide}
                 />

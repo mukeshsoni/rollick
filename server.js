@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 var babel = require('babel-core')
+var io = require('socket.io')()
+var jspm = require('jspm')
 var fs = require('fs')
 var http = require('http')
 var path = require('path')
@@ -161,7 +163,34 @@ function tryResolvingFilePath(filePath, req) {
 
 // send the correct contentType header
 var request = http
-    .createServer(function(req, response) {
+    .createServer(function (req, response) {
+        if (req.method === 'POST') {
+            if (req.url === '/install') {
+                console.log('Got post request', req.url)
+                var body = ''
+                req.on('data', function (data) {
+                    body += data
+                })
+                req.on('end', function () {
+                    try {
+                        const postBody = JSON.parse(body)
+                        jspm.install({ [postBody.packageName]: 'npm:' + postBody.packageName }).then(() => {
+                            console.log('Installation done for package', postBody.packageName)
+                            socketIOClient.emit('installation', { done: true, packageName: postBody.packageName })
+                        }).catch(e => {
+                            console.error('Installation failed for package', postBody.packageName, e.toString())
+                            socketIOClient.emit('installation', { done: false, error: e.toString(), packageName: postBody.packageName })
+                        })
+                    } catch (e) {
+                        console.error('Error parsing post body for /install', e.toString())
+                    }
+                })
+                return
+            } else {
+                return
+            }
+        }
+
         var filePath = req.url.slice(1).split('?')[0]
         filePath = tryResolvingFilePath(adjustPaths(toolConfig, filePath), req)
 
@@ -188,7 +217,7 @@ var request = http
             response.end()
         }
     })
-    .listen(port, function(err) {
+    .listen(port, function (err) {
         if (err) {
             console.error('Error starting server', err)
             exit()
@@ -203,7 +232,7 @@ var request = http
         }
     })
 
-request.on('error', function(err) {
+request.on('error', function (err) {
     switch (err.code) {
         case 'EADDRINUSE':
             console.error(
@@ -217,6 +246,17 @@ request.on('error', function(err) {
     }
 })
 
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', function (err) {
     console.error('Uncaught exception', err)
 })
+
+var socketIOClient
+io.on('connection', function (client) {
+    client.on('subscribeToInstalls', function () {
+        socketIOClient = client
+        console.log('client subscribed to install events')
+    })
+})
+
+var socketIOPort = 8008
+io.listen(socketIOPort)
