@@ -74,7 +74,7 @@ function loadExternalPackages(packages) {
                 return com
             })
             .catch(e => {
-                console.error('Error loading external package', packageInfo)
+                console.error('Error loading external package', packageInfo, e)
             })
     })
 }

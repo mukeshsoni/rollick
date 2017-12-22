@@ -73,6 +73,9 @@ export default class App extends React.Component {
                         message.error
                 )
             } else {
+                console.log(
+                    'Hurrah! Package ' + message.packageName + ' installed!!'
+                )
                 this.setState({
                     externalPackages: dedupe(
                         this.state.externalPackages.concat({
@@ -81,7 +84,6 @@ export default class App extends React.Component {
                         })
                     )
                 })
-                alert('Hurrah! Package ' + message.packageName + ' installed!!')
             }
         })
     }

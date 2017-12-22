@@ -197,6 +197,9 @@ var request = http
                 req.on('end', function() {
                     try {
                         const postBody = JSON.parse(body)
+                        if (!postBody || !postBody.packageName) {
+                            return
+                        }
                         jspm
                             .install({
                                 [postBody.packageName]:
