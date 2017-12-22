@@ -2,6 +2,8 @@ import React from 'react'
 import Button from './components/buttons/button'
 import Playground from './components/playground/index.js'
 import openSocket from 'socket.io-client'
+import belt from '../belt.js'
+const { dedupe } = belt
 const socket = openSocket('http://localhost:8008')
 
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
@@ -48,22 +50,38 @@ export default class App extends React.Component {
 
     handleInstallClick = () => {
         const packageName = window.prompt('Enter package name')
-        fetch('/install', { method: 'POST', body: JSON.stringify({ registry: 'npm', packageName }) }).then(response => {
-            console.log('Got response from server')
-        }).catch(e => console.error('POST request for install failed', e.toString()))
+        fetch('/install', {
+            method: 'POST',
+            body: JSON.stringify({ registry: 'npm', packageName })
+        })
+            .then(response => {
+                console.log('Got response from server')
+            })
+            .catch(e =>
+                console.error('POST request for install failed', e.toString())
+            )
     }
 
     subscribeToInstallEvents = () => {
         socket.emit('subscribeToInstalls', 1000)
-        socket.on('timer', timestamp => {
-            console.log('received timer event from socket io server', timestamp)
-        })
-        socket.on('installation', (message) => {
+        socket.on('installation', message => {
             console.log('Got installation message')
             if (message.error) {
-                console.log('Error installing package', message.packageName, message.error)
+                alert(
+                    'Error installing package' +
+                        message.packageName +
+                        message.error
+                )
             } else {
-                console.log('Hurrah! Package ', message.packageName, ' installed!!')
+                this.setState({
+                    externalPackages: dedupe(
+                        this.state.externalPackages.concat({
+                            name: message.packageName,
+                            version: message.version
+                        })
+                    )
+                })
+                alert('Hurrah! Package ' + message.packageName + ' installed!!')
             }
         })
     }
@@ -71,7 +89,8 @@ export default class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            showStyleguide: false
+            showStyleguide: false,
+            externalPackages: []
         }
         this.subscribeToInstallEvents()
     }
@@ -122,6 +141,7 @@ export default class App extends React.Component {
                     onInstallClick={this.handleInstallClick}
                     showStyleguide={this.handleShowStyleguideClick}
                     hidePreview={this.state.showStyleguide}
+                    externalPackages={this.state.externalPackages}
                 />
             </div>
         )

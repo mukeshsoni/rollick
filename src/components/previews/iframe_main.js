@@ -48,7 +48,8 @@ class PreviewApp extends React.Component {
             jsxToInsert,
             jsToInsert,
             cssToInsert,
-            loading
+            loading,
+            externalPackages
         } = this.state
 
         if (composite) {
@@ -62,6 +63,7 @@ class PreviewApp extends React.Component {
                         jsxToInsert={jsxToInsert}
                         jsToInsert={jsToInsert}
                         cssToInsert={cssToInsert}
+                        externalPackages={externalPackages}
                     />
                 </div>
             )

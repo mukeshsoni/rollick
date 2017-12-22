@@ -14,6 +14,8 @@ and then we can load the component in 'composite_component_preview' component us
 - [ ] Need a good story for rollick by showcasing it on some popular react UI library. Let's try running it with material-ui react library.
 - [ ] Bring back the quick search component. But the design will be like the sketch plugin Joe showed to find symbols in sketch.
 It's a modal with search input, list on left side and a preview pane for the component on right.
+- [ ] Adding react-transition-group and associated Components available to be used directly in the code panel has brought in awesome animation capabilities.
+Need to make a list of similar most commonly used react components which are readily available to be used in the code panel. E.g. onClickOutside, SplitPane etc.
 - [ ] Ability to import stuff from sketch to styleguide. Can try using html-sketchapp for this.
 - [ ] Build a collage of the ui-kit which will look something like this - https://s3.amazonaws.com/designco-web-assets/uploads/2017/11/UIaudit2.png
 - [ ] The landing screen can be a screen with thumbnails (or list) of saved pens (if any), instead of directly going to the playground view.

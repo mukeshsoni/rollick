@@ -395,8 +395,8 @@ export default class Playground extends React.Component {
             cm.setSize(
                 '100%',
                 editorRef.containerRef.clientHeight -
-                headerHeight -
-                footerHeight
+                    headerHeight -
+                    footerHeight
             )
         })
     }
@@ -559,6 +559,7 @@ export default class Playground extends React.Component {
             showQuickSearchModal
         } = this.state
 
+        const { externalPackages } = this.props
         const modalStyle = {
             overlay: {
                 backgroundColor: 'rgba(28, 26, 26, 0.52)'
@@ -704,7 +705,7 @@ export default class Playground extends React.Component {
                                     if (this.state.editorLayout === 'top') {
                                         document
                                             .getElementsByClassName(
-                                            'SplitPane horizontal'
+                                                'SplitPane horizontal'
                                             )[0]
                                             .style.setProperty('top', '69px')
                                     }
@@ -798,6 +799,7 @@ export default class Playground extends React.Component {
                                     cssCode={css.code}
                                     jsToInsert={js.toInsert}
                                     cssToInsert={css.toInsert}
+                                    externalPackages={externalPackages}
                                 />
                             )}
                         </div>
@@ -811,5 +813,6 @@ export default class Playground extends React.Component {
 Playground.propTypes = {
     fromStyleguideClick: PropTypes.func.isRequired,
     showStyleguide: PropTypes.func.isRequired,
-    hidePreview: PropTypes.bool.isRequired
+    hidePreview: PropTypes.bool.isRequired,
+    externalPackages: PropTypes.arrayOf(PropTypes.string)
 }
