@@ -281,9 +281,6 @@ var request = http
             console.log(
                 `${toolName} available at http://localhost:${port}/.${toolName}/index.html`
             )
-            setTimeout(() => {
-                exec(`open ${url}`)
-            }, 1000)
         }
     })
 
