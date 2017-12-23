@@ -15,29 +15,41 @@ and then we can load the component in 'composite_component_preview' component us
 - [ ] Bring back the quick search component. But the design will be like the sketch plugin Joe showed to find symbols in sketch.
 It's a modal with search input, list on left side and a preview pane for the component on right.
 - [ ] Adding react-transition-group and associated Components available to be used directly in the code panel has brought in awesome animation capabilities.
-Need to make a list of similar most commonly used react components which are readily available to be used in the code panel. E.g. onClickOutside, SplitPane etc.
+Need to make a list of similar most commonly used react components which are readily available to be used in the code panel.
+E.g. onClickOutside, SplitPane, react-dnd, flexbox layout components etc.
 - [ ] Ability to import stuff from sketch to styleguide. Can try using html-sketchapp for this.
 - [ ] Build a collage of the ui-kit which will look something like this - https://s3.amazonaws.com/designco-web-assets/uploads/2017/11/UIaudit2.png
 - [ ] The landing screen can be a screen with thumbnails (or list) of saved pens (if any), instead of directly going to the playground view.
 Latest photoshop has that. I think compositor.io also has that.
-- [ ] Showing the styleguide in a modal doesn't make sense anymore. Can as well just take the whole window and be a different screen. Same header with maybe different options.
-Can use fancy animation to transition between styleguide and pen window and vice versa. Another animation when a story is added from styleguide to the pen.
-- [ ] Allow import of components from paths other than shared ui components. E.g. if we want to test out phase calendar from roadmap (projectplace specific), we should just give the path and have it imported on the fly.
+- [ ] Showing the styleguide in a modal doesn't make sense anymore.
+Can as well just take the whole window and be a different screen. Same header with maybe different options.
+Can use fancy animation to transition between styleguide and pen window and vice versa.
+Another animation when a story is added from styleguide to the pen.
+- [ ] Allow import of components from paths other than shared ui components.
+E.g. if we want to test out phase calendar from roadmap (projectplace specific), we should just give the path and have it imported on the fly.
 This will allow us to create pens specific to modules and test them out in the context of the modules.
 - [ ] Allow saving of pen as a story
-- [ ] Show the dependency list for a component in styleguide. The main idea is to construct a narrative on how that component is made. E.g. it consists of two quarks, a boson and one atom (if we follow the atomic design)
-- [ ] Ability to expand preview pane height (in case when there are absolute elements floating and doesn’t change the height of the document. E.g. data input)
+- [ ] Show the dependency list for a component in styleguide.
+The main idea is to construct a narrative on how that component is made.
+E.g. it consists of two quarks, a boson and one atom (if we follow the atomic design)
+- [ ] Ability to expand preview pane height (in case when there are absolute elements
+floating and doesn’t change the height of the document. E.g. data input)
 - [ ] Ability to bring in arbitrary less files when we want to pass specific classes to some components
-- [ ] Ability to insert other components as children in the story of some component. E.g. FilterGroup works well with FilterItem’s as children. Collapsible works well with CollapsibleSection as children.
+- [ ] Ability to insert other components as children in the story of some component.
+E.g. FilterGroup works well with FilterItem’s as children. Collapsible works well with CollapsibleSection as children.
 - [ ] Move the pen preview component to new way of having render script inside the iframe
 - [ ] Property editor
-- [ ] jsx snippets to quickly copy common html which makes sense in a lot of places. E.g. a list of items with the ability to adjust the number of items (maybe number of columns too)
-- [ ] Allow user to increase the height of the preview container (iframe). Sometimes due to absolute positioning, some elements are hidden at the bottom area of the iframe.
+- [ ] jsx snippets to quickly copy common html which makes sense in a lot of places.
+E.g. a list of items with the ability to adjust the number of items (maybe number of columns too)
+- [ ] Allow user to increase the height of the preview container (iframe).
+Sometimes due to absolute positioning, some elements are hidden at the bottom area of the iframe.
 - [ ] A 'refresh' button in the styleguide preview window, to take the component back to first mount state
-- [ ] Bug - Once jsx goes to invalid state, even if i change jsx to be in valid state, the single component preview does not refresh. I need to go to some other
+- [ ] Bug - Once jsx goes to invalid state, even if i change jsx to be in valid state,
+the single component preview does not refresh. I need to go to some other
 component in the styleguide and come back to this component again. Also making sure that i save the props.
 - [X] Bug - changing component in styleguide does not refresh the props table
-- [X] Bug - the less files required in pp/shared components are not loaded as css anymore. They are directly loaded as the less file in the browser.
+- [X] Bug - the less files required in pp/shared components are not loaded as css anymore.
+They are directly loaded as the less file in the browser.
 I thought i had fixed that problem :(. That is why none of the shared components are styled.
             - False alarm
 - [ ] Having a database for rollick makes a lot of sense. Can store all kinds of data there.
@@ -47,13 +59,17 @@ Saving configuration for the tool? Store in the database.
 - [ ] Better fake props. E.g. for arrayOf(Objects), create between 2 to 5 element array
 - [ ] In the list search component in styleguide
   - [ ] Should enable arrow key navigation after searching. Enter key then should open stories for the selected component.
-  - [ ] If user searches, and then clicks on a result (e.g. SearchInput), and then removes the search input, the list should bring the selected item in viewport somehow.
+  - [ ] If user searches, and then clicks on a result (e.g. SearchInput),
+and then removes the search input, the list should bring the selected item in viewport somehow.
 In the above example, once the search input is cleared, the selected item might go out of the viewport (way below)
 - [ ] Copy/pasting some code should work. If that copy/pasted code has custom components, they should be parsed and loaded.
 - [ ] Enhancing documentation of components through a rich text editor or however way? Store it in the database.
 - [ ] Feature - import styleguide as an html/pdf document
-- [ ] Need to solve the properties/attribute pane problem in a much neater way. The three way sync between properties pane, jsx editor and the rendered component is very tricky because of all the 
-invalid states the attribute values can get into due to the user inputs. Questions like "should we flow the invalid input to the output? should we flow the invalid input to the jsx editor? How to finally sync between valid
+- [ ] Need to solve the properties/attribute pane problem in a much neater way.
+The three way sync between properties pane, jsx editor and the rendered component is very tricky because of all the 
+invalid states the attribute values can get into due to the user inputs.
+Questions like "should we flow the invalid input to the output?
+should we flow the invalid input to the jsx editor? How to finally sync between valid
 state and user input?" need to be answered.
 - [ ] Use *doctrine* to get jsdoc AST - https://github.com/eslint/doctrine
 - [ ] In the preview code section in styleguide playground, add a toggle to populate non-required/optional props
@@ -66,13 +82,15 @@ state and user input?" need to be answered.
     3. Props description - picked from comments above each prop
   - [ ] Allow copying of file path like react-styleguidist does
   - [ ] Allow changing of properties by changing code in the *code* section. The changes will reflect in the properties panel also.
-- [ ] Allow adding variations of a component to the styleguide preview. E.g. 'Normal Button', 'Disabled Button', 'Button as a link'. So all combinations of component props which makes sense.
+- [ ] Allow adding variations of a component to the styleguide preview.
+E.g. 'Normal Button', 'Disabled Button', 'Button as a link'. So all combinations of component props which makes sense.
 Users will be also then able to modify the prop values from the jsx usage section.
 - [ ] Start using these concepts/technologies going forward
   - [ ] Use of Either/Maybe/Functors/Applicatives. Should make life easier
     while dealing with exception (which is a lot in this tool)
   - [ ] Write parts of the system in purescript
-    - Tried it. Proved to be harder than it looked. `pulp build` should have done the work. Problem is, purescript modules are written as `Folder/index.js`, but
+    - Tried it. Proved to be harder than it looked.
+`pulp build` should have done the work. Problem is, purescript modules are written as `Folder/index.js`, but
       required as `require('../Module')` and systemjs does not understand module requires which assume `index.js` file inside a folder :(
 - [ ] [0/1] If the cursor is inside the definition of some component in the
   editor, show all possible props for the component somewhere along
