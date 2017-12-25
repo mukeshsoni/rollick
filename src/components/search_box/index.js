@@ -104,10 +104,6 @@ class SearchBox extends React.Component {
         }
     }
 
-    getZeroResultsView = () => {
-        return <NoSearchResults searchText={this.state.searchText} />
-    }
-
     getFilteredList = () => {
         const { searchText } = this.state
 
@@ -310,7 +306,10 @@ class SearchBox extends React.Component {
                             </div>
                         </div>
                     ) : (
-                        this.getZeroResultsView()
+                        <NoSearchResults
+                            searchText={this.state.searchText}
+                            onNpmPackageInstall={this.props.onNpmPackageInstall}
+                        />
                     )}
                 </div>
             </Modal>

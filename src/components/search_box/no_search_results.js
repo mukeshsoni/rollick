@@ -4,8 +4,6 @@ import Button from '../buttons/button.js'
 import InstallFromNpm from './install_from_npm.js'
 
 export default class NoSearchResults extends React.Component {
-    handleNpmPackageInstall = installInfo => {}
-
     constructor(props) {
         super(props)
 
@@ -26,7 +24,7 @@ export default class NoSearchResults extends React.Component {
                     />
                     <InstallFromNpm
                         defaultPackageName={this.props.searchText}
-                        onInstall={this.handleNpmPackageInstall}
+                        onInstall={this.props.onNpmPackageInstall}
                     />
                 </div>
             )
@@ -71,4 +69,9 @@ export default class NoSearchResults extends React.Component {
             </div>
         )
     }
+}
+
+NoSearchResults.propTypes = {
+    searchText: PropTypes.string.isRequired,
+    onNpmPackageInstall: PropTypes.func.isRequired
 }

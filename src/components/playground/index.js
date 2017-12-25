@@ -395,8 +395,8 @@ export default class Playground extends React.Component {
             cm.setSize(
                 '100%',
                 editorRef.containerRef.clientHeight -
-                headerHeight -
-                footerHeight
+                    headerHeight -
+                    footerHeight
             )
         })
     }
@@ -612,6 +612,9 @@ export default class Playground extends React.Component {
                                 items={componentsMetaList}
                                 onSelection={this.handleSearchSelection}
                                 onRequestClose={this.hideSearchModal}
+                                onNpmPackageInstall={
+                                    this.props.onNpmPackageInstall
+                                }
                             />
                         )}
                         <Button
@@ -639,11 +642,6 @@ export default class Playground extends React.Component {
                             />
                         </div>
                     )}
-                    <Button
-                        onClick={this.props.onInstallClick}
-                        label={this.props.installLoading ? 'Installing...' : 'Install'}
-                        style={{ marginRight: '1em' }}
-                    />
                     <Button
                         onClick={this.handleNewPenClick}
                         label="New"
@@ -705,7 +703,7 @@ export default class Playground extends React.Component {
                                     if (this.state.editorLayout === 'top') {
                                         document
                                             .getElementsByClassName(
-                                            'SplitPane horizontal'
+                                                'SplitPane horizontal'
                                             )[0]
                                             .style.setProperty('top', '69px')
                                     }

@@ -1,22 +1,13 @@
 import React from 'react'
 import Button from './components/buttons/button'
 import Playground from './components/playground/index.js'
-import openSocket from 'socket.io-client'
 import belt from '../belt.js'
-const { dedupe, capitalize } = belt
-const socket = openSocket('http://localhost:8008')
+const { dedupe } = belt
 
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import Styleguide from './components/styleguide/index.js'
 
 import './app.css!css'
-
-function npmNameToCamelCase(npmName) {
-    return npmName
-        .split('-')
-        .map(capitalize)
-        .join('')
-}
 
 export default class App extends React.Component {
     handleShowStyleguideClick = () => {
@@ -55,48 +46,11 @@ export default class App extends React.Component {
         }
     }
 
-    handleInstallClick = () => {
-        const packageName = window.prompt('Enter package name')
-        if (!packageName) {
-            return
-        }
-
-        this.setState({ installLoading: true })
-        fetch('/install', {
-            method: 'POST',
-            body: JSON.stringify({ registry: 'npm', packageName })
-        }).then(response => {
-            console.log('Got response from server')
-        }).catch(e =>
-            console.error('POST request for install failed', e.toString())
+    handleNpmPackageInstall = packageInfo => {
+        this.setState({
+            externalPackages: dedupe(
+                this.state.externalPackages.concat(packageInfo)
             )
-    }
-
-    subscribeToInstallEvents = () => {
-        socket.emit('subscribeToInstalls', 1000)
-        socket.on('installation', message => {
-            console.log('Got installation message')
-            if (message.error) {
-                this.setState({ installLoading: false })
-                alert(
-                    'Error installing package' +
-                    message.packageName +
-                    message.error
-                )
-            } else {
-                alert(
-                    'Package ' + message.packageName + ' installed. You should be able to use it in a couple of seconds using name - ' + npmNameToCamelCase(message.packageName)
-                )
-                this.setState({
-                    installLoading: false,
-                    externalPackages: dedupe(
-                        this.state.externalPackages.concat({
-                            name: message.packageName,
-                            version: message.version
-                        })
-                    )
-                })
-            }
         })
     }
 
@@ -104,10 +58,8 @@ export default class App extends React.Component {
         super(props)
         this.state = {
             showStyleguide: false,
-            externalPackages: [],
-            installLoading: false
+            externalPackages: []
         }
-        this.subscribeToInstallEvents()
     }
 
     componentDidMount() {
@@ -157,7 +109,7 @@ export default class App extends React.Component {
                     showStyleguide={this.handleShowStyleguideClick}
                     hidePreview={this.state.showStyleguide}
                     externalPackages={this.state.externalPackages}
-                    installLoading={this.state.installLoading}
+                    onNpmPackageInstall={this.handleNpmPackageInstall}
                 />
             </div>
         )
