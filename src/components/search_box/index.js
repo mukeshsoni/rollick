@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SearchResults from './search_results'
-import SearchInput from './search_input'
+import SearchInput from './search_input.js'
+import NoSearchResults from './no_search_results.js'
 import Modal from 'node_modules/react-modal/dist/react-modal.js'
 import classnames from 'classnames'
 import deboune from 'debounce'
@@ -29,7 +30,7 @@ class SearchBox extends React.Component {
     handleItemClick = item => {
         this.setState({
             selectedItemIndex: findIndex(
-                this.getFilteredComponents(),
+                this.getFilteredList(),
                 i => i.path === item.path
             )
         })
@@ -46,7 +47,7 @@ class SearchBox extends React.Component {
         this.setState({
             selectedItemIndex:
                 (this.state.selectedItemIndex + 1) %
-                this.getFilteredComponents().length
+                this.getFilteredList().length
         })
     }
 
@@ -54,10 +55,10 @@ class SearchBox extends React.Component {
         stopAllPropagations(e)
         this.setState({
             selectedItemIndex:
-                (this.getFilteredComponents().length +
+                (this.getFilteredList().length +
                     this.state.selectedItemIndex -
                     1) %
-                this.getFilteredComponents().length
+                this.getFilteredList().length
         })
     }
 
@@ -103,7 +104,28 @@ class SearchBox extends React.Component {
         }
     }
 
-    getFilteredComponents = () => {
+    getZeroResultsView = () => {
+        if (this.state.searchText.trim() === '') {
+            return (
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'gray'
+                    }}
+                >
+                    Waiting for you to release the Kraken...
+                </div>
+            )
+        } else {
+            return <NoSearchResults />
+        }
+    }
+
+    getFilteredList = () => {
         const { searchText } = this.state
 
         if (searchText.trim() === '') {
@@ -143,7 +165,7 @@ class SearchBox extends React.Component {
 
         if (previewItem) {
             return findIndex(
-                this.getFilteredComponents(),
+                this.getFilteredList(),
                 item => item.path === previewItem.path
             )
         } else {
@@ -155,7 +177,7 @@ class SearchBox extends React.Component {
         const { searchText } = this.state
 
         const inputClassnames = classnames('search-modal-input', {
-            'with-results': this.getFilteredComponents().length > 0
+            'with-results': this.getFilteredList().length > 0
         })
 
         return (
@@ -176,7 +198,7 @@ class SearchBox extends React.Component {
         super(props)
 
         this.state = {
-            searchText: '',
+            searchText: 'react-photo',
             selectedItemIndex: 0,
             previewItem: null
         }
@@ -187,7 +209,7 @@ class SearchBox extends React.Component {
     getPreviewItem = () => {
         if (this.state.selectedItemIndex >= 0) {
             return enhanceComponent(
-                this.getFilteredComponents()[this.state.selectedItemIndex]
+                this.getFilteredList()[this.state.selectedItemIndex]
             )
         } else {
             return null
@@ -255,12 +277,13 @@ class SearchBox extends React.Component {
                     onKeyDown={this.handleContainerKeyDown}
                     style={{
                         width: '100%',
+                        height: '100%',
                         display: 'flex',
                         flexDirection: 'column'
                     }}
                 >
                     {this.getInput()}
-                    {this.getFilteredComponents().length > 0 && (
+                    {this.getFilteredList().length > 0 ? (
                         <div
                             ref={node => (this.contentContainerRef = node)}
                             style={{
@@ -272,7 +295,7 @@ class SearchBox extends React.Component {
                         >
                             <div style={{ overflowY: 'auto' }}>
                                 <SearchResults
-                                    items={this.getFilteredComponents()}
+                                    items={this.getFilteredList()}
                                     selectedItemIndex={selectedItemIndex}
                                     onItemClick={this.handleItemClick}
                                 />
@@ -303,6 +326,8 @@ class SearchBox extends React.Component {
                                 />
                             </div>
                         </div>
+                    ) : (
+                        this.getZeroResultsView()
                     )}
                 </div>
             </Modal>

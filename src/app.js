@@ -3,7 +3,6 @@ import Button from './components/buttons/button'
 import Playground from './components/playground/index.js'
 import openSocket from 'socket.io-client'
 import belt from '../belt.js'
-import ReactPhotoGrid from 'react-photo-grid'
 const { dedupe, capitalize } = belt
 const socket = openSocket('http://localhost:8008')
 
