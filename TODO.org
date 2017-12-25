@@ -9,6 +9,16 @@ Wasted so many days without realising that it was a bug in react-codemirror.
   - [X] Open
 - [X] In the styleguide, if a user wants to use another compnent from the ui kit when trying to show the selected component,
 there should be an option to import that child component. Mostly needed when the selected component takes children components.
+- [ ] Rollick install should not fail if it doesn't find any config file.
+It should still give the bare minimum experience, which is similar to codepen. 
+
+And then the tool should provide options to build up the config through various ui options.
+E.g. option to add a component source path which will generate the component meta data in
+the backend and save it (either in local storage or a db)
+
+That will intact make it possible to add more than one list of components from different parts of the file system.
+In fact, rollick can then be installed centrally and can have it's own db on the os,
+but still allow configuration to allow using a different db.
 - [ ] Ability to add any custom react component from npm to the scope. This can be easily achived, as our node server can install the component, given the component name, 
 and then we can load the component in 'composite_component_preview' component using systemjs. Boom, it should be availabe for the users to use.
 - [ ] Need a good story for rollick by showcasing it on some popular react UI library. Let's try running it with material-ui react library.

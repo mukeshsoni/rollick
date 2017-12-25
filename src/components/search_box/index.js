@@ -105,24 +105,7 @@ class SearchBox extends React.Component {
     }
 
     getZeroResultsView = () => {
-        if (this.state.searchText.trim() === '') {
-            return (
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '100%',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'gray'
-                    }}
-                >
-                    Waiting for you to release the Kraken...
-                </div>
-            )
-        } else {
-            return <NoSearchResults />
-        }
+        return <NoSearchResults />
     }
 
     getFilteredList = () => {
