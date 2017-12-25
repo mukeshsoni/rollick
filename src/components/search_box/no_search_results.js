@@ -1,9 +1,37 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../buttons/button.js'
+import InstallFromNpm from './install_from_npm.js'
 
 export default class NoSearchResults extends React.Component {
+    handleNpmPackageInstall = installInfo => {}
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            showNpmInstallScreen: false
+        }
+    }
+
     render() {
+        if (this.state.showNpmInstallScreen) {
+            return (
+                <div>
+                    <Button
+                        label="go back"
+                        onClick={() =>
+                            this.setState({ showNpmInstallScreen: false })
+                        }
+                    />
+                    <InstallFromNpm
+                        defaultPackageName={this.props.searchText}
+                        onInstall={this.handleNpmPackageInstall}
+                    />
+                </div>
+            )
+        }
+
         return (
             <div
                 style={{
@@ -30,7 +58,9 @@ export default class NoSearchResults extends React.Component {
                         <Button
                             label="Install from npm"
                             style={{ marginRight: 10 }}
-                            onClick={() => {}}
+                            onClick={() =>
+                                this.setState({ showNpmInstallScreen: true })
+                            }
                         />
                         <Button
                             label="Import from file system"

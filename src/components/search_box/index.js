@@ -105,7 +105,7 @@ class SearchBox extends React.Component {
     }
 
     getZeroResultsView = () => {
-        return <NoSearchResults />
+        return <NoSearchResults searchText={this.state.searchText} />
     }
 
     getFilteredList = () => {
