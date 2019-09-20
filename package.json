@@ -200,7 +200,7 @@
         "react-textarea-autosize": "^5.1.0",
         "resolve-file": "0.3.0",
         "serialize-javascript": "^1.4.0",
-        "socket.io": "2.0.4"
+        "socket.io": "2.3.0"
     },
     "devDependencies": {}
 }
